@@ -1,6 +1,6 @@
 Arteigenschaften aktualisieren:
-http://apflora.ch/api/v1/aktualisiereArteigenschaften
-http://localhost:4000/api/v1/aktualisiereArteigenschaften
+http://api.apflora.ch:4001/aktualisiereArteigenschaften
+http://api.localhost:4001/aktualisiereArteigenschaften
 
 
 sublime text, find in files:
