@@ -88,7 +88,7 @@ connectionApflora.connect()
 
 server.connection({
   host: '0.0.0.0',
-  port: 4000
+  port: 4001
 })
 
 server.start(function (err) {
@@ -101,6 +101,7 @@ server.start(function (err) {
 server.route({
   method: 'GET',
   path: '/{path*}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: function (request, reply) {
     reply.file('index.html')
   }
@@ -109,6 +110,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/src/{param*}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: {
     directory: {
       path: 'src'
@@ -119,6 +121,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/style/images/{param*}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: {
     directory: {
       path: 'style/images'
@@ -130,6 +133,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/etc/{param*}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: {
     directory: {
       path: 'etc'
@@ -140,7 +144,8 @@ server.route({
 /*server.route({
     method: 'GET',
     path: '/etc/beziehungen.png',
-    handler: function (request, reply) {
+    vhost: ['api.apflora.ch', 'api.localhost'],
+  handler: function (request, reply) {
         reply.file('etc/beziehungen.png')
     }
 });*/
@@ -148,6 +153,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/style/{param*}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: {
     directory: {
       path: 'style'
@@ -158,6 +164,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/kml/{param*}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: {
     directory: {
       path: 'kml'
@@ -168,6 +175,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/geojson/{param*}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: {
     directory: {
       path: 'geojson'
@@ -178,6 +186,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/img/{param*}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: {
     directory: {
       path: 'img'
@@ -188,192 +197,224 @@ server.route({
 server.route({
   method: 'GET',
   path: '/api/v1/gemeinden',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryGemeinden
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/artliste',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryArtliste
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/apliste/programm={programm}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryApliste
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/qkView/{viewName}/{apId}/{berichtjahr?}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryQkView
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/qkPopOhnePopber/{apId}/{berichtjahr}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryQkPopOhnePopber
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/qkPopOhnePopmassnber/{apId}/{berichtjahr}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryQkPopOhnePopmassnber
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/qkTpopOhneTpopber/{apId}/{berichtjahr}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryQkTpopOhneTpopber
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/qkTpopOhneMassnber/{apId}/{berichtjahr}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryQkTpopOhneMassnber
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/anmeldung/name={name}/pwd={pwd}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryAnmeldung
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/adressen',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryAdressen
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/apflora/tabelle={tabelle}/feld={feld}/wertNumber={wert}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTabelleSelectApfloraNumber
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/beob/tabelle={tabelle}/feld={feld}/wertNumber={wert}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTabelleSelectBeobNumber
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/apflora/tabelle={tabelle}/feld={feld}/wertString={wert}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTabelleSelectApfloraString
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/beob/tabelle={tabelle}/feld={feld}/wertString={wert}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTabelleSelectBeobString
 })
 
 server.route({
   method: 'POST',
   path: '/api/v1/update/apflora/tabelle={tabelle}/tabelleIdFeld={tabelleIdFeld}/tabelleId={tabelleId}/feld={feld}/wert={wert?}/user={user}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTabelleUpdateApflora
 })
 
 server.route({
   method: 'POST',
   path: '/api/v1/updateMultiple/apflora/tabelle={tabelle}/felder={felder}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTabelleUpdateMultipleApflora
 })
 
 server.route({
   method: 'POST',
   path: '/api/v1/update/beob/tabelle={tabelle}/tabelleIdFeld={tabelleIdFeld}/tabelleId={tabelleId}/feld={feld}/wert={wert?}/user={user}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTabelleUpdateBeob
 })
 
 server.route({
   method: 'POST',
   path: '/api/v1/insert/apflora/tabelle={tabelle}/feld={feld}/wert={wert}/user={user}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTabelleInsertApflora
 })
 
 server.route({
   method: 'POST',
   path: '/api/v1/insertMultiple/apflora/tabelle={tabelle}/felder={felder}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTabelleInsertMultipleApflora
 })
 
 server.route({
   method: 'POST',
   path: '/api/v1/tpopmassnInsertKopie/tpopId={tpopId}/tpopMassnId={tpopMassnId}/user={user}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTpopmassnInsertKopie
 })
 
 server.route({
   method: 'POST',
   path: '/api/v1/tpopkontrInsertKopie/tpopId={tpopId}/tpopKontrId={tpopKontrId}/user={user}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTpopkontrInsertKopie
 })
 
 server.route({
   method: 'POST',
   path: '/api/v1/tpopInsertKopie/popId={popId}/tpopId={tpopId}/user={user}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTpopInsertKopie
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/tpopKoordFuerProgramm/apId={apId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTpopKoordFuerProgramm
 })
 
 server.route({
   method: 'POST',
   path: '/api/v1/popInsertKopie/apId={apId}/popId={popId}/user={user}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryPopInsertKopie
 })
 
 server.route({
   method: 'POST',
   path: '/api/v1/insert/feldkontr/tpopId={tpopId}/tpopKontrtyp={tpopKontrtyp?}/user={user}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryFeldkontrInsert
 })
 
 server.route({
   method: 'DELETE',
   path: '/api/v1/apflora/tabelle={tabelle}/tabelleIdFeld={tabelleIdFeld}/tabelleId={tabelleId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTabelleDeleteApflora
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/lrDelarze',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryLrDelarze
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/tpopMassnTypen',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTpopMassnTypen
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/ap={apId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryAp
 })
 
 server.route({
   method: 'POST',
   path: '/api/v1/apInsert/apId={apId}/user={user}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryApInsert
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/feldkontrZaehleinheit',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryFeldkontrZaehleinheit
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/idealbiotopUebereinst',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryIdealbiotopUebereinst
 })
 
@@ -387,6 +428,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/api/v1/tree/apId={apId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   config: {
     pre: [
       [
@@ -424,78 +466,91 @@ server.route({
 server.route({
   method: 'GET',
   path: '/api/v1/beobDistzutpopEvab/beobId={beobId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryBeobDistzutpopEvab
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/beobDistzutpopInfospezies/beobId={beobId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryBeobDistzutpopInfospezies
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/beobNaechsteTpop/apId={apId}/X={X}/Y={Y}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryBeobNaechsteTpop
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/beobKarte/apId={apId?}/tpopId={tpopId?}/beobId={beobId?}/nichtZuzuordnen={nichtZuzuordnen?}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryBeobKarte
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/beobZuordnen/apId={apId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryBeobZuordnen
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/apKarte/apId={apId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryApKarte
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/popKarte/popId={popId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryPopKarte
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/popKarteAlle/apId={apId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryPopKarteAlle
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/popChKarte/popId={popId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryPopChKarte
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/popsChKarte/apId={apId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryPopsChKarte
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/tpopKarte/tpopId={tpopId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTPopKarte
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/tpopsKarte/popId={popId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTPopsKarte
 })
 
 server.route({
   method: 'GET',
   path: '/api/v1/tpopKarteAlle/apId={apId}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: queryTPopKarteAlle
 })
 
@@ -503,6 +558,7 @@ server.route({
   method: 'GET',
   path: '/api/v1/exportView/xslx/view={view}',
   // handler: exportView
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: function (request, reply) {
     exportView(request, function (err, data) {
       if (err) { return reply(err) }
@@ -519,6 +575,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/api/v1/exportView/csv/view={view}/filename={filename}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: function (request, reply) {
     var filename = request.params.filename
     exportView(request, function (err, data) {
@@ -544,6 +601,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/api/v1/exportViewWhereIdIn/csv/view={view}/idName={idName}/idListe={idListe}/filename={filename}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: function (request, reply) {
     var filename = request.params.filename
     exportViewWhereIdIn(request, function (data) {
@@ -566,6 +624,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/api/v1/exportView/kml/view={view}/filename={filename}',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: function (request, reply) {
     var filename = request.params.filename,
       view = request.params.view,
@@ -597,6 +656,7 @@ server.route({
 server.route({
   method: 'GET',
   path: '/api/v1/aktualisiereArteigenschaften',
+  vhost: ['api.apflora.ch', 'api.localhost'],
   handler: function (request, reply) {
     aktualisiereArteigenschaften(request, reply)
   }

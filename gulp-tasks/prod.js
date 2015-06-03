@@ -12,10 +12,8 @@ requireDir('../gulp-tasks', {recurse: true})
 
 gulp.task('prod', function () {
   runSequence(
-    'templates',
-    ['browserify', 'prod_clean_dist'],
-    ['prod_build_src', 'prod_build_html'],
+    'prod_clean_dist',
     'prod_copy',
-    'prod_notify'
+    'prod_sftp'
   )
 })

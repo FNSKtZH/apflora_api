@@ -15,8 +15,7 @@ gulp.task(
       'prod_copy_img_to_dist',
       'prod_copy_kml_to_dist',
       'prod_copy_etc_to_dist',
-      'prod_copy_root_to_dist',
-      'prod_copy_style_to_dist'
+      'prod_copy_root_to_dist'
     ])
   }
 )

@@ -5,14 +5,19 @@
 'use strict'
 
 var gulp = require('gulp'),
+  sftp = require('gulp-sftp'),
   requireDir = require('require-dir'),
-  runSequence = require('run-sequence')
+  sftpPass = require('../sftpPass.json')
 
 requireDir('../gulp-tasks', {recurse: true})
 
 gulp.task('prod_sftp', function () {
-  runSequence(
-    'prod_sftp_sftp',
-    'prod_clean_dist'
-  )
+  return gulp.src('dist/**/*')
+    .pipe(sftp({
+      host: 'apflora.ch',
+      port: 30000,
+      remotePath: 'apflora/api',
+      user: sftpPass.user,
+      pass: sftpPass.pass
+    }))
 })
