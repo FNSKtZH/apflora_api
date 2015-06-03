@@ -73,3 +73,18 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+
+
+
+/*.sublime-workspace
+/.ftppass
+node_modules/
+ssl/
+dist/
+.idea/
+npm-debug.log
+dbPass.json
+sftpPass.json
+*.map
+*.TMP

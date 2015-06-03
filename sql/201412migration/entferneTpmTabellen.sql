@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS tpm_line, tpm_point, tpm_polygon;
