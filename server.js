@@ -82,13 +82,22 @@ var _ = require('underscore'),
   exportViewWhereIdIn = require('./queries/exportViewWhereIdIn'),
   getKmlForPop = require('./src/getKmlForPop'),
   getKmlForTpop = require('./src/getKmlForTpop'),
-  aktualisiereArteigenschaften = require('./queries/aktualisiereArteigenschaften')
+  aktualisiereArteigenschaften = require('./queries/aktualisiereArteigenschaften'),
+  isWindows = require('./src/isWindows'),
+  origin
 
 connectionApflora.connect()
 
+origin = isWindows() ? 'http://localhost:4000' : 'http://apflora.ch:4000'
+
 server.connection({
   host: '0.0.0.0',
-  port: 4001
+  port: 4001,
+  routes: {
+    cors: {
+      origin: [origin]
+    }
+  }
 })
 
 server.start(function (err) {
