@@ -27,9 +27,9 @@
   },
   "scripts": {
     "dev": "npm run gulp & npm start",
-    "preprod": "gulp prod_clean_dist",
-    "prod": "gulp prod_copy",
-    "postprod": "gulp prod_sftp",
+    "predeploy": "gulp prod_clean_dist",
+    "deploy": "gulp prod_copy",
+    "postdeploy": "gulp prod_sftp",
     "test": "standard src/*.js"
   },
   "repository": {
