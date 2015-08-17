@@ -9,21 +9,21 @@
     ]
   },
   "dependencies": {
-    "async": "1.4.0",
+    "async": "1.4.2",
     "dateformat": "1.0.11",
     "hapi": "8.8.0",
-    "json2csv": "2.8.1",
+    "json2csv": "2.9.0",
     "json2xls": "0.0.5",
     "mysql": "2.8.0",
-    "request": "2.59.0",
+    "request": "2.60.0",
     "underscore": "1.8.3"
   },
   "devDependencies": {
-    "del": "1.2.0",
+    "del": "1.2.1",
     "gulp": "3.9.0",
     "gulp-sftp": "0.1.4",
     "require-dir": "0.3.0",
-    "run-sequence": "1.1.1"
+    "run-sequence": "1.1.2"
   },
   "scripts": {
     "dev": "npm run gulp & npm start",
