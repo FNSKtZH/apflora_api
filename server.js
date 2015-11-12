@@ -552,7 +552,8 @@ server.register(Inert, () => {
     path: '/exportViewWhereIdIn/csv/view={view}/idName={idName}/idListe={idListe}/filename={filename}',
     handler: function (request, reply) {
       var filename = request.params.filename
-      exportViewWhereIdIn(request, function (data) {
+      exportViewWhereIdIn(request, function (err, data) {
+        if (err) { return reply(err) }
         var fields = _.keys(data[0])
         json2csv({
           data: data,
