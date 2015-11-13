@@ -87,7 +87,7 @@ var _ = require('underscore'),
 
 connectionApflora.connect()
 
-server.register(Inert, () => {
+server.register(Inert, function () {
   server.connection({
     host: '0.0.0.0',
     port: 4001,
