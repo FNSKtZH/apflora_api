@@ -27,7 +27,7 @@
     "run-sequence": "1.1.4"
   },
   "scripts": {
-    "dev": "npm run gulp & npm start",
+    "start": "node server.js",
     "predeploy": "gulp prod_clean_dist",
     "deploy": "gulp prod_copy",
     "postdeploy": "gulp prod_sftp",
