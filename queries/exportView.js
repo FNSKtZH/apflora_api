@@ -13,9 +13,11 @@ var mysql = require('mysql'),
 
 module.exports = function (request, callback) {
   var view = escapeStringForSql(request.params.view) // Name des Views, aus dem die Daten geholt werden sollen
+  var apId = escapeStringForSql(request.params.apId)
+  var selectString = apId ? 'SELECT * FROM ' + view + ' WHERE ApArtId=' + apId : 'SELECT * FROM ' + view
 
   connection.query(
-    'SELECT * FROM ' + view,
+    selectString,
     function (err, data) {
       // null-werte eliminieren
       var data2 = data

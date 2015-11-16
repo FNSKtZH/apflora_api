@@ -549,6 +549,31 @@ server.register(Inert, function () {
 
   server.route({
     method: 'GET',
+    path: '/exportView/csv/view={view}/filename={filename}/{apId}',
+    handler: function (request, reply) {
+      var filename = request.params.filename
+      exportView(request, function (err, data) {
+        var fields = _.keys(data[0])
+        if (err) { return reply(err) }
+        json2csv({
+          data: data,
+          fields: fields
+        }, function (err, csv) {
+          if (err) {
+            return reply(err)
+          }
+          reply(csv)
+            .header('Content-Type', 'text/x-csv; charset=utf-8')
+            .header('Content-disposition', 'attachment; filename=' + filename + '.csv')
+            .header('Pragma', 'no-cache')
+            .header('Set-Cookie', 'fileDownload=true; path=/')
+        })
+      })
+    }
+  })
+
+  server.route({
+    method: 'GET',
     path: '/exportViewWhereIdIn/csv/view={view}/idName={idName}/idListe={idListe}/filename={filename}',
     handler: function (request, reply) {
       var filename = request.params.filename
