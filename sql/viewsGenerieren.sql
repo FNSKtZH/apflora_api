@@ -586,18 +586,6 @@ CREATE OR REPLACE VIEW v_tpop_letzteKontrId AS
 SELECT apflora.tpop.TPopId, apflora_views.v_tpopkontr_letzteid.MaxTPopKontrId, apflora_views.v_tpopkontr_letzteid.AnzTPopKontr
 FROM apflora.tpop LEFT JOIN apflora_views.v_tpopkontr_letzteid ON apflora.tpop.TPopId = apflora_views.v_tpopkontr_letzteid.TPopId;
 
-/* changed 2015.11.16 ag
-CREATE OR REPLACE VIEW v_tpopber_letztesjahr AS
-SELECT apflora.tpopkontr.TPopId, Max(apflora.tpopber.TPopBerJahr) AS MaxTPopBerJahr, Count(apflora.tpopber.TPopBerId) AS AnzTPopBer
-FROM apflora.tpopkontr INNER JOIN apflora.tpopber ON apflora.tpopkontr.TPopId = apflora.tpopber.TPopId
-WHERE apflora.tpopkontr.TPopKontrTyp Not in ("Ziel", "Zwischenziel") AND apflora.tpopber.TPopBerJahr IS NOT NULL
-GROUP BY apflora.tpopkontr.TPopId;
-
-CREATE OR REPLACE VIEW v_tpopber_letzteid AS
-SELECT apflora_views.v_tpopber_letztesjahr.TPopId, Max(apflora.tpopber.TPopBerId) AS MaxTPopBerId, Avg(apflora_views.v_tpopber_letztesjahr.AnzTPopBer) AS AnzTPopBer
-FROM apflora.tpopber INNER JOIN apflora_views.v_tpopber_letztesjahr ON (apflora_views.v_tpopber_letztesjahr.MaxTPopBerJahr = apflora.tpopber.TPopBerJahr) AND (apflora.tpopber.TPopId = apflora_views.v_tpopber_letztesjahr.TPopId)
-GROUP BY apflora_views.v_tpopber_letztesjahr.TPopId;*/
-
 CREATE OR REPLACE VIEW v_tpopber_letzteid AS
 SELECT apflora.tpopkontr.TPopId, Max(apflora.tpopber.TPopBerId) AS MaxTPopBerId, Max(apflora.tpopber.TPopBerJahr) AS MaxTPopBerJahr, Count(apflora.tpopber.TPopBerId) AS AnzTPopBer
 FROM apflora.tpopkontr INNER JOIN apflora.tpopber ON apflora.tpopkontr.TPopId = apflora.tpopber.TPopId
