@@ -1,6 +1,6 @@
 /*
  * diese Views hängen von anderen ab, die in viewsGenerieren2.sql erstellt werden
- * daher muss diese Date NACH viewsGenerieren2.sql ausgeführt werden
+ * daher muss dieser code NACH viewsGenerieren2.sql ausgeführt werden
  */
 
 CREATE OR REPLACE VIEW v_tpop_anzkontrinklletzterundletztertpopber AS
