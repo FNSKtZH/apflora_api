@@ -1,17 +1,12 @@
 {
   "name": "apflora",
   "version": "1.0.1",
-  "description": "Aktionsplan Flora Kt. Zürich",
+  "description": "Aktionsplan Flora Kt. Zürich Backend",
   "main": "server.js",
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  },
   "dependencies": {
     "async": "1.5.0",
     "dateformat": "1.0.12",
-    "hapi": "11.1.1",
+    "hapi": "11.1.2",
     "inert": "3.2.0",
     "json2csv": "3.0.1",
     "json2xls": "0.0.5",
@@ -24,7 +19,7 @@
     "gulp": "3.9.0",
     "gulp-sftp": "0.1.5",
     "require-dir": "0.3.0",
-    "run-sequence": "1.1.4"
+    "run-sequence": "1.1.5"
   },
   "scripts": {
     "start": "node server.js",
