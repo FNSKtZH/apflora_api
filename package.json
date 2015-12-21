@@ -9,14 +9,14 @@
     "hapi": "11.1.2",
     "inert": "3.2.0",
     "json2csv": "3.0.1",
-    "json2xls": "0.0.5",
-    "mysql": "2.9.0",
+    "json2xls": "0.1.0",
+    "mysql": "2.10.0",
     "request": "2.67.0",
     "standard": "5.4.1",
     "underscore": "1.8.3"
   },
   "devDependencies": {
-    "del": "2.1.0",
+    "del": "2.2.0",
     "gulp": "3.9.0",
     "gulp-sftp": "0.1.5",
     "require-dir": "0.3.0",
