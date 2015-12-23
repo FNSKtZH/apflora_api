@@ -1,20 +1,20 @@
 'use strict'
 
-var mysql = require('mysql'),
-  config = require('../configuration'),
-  escapeStringForSql = require('./escapeStringForSql'),
-  connection = mysql.createConnection({
-    host: 'localhost',
-    user: config.db.userName,
-    password: config.db.passWord,
-    database: 'apflora'
-  })
+var mysql = require('mysql')
+var config = require('../configuration')
+var escapeStringForSql = require('./escapeStringForSql')
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: config.db.userName,
+  password: config.db.passWord,
+  database: 'apflora'
+})
 
 module.exports = function (request, callback) {
   var apId = escapeStringForSql(request.params.apId)
   var popId = escapeStringForSql(request.params.popId)
-  var user = escapeStringForSql(request.params.user)   // der Benutzername
-  var date = new Date().toISOString()                  // wann gespeichert wird
+  var user = escapeStringForSql(request.params.user) // der Benutzername
+  var date = new Date().toISOString() // wann gespeichert wird
   var sql = ''
 
   // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen

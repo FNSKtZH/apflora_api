@@ -1,13 +1,13 @@
 'use strict'
 
-var mysql = require('mysql'),
-  config = require('../configuration'),
-  connection = mysql.createConnection({
-    host: 'localhost',
-    user: config.db.userName,
-    password: config.db.passWord,
-    database: 'apflora_views'
-  })
+var mysql = require('mysql')
+var config = require('../configuration')
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: config.db.userName,
+  password: config.db.passWord,
+  database: 'apflora_views'
+})
 
 module.exports = function (request, callback) {
   var sql
