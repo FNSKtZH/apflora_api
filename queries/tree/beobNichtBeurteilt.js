@@ -1,23 +1,22 @@
 'use strict'
 
-var _ = require('underscore'),
-  mysql = require('mysql'),
-  config = require('../../configuration'),
-  escapeStringForSql = require('../escapeStringForSql'),
-  connection = mysql.createConnection({
-    host: 'localhost',
-    user: config.db.userName,
-    password: config.db.passWord,
-    database: 'apflora'
-  })
+var mysql = require('mysql')
+var config = require('../../configuration')
+var escapeStringForSql = require('../escapeStringForSql')
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: config.db.userName,
+  password: config.db.passWord,
+  database: 'apflora'
+})
 
 function buildChildFromData (data) {
-  var childrenArray = [],
-    object
+  var childrenArray = []
+  var object
 
-  _.each(data, function (beob) {
-    var datum = beob.Datum || '(kein Datum)',
-      autor = beob.Autor || '(kein Autor)'
+  data.forEach(function (beob) {
+    var datum = beob.Datum || '(kein Datum)'
+    var autor = beob.Autor || '(kein Autor)'
 
     object = {}
     object.data = datum + ': ' + autor

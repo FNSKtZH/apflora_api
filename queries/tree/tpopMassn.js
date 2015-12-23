@@ -1,9 +1,9 @@
 'use strict'
 
 module.exports = function (tpopMassn) {
-  var node = {},
-    nodeText1,
-    nodeText2
+  var node = {}
+  var nodeText1
+  var nodeText2
 
   if (tpopMassn) {
     // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden

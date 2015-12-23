@@ -1,23 +1,23 @@
 'use strict'
 
-var erstelleTpopMassnOrdner = require('./tpopMassnOrdner'),
-  erstelleTpopMassnBerOrdner = require('./tpopMassnBerOrdner'),
-  erstelleTpopFeldkontrOrdner = require('./tpopFeldkontrOrdner'),
-  erstelleTpopFreiwkontrOrdner = require('./tpopFreiwkontrOrdner'),
-  erstelleTpopBerOrdner = require('./tpopBerOrdner'),
-  erstelleTpopBeobOrdner = require('./tpopBeobOrdner')
+var erstelleTpopMassnOrdner = require('./tpopMassnOrdner')
+var erstelleTpopMassnBerOrdner = require('./tpopMassnBerOrdner')
+var erstelleTpopFeldkontrOrdner = require('./tpopFeldkontrOrdner')
+var erstelleTpopFreiwkontrOrdner = require('./tpopFreiwkontrOrdner')
+var erstelleTpopBerOrdner = require('./tpopBerOrdner')
+var erstelleTpopBeobOrdner = require('./tpopBeobOrdner')
 
 var returnFunction = function (results, tpop) {
-  var tpopNode = {},
-    tpopNodeText,
-    tpopSort,
-    tpopNodeChildren = [],
-    tpopMassnNode,
-    tpopMassnBerNode,
-    tpopFeldkontrNode,
-    tpopFreiwkontrNode,
-    tpopBerNode,
-    tpopBeobZugeordnetNode
+  var tpopNode = {}
+  var tpopNodeText
+  var tpopSort
+  var tpopNodeChildren = []
+  var tpopMassnNode
+  var tpopMassnBerNode
+  var tpopFeldkontrNode
+  var tpopFreiwkontrNode
+  var tpopBerNode
+  var tpopBeobZugeordnetNode
 
   // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden
   if (tpop.TPopNr && tpop.TPopFlurname) {

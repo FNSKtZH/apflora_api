@@ -1,8 +1,8 @@
 'use strict'
 
 module.exports = function (freiwkontr) {
-  var node = {},
-    nodeText
+  var node = {}
+  var nodeText
 
   if (freiwkontr) {
     // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden

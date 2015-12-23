@@ -1,21 +1,20 @@
 'use strict'
 
-var _ = require('underscore'),
-  mysql = require('mysql'),
-  config = require('../../configuration'),
-  connection = mysql.createConnection({
-    host: 'localhost',
-    user: config.db.userName,
-    password: config.db.passWord,
-    database: 'apflora'
-  })
+var mysql = require('mysql')
+var config = require('../../configuration')
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: config.db.userName,
+  password: config.db.passWord,
+  database: 'apflora'
+})
 
 module.exports = function (JBerJahr) {
   connection.query(
     'SELECT JbuJahr FROM apberuebersicht WHERE JbuJahr=' + JBerJahr,
     function (err, data) {
-      var node = {},
-        nodeArray = []
+      var node = {}
+      var nodeArray = []
 
       if (err) { throw err }
 

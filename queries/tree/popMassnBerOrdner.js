@@ -1,12 +1,12 @@
 'use strict'
 
-var _ = require('underscore'),
-  erstellePopMassnBer = require('./popMassnBer')
+var _ = require('underscore')
+var erstellePopMassnBer = require('./popMassnBer')
 
 module.exports = function (popMassnBerListe, pop) {
-  var popMassnberOrdner = {},
-    massnberVonPop,
-    popMassnberNode
+  var popMassnberOrdner = {}
+  var massnberVonPop
+  var popMassnberNode
 
   // Liste der MassnBer dieser pop erstellen
   massnberVonPop = _.filter(popMassnBerListe, function (popMassnBer) {
@@ -22,7 +22,7 @@ module.exports = function (popMassnBerListe, pop) {
   popMassnberOrdner.children = []
 
   // massnber aufbauen
-  _.each(massnberVonPop, function (massnber) {
+  massnberVonPop.forEach(function (massnber) {
     popMassnberNode = erstellePopMassnBer(massnber)
     popMassnberOrdner.children.push(popMassnberNode)
   })

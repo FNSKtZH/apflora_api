@@ -1,9 +1,9 @@
 'use strict'
 
 var returnFunction = function (tpopbeob) {
-  var node = {},
-    autor,
-    datum
+  var node = {}
+  var autor
+  var datum
 
   if (tpopbeob) {
     // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden

@@ -1,8 +1,8 @@
 'use strict'
 
 var returnFunction = function (tpopber) {
-  var node = {},
-    nodeText
+  var node = {}
+  var nodeText
 
   if (tpopber) {
     // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden

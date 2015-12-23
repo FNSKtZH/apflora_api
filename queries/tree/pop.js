@@ -1,25 +1,25 @@
 'use strict'
 
-var _ = require('underscore'),
-  async = require('async'),
-  mysql = require('mysql'),
-  config = require('../../configuration'),
-  escapeStringForSql = require('../escapeStringForSql'),
-  connection = mysql.createConnection({
-    host: 'localhost',
-    user: config.db.userName,
-    password: config.db.passWord,
-    database: 'apflora'
-  }),
-  erstelleTpopOrdner = require('./tpopOrdner'),
-  erstellePopMassnBerOrdner = require('./popMassnBerOrdner'),
-  erstellePopBerOrdner = require('./popBerOrdner')
+var _ = require('underscore')
+var async = require('async')
+var mysql = require('mysql')
+var config = require('../../configuration')
+var escapeStringForSql = require('../escapeStringForSql')
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: config.db.userName,
+  password: config.db.passWord,
+  database: 'apflora'
+})
+var erstelleTpopOrdner = require('./tpopOrdner')
+var erstellePopMassnBerOrdner = require('./popMassnBerOrdner')
+var erstellePopBerOrdner = require('./popBerOrdner')
 
 // erhält die höchste PopNr der Liste und die aktuelle
 // stellt der aktuellen PopNr soviele Nullen voran, dass
 // alle Nummern dieselbe Anzahl stellen haben
 function ergaenzePopNrUmFuehrendeNullen (popNrMax, popNr) {
-  /*jslint white: true, plusplus: true*/
+  /* jslint white: true, plusplus: true */
   if (!popNr && popNr !== 0) { return null }
   if (!popNrMax && popNrMax !== 0) { return null }
 
@@ -47,8 +47,8 @@ module.exports = function (request, reply) {
       connection.query(
         'SELECT PopNr, PopName, PopId, ApArtId FROM pop where ApArtId = ' + apId + ' ORDER BY PopNr, PopName',
         function (err, result) {
-          var popListe = result,
-            popIds = _.pluck(popListe, 'PopId')
+          var popListe = result
+          var popIds = _.pluck(popListe, 'PopId')
           callback(err, popIds, popListe)
         }
       )
@@ -58,8 +58,8 @@ module.exports = function (request, reply) {
         connection.query(
           'SELECT TPopNr, TPopFlurname, TPopId, PopId FROM tpop where PopId in (' + popIds.join() + ') ORDER BY TPopNr, TPopFlurname',
           function (err, result) {
-            var tpopListe = result,
-              tpopIds = _.pluck(tpopListe, 'TPopId')
+            var tpopListe = result
+            var tpopIds = _.pluck(tpopListe, 'TPopId')
             callback(err, [popIds, tpopIds, popListe, tpopListe])
           }
         )
@@ -68,11 +68,11 @@ module.exports = function (request, reply) {
       }
     }
   ], function (err, result) {
-    var popIds = result[0],
-      tpopIds = result[1],
-      popListe = result[2],
-      tpopListe = result[3],
-      popOrdnerNode = {}
+    var popIds = result[0]
+    var tpopIds = result[1]
+    var popListe = result[2]
+    var tpopListe = result[3]
+    var popOrdnerNode = {}
 
     if (tpopIds.length > 0) {
       // jetzt parallel alle übrigen Daten aus dem pop-baum
@@ -142,10 +142,10 @@ module.exports = function (request, reply) {
           )
         }
       }, function (err, results) {
-        var popBerListe = results.popBerListe || [],
-          popMassnBerListe = results.popMassnBerListe || [],
-          popOrdnerNodeChildren,
-          popNrMax
+        var popBerListe = results.popBerListe || []
+        var popMassnBerListe = results.popMassnBerListe || []
+        var popOrdnerNodeChildren
+        var popNrMax
 
         if (err) { return reply(err) }
 
@@ -164,14 +164,14 @@ module.exports = function (request, reply) {
           return pop.PopNr
         }).PopNr
 
-        _.each(popListe, function (pop) {
-          var popNode = {},
-            popNodeChildren = [],
-            popMassnberOrdnerNode,
-            popBerOrdnerNode,
-            popTpopOrdnerNode,
-            data,
-            popSort
+        popListe.forEach(function (pop) {
+          var popNode = {}
+          var popNodeChildren = []
+          var popMassnberOrdnerNode
+          var popBerOrdnerNode
+          var popTpopOrdnerNode
+          var data
+          var popSort
 
           pop.PopNr = ergaenzePopNrUmFuehrendeNullen(popNrMax, pop.PopNr)
 

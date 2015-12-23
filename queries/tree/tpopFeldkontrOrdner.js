@@ -4,9 +4,9 @@ var _ = require('underscore'),
   erstelleTPopFeldKontr = require('./tpopFeldkontr')
 
 module.exports = function (tpopFeldkontrListe, tpop) {
-  var tpopFeldkontrOrdner = {},
-    feldkontrVonTpop,
-    feldkontrNode
+  var tpopFeldkontrOrdner = {}
+  var feldkontrVonTpop
+  var feldkontrNode
 
   // Liste der Feldkontrollen dieser tpop erstellen
   feldkontrVonTpop = _.filter(tpopFeldkontrListe, function (tpopFeldkontr) {

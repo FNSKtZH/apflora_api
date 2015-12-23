@@ -4,9 +4,9 @@ var _ = require('underscore'),
   erstelleTPopFreiwKontr = require('./tpopFreiwkontr')
 
 module.exports = function (tpopFreiwkontrListe, tpop) {
-  var tpopFreiwkontrOrdner = {},
-    freiwkontrVonTpop,
-    freiwkontrNode
+  var tpopFreiwkontrOrdner = {}
+  var freiwkontrVonTpop
+  var freiwkontrNode
 
   // Liste der Freiwkontrollen dieser tpop erstellen
   freiwkontrVonTpop = _.filter(tpopFreiwkontrListe, function (tpopFreiwkontr) {

@@ -1,24 +1,23 @@
 'use strict'
 
-var _ = require('underscore'),
-  mysql = require('mysql'),
-  config = require('../../configuration'),
-  escapeStringForSql = require('../escapeStringForSql'),
-  connection = mysql.createConnection({
-    host: 'localhost',
-    user: config.db.userName,
-    password: config.db.passWord,
-    database: 'apflora'
-  })
+var mysql = require('mysql')
+var config = require('../../configuration')
+var escapeStringForSql = require('../escapeStringForSql')
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: config.db.userName,
+  password: config.db.passWord,
+  database: 'apflora'
+})
 
 function buildChildFromData (data) {
-  var childrenArray = [],
-    object,
-    beschriftung,
-    berjahrText,
-    bertitelText
+  var childrenArray = []
+  var object
+  var beschriftung
+  var berjahrText
+  var bertitelText
 
-  _.each(data, function (ber) {
+  data.forEach(function (ber) {
     berjahrText = ber.BerJahr || '(kein Jahr)'
     bertitelText = ber.BerTitel || '(kein Titel)'
     beschriftung = berjahrText + ': ' + bertitelText

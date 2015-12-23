@@ -1,21 +1,21 @@
 'use strict'
 
-var _ = require('underscore'),
-  mysql = require('mysql'),
-  async = require('async'),
-  config = require('../../configuration'),
-  escapeStringForSql = require('../escapeStringForSql'),
-  connection = mysql.createConnection({
-    host: 'localhost',
-    user: config.db.userName,
-    password: config.db.passWord,
-    database: 'apflora'
-  })
+var _ = require('underscore')
+var mysql = require('mysql')
+var async = require('async')
+var config = require('../../configuration')
+var escapeStringForSql = require('../escapeStringForSql')
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: config.db.userName,
+  password: config.db.passWord,
+  database: 'apflora'
+})
 
 function buildChildForJBer (JBerJahr, jberUebersichtListe) {
   // zuerst den Datensatz extrahieren
-  var jberUebersicht,
-    object
+  var jberUebersicht
+  var object
 
   jberUebersicht = _.find(jberUebersichtListe, function (jberUebersicht) {
     return jberUebersicht.JbuJahr === JBerJahr
@@ -34,11 +34,11 @@ function buildChildForJBer (JBerJahr, jberUebersichtListe) {
 }
 
 function buildChildrenForJBerOrdner (results) {
-  var childrenArray = [],
-    object,
-    beschriftung = '(kein Jahr)'
+  var childrenArray = []
+  var object
+  var beschriftung = '(kein Jahr)'
 
-  _.each(results.jberListe, function (jber) {
+  results.jberListe.forEach(function (jber) {
     object = {}
 
     if (jber.JBerJahr) { beschriftung = jber.JBerJahr.toString() }
@@ -80,9 +80,9 @@ module.exports = function (request, reply) {
       )
     }
   }, function (err, results) {
-    var jberListe = results.jberListe,
-      nodeChildren,
-      node = {}
+    var jberListe = results.jberListe
+    var nodeChildren
+    var node = {}
 
     if (err) { return reply(err) }
 

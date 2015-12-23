@@ -1,9 +1,9 @@
 'use strict'
 
 var returnFunction = function (feldkontr) {
-  var node = {},
-    nodeText1,
-    nodeText2
+  var node = {}
+  var nodeText1
+  var nodeText2
 
   if (feldkontr) {
     // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden

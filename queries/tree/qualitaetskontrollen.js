@@ -3,8 +3,8 @@
 var escapeStringForSql = require('../escapeStringForSql')
 
 module.exports = function (request, reply) {
-  var apId,
-    node
+  var apId
+  var node
 
   apId = escapeStringForSql(request.params.apId)
 

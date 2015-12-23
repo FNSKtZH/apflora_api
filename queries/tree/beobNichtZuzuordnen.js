@@ -1,24 +1,23 @@
 'use strict'
 
-var _ = require('underscore'),
-  mysql = require('mysql'),
-  config = require('../../configuration'),
-  escapeStringForSql = require('../escapeStringForSql'),
-  connection = mysql.createConnection({
-    host: 'localhost',
-    user: config.db.userName,
-    password: config.db.passWord,
-    database: 'apflora_beob'
-  })
+var mysql = require('mysql')
+var config = require('../../configuration')
+var escapeStringForSql = require('../escapeStringForSql')
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: config.db.userName,
+  password: config.db.passWord,
+  database: 'apflora_beob'
+})
 
 function buildChildFromData (data) {
-  var childrenArray = [],
-    object
+  var childrenArray = []
+  var object
 
-  _.each(data, function (beob) {
+  data.forEach(function (beob) {
     object = {}
-    var datum = beob.Datum || '(kein Datum)',
-      autor = beob.Autor || '(kein Autor)'
+    var datum = beob.Datum || '(kein Datum)'
+    var autor = beob.Autor || '(kein Autor)'
 
     object.data = datum + ': ' + autor
     // beob voransetzen, damit die ID im ganzen Baum eindeutig ist

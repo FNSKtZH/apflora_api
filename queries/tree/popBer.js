@@ -3,10 +3,10 @@
 'use strict'
 
 module.exports = function (popber) {
-  var node = {},
-    nodeText,
-    popberjahrText,
-    entwicklungText
+  var node = {}
+  var nodeText
+  var popberjahrText
+  var entwicklungText
 
   if (popber) {
     popberjahrText = popber.PopBerJahr || '(kein Jahr)'

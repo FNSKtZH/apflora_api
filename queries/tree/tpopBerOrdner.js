@@ -4,9 +4,9 @@ var _ = require('underscore'),
   erstelleTPopBer = require('./tpopBer')
 
 var returnFunction = function (tpopBerListe, tpop) {
-  var tpopTpopberOrdner = {},
-    tpopberVonTpop,
-    tpopBerNode
+  var tpopTpopberOrdner = {}
+  var tpopberVonTpop
+  var tpopBerNode
 
   // Liste der Berichte dieser tpop erstellen
   tpopberVonTpop = _.filter(tpopBerListe, function (tpopBer) {
