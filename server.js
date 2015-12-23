@@ -4,86 +4,88 @@
 
 'use strict'
 
-var _ = require('underscore'),
-  json2csv = require('json2csv'),
-  // wird nur in Entwicklung genutzt
-  /*serverOptionsDevelopment = {
-    debug: {
-      log: ['error'],
-      request: ['error']
-    }
-  },*/
-  Hapi = require('hapi'),
-  Inert = require('inert'),
-  server = new Hapi.Server(),
-  mysql = require('mysql'),
-  config = require('./configuration'),
-  connectionApflora = mysql.createConnection({
-    host: 'localhost',
-    user: config.db.userName,
-    password: config.db.passWord,
-    database: 'apflora'
-  }),
-  queryGemeinden = require('./queries/gemeinden'),
-  queryArtliste = require('./queries/artliste'),
-  queryApliste = require('./queries/apliste'),
-  queryQkView = require('./queries/qkView'),
-  queryQkPopOhnePopber = require('./queries/qkPopOhnePopber'),
-  queryQkPopOhnePopmassnber = require('./queries/qkPopOhnePopmassnber'),
-  queryQkTpopOhneTpopber = require('./queries/qkTpopOhneTpopber'),
-  queryQkTpopOhneMassnber = require('./queries/qkTpopOhneMassnber'),
-  queryAdressen = require('./queries/adressen'),
-  queryLrDelarze = require('./queries/lrDelarze'),
-  queryTpopMassnTypen = require('./queries/tpopMassnTypen'),
-  queryAp = require('./queries/ap'),
-  queryApInsert = require('./queries/apInsert'),
-  queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit'),
-  queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst'),
-  queryTabelleSelectApfloraNumber = require('./queries/tabelleSelectApfloraNumber'),
-  queryTabelleSelectApfloraString = require('./queries/tabelleSelectApfloraString'),
-  queryTabelleSelectBeobNumber = require('./queries/tabelleSelectBeobNumber'),
-  queryTabelleSelectBeobString = require('./queries/tabelleSelectBeobString'),
-  queryTabelleInsertApflora = require('./queries/tabelleInsertApflora'),
-  queryTabelleInsertMultipleApflora = require('./queries/tabelleInsertMultipleApflora'),
-  queryTpopmassnInsertKopie = require('./queries/tpopmassnInsertKopie'),
-  queryTpopkontrInsertKopie = require('./queries/tpopkontrInsertKopie'),
-  queryTpopInsertKopie = require('./queries/tpopInsertKopie'),
-  queryTpopKoordFuerProgramm = require('./queries/tpopKoordFuerProgramm'),
-  queryPopInsertKopie = require('./queries/popInsertKopie'),
-  queryFeldkontrInsert = require('./queries/feldkontrInsert'),
-  queryTabelleUpdateApflora = require('./queries/tabelleUpdateApflora'),
-  queryTabelleUpdateMultipleApflora = require('./queries/tabelleUpdateMultipleApflora'),
-  queryTabelleUpdateBeob = require('./queries/tabelleUpdateBeob'),
-  queryTabelleDeleteApflora = require('./queries/tabelleDeleteApflora'),
-  queryAnmeldung = require('./queries/anmeldung'),
-  treeQualitaetskontrollen = require('./queries/tree/qualitaetskontrollen'),
-  treeAssozarten = require('./queries/tree/assozarten'),
-  treeIdealbiotop = require('./queries/tree/idealbiotop'),
-  treeBeobNichtZuzuordnen = require('./queries/tree/beobNichtZuzuordnen'),
-  treeBeobNichtBeurteilt = require('./queries/tree/beobNichtBeurteilt'),
-  treeBer = require('./queries/tree/ber'),
-  treeJBer = require('./queries/tree/jber'),
-  treeErfkrit = require('./queries/tree/erfkrit'),
-  treeApziel = require('./queries/tree/apziel'),
-  treePop = require('./queries/tree/pop'),
-  queryBeobDistzutpopEvab = require('./queries/beobDistzutpopEvab'),
-  queryBeobNaechsteTpop = require('./queries/beobNaechsteTpop'),
-  queryBeobDistzutpopInfospezies = require('./queries/beobDistzutpopInfospezies'),
-  queryBeobKarte = require('./queries/beobKarte'),
-  queryBeobZuordnen = require('./queries/beobZuordnen'),
-  queryApKarte = require('./queries/apKarte'),
-  queryPopKarte = require('./queries/popKarte'),
-  queryPopKarteAlle = require('./queries/popKarteAlle'),
-  queryPopChKarte = require('./queries/popChKarte'),
-  queryPopsChKarte = require('./queries/popsChKarte'),
-  queryTPopKarte = require('./queries/tpopKarte'),
-  queryTPopsKarte = require('./queries/tpopsKarte'),
-  queryTPopKarteAlle = require('./queries/tpopKarteAlle'),
-  exportView = require('./queries/exportView'),
-  exportViewWhereIdIn = require('./queries/exportViewWhereIdIn'),
-  getKmlForPop = require('./src/getKmlForPop'),
-  getKmlForTpop = require('./src/getKmlForTpop'),
-  aktualisiereArteigenschaften = require('./queries/aktualisiereArteigenschaften')
+var _ = require('underscore')
+var json2csv = require('json2csv')
+// wird nur in Entwicklung genutzt
+/*
+var serverOptionsDevelopment = {
+  debug: {
+    log: ['error'],
+    request: ['error']
+  }
+},
+*/
+var Hapi = require('hapi')
+var Inert = require('inert')
+var server = new Hapi.Server()
+var mysql = require('mysql')
+var config = require('./configuration')
+var connectionApflora = mysql.createConnection({
+  host: 'localhost',
+  user: config.db.userName,
+  password: config.db.passWord,
+  database: 'apflora'
+})
+var queryGemeinden = require('./queries/gemeinden')
+var queryArtliste = require('./queries/artliste')
+var queryApliste = require('./queries/apliste')
+var queryQkView = require('./queries/qkView')
+var queryQkPopOhnePopber = require('./queries/qkPopOhnePopber')
+var queryQkPopOhnePopmassnber = require('./queries/qkPopOhnePopmassnber')
+var queryQkTpopOhneTpopber = require('./queries/qkTpopOhneTpopber')
+var queryQkTpopOhneMassnber = require('./queries/qkTpopOhneMassnber')
+var queryAdressen = require('./queries/adressen')
+var queryLrDelarze = require('./queries/lrDelarze')
+var queryTpopMassnTypen = require('./queries/tpopMassnTypen')
+var queryAp = require('./queries/ap')
+var queryApInsert = require('./queries/apInsert')
+var queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit')
+var queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst')
+var queryTabelleSelectApfloraNumber = require('./queries/tabelleSelectApfloraNumber')
+var queryTabelleSelectApfloraString = require('./queries/tabelleSelectApfloraString')
+var queryTabelleSelectBeobNumber = require('./queries/tabelleSelectBeobNumber')
+var queryTabelleSelectBeobString = require('./queries/tabelleSelectBeobString')
+var queryTabelleInsertApflora = require('./queries/tabelleInsertApflora')
+var queryTabelleInsertMultipleApflora = require('./queries/tabelleInsertMultipleApflora')
+var queryTpopmassnInsertKopie = require('./queries/tpopmassnInsertKopie')
+var queryTpopkontrInsertKopie = require('./queries/tpopkontrInsertKopie')
+var queryTpopInsertKopie = require('./queries/tpopInsertKopie')
+var queryTpopKoordFuerProgramm = require('./queries/tpopKoordFuerProgramm')
+var queryPopInsertKopie = require('./queries/popInsertKopie')
+var queryFeldkontrInsert = require('./queries/feldkontrInsert')
+var queryTabelleUpdateApflora = require('./queries/tabelleUpdateApflora')
+var queryTabelleUpdateMultipleApflora = require('./queries/tabelleUpdateMultipleApflora')
+var queryTabelleUpdateBeob = require('./queries/tabelleUpdateBeob')
+var queryTabelleDeleteApflora = require('./queries/tabelleDeleteApflora')
+var queryAnmeldung = require('./queries/anmeldung')
+var treeQualitaetskontrollen = require('./queries/tree/qualitaetskontrollen')
+var treeAssozarten = require('./queries/tree/assozarten')
+var treeIdealbiotop = require('./queries/tree/idealbiotop')
+var treeBeobNichtZuzuordnen = require('./queries/tree/beobNichtZuzuordnen')
+var treeBeobNichtBeurteilt = require('./queries/tree/beobNichtBeurteilt')
+var treeBer = require('./queries/tree/ber')
+var treeJBer = require('./queries/tree/jber')
+var treeErfkrit = require('./queries/tree/erfkrit')
+var treeApziel = require('./queries/tree/apziel')
+var treePop = require('./queries/tree/pop')
+var queryBeobDistzutpopEvab = require('./queries/beobDistzutpopEvab')
+var queryBeobNaechsteTpop = require('./queries/beobNaechsteTpop')
+var queryBeobDistzutpopInfospezies = require('./queries/beobDistzutpopInfospezies')
+var queryBeobKarte = require('./queries/beobKarte')
+var queryBeobZuordnen = require('./queries/beobZuordnen')
+var queryApKarte = require('./queries/apKarte')
+var queryPopKarte = require('./queries/popKarte')
+var queryPopKarteAlle = require('./queries/popKarteAlle')
+var queryPopChKarte = require('./queries/popChKarte')
+var queryPopsChKarte = require('./queries/popsChKarte')
+var queryTPopKarte = require('./queries/tpopKarte')
+var queryTPopsKarte = require('./queries/tpopsKarte')
+var queryTPopKarteAlle = require('./queries/tpopKarteAlle')
+var exportView = require('./queries/exportView')
+var exportViewWhereIdIn = require('./queries/exportViewWhereIdIn')
+var getKmlForPop = require('./src/getKmlForPop')
+var getKmlForTpop = require('./src/getKmlForTpop')
+var aktualisiereArteigenschaften = require('./queries/aktualisiereArteigenschaften')
 
 connectionApflora.connect()
 

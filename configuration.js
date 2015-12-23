@@ -4,8 +4,8 @@
 
 'use strict'
 
-var config = {},
-  dbPassfile = require('./dbPass.json')
+var config = {}
+var dbPassfile = require('./dbPass.json')
 
 config.db = {}
 config.db.userName = dbPassfile.user

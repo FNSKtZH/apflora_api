@@ -4,10 +4,10 @@
 
 'use strict'
 
-var gulp = require('gulp'),
-  sftp = require('gulp-sftp'),
-  requireDir = require('require-dir'),
-  sftpPass = require('../sftpPass.json')
+var gulp = require('gulp')
+var sftp = require('gulp-sftp')
+var requireDir = require('require-dir')
+var sftpPass = require('../sftpPass.json')
 
 requireDir('../gulp-tasks', {recurse: true})
 
