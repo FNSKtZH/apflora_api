@@ -379,6 +379,12 @@ FROM apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.Pop
 WHERE apflora.pop.PopHerkunft=201 AND apflora.tpop.TPopApBerichtRelevant=1
 GROUP BY apflora.pop.ApArtId, apflora.pop.PopId;
 
+CREATE OR REPLACE VIEW v_apber_a10lpop AS 
+SELECT apflora.pop.ApArtId, apflora.pop.PopId
+FROM apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
+WHERE apflora.pop.PopHerkunft=300 AND apflora.tpop.TPopApBerichtRelevant=1
+GROUP BY apflora.pop.ApArtId, apflora.pop.PopId;
+
 CREATE OR REPLACE VIEW v_apber_a8lpop AS
 SELECT apflora.pop.ApArtId, apflora.pop.PopId
 FROM (apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.ap ON apflora.pop.ApArtId = apflora.ap.ApArtId
@@ -394,7 +400,7 @@ GROUP BY apflora.pop.ApArtId, apflora.pop.PopId;
 CREATE OR REPLACE VIEW v_apbera1ltpop AS
 SELECT apflora.pop.ApArtId, apflora.tpop.TPopId
 FROM apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
-WHERE apflora.tpop.TPopApBerichtRelevant=1 AND apflora.pop.PopHerkunft <> 300
+WHERE apflora.tpop.TPopApBerichtRelevant=1 AND apflora.pop.PopHerkunft NOT IN (300, 201)
 GROUP BY apflora.pop.ApArtId, apflora.tpop.TPopId;
 
 CREATE OR REPLACE VIEW v_apber_a2ltpop AS 
@@ -419,6 +425,12 @@ CREATE OR REPLACE VIEW v_apber_a5ltpop AS
 SELECT apflora.pop.ApArtId, apflora.tpop.TPopId
 FROM apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE apflora.tpop.TPopHerkunft=201 AND apflora.tpop.TPopApBerichtRelevant=1
+GROUP BY apflora.pop.ApArtId, apflora.tpop.TPopId;
+
+CREATE OR REPLACE VIEW v_apber_a10ltpop AS
+SELECT apflora.pop.ApArtId, apflora.tpop.TPopId
+FROM apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
+WHERE apflora.tpop.TPopHerkunft=300 AND apflora.tpop.TPopApBerichtRelevant=1
 GROUP BY apflora.pop.ApArtId, apflora.tpop.TPopId;
 
 CREATE OR REPLACE VIEW v_apber_a8ltpop AS 
@@ -732,7 +744,7 @@ WHERE information_schema.COLUMNS.TABLE_NAME IN (SELECT TABLE_NAME FROM informati
 CREATE OR REPLACE VIEW v_apbera1lpop AS 
 SELECT apflora.pop.ApArtId, apflora.pop.PopId
 FROM apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
-WHERE apflora.tpop.TPopApBerichtRelevant=1 AND apflora.pop.PopHerkunft <> 300
+WHERE apflora.tpop.TPopApBerichtRelevant=1 AND apflora.pop.PopHerkunft NOT IN (300, 201)
 GROUP BY apflora.pop.ApArtId, apflora.pop.PopId;
 
 CREATE OR REPLACE VIEW v_apber_a2lpop AS
