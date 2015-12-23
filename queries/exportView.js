@@ -21,7 +21,7 @@ module.exports = function (request, callback) {
     function (err, data) {
       // null-werte eliminieren
       var data2 = data
-      _.each(data2, function (object) {
+      data2.forEach(function (object) {
         _.each(object, function (value, key) {
           if (value === null) {
             object[key] = ''

@@ -11,8 +11,8 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var apId = escapeStringForSql(request.params.apId),
-    sql
+  var apId = escapeStringForSql(request.params.apId)
+  var sql
 
   sql = [
     'SELECT apflora.ap.ApArtId, apflora_beob.adb_eigenschaften.Artname, apflora.ap_umsetzung_werte.DomainTxt AS ApUmsetzung, apflora.pop.PopId, apflora.pop.PopNr, apflora.pop.PopName, apflora.pop_status_werte.HerkunftTxt AS PopHerkunft, apflora.pop.PopBekanntSeit, apflora.tpop.TPopId, apflora.tpop.TPopFlurname, apflora.tpop.TPopNr, apflora.tpop.TPopGemeinde, apflora.tpop.TPopXKoord, apflora.tpop.TPopYKoord, domPopHerkunft_1.HerkunftTxt AS TPopHerkunft',

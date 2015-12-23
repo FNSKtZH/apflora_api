@@ -13,10 +13,10 @@ var mysql = require('mysql'),
 
 // teilt einen Array in gleiche Teile
 function split (a, n) {
-  var len = a.length,
-    out = [],
-    i = 0,
-    size
+  var len = a.length
+  var out = []
+  var i = 0
+  var size
   while (i < len) {
     size = Math.ceil((len - i) / n--)
     out.push(a.slice(i, i += size))

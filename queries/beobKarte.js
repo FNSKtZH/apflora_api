@@ -11,11 +11,11 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var apId = escapeStringForSql(request.params.apId),
-    tpopId = escapeStringForSql(request.params.tpopId),
-    beobId = escapeStringForSql(request.params.beobId),
-    nichtZuzuordnen = request.params.nichtZuzuordnen,
-    sql
+  var apId = escapeStringForSql(request.params.apId)
+  var tpopId = escapeStringForSql(request.params.tpopId)
+  var beobId = escapeStringForSql(request.params.beobId)
+  var nichtZuzuordnen = request.params.nichtZuzuordnen
+  var sql
 
   if (beobId) {
     // beobid wurde übergeben > auf eine Beobachtung filtern

@@ -18,9 +18,9 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var apId = escapeStringForSql(request.params.apId), // ApArtId
-    user = escapeStringForSql(request.params.user),   // der Benutzername
-    date = new Date().toISOString()                   // wann gespeichert wird
+  var apId = escapeStringForSql(request.params.apId)
+  var user = escapeStringForSql(request.params.user)
+  var date = new Date().toISOString()
 
   async.parallel({
     insertIntoTblAktionsplan: function (callback) {

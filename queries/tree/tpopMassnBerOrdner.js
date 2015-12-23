@@ -4,9 +4,9 @@ var _ = require('underscore'),
   erstelleTPopMassnBer = require('./tpopMassnBer')
 
 module.exports = function (tpopMassnBerListe, tpop) {
-  var tpopMassnBerOrdner = {},
-    massnberVonTpop,
-    massnberNode
+  var tpopMassnBerOrdner = {}
+  var massnberVonTpop
+  var massnberNode
 
   // Liste der Massnahmen-Berichte dieser tpop erstellen
   massnberVonTpop = _.filter(tpopMassnBerListe, function (tpopMassnBer) {

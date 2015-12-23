@@ -11,8 +11,8 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var userName = escapeStringForSql(request.params.name),
-    password = escapeStringForSql(request.params.pwd)
+  var userName = escapeStringForSql(request.params.name)
+  var password = escapeStringForSql(request.params.pwd)
 
   connection.query(
     'SELECT NurLesen FROM user WHERE UserName = "' + userName + '" AND Passwort = "' + password + '"',

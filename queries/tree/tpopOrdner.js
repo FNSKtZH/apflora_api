@@ -4,8 +4,8 @@ var _ = require('underscore'),
   erstelleTpop = require('./tpop')
 
 module.exports = function (results, tpopListe, pop) {
-  var popTpopOrdner = {},
-    tpopVonPop
+  var popTpopOrdner = {}
+  var tpopVonPop
 
   // Liste der tpop dieser pop erstellen
   tpopVonPop = _.filter(tpopListe, function (tpop) {
