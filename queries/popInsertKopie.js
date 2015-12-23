@@ -11,11 +11,11 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var apId = escapeStringForSql(request.params.apId),
-    popId = escapeStringForSql(request.params.popId),
-    user = escapeStringForSql(request.params.user),   // der Benutzername
-    date = new Date().toISOString(),                  // wann gespeichert wird
-    sql = ''
+  var apId = escapeStringForSql(request.params.apId)
+  var popId = escapeStringForSql(request.params.popId)
+  var user = escapeStringForSql(request.params.user)   // der Benutzername
+  var date = new Date().toISOString()                  // wann gespeichert wird
+  var sql = ''
 
   // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
   sql += 'INSERT INTO pop (PopNr, PopName, PopHerkunft, PopHerkunftUnklar, PopHerkunftUnklarBegruendung, PopBekanntSeit, PopXKoord, PopYKoord, PopGuid, MutWann, MutWer, ApArtId)'

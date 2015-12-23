@@ -10,10 +10,10 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var sql,
-    viewName = request.params.viewName,
-    apId = request.params.apId,
-    berichtjahr = request.params.berichtjahr || null
+  var sql
+  var viewName = request.params.viewName
+  var apId = request.params.apId
+  var berichtjahr = request.params.berichtjahr || null
 
   // url setzen
   if (berichtjahr) {

@@ -11,11 +11,11 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var tpopId = escapeStringForSql(request.params.tpopId),       // die id
-    tpopKontrtyp = escapeStringForSql(request.params.tpopKontrtyp), // feldkontr oder freiwkontr
-    user = escapeStringForSql(request.params.user),         // der Benutzername
-    date = new Date().toISOString(),                        // wann gespeichert wird
-    sql
+  var tpopId = escapeStringForSql(request.params.tpopId)       // die id
+  var tpopKontrtyp = escapeStringForSql(request.params.tpopKontrtyp) // feldkontr oder freiwkontr
+  var user = escapeStringForSql(request.params.user)         // der Benutzername
+  var date = new Date().toISOString()                        // wann gespeichert wird
+  var sql
 
   // sql schreiben
   if (tpopKontrtyp === 'tpopfreiwkontr') {

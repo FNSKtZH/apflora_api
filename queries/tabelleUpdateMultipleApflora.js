@@ -17,15 +17,15 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var tabelle = escapeStringForSql(request.params.tabelle),           // der Name der Tabelle, in der die Daten gespeichert werden sollen
-    felder = request.params.felder,                                   // Ein Objekt mit allen feldern und deren Werten. PLUS: der id
-    date = new Date().toISOString(),                                  // wann gespeichert wird
-    sql,
-    id,
-    configTable = _.findWhere(config.tables, {tabelleInDb: tabelle}), // die table in der Konfiguration, welche die Informationen dieser Tabelle enthält
-    nameMutwannFeld = configTable.mutWannFeld || 'MutWann',           // so heisst das MutWann-Feld in dieser Tabelle
-    nameMutWerFeld = configTable.mutWerFeld || 'MutWer',              // so heisst das MutWer-Feld in dieser Tabelle
-    tabelleIdFeld = configTable.tabelleIdFeld                         // so heisst das Schlüsselfeld dieser Tabelle
+  var tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, in der die Daten gespeichert werden sollen
+  var felder = request.params.felder                                   // Ein Objekt mit allen feldern und deren Werten. PLUS: der id
+  var date = new Date().toISOString()                                  // wann gespeichert wird
+  var sql
+  var id
+  var configTable = _.findWhere(config.tables, {tabelleInDb: tabelle}) // die table in der Konfiguration, welche die Informationen dieser Tabelle enthält
+  var nameMutwannFeld = configTable.mutWannFeld || 'MutWann'           // so heisst das MutWann-Feld in dieser Tabelle
+  var nameMutWerFeld = configTable.mutWerFeld || 'MutWer'              // so heisst das MutWer-Feld in dieser Tabelle
+  var tabelleIdFeld = configTable.tabelleIdFeld                        // so heisst das Schlüsselfeld dieser Tabelle
 
   felder = JSON.parse(felder)
 

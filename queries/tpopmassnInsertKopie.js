@@ -12,10 +12,10 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var tpopId = escapeStringForSql(request.params.tpopId),
-    tpopMassnId = escapeStringForSql(request.params.tpopMassnId),
-    user = escapeStringForSql(request.params.user),        // der Benutzername
-    date = new Date().toISOString()                        // wann gespeichert wird
+  var tpopId = escapeStringForSql(request.params.tpopId)
+  var tpopMassnId = escapeStringForSql(request.params.tpopMassnId)
+  var user = escapeStringForSql(request.params.user) // der Benutzername
+  var date = new Date().toISOString()                // wann gespeichert wird
 
   async.series([
     function (callback) {

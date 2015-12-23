@@ -11,9 +11,9 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var tabelle = escapeStringForSql(request.params.tabelle), // der Name der Tabelle, aus der die Daten geholt werden sollen
-    feld = escapeStringForSql(request.params.feld),         // das ist der Name des Feldes, das verglichen wird
-    wert = escapeStringForSql(request.params.wert)          // der Wert im Feld, das verglichen wird
+  var tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, aus der die Daten geholt werden sollen
+  var feld = escapeStringForSql(request.params.feld)       // das ist der Name des Feldes, das verglichen wird
+  var wert = escapeStringForSql(request.params.wert)       // der Wert im Feld, das verglichen wird
 
   connection.query(
     'SELECT * FROM ' + tabelle + ' WHERE ' + feld + '="' + wert + '"',

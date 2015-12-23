@@ -10,12 +10,12 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var sql,
-    apId = request.params.apId,
-    berichtjahr = request.params.berichtjahr || null,
-    sqlTpopMitAnsVorBerjahr,
-    sqlTpopMitKontrolleImBerjahr,
-    sqlTpopMitTpopmassnberImBerjahr
+  var sql
+  var apId = request.params.apId
+  var berichtjahr = request.params.berichtjahr || null
+  var sqlTpopMitAnsVorBerjahr
+  var sqlTpopMitKontrolleImBerjahr
+  var sqlTpopMitTpopmassnberImBerjahr
 
   // 1. "TPop mit Ansiedlungen/Ansaaten vor dem Berichtjahr" ermitteln:
   sqlTpopMitAnsVorBerjahr = 'SELECT DISTINCT apflora.tpopmassn.TPopId FROM apflora.tpopmassn WHERE apflora.tpopmassn.TPopMassnTyp in (1, 2, 3) AND apflora.tpopmassn.TPopMassnJahr < ' + berichtjahr

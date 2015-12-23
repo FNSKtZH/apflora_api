@@ -12,10 +12,10 @@ var mysql = require('mysql'),
   })
 
 module.exports = function (request, callback) {
-  var tpopId = escapeStringForSql(request.params.tpopId),
-    tpopKontrId = escapeStringForSql(request.params.tpopKontrId),
-    user = escapeStringForSql(request.params.user),        // der Benutzername
-    date = new Date().toISOString()                        // wann gespeichert wird
+  var tpopId = escapeStringForSql(request.params.tpopId)
+  var tpopKontrId = escapeStringForSql(request.params.tpopKontrId)
+  var user = escapeStringForSql(request.params.user) // der Benutzername
+  var date = new Date().toISOString()                // wann gespeichert wird
 
   async.series([
     function (callback) {
@@ -57,8 +57,8 @@ module.exports = function (request, callback) {
       )
     }
   ], function (err, results) {
-    var sql = '',
-      tpopkontridNeu = results[3]
+    var sql = ''
+    var tpopkontridNeu = results[3]
 
     if (err) { return callback(err, null) }
     // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
