@@ -1,7 +1,7 @@
 'use strict'
 
-var _ = require('underscore'),
-  erstelleTpopMassn = require('./tpopMassn')
+var _ = require('underscore')
+var erstelleTpopMassn = require('./tpopMassn')
 
 module.exports = function (tpopMassnListe, tpop) {
   var tpopMassnOrdner = {}
@@ -22,7 +22,7 @@ module.exports = function (tpopMassnListe, tpop) {
   tpopMassnOrdner.children = []
 
   // massn aufbauen
-  _.each(massnVonTpop, function (massn) {
+  massnVonTpop.forEach(function (massn) {
     tpopMassnNode = erstelleTpopMassn(massn)
     tpopMassnOrdner.children.push(tpopMassnNode)
   })

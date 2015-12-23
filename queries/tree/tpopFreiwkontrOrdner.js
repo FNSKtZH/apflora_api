@@ -1,7 +1,7 @@
 'use strict'
 
-var _ = require('underscore'),
-  erstelleTPopFreiwKontr = require('./tpopFreiwkontr')
+var _ = require('underscore')
+var erstelleTPopFreiwKontr = require('./tpopFreiwkontr')
 
 module.exports = function (tpopFreiwkontrListe, tpop) {
   var tpopFreiwkontrOrdner = {}
@@ -22,7 +22,7 @@ module.exports = function (tpopFreiwkontrListe, tpop) {
   tpopFreiwkontrOrdner.children = []
 
   // freiwkontr aufbauen
-  _.each(freiwkontrVonTpop, function (freiwkontr) {
+  freiwkontrVonTpop.forEach(function (freiwkontr) {
     freiwkontrNode = erstelleTPopFreiwKontr(freiwkontr)
     tpopFreiwkontrOrdner.children.push(freiwkontrNode)
   })

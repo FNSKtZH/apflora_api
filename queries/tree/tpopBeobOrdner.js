@@ -1,7 +1,7 @@
 'use strict'
 
-var _ = require('underscore'),
-  erstelleTPopBeob = require('./tpopBeob')
+var _ = require('underscore')
+var erstelleTPopBeob = require('./tpopBeob')
 
 var returnFunction = function (tpopBeobZugeordnetListe, tpop) {
   var tpopTpopBeobOrdner = {}

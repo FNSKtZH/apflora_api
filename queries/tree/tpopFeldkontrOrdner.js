@@ -1,7 +1,7 @@
 'use strict'
 
-var _ = require('underscore'),
-  erstelleTPopFeldKontr = require('./tpopFeldkontr')
+var _ = require('underscore')
+var erstelleTPopFeldKontr = require('./tpopFeldkontr')
 
 module.exports = function (tpopFeldkontrListe, tpop) {
   var tpopFeldkontrOrdner = {}
@@ -22,7 +22,7 @@ module.exports = function (tpopFeldkontrListe, tpop) {
   tpopFeldkontrOrdner.children = []
 
   // feldkontr aufbauen
-  _.each(feldkontrVonTpop, function (feldkontr) {
+  feldkontrVonTpop.forEach(function (feldkontr) {
     feldkontrNode = erstelleTPopFeldKontr(feldkontr)
     tpopFeldkontrOrdner.children.push(feldkontrNode)
   })

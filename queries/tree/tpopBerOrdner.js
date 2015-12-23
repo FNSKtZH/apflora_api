@@ -1,7 +1,7 @@
 'use strict'
 
-var _ = require('underscore'),
-  erstelleTPopBer = require('./tpopBer')
+var _ = require('underscore')
+var erstelleTPopBer = require('./tpopBer')
 
 var returnFunction = function (tpopBerListe, tpop) {
   var tpopTpopberOrdner = {}
@@ -22,7 +22,7 @@ var returnFunction = function (tpopBerListe, tpop) {
   tpopTpopberOrdner.children = []
 
   // tpopber aufbauen
-  _.each(tpopberVonTpop, function (tpopber) {
+  tpopberVonTpop.forEach(function (tpopber) {
     tpopBerNode = erstelleTPopBer(tpopber)
     tpopTpopberOrdner.children.push(tpopBerNode)
   })

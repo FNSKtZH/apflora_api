@@ -1,7 +1,7 @@
 'use strict'
 
-var _ = require('underscore'),
-  erstelleTpop = require('./tpop')
+var _ = require('underscore')
+var erstelleTpop = require('./tpop')
 
 module.exports = function (results, tpopListe, pop) {
   var popTpopOrdner = {}
@@ -21,7 +21,7 @@ module.exports = function (results, tpopListe, pop) {
   popTpopOrdner.children = []
 
   // tpop aufbauen
-  _.each(tpopVonPop, function (tpop) {
+  tpopVonPop.forEach(function (tpop) {
     var tpopNode = erstelleTpop(results, tpop)
     popTpopOrdner.children.push(tpopNode)
   })

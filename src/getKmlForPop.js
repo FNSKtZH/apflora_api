@@ -6,17 +6,16 @@
 
 'use strict'
 
-var _ = require('underscore'),
-  removeKmlNogoStrings = require('./removeKmlNogoStrings'),
-  getHeaderForKml = require('./getHeaderForKml'),
-  getFooterForKml = require('./getFooterForKml'),
-  getTimestamp = require('./getTimestamp')
+var removeKmlNogoStrings = require('./removeKmlNogoStrings')
+var getHeaderForKml = require('./getHeaderForKml')
+var getFooterForKml = require('./getFooterForKml')
+var getTimestamp = require('./getTimestamp')
 
 module.exports = function (pops) {
-  var filename = 'Populationen_' + getTimestamp(),
-    kml,
-    art,
-    zeile
+  var filename = 'Populationen_' + getTimestamp()
+  var kml
+  var art
+  var zeile
 
   // header schreiben
   kml = getHeaderForKml(filename)
@@ -24,7 +23,7 @@ module.exports = function (pops) {
   kml += '<Folder>'
 
   // Zeilen schreiben
-  _.each(pops, function (pop) {
+  pops.forEach(function (pop) {
     zeile = ''
     if (art && art !== pop.Art) {
       // neue Art: Folder abschliessen und neuen beginnen

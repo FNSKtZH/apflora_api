@@ -1,7 +1,7 @@
 'use strict'
 
-var _ = require('underscore'),
-  escapeStringForSql = require('./escapeStringForSql')
+var _ = require('underscore')
+var escapeStringForSql = require('./escapeStringForSql')
 
 module.exports = function (array) {
   var eigenschaftenString = ''
