@@ -1,6 +1,6 @@
 'use strict'
 
-var _ = require('underscore')
+var _ = require('lodash')
 var async = require('async')
 var mysql = require('mysql')
 var config = require('../../configuration')
@@ -48,7 +48,7 @@ module.exports = function (request, reply) {
         'SELECT PopNr, PopName, PopId, ApArtId FROM pop where ApArtId = ' + apId + ' ORDER BY PopNr, PopName',
         function (err, result) {
           var popListe = result
-          var popIds = _.pluck(popListe, 'PopId')
+          var popIds = _.map(popListe, 'PopId')
           callback(err, popIds, popListe)
         }
       )
@@ -59,7 +59,7 @@ module.exports = function (request, reply) {
           'SELECT TPopNr, TPopFlurname, TPopId, PopId FROM tpop where PopId in (' + popIds.join() + ') ORDER BY TPopNr, TPopFlurname',
           function (err, result) {
             var tpopListe = result
-            var tpopIds = _.pluck(tpopListe, 'TPopId')
+            var tpopIds = _.map(tpopListe, 'TPopId')
             callback(err, [popIds, tpopIds, popListe, tpopListe])
           }
         )
@@ -160,7 +160,7 @@ module.exports = function (request, reply) {
 
         // PopNr: Je nach Anzahl Stellen der maximalen PopNr bei denjenigen mit weniger Nullen
         // Nullen voranstellen, damit sie im tree auch als String richtig sortiert werden
-        popNrMax = _.max(popListe, function (pop) {
+        popNrMax = _.maxBy(popListe, function (pop) {
           return pop.PopNr
         }).PopNr
 

@@ -1,19 +1,19 @@
 'use strict'
 
-var _ = require('underscore')
+var _ = require('lodash')
 var escapeStringForSql = require('./escapeStringForSql')
 
 module.exports = function (array) {
   var eigenschaftenString = ''
 
-  _.each(_.first(array, 6000), function (object, index) {
+  _.head(array, 6000).forEach(function (object, index) {
     if (index > 0) {
       eigenschaftenString += ','
     }
     eigenschaftenString += '('
 
     // sicherstellen, dass strings keine unerlaubten Zeichen enthalten
-    _.each(object, function (value, key) {
+    _.forEach(object, function (value, key) {
       if (typeof value === 'string') {
         object[key] = "'" + escapeStringForSql(value) + "'"
       } else if (value === null) {

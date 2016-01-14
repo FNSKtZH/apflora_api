@@ -1,7 +1,7 @@
 'use strict'
 
 var mysql = require('mysql')
-var _ = require('underscore')
+var _ = require('lodash')
 var config = require('../configuration')
 var escapeStringForSql = require('./escapeStringForSql')
 var connection = mysql.createConnection({
@@ -17,7 +17,7 @@ module.exports = function (request, callback) {
   var wert = escapeStringForSql(request.params.wert) // der Wert, der gespeichert werden soll
   var user = escapeStringForSql(request.params.user) // der Benutzername
   var date = new Date().toISOString() // wann gespeichert wird
-  var configTable = _.findWhere(config.tables, {tabelleInDb: tabelle}) // die table in der Konfiguration, welche die Informationen dieser Tabelle enthält
+  var configTable = _.find(config.tables, {tabelleInDb: tabelle}) // die table in der Konfiguration, welche die Informationen dieser Tabelle enthält
   var nameMutwannFeld = configTable.mutWannFeld || 'MutWann' // so heisst das MutWann-Feld in dieser Tabelle
   var nameMutWerFeld = configTable.mutWerFeld || 'MutWer' // so heisst das MutWer-Feld in dieser Tabelle
   var sql
