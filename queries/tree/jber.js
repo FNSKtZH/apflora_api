@@ -1,11 +1,10 @@
 'use strict'
 
-var _ = require('underscore')
-var mysql = require('mysql')
-var async = require('async')
-var config = require('../../configuration')
-var escapeStringForSql = require('../escapeStringForSql')
-var connection = mysql.createConnection({
+const mysql = require('mysql')
+const async = require('async')
+const config = require('../../configuration')
+const escapeStringForSql = require('../escapeStringForSql')
+const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
@@ -14,19 +13,15 @@ var connection = mysql.createConnection({
 
 function buildChildForJBer (JBerJahr, jberUebersichtListe) {
   // zuerst den Datensatz extrahieren
-  var jberUebersicht
-  var object
-
-  jberUebersicht = _.find(jberUebersichtListe, function (jberUebersicht) {
-    return jberUebersicht.JbuJahr === JBerJahr
-  })
+  const jberUebersicht = jberUebersichtListe.find(jberUebersicht => jberUebersicht.JbuJahr === JBerJahr)
 
   if (jberUebersicht) {
-    object = {}
-    object.data = 'Übersicht zu allen Arten'
-    object.attr = {
-      id: jberUebersicht.JbuJahr,
-      typ: 'jberUebersicht'
+    const object = {
+      data: 'Übersicht zu allen Arten',
+      attr: {
+        id: jberUebersicht.JbuJahr,
+        typ: 'jberUebersicht'
+      }
     }
     return [object]
   }
@@ -34,57 +29,48 @@ function buildChildForJBer (JBerJahr, jberUebersichtListe) {
 }
 
 function buildChildrenForJBerOrdner (results) {
-  var childrenArray = []
-  var object
-  var beschriftung = '(kein Jahr)'
+  let childrenArray = []
+  let beschriftung = '(kein Jahr)'
 
-  results.jberListe.forEach(function (jber) {
-    object = {}
-
-    if (jber.JBerJahr) { beschriftung = jber.JBerJahr.toString() }
-    object.data = beschriftung
-
-    object.attr = {
-      id: jber.JBerId,
-      typ: 'jber'
+  results.jberListe.forEach(jber => {
+    if (jber.JBerJahr) beschriftung = jber.JBerJahr.toString()
+    const object = {
+      data: beschriftung,
+      attr: {
+        id: jber.JBerId,
+        typ: 'jber'
+      }
     }
-
-    if (jber.JBerJahr) {
-      object.children = buildChildForJBer(jber.JBerJahr, results.jberUebersichtListe)
-    }
+    if (jber.JBerJahr) object.children = buildChildForJBer(jber.JBerJahr, results.jberUebersichtListe)
     childrenArray.push(object)
   })
 
   return childrenArray
 }
 
-module.exports = function (request, reply) {
-  var apId = escapeStringForSql(request.params.apId)
+module.exports = (request, reply) => {
+  const apId = escapeStringForSql(request.params.apId)
 
   // query ber AND jberUebersicht first
   async.parallel({
-    jberListe: function (callback) {
+    jberListe (callback) {
       connection.query(
         'SELECT JBerId, ApArtId, JBerJahr FROM apber where ApArtId = ' + apId + ' ORDER BY JBerJahr',
-        function (err, jber) {
-          callback(err, jber)
-        }
+        (err, jber) => callback(err, jber)
       )
     },
-    jberUebersichtListe: function (callback) {
+    jberUebersichtListe (callback) {
       connection.query(
         'SELECT JbuJahr FROM apberuebersicht',
-        function (err, jberUebersicht) {
-          callback(err, jberUebersicht)
-        }
+        (err, jberUebersicht) => callback(err, jberUebersicht)
       )
     }
-  }, function (err, results) {
+  }, (err, results) => {
     var jberListe = results.jberListe
     var nodeChildren
     var node = {}
 
-    if (err) { return reply(err) }
+    if (err) return reply(err)
 
     node.data = 'AP-Berichte (' + jberListe.length + ')'
     node.attr = {

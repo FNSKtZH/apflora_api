@@ -1,19 +1,15 @@
 'use strict'
 
-var _ = require('underscore')
-var erstelleTpop = require('./tpop')
+const erstelleTpop = require('./tpop')
 
 module.exports = function (results, tpopListe, pop) {
-  var popTpopOrdner = {}
-  var tpopVonPop
+  let popTpopOrdner = {}
 
   // Liste der tpop dieser pop erstellen
-  tpopVonPop = _.filter(tpopListe, function (tpop) {
-    return tpop.PopId === pop.PopId
-  })
+  const tpopVonPop = tpopListe.filter(tpop => tpop.PopId === pop.PopId)
 
   // tpopOrdnerTpop aufbauen
-  popTpopOrdner.data = 'Teilpopulationen (' + tpopVonPop.length + ')'
+  popTpopOrdner.data = `Teilpopulationen (${tpopVonPop.length})`
   popTpopOrdner.attr = {
     id: pop.PopId,
     typ: 'popOrdnerTpop'
@@ -21,8 +17,8 @@ module.exports = function (results, tpopListe, pop) {
   popTpopOrdner.children = []
 
   // tpop aufbauen
-  tpopVonPop.forEach(function (tpop) {
-    var tpopNode = erstelleTpop(results, tpop)
+  tpopVonPop.forEach(tpop => {
+    const tpopNode = erstelleTpop(results, tpop)
     popTpopOrdner.children.push(tpopNode)
   })
 

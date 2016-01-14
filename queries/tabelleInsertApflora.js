@@ -1,33 +1,31 @@
 'use strict'
 
-var mysql = require('mysql')
-var _ = require('lodash')
-var config = require('../configuration')
-var escapeStringForSql = require('./escapeStringForSql')
-var connection = mysql.createConnection({
+const mysql = require('mysql')
+const _ = require('lodash')
+const config = require('../configuration')
+const escapeStringForSql = require('./escapeStringForSql')
+const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
   database: 'apflora'
 })
 
-module.exports = function (request, callback) {
-  var tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, in der die Daten gespeichert werden sollen
-  var feld = escapeStringForSql(request.params.feld) // der Name des Felds, dessen Daten gespeichert werden sollen
-  var wert = escapeStringForSql(request.params.wert) // der Wert, der gespeichert werden soll
-  var user = escapeStringForSql(request.params.user) // der Benutzername
-  var date = new Date().toISOString() // wann gespeichert wird
-  var configTable = _.find(config.tables, {tabelleInDb: tabelle}) // die table in der Konfiguration, welche die Informationen dieser Tabelle enthält
-  var nameMutwannFeld = configTable.mutWannFeld || 'MutWann' // so heisst das MutWann-Feld in dieser Tabelle
-  var nameMutWerFeld = configTable.mutWerFeld || 'MutWer' // so heisst das MutWer-Feld in dieser Tabelle
-  var sql
+module.exports = (request, callback) => {
+  const tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, in der die Daten gespeichert werden sollen
+  const feld = escapeStringForSql(request.params.feld) // der Name des Felds, dessen Daten gespeichert werden sollen
+  const wert = escapeStringForSql(request.params.wert) // der Wert, der gespeichert werden soll
+  const user = escapeStringForSql(request.params.user) // der Benutzername
+  const date = new Date().toISOString() // wann gespeichert wird
+  const configTable = _.find(config.tables, {tabelleInDb: tabelle}) // die table in der Konfiguration, welche die Informationen dieser Tabelle enthält
+  const nameMutwannFeld = configTable.mutWannFeld || 'MutWann' // so heisst das MutWann-Feld in dieser Tabelle
+  const nameMutWerFeld = configTable.mutWerFeld || 'MutWer' // so heisst das MutWer-Feld in dieser Tabelle
 
-  sql = 'INSERT INTO ' + tabelle + ' (' + feld + ', ' + nameMutwannFeld + ', ' + nameMutWerFeld + ') VALUES ("' + wert + '", "' + date + '", "' + user + '")'
+  // const sql = 'INSERT INTO ' + tabelle + ' (' + feld + ', ' + nameMutwannFeld + ', ' + nameMutWerFeld + ') VALUES ("' + wert + '", "' + date + '", "' + user + '")'
+  const sql = `INSERT INTO ${tabelle} (${feld}, ${nameMutwannFeld}, ${nameMutWerFeld}) VALUES ("${wert}", "${date}", "${user}")`
 
   connection.query(
     sql,
-    function (err, data) {
-      callback(err, data.insertId)
-    }
+    (err, data) => callback(err, data.insertId)
   )
 }
