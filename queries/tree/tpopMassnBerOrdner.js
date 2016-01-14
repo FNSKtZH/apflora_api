@@ -1,20 +1,15 @@
 'use strict'
 
-var _ = require('underscore')
-var erstelleTPopMassnBer = require('./tpopMassnBer')
+const erstelleTPopMassnBer = require('./tpopMassnBer')
 
 module.exports = function (tpopMassnBerListe, tpop) {
-  var tpopMassnBerOrdner = {}
-  var massnberVonTpop
-  var massnberNode
+  let tpopMassnBerOrdner = {}
 
   // Liste der Massnahmen-Berichte dieser tpop erstellen
-  massnberVonTpop = _.filter(tpopMassnBerListe, function (tpopMassnBer) {
-    return tpopMassnBer.TPopId === tpop.TPopId
-  })
+  const massnberVonTpop = tpopMassnBerListe.filter(tpopMassnBer => tpopMassnBer.TPopId === tpop.TPopId)
 
   // tpopOrdnerMassnahmenBer aufbauen
-  tpopMassnBerOrdner.data = 'Massnahmen-Berichte (' + massnberVonTpop.length + ')'
+  tpopMassnBerOrdner.data = `Massnahmen-Berichte (${massnberVonTpop.length})`
   tpopMassnBerOrdner.attr = {
     id: 'tpopOrdnerMassnber' + tpop.TPopId,
     typ: 'tpopOrdnerMassnber'
@@ -22,8 +17,8 @@ module.exports = function (tpopMassnBerListe, tpop) {
   tpopMassnBerOrdner.children = []
 
   // massnber aufbauen
-  massnberVonTpop.forEach(function (massnber) {
-    massnberNode = erstelleTPopMassnBer(massnber)
+  massnberVonTpop.forEach(massnber => {
+    const massnberNode = erstelleTPopMassnBer(massnber)
     tpopMassnBerOrdner.children.push(massnberNode)
   })
 

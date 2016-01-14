@@ -1,20 +1,15 @@
 'use strict'
 
-var _ = require('underscore')
-var erstelleTPopBeob = require('./tpopBeob')
+const erstelleTPopBeob = require('./tpopBeob')
 
-var returnFunction = function (tpopBeobZugeordnetListe, tpop) {
-  var tpopTpopBeobOrdner = {}
-  var tpopbeobVonTpop
-  var feldkontrNode
+module.exports = function (tpopBeobZugeordnetListe, tpop) {
+  let tpopTpopBeobOrdner = {}
 
   // Liste der zugeordneten Beobachtungen dieser tpop erstellen
-  tpopbeobVonTpop = _.filter(tpopBeobZugeordnetListe, function (tpopBeob) {
-    return tpopBeob.TPopId === tpop.TPopId
-  })
+  const tpopbeobVonTpop = tpopBeobZugeordnetListe.filter(tpopBeob => tpopBeob.TPopId === tpop.TPopId)
 
   // tpopOrdnerBeobZugeordnet aufbauen
-  tpopTpopBeobOrdner.data = 'Beobachtungen (' + tpopbeobVonTpop.length + ')'
+  tpopTpopBeobOrdner.data = `Beobachtungen (${tpopbeobVonTpop.length})`
   tpopTpopBeobOrdner.attr = {
     id: 'tpopOrdnerBeobZugeordnet' + tpop.TPopId,
     typ: 'tpopOrdnerBeobZugeordnet'
@@ -22,12 +17,10 @@ var returnFunction = function (tpopBeobZugeordnetListe, tpop) {
   tpopTpopBeobOrdner.children = []
 
   // tpopBeob aufbauen
-  tpopbeobVonTpop.forEach(function (tpopBeob) {
-    feldkontrNode = erstelleTPopBeob(tpopBeob)
+  tpopbeobVonTpop.forEach(tpopBeob => {
+    const feldkontrNode = erstelleTPopBeob(tpopBeob)
     tpopTpopBeobOrdner.children.push(feldkontrNode)
   })
 
   return tpopTpopBeobOrdner
 }
-
-module.exports = returnFunction

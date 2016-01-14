@@ -1,20 +1,15 @@
 'use strict'
 
-var _ = require('underscore')
-var erstelleTPopFreiwKontr = require('./tpopFreiwkontr')
+const erstelleTPopFreiwKontr = require('./tpopFreiwkontr')
 
 module.exports = function (tpopFreiwkontrListe, tpop) {
-  var tpopFreiwkontrOrdner = {}
-  var freiwkontrVonTpop
-  var freiwkontrNode
+  let tpopFreiwkontrOrdner = {}
 
   // Liste der Freiwkontrollen dieser tpop erstellen
-  freiwkontrVonTpop = _.filter(tpopFreiwkontrListe, function (tpopFreiwkontr) {
-    return tpopFreiwkontr.TPopId === tpop.TPopId
-  })
+  const freiwkontrVonTpop = tpopFreiwkontrListe.filter(tpopFreiwkontr => tpopFreiwkontr.TPopId === tpop.TPopId)
 
   // tpopOrdnerFreiwkontr aufbauen
-  tpopFreiwkontrOrdner.data = 'Freiwilligen-Kontrollen (' + freiwkontrVonTpop.length + ')'
+  tpopFreiwkontrOrdner.data = `Freiwilligen-Kontrollen (${freiwkontrVonTpop.length})`
   tpopFreiwkontrOrdner.attr = {
     id: 'tpopOrdnerFreiwkontr' + tpop.TPopId,
     typ: 'tpopOrdnerFreiwkontr'
@@ -22,8 +17,8 @@ module.exports = function (tpopFreiwkontrListe, tpop) {
   tpopFreiwkontrOrdner.children = []
 
   // freiwkontr aufbauen
-  freiwkontrVonTpop.forEach(function (freiwkontr) {
-    freiwkontrNode = erstelleTPopFreiwKontr(freiwkontr)
+  freiwkontrVonTpop.forEach(freiwkontr => {
+    const freiwkontrNode = erstelleTPopFreiwKontr(freiwkontr)
     tpopFreiwkontrOrdner.children.push(freiwkontrNode)
   })
 

@@ -1,20 +1,15 @@
 'use strict'
 
-var _ = require('underscore')
-var erstelleTPopFeldKontr = require('./tpopFeldkontr')
+const erstelleTPopFeldKontr = require('./tpopFeldkontr')
 
 module.exports = function (tpopFeldkontrListe, tpop) {
-  var tpopFeldkontrOrdner = {}
-  var feldkontrVonTpop
-  var feldkontrNode
+  let tpopFeldkontrOrdner = {}
 
   // Liste der Feldkontrollen dieser tpop erstellen
-  feldkontrVonTpop = _.filter(tpopFeldkontrListe, function (tpopFeldkontr) {
-    return tpopFeldkontr.TPopId === tpop.TPopId
-  })
+  const feldkontrVonTpop = tpopFeldkontrListe.filter(tpopFeldkontr => tpopFeldkontr.TPopId === tpop.TPopId)
 
   // tpopOrdnerFeldkontr aufbauen
-  tpopFeldkontrOrdner.data = 'Feldkontrollen (' + feldkontrVonTpop.length + ')'
+  tpopFeldkontrOrdner.data = `Feldkontrollen (${feldkontrVonTpop.length})`
   tpopFeldkontrOrdner.attr = {
     id: 'tpopOrdnerFeldkontr' + tpop.TPopId,
     typ: 'tpopOrdnerFeldkontr'
@@ -22,8 +17,8 @@ module.exports = function (tpopFeldkontrListe, tpop) {
   tpopFeldkontrOrdner.children = []
 
   // feldkontr aufbauen
-  feldkontrVonTpop.forEach(function (feldkontr) {
-    feldkontrNode = erstelleTPopFeldKontr(feldkontr)
+  feldkontrVonTpop.forEach(feldkontr => {
+    const feldkontrNode = erstelleTPopFeldKontr(feldkontr)
     tpopFeldkontrOrdner.children.push(feldkontrNode)
   })
 
