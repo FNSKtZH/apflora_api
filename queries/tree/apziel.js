@@ -1,11 +1,11 @@
 'use strict'
 
-var _ = require('lodash')
-var mysql = require('mysql')
-var async = require('async')
-var config = require('../../configuration')
-var escapeStringForSql = require('../escapeStringForSql')
-var connection = mysql.createConnection({
+const _ = require('lodash')
+const mysql = require('mysql')
+const async = require('async')
+const config = require('../../configuration')
+const escapeStringForSql = require('../escapeStringForSql')
+const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
@@ -13,8 +13,7 @@ var connection = mysql.createConnection({
 })
 
 module.exports = function (request, reply) {
-  var apId = escapeStringForSql(request.params.apId)
-  var zielIds
+  const apId = escapeStringForSql(request.params.apId)
 
   // zuerst die Daten holen
   async.waterfall([
@@ -31,7 +30,7 @@ module.exports = function (request, reply) {
       // sicherstellen, dass eine apzielListe existiert - auf wenn sie leer ist
       apzielListe = apzielListe || []
       // Liste aller ZielId erstellen
-      zielIds = _.map(apzielListe, 'ZielId')
+      const zielIds = _.map(apzielListe, 'ZielId')
       connection.query(
         'SELECT ZielBerId, ZielId, ZielBerJahr, ZielBerErreichung FROM zielber where ZielId in (' + zielIds.join() + ') ORDER BY ZielBerJahr, ZielBerErreichung',
         function (err, zielberListe) {
@@ -44,7 +43,7 @@ module.exports = function (request, reply) {
     }
   ], function (err, result) {
     if (result) {
-      var apzielListe = result[0] || []
+      const apzielListe = result[0] || []
       var zielberListe = result[1] || []
       var apzieljahre
       var apziele
@@ -60,9 +59,7 @@ module.exports = function (request, reply) {
       var zielberNode = {}
 
       // in der apzielliste alls ZielJahr NULL mit '(kein Jahr)' ersetzen
-      apzielListe.forEach(function (apziel) {
-        apziel.ZielJahr = apziel.ZielJahr || '(kein Jahr)'
-      })
+      apzielListe.forEach(apziel => apziel.ZielJahr = apziel.ZielJahr || '(kein Jahr)')
 
       apzieljahre = _.union(_.map(apzielListe, 'ZielJahr'))
       apzieljahre.sort()
@@ -75,10 +72,8 @@ module.exports = function (request, reply) {
       apzieleOrdnerNodeChildren = []
       apzieleOrdnerNode.children = apzieleOrdnerNodeChildren
 
-      apzieljahre.forEach(function (zielJahr) {
-        apziele = _.filter(apzielListe, function (apziel) {
-          return apziel.ZielJahr === zielJahr
-        })
+      apzieljahre.forEach(zielJahr => {
+        apziele = apzielListe.filter(apziel => apziel.ZielJahr === zielJahr)
         // nodes für apziele aufbauen
         apzieljahrNode = {}
         apzieljahrNode.data = zielJahr + ' (' + apziele.length + ')'
@@ -92,9 +87,7 @@ module.exports = function (request, reply) {
         apzieleOrdnerNodeChildren.push(apzieljahrNode)
 
         apziele.forEach(function (apziel) {
-          zielbere = _.filter(zielberListe, function (zielber) {
-            return zielber.ZielId === apziel.ZielId
-          })
+          zielbere = zielberListe.filter(zielber => zielber.ZielId === apziel.ZielId)
           // node für apziele aufbauen
           apzielNode = {}
           apzielNode.data = apziel.ZielBezeichnung || '(Ziel nicht beschrieben)'
@@ -117,8 +110,8 @@ module.exports = function (request, reply) {
           apzielOrdnerNode.children = apzielOrdnerNodeChildren
           apzielNodeChildren.push(apzielOrdnerNode)
 
-          zielbere.forEach(function (zielber) {
-            var data = ''
+          zielbere.forEach((zielber) => {
+            let data = ''
             if (zielber.ZielBerJahr && zielber.ZielBerErreichung) {
               data = zielber.ZielBerJahr + ': ' + zielber.ZielBerErreichung
             } else if (zielber.ZielBerJahr) {
