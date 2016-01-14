@@ -1,6 +1,6 @@
 'use strict'
 
-var _ = require('underscore')
+var _ = require('lodash')
 var mysql = require('mysql')
 var async = require('async')
 var config = require('../../configuration')
@@ -31,7 +31,7 @@ module.exports = function (request, reply) {
       // sicherstellen, dass eine apzielListe existiert - auf wenn sie leer ist
       apzielListe = apzielListe || []
       // Liste aller ZielId erstellen
-      zielIds = _.pluck(apzielListe, 'ZielId')
+      zielIds = _.map(apzielListe, 'ZielId')
       connection.query(
         'SELECT ZielBerId, ZielId, ZielBerJahr, ZielBerErreichung FROM zielber where ZielId in (' + zielIds.join() + ') ORDER BY ZielBerJahr, ZielBerErreichung',
         function (err, zielberListe) {
@@ -60,11 +60,12 @@ module.exports = function (request, reply) {
       var zielberNode = {}
 
       // in der apzielliste alls ZielJahr NULL mit '(kein Jahr)' ersetzen
-      _.each(apzielListe, function (apziel) {
+      apzielListe.forEach(function (apziel) {
         apziel.ZielJahr = apziel.ZielJahr || '(kein Jahr)'
       })
 
-      apzieljahre = _.union(_.pluck(apzielListe, 'ZielJahr'))
+      apzieljahre = _.union(_.map(apzielListe, 'ZielJahr'))
+      apzieljahre.sort()
       // nodes für apzieljahre aufbauen
       apzieleOrdnerNode.data = 'AP-Ziele (' + apzielListe.length + ')'
       apzieleOrdnerNode.attr = {
@@ -74,7 +75,7 @@ module.exports = function (request, reply) {
       apzieleOrdnerNodeChildren = []
       apzieleOrdnerNode.children = apzieleOrdnerNodeChildren
 
-      _.each(apzieljahre, function (zielJahr) {
+      apzieljahre.forEach(function (zielJahr) {
         apziele = _.filter(apzielListe, function (apziel) {
           return apziel.ZielJahr === zielJahr
         })
@@ -90,7 +91,7 @@ module.exports = function (request, reply) {
         apzieljahrNode.children = apzieljahrNodeChildren
         apzieleOrdnerNodeChildren.push(apzieljahrNode)
 
-        _.each(apziele, function (apziel) {
+        apziele.forEach(function (apziel) {
           zielbere = _.filter(zielberListe, function (zielber) {
             return zielber.ZielId === apziel.ZielId
           })
@@ -116,7 +117,7 @@ module.exports = function (request, reply) {
           apzielOrdnerNode.children = apzielOrdnerNodeChildren
           apzielNodeChildren.push(apzielOrdnerNode)
 
-          _.each(zielbere, function (zielber) {
+          zielbere.forEach(function (zielber) {
             var data = ''
             if (zielber.ZielBerJahr && zielber.ZielBerErreichung) {
               data = zielber.ZielBerJahr + ': ' + zielber.ZielBerErreichung
