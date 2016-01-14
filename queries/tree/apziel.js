@@ -17,124 +17,111 @@ module.exports = function (request, reply) {
 
   // zuerst die Daten holen
   async.waterfall([
-    function (callback) {
+    (callback) => {
       connection.query(
-        'SELECT ZielId, ZielTyp, ZielJahr, ZielBezeichnung FROM ziel WHERE ApArtId = ' + apId + ' ORDER BY ZielTyp, ZielBezeichnung',
-        function (err, apzielListe) {
-          if (err) { return callback(err) }
-          callback(null, apzielListe)
-        }
+        `SELECT ZielId, ZielTyp, ZielJahr, ZielBezeichnung FROM ziel WHERE ApArtId = ${apId} ORDER BY ZielTyp, ZielBezeichnung`,
+        (err, apzielListe) => callback(err, apzielListe)
       )
     },
-    function (apzielListe, callback) {
+    (apzielListe, callback) => {
       // sicherstellen, dass eine apzielListe existiert - auf wenn sie leer ist
       apzielListe = apzielListe || []
       // Liste aller ZielId erstellen
       const zielIds = _.map(apzielListe, 'ZielId')
       connection.query(
         'SELECT ZielBerId, ZielId, ZielBerJahr, ZielBerErreichung FROM zielber where ZielId in (' + zielIds.join() + ') ORDER BY ZielBerJahr, ZielBerErreichung',
-        function (err, zielberListe) {
-          if (err) { return callback(err) }
+        (err, zielberListe) => {
           // das Ergebnis der vorigen Abfrage anfügen
-          var resultArray = [apzielListe, zielberListe]
-          callback(null, resultArray)
+          const resultArray = [apzielListe, zielberListe]
+          callback(err, resultArray)
         }
       )
     }
-  ], function (err, result) {
-    if (result) {
-      const apzielListe = result[0] || []
-      var zielberListe = result[1] || []
-      var apzieljahre
-      var apziele
-      var zielbere
-      var apzieleOrdnerNode = {}
-      var apzieleOrdnerNodeChildren = []
-      var apzieljahrNode = {}
-      var apzieljahrNodeChildren = []
-      var apzielNode = {}
-      var apzielNodeChildren = []
-      var apzielOrdnerNode = {}
-      var apzielOrdnerNodeChildren = []
-      var zielberNode = {}
+  ], (err, result) => {
+    if (err || !result) reply(err, {})
+    const apzielListe = result[0] || []
+    const zielberListe = result[1] || []
 
-      // in der apzielliste alls ZielJahr NULL mit '(kein Jahr)' ersetzen
-      apzielListe.forEach(apziel => apziel.ZielJahr = apziel.ZielJahr || '(kein Jahr)')
+    // in der apzielliste alls ZielJahr NULL mit '(kein Jahr)' ersetzen
+    apzielListe.forEach(apziel => apziel.ZielJahr = apziel.ZielJahr || '(kein Jahr)')
 
-      apzieljahre = _.union(_.map(apzielListe, 'ZielJahr'))
-      apzieljahre.sort()
-      // nodes für apzieljahre aufbauen
-      apzieleOrdnerNode.data = 'AP-Ziele (' + apzielListe.length + ')'
-      apzieleOrdnerNode.attr = {
+    let apzieljahre = _.union(_.map(apzielListe, 'ZielJahr'))
+    apzieljahre.sort()
+    // nodes für apzieljahre aufbauen
+    let apzieleOrdnerNodeChildren = []
+    let apzieleOrdnerNode = {
+      data: 'AP-Ziele (' + apzielListe.length + ')',
+      attr: {
         id: 'apOrdnerApziel' + apId,
         typ: 'apOrdnerApziel'
-      }
-      apzieleOrdnerNodeChildren = []
-      apzieleOrdnerNode.children = apzieleOrdnerNodeChildren
+      },
+      children: apzieleOrdnerNodeChildren
+    }
 
-      apzieljahre.forEach(zielJahr => {
-        apziele = apzielListe.filter(apziel => apziel.ZielJahr === zielJahr)
-        // nodes für apziele aufbauen
-        apzieljahrNode = {}
-        apzieljahrNode.data = zielJahr + ' (' + apziele.length + ')'
-        apzieljahrNode.metadata = [apId]
-        apzieljahrNode.attr = {
+    apzieljahre.forEach(zielJahr => {
+      const apziele = apzielListe.filter(apziel => apziel.ZielJahr === zielJahr)
+      // nodes für apziele aufbauen
+      let apzieljahrNodeChildren = []
+      let apzieljahrNode = {
+        data: zielJahr + ' (' + apziele.length + ')',
+        metadata: [apId],
+        attr: {
           id: apId,
           typ: 'apzieljahr'
-        }
-        apzieljahrNodeChildren = []
-        apzieljahrNode.children = apzieljahrNodeChildren
-        apzieleOrdnerNodeChildren.push(apzieljahrNode)
+        },
+        children: apzieljahrNodeChildren
+      }
+      apzieleOrdnerNodeChildren.push(apzieljahrNode)
 
-        apziele.forEach(function (apziel) {
-          zielbere = zielberListe.filter(zielber => zielber.ZielId === apziel.ZielId)
-          // node für apziele aufbauen
-          apzielNode = {}
-          apzielNode.data = apziel.ZielBezeichnung || '(Ziel nicht beschrieben)'
-          apzielNode.attr = {
+      apziele.forEach(function (apziel) {
+        const zielbere = zielberListe.filter(zielber => zielber.ZielId === apziel.ZielId)
+        // node für apziele aufbauen
+        let apzielNodeChildren = []
+        let apzielNode = {
+          data: apziel.ZielBezeichnung || '(Ziel nicht beschrieben)',
+          attr: {
             id: apziel.ZielId,
             typ: 'apziel'
-          }
-          apzielNodeChildren = []
-          apzielNode.children = apzielNodeChildren
-          apzieljahrNodeChildren.push(apzielNode)
+          },
+          children: apzielNodeChildren
+        }
+        apzieljahrNodeChildren.push(apzielNode)
 
-          // ...und gleich seinen node für zielber-Ordner aufbauen
-          apzielOrdnerNode = {}
-          apzielOrdnerNode.data = 'Ziel-Berichte (' + zielbere.length + ')'
-          apzielOrdnerNode.attr = {
+        // ...und gleich seinen node für zielber-Ordner aufbauen
+        let apzielOrdnerNodeChildren = []
+        let apzielOrdnerNode = {
+          data: 'Ziel-Berichte (' + zielbere.length + ')',
+          attr: {
             id: apziel.ZielId,
             typ: 'zielberOrdner'
-          }
-          apzielOrdnerNodeChildren = []
-          apzielOrdnerNode.children = apzielOrdnerNodeChildren
-          apzielNodeChildren.push(apzielOrdnerNode)
+          },
+          children: apzielOrdnerNodeChildren
+        }
+        apzielNodeChildren.push(apzielOrdnerNode)
 
-          zielbere.forEach((zielber) => {
-            let data = ''
-            if (zielber.ZielBerJahr && zielber.ZielBerErreichung) {
-              data = zielber.ZielBerJahr + ': ' + zielber.ZielBerErreichung
-            } else if (zielber.ZielBerJahr) {
-              data = zielber.ZielBerJahr + ': (keine Entwicklung)'
-            } else if (zielber.ZielBerErreichung) {
-              data = '(kein jahr): ' + zielber.ZielBerErreichung
-            } else {
-              data = '(kein jahr): (keine Entwicklung)'
-            }
-            // nodes für zielbere aufbauen
-            zielberNode = {}
-            zielberNode.data = data
-            zielberNode.attr = {
+        zielbere.forEach(zielber => {
+          let data = ''
+          if (zielber.ZielBerJahr && zielber.ZielBerErreichung) {
+            data = zielber.ZielBerJahr + ': ' + zielber.ZielBerErreichung
+          } else if (zielber.ZielBerJahr) {
+            data = zielber.ZielBerJahr + ': (keine Entwicklung)'
+          } else if (zielber.ZielBerErreichung) {
+            data = '(kein jahr): ' + zielber.ZielBerErreichung
+          } else {
+            data = '(kein jahr): (keine Entwicklung)'
+          }
+          // nodes für zielbere aufbauen
+          const zielberNode = {
+            data: data,
+            attr: {
               id: zielber.ZielBerId,
               typ: 'zielber'
             }
-            apzielOrdnerNodeChildren.push(zielberNode)
-          })
+          }
+          apzielOrdnerNodeChildren.push(zielberNode)
         })
       })
-      reply(null, apzieleOrdnerNode)
-    } else {
-      reply(null, {})
-    }
+    })
+    reply(null, apzieleOrdnerNode)
   })
 }

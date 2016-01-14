@@ -55,7 +55,7 @@ module.exports = (request, reply) => {
   async.parallel({
     jberListe (callback) {
       connection.query(
-        'SELECT JBerId, ApArtId, JBerJahr FROM apber where ApArtId = ' + apId + ' ORDER BY JBerJahr',
+        `SELECT JBerId, ApArtId, JBerJahr FROM apber where ApArtId = ${apId} ORDER BY JBerJahr`,
         (err, jber) => callback(err, jber)
       )
     },
@@ -66,19 +66,16 @@ module.exports = (request, reply) => {
       )
     }
   }, (err, results) => {
-    var jberListe = results.jberListe
-    var nodeChildren
-    var node = {}
-
     if (err) return reply(err)
-
-    node.data = 'AP-Berichte (' + jberListe.length + ')'
-    node.attr = {
-      id: 'apOrdnerJber' + apId,
-      typ: 'apOrdnerJber'
+    const jberListe = results.jberListe
+    const node = {
+      data: `AP-Berichte (${jberListe.length})`,
+      attr: {
+        id: `apOrdnerJber${apId}`,
+        typ: 'apOrdnerJber'
+      },
+      children: buildChildrenForJBerOrdner(results)
     }
-    nodeChildren = buildChildrenForJBerOrdner(results)
-    node.children = nodeChildren
 
     reply(null, node)
   })
