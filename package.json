@@ -28,7 +28,8 @@
     "predeploy": "gulp prod_clean_dist",
     "deploy": "gulp prod_copy",
     "postdeploy": "gulp prod_sftp",
-    "test": "standard"
+    "test": "standard",
+    "yolo": "npm run deploy"
   },
   "repository": {
     "type": "git",
