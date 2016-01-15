@@ -2,22 +2,20 @@
 
 'use strict'
 
-module.exports = function (popber) {
-  var node = {}
-  var nodeText
-  var popberjahrText
-  var entwicklungText
-
+module.exports = popber => {
+  let node = {}
   if (popber) {
-    popberjahrText = popber.PopBerJahr || '(kein Jahr)'
-    entwicklungText = popber.EntwicklungTxt || '(nicht beurteilt)'
-    nodeText = popberjahrText + ': ' + entwicklungText
+    const popberjahrText = popber.PopBerJahr || '(kein Jahr)'
+    const entwicklungText = popber.EntwicklungTxt || '(nicht beurteilt)'
+    const nodeText = `${popberjahrText}: ${entwicklungText}`
 
     // node aufbauen
-    node.data = nodeText
-    node.attr = {
-      id: popber.PopBerId,
-      typ: 'popber'
+    node = {
+      data: nodeText,
+      attr: {
+        id: popber.PopBerId,
+        typ: 'popber'
+      }
     }
   }
 
