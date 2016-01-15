@@ -10,54 +10,39 @@ var connection = mysql.createConnection({
   database: 'apflora'
 })
 
-function buildChildFromData (data) {
-  var childrenArray = []
-  var object
-
-  data.forEach(function (beob) {
-    var datum = beob.Datum || '(kein Datum)'
-    var autor = beob.Autor || '(kein Autor)'
-
-    object = {}
-    object.data = datum + ': ' + autor
-    // beob voransetzen, damit die ID im ganzen Baum eindeutig ist
-    object.attr = {
-      typ: 'beobNichtBeurteilt'
+function buildChildrenFromData (data) {
+  return data.map(beob => {
+    const datum = beob.Datum || '(kein Datum)'
+    const autor = beob.Autor || '(kein Autor)'
+    return {
+      data: datum + ': ' + autor,
+      attr: {
+        typ: 'beobNichtBeurteilt',
+        // beob voransetzen, damit die ID im ganzen Baum eindeutig ist
+        id: `beob${beob.NO_NOTE ? beob.NO_NOTE : beob.NO_NOTE_PROJET}`,
+        beobtyp: `beob${beob.NO_NOTE ? 'infospezies' : 'evab'}`
+      }
     }
-
-    if (beob.NO_NOTE) {
-      object.attr.id = 'beob' + beob.NO_NOTE
-      object.attr.beobtyp = 'infospezies'
-    } else {
-      object.attr.id = 'beob' + beob.NO_NOTE_PROJET
-      object.attr.beobtyp = 'evab'
-    }
-    childrenArray.push(object)
   })
-
-  return childrenArray
 }
 
-module.exports = function (request, reply) {
-  var apId = escapeStringForSql(request.params.apId)
+module.exports = (request, reply) => {
+  const apId = escapeStringForSql(request.params.apId)
 
   connection.query(
-    'SELECT apflora_beob.beob_bereitgestellt.NO_NOTE, apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET, apflora_beob.beob_bereitgestellt.NO_ISFS, apflora_beob.beob_bereitgestellt.Datum, apflora_beob.beob_bereitgestellt.Autor FROM (apflora_beob.beob_bereitgestellt LEFT JOIN apflora.beobzuordnung ON apflora_beob.beob_bereitgestellt.NO_NOTE = apflora.beobzuordnung.NO_NOTE) LEFT JOIN apflora.beobzuordnung AS tblBeobZuordnung_1 ON apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET = tblBeobZuordnung_1.NO_NOTE WHERE apflora_beob.beob_bereitgestellt.NO_ISFS=' + apId + ' AND ((apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET Is Not Null AND tblBeobZuordnung_1.NO_NOTE Is Null) OR (apflora_beob.beob_bereitgestellt.NO_NOTE Is Not Null AND apflora.beobzuordnung.NO_NOTE Is Null)) ORDER BY apflora_beob.beob_bereitgestellt.Datum DESC LIMIT 100',
-    function (err, data) {
-      var node = {}
+    `SELECT apflora_beob.beob_bereitgestellt.NO_NOTE, apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET, apflora_beob.beob_bereitgestellt.NO_ISFS, apflora_beob.beob_bereitgestellt.Datum, apflora_beob.beob_bereitgestellt.Autor FROM (apflora_beob.beob_bereitgestellt LEFT JOIN apflora.beobzuordnung ON apflora_beob.beob_bereitgestellt.NO_NOTE = apflora.beobzuordnung.NO_NOTE) LEFT JOIN apflora.beobzuordnung AS tblBeobZuordnung_1 ON apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET = tblBeobZuordnung_1.NO_NOTE WHERE apflora_beob.beob_bereitgestellt.NO_ISFS = ${apId} AND ((apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET Is Not Null AND tblBeobZuordnung_1.NO_NOTE Is Null) OR (apflora_beob.beob_bereitgestellt.NO_NOTE Is Not Null AND apflora.beobzuordnung.NO_NOTE Is Null)) ORDER BY apflora_beob.beob_bereitgestellt.Datum DESC LIMIT 100`,
+    (err, data) => {
+      if (err) return reply(err)
 
-      if (err) { return reply(err) }
+      const node = {
+        data: `nicht beurteilte Beobachtungen (${data.length < 100 ? '' : 'neuste '}${data.length})`,
+        attr: {
+          id: `apOrdnerBeobNichtBeurteilt${apId}`,
+          typ: 'apOrdnerBeobNichtBeurteilt'
+        },
+        children: buildChildrenFromData(data)
+      }
 
-      if (data.length < 100) {
-        node.data = 'nicht beurteilte Beobachtungen (' + data.length + ')'
-      } else {
-        node.data = 'nicht beurteilte Beobachtungen (neuste ' + data.length + ')'
-      }
-      node.attr = {
-        id: 'apOrdnerBeobNichtBeurteilt' + apId,
-        typ: 'apOrdnerBeobNichtBeurteilt'
-      }
-      node.children = buildChildFromData(data)
       reply(null, node)
     }
   )
