@@ -2,23 +2,20 @@
 
 'use strict'
 
-module.exports = function (massnber) {
-  var node = {}
-  var nodeText
-  var massnberText
-  var beurteilText
+module.exports = (massnber) => {
+  let node = {}
 
   if (massnber) {
-    massnberText = massnber.PopMassnBerJahr || '(kein Jahr)'
-    beurteilText = massnber.BeurteilTxt || '(nicht beurteilt)'
-    nodeText = massnberText + ': ' + beurteilText
-
+    const massnberText = massnber.PopMassnBerJahr || '(kein Jahr)'
+    const beurteilText = massnber.BeurteilTxt || '(nicht beurteilt)'
+    const nodeText = `${massnberText}: ${beurteilText}`
     // node aufbauen
-    node.data = nodeText
-    node.attr = {
+    const data = nodeText
+    const attr = {
       id: massnber.PopMassnBerId,
       typ: 'popmassnber'
     }
+    node = { data, attr }
   }
 
   return node
