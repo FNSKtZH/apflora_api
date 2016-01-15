@@ -70,106 +70,83 @@ module.exports = (request, reply) => {
     const tpopIds = result[1]
     let popListe = result[2]
     let tpopListe = result[3]
-    let popOrdnerNode = {}
 
     if (tpopIds.length > 0) {
       // jetzt parallel alle übrigen Daten aus dem pop-baum
       async.parallel({
-        tpopMassnListe: function (callback) {
+        tpopMassnListe (callback) {
           connection.query(
-            'SELECT TPopMassnId, TPopId, TPopMassnJahr, TPopMassnDatum, MassnTypTxt FROM tpopmassn LEFT JOIN tpopmassn_typ_werte ON TPopMassnTyp = MassnTypCode where TPopId in (' + tpopIds.join() + ') ORDER BY TPopMassnJahr, TPopMassnDatum, MassnTypTxt',
-            function (err, data) {
-              callback(err, data)
-            }
+            `SELECT TPopMassnId, TPopId, TPopMassnJahr, TPopMassnDatum, MassnTypTxt FROM tpopmassn LEFT JOIN tpopmassn_typ_werte ON TPopMassnTyp = MassnTypCode where TPopId in (${tpopIds.join()}) ORDER BY TPopMassnJahr, TPopMassnDatum, MassnTypTxt`,
+            (err, data) => callback(err, data)
           )
         },
-        tpopMassnBerListe: function (callback) {
+        tpopMassnBerListe (callback) {
           connection.query(
-            'SELECT TPopMassnBerId, TPopId, TPopMassnBerJahr, BeurteilTxt FROM tpopmassnber LEFT JOIN tpopmassn_erfbeurt_werte ON TPopMassnBerErfolgsbeurteilung = BeurteilId where TPopId in (' + tpopIds.join() + ') ORDER BY TPopMassnBerJahr, BeurteilTxt',
-            function (err, data) {
-              callback(err, data)
-            }
+            `SELECT TPopMassnBerId, TPopId, TPopMassnBerJahr, BeurteilTxt FROM tpopmassnber LEFT JOIN tpopmassn_erfbeurt_werte ON TPopMassnBerErfolgsbeurteilung = BeurteilId where TPopId in (${tpopIds.join()}) ORDER BY TPopMassnBerJahr, BeurteilTxt`,
+            (err, data) => callback(err, data)
           )
         },
-        tpopFeldkontrListe: function (callback) {
+        tpopFeldkontrListe (callback) {
           connection.query(
-            'SELECT TPopKontrId, TPopId, TPopKontrJahr, TPopKontrTyp FROM tpopkontr where (TPopId in (' + tpopIds.join() + ')) AND (TPopKontrTyp<>"Freiwilligen-Erfolgskontrolle" OR TPopKontrTyp IS NULL) ORDER BY TPopKontrJahr, TPopKontrTyp',
-            function (err, data) {
-              callback(err, data)
-            }
+            `SELECT TPopKontrId, TPopId, TPopKontrJahr, TPopKontrTyp FROM tpopkontr where (TPopId in (${tpopIds.join()})) AND (TPopKontrTyp <> "Freiwilligen-Erfolgskontrolle" OR TPopKontrTyp IS NULL) ORDER BY TPopKontrJahr, TPopKontrTyp`,
+            (err, data) => callback(err, data)
           )
         },
-        tpopFreiwkontrListe: function (callback) {
+        tpopFreiwkontrListe (callback) {
           connection.query(
-            'SELECT TPopKontrId, TPopId, TPopKontrJahr, TPopKontrTyp FROM tpopkontr where (TPopId in (' + tpopIds.join() + ')) AND (TPopKontrTyp="Freiwilligen-Erfolgskontrolle") ORDER BY TPopKontrJahr, TPopKontrTyp',
-            function (err, data) {
-              callback(err, data)
-            }
+            `SELECT TPopKontrId, TPopId, TPopKontrJahr, TPopKontrTyp FROM tpopkontr where (TPopId in (${tpopIds.join()})) AND (TPopKontrTyp = "Freiwilligen-Erfolgskontrolle") ORDER BY TPopKontrJahr, TPopKontrTyp`,
+            (err, data) => callback(err, data)
           )
         },
-        tpopBerListe: function (callback) {
+        tpopBerListe (callback) {
           connection.query(
-            'SELECT TPopBerId, TPopId, TPopBerJahr, EntwicklungTxt, EntwicklungOrd FROM tpopber LEFT JOIN tpop_entwicklung_werte ON TPopBerEntwicklung = EntwicklungCode where TPopId in (' + tpopIds.join() + ') ORDER BY TPopBerJahr, EntwicklungOrd',
-            function (err, data) {
-              callback(err, data)
-            }
+            `SELECT TPopBerId, TPopId, TPopBerJahr, EntwicklungTxt, EntwicklungOrd FROM tpopber LEFT JOIN tpop_entwicklung_werte ON TPopBerEntwicklung = EntwicklungCode where TPopId in (${tpopIds.join()}) ORDER BY TPopBerJahr, EntwicklungOrd`,
+            (err, data) => callback(err, data)
           )
         },
-        tpopBeobZugeordnetListe: function (callback) {
+        tpopBeobZugeordnetListe (callback) {
           connection.query(
-            'SELECT apflora.beobzuordnung.NO_NOTE, apflora.beobzuordnung.TPopId, apflora.beobzuordnung.beobNichtZuordnen, apflora.beobzuordnung.BeobBemerkungen, apflora.beobzuordnung.BeobMutWann, apflora.beobzuordnung.BeobMutWer, apflora_beob.beob_bereitgestellt.Datum, apflora_beob.beob_bereitgestellt.Autor, "evab" AS beobtyp FROM apflora.beobzuordnung INNER JOIN apflora_beob.beob_bereitgestellt ON apflora.beobzuordnung.NO_NOTE = apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET WHERE apflora.beobzuordnung.TPopId in (' + tpopIds.join() + ') AND (apflora.beobzuordnung.beobNichtZuordnen=0 OR apflora.beobzuordnung.beobNichtZuordnen IS NULL) UNION SELECT apflora.beobzuordnung.NO_NOTE, apflora.beobzuordnung.TPopId, apflora.beobzuordnung.beobNichtZuordnen, apflora.beobzuordnung.BeobBemerkungen, apflora.beobzuordnung.BeobMutWann, apflora.beobzuordnung.BeobMutWer, apflora_beob.beob_bereitgestellt.Datum, apflora_beob.beob_bereitgestellt.Autor, "infospezies" AS beobtyp FROM apflora.beobzuordnung INNER JOIN apflora_beob.beob_bereitgestellt ON CAST(apflora.beobzuordnung.NO_NOTE as CHAR(50)) = CAST(apflora_beob.beob_bereitgestellt.NO_NOTE as CHAR(50)) WHERE apflora.beobzuordnung.TPopId in (' + tpopIds.join() + ') AND (apflora.beobzuordnung.beobNichtZuordnen=0 OR apflora.beobzuordnung.beobNichtZuordnen IS NULL) ORDER BY Datum',
-            function (err, data) {
-              callback(err, data)
-            }
+            `SELECT apflora.beobzuordnung.NO_NOTE, apflora.beobzuordnung.TPopId, apflora.beobzuordnung.beobNichtZuordnen, apflora.beobzuordnung.BeobBemerkungen, apflora.beobzuordnung.BeobMutWann, apflora.beobzuordnung.BeobMutWer, apflora_beob.beob_bereitgestellt.Datum, apflora_beob.beob_bereitgestellt.Autor, "evab" AS beobtyp FROM apflora.beobzuordnung INNER JOIN apflora_beob.beob_bereitgestellt ON apflora.beobzuordnung.NO_NOTE = apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET WHERE apflora.beobzuordnung.TPopId in (${tpopIds.join()}) AND (apflora.beobzuordnung.beobNichtZuordnen = 0 OR apflora.beobzuordnung.beobNichtZuordnen IS NULL) UNION SELECT apflora.beobzuordnung.NO_NOTE, apflora.beobzuordnung.TPopId, apflora.beobzuordnung.beobNichtZuordnen, apflora.beobzuordnung.BeobBemerkungen, apflora.beobzuordnung.BeobMutWann, apflora.beobzuordnung.BeobMutWer, apflora_beob.beob_bereitgestellt.Datum, apflora_beob.beob_bereitgestellt.Autor, "infospezies" AS beobtyp FROM apflora.beobzuordnung INNER JOIN apflora_beob.beob_bereitgestellt ON CAST(apflora.beobzuordnung.NO_NOTE as CHAR(50)) = CAST(apflora_beob.beob_bereitgestellt.NO_NOTE as CHAR(50)) WHERE apflora.beobzuordnung.TPopId in (${tpopIds.join()}) AND (apflora.beobzuordnung.beobNichtZuordnen = 0 OR apflora.beobzuordnung.beobNichtZuordnen IS NULL) ORDER BY Datum`,
+            (err, data) => callback(err, data)
           )
         },
-        popBerListe: function (callback) {
+        popBerListe (callback) {
           connection.query(
-            'SELECT PopBerId, PopId, PopBerJahr, EntwicklungTxt, EntwicklungOrd FROM popber LEFT JOIN pop_entwicklung_werte ON PopBerEntwicklung = EntwicklungId where PopId in (' + popIds.join() + ') ORDER BY PopBerJahr, EntwicklungOrd',
-            function (err, data) {
-              callback(err, data)
-            }
+            `SELECT PopBerId, PopId, PopBerJahr, EntwicklungTxt, EntwicklungOrd FROM popber LEFT JOIN pop_entwicklung_werte ON PopBerEntwicklung = EntwicklungId where PopId in (${popIds.join()}) ORDER BY PopBerJahr, EntwicklungOrd`,
+            (err, data) => callback(err, data)
           )
         },
-        popMassnBerListe: function (callback) {
+        popMassnBerListe (callback) {
           connection.query(
-            'SELECT PopMassnBerId, PopId, PopMassnBerJahr, BeurteilTxt, BeurteilOrd FROM popmassnber LEFT JOIN tpopmassn_erfbeurt_werte ON PopMassnBerErfolgsbeurteilung = BeurteilId where PopId in (' + popIds.join() + ') ORDER BY PopMassnBerJahr, BeurteilOrd',
-            function (err, data) {
-              callback(err, data)
-            }
+            `SELECT PopMassnBerId, PopId, PopMassnBerJahr, BeurteilTxt, BeurteilOrd FROM popmassnber LEFT JOIN tpopmassn_erfbeurt_werte ON PopMassnBerErfolgsbeurteilung = BeurteilId where PopId in (${popIds.join()}) ORDER BY PopMassnBerJahr, BeurteilOrd`,
+            (err, data) => callback(err, data)
           )
         }
-      }, function (err, results) {
-        var popBerListe = results.popBerListe || []
-        var popMassnBerListe = results.popMassnBerListe || []
-        var popOrdnerNodeChildren
-        var popNrMax
+      }, (err, results) => {
+        if (err) return reply(err)
 
-        if (err) { return reply(err) }
+        const popBerListe = results.popBerListe || []
+        const popMassnBerListe = results.popMassnBerListe || []
 
         // node für apOrdnerPop aufbauen
-        popOrdnerNode.data = 'Populationen (' + popListe.length + ')'
-        popOrdnerNode.attr = {
-          id: 'apOrdnerPop' + apId,
-          typ: 'apOrdnerPop'
+        let popOrdnerNodeChildren = []
+        const popOrdnerNode = {
+          data: 'Populationen (' + popListe.length + ')',
+          attr: {
+            id: 'apOrdnerPop' + apId,
+            typ: 'apOrdnerPop'
+          },
+          children: popOrdnerNodeChildren
         }
-        popOrdnerNodeChildren = []
-        popOrdnerNode.children = popOrdnerNodeChildren
 
         // PopNr: Je nach Anzahl Stellen der maximalen PopNr bei denjenigen mit weniger Nullen
         // Nullen voranstellen, damit sie im tree auch als String richtig sortiert werden
-        popNrMax = _.maxBy(popListe, function (pop) {
-          return pop.PopNr
-        }).PopNr
+        const popNrMax = _.maxBy(popListe, pop => pop.PopNr).PopNr
 
-        popListe.forEach(function (pop) {
-          var popNode = {}
-          var popNodeChildren = []
-          var popMassnberOrdnerNode
-          var popBerOrdnerNode
-          var popTpopOrdnerNode
-          var data
-          var popSort
+        popListe.forEach(pop => {
+          let popNodeChildren = []
+          let data
+          let popSort
 
           pop.PopNr = ergaenzePopNrUmFuehrendeNullen(popNrMax, pop.PopNr)
 
@@ -189,39 +166,43 @@ module.exports = (request, reply) => {
             popSort = 1000
           }
 
-          popNode.data = data
-          popNode.attr = {
-            id: pop.PopId,
-            typ: 'pop',
-            sort: popSort
+          const popNode = {
+            data: data,
+            attr: {
+              id: pop.PopId,
+              typ: 'pop',
+              sort: popSort
+            },
+            // popNode.children ist ein Array, der enthält: popOrdnerTpop, popOrdnerPopber, popOrdnerMassnber
+            children: popNodeChildren
           }
-          // popNode.children ist ein Array, der enthält: popOrdnerTpop, popOrdnerPopber, popOrdnerMassnber
-          popNode.children = popNodeChildren
 
           popOrdnerNodeChildren.push(popNode)
 
           // tpopOrdner aufbauen
-          popTpopOrdnerNode = erstelleTpopOrdner(results, tpopListe, pop)
+          const popTpopOrdnerNode = erstelleTpopOrdner(results, tpopListe, pop)
           popNodeChildren.push(popTpopOrdnerNode)
 
           // PopberOrdner aufbauen
-          popBerOrdnerNode = erstellePopBerOrdner(popBerListe, pop)
+          const popBerOrdnerNode = erstellePopBerOrdner(popBerListe, pop)
           popNodeChildren.push(popBerOrdnerNode)
 
           // MassnberOrdner aufbauen
-          popMassnberOrdnerNode = erstellePopMassnBerOrdner(popMassnBerListe, pop)
+          const popMassnberOrdnerNode = erstellePopMassnBerOrdner(popMassnBerListe, pop)
           popNodeChildren.push(popMassnberOrdnerNode)
         })
         reply(null, popOrdnerNode)
       })
     } else {
       // node für apOrdnerPop aufbauen
-      popOrdnerNode.data = 'Populationen (0)'
-      popOrdnerNode.attr = {
-        id: 'apOrdnerPop' + apId,
-        typ: 'apOrdnerPop'
+      const popOrdnerNode = {
+        data: 'Populationen (0)',
+        attr: {
+          id: 'apOrdnerPop' + apId,
+          typ: 'apOrdnerPop'
+        },
+        children: []
       }
-      popOrdnerNode.children = []
       reply(null, popOrdnerNode)
     }
   })
