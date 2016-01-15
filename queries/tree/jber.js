@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
   database: 'apflora'
 })
 
-function buildChildForJBer (JBerJahr, jberUebersichtListe) {
+const buildChildForJBer = (JBerJahr, jberUebersichtListe) => {
   // zuerst den Datensatz extrahieren
   const jberUebersicht = jberUebersichtListe.find(jberUebersicht => jberUebersicht.JbuJahr === JBerJahr)
 
@@ -28,13 +28,10 @@ function buildChildForJBer (JBerJahr, jberUebersichtListe) {
   return null
 }
 
-function buildChildrenForJBerOrdner (results) {
-  let childrenArray = []
-  let beschriftung = '(kein Jahr)'
-
-  results.jberListe.forEach(jber => {
-    if (jber.JBerJahr) beschriftung = jber.JBerJahr.toString()
-    const object = {
+const buildChildrenForJBerOrdner = (results) => {
+  return results.jberListe.map(jber => {
+    const beschriftung = jber.JBerJahr ? jber.JBerJahr.toString() : '(kein Jahr)'
+    let object = {
       data: beschriftung,
       attr: {
         id: jber.JBerId,
@@ -42,10 +39,8 @@ function buildChildrenForJBerOrdner (results) {
       }
     }
     if (jber.JBerJahr) object.children = buildChildForJBer(jber.JBerJahr, results.jberUebersichtListe)
-    childrenArray.push(object)
+    return object
   })
-
-  return childrenArray
 }
 
 module.exports = (request, reply) => {

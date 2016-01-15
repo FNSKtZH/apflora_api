@@ -1,65 +1,63 @@
 'use strict'
 
-var _ = require('lodash')
-var async = require('async')
-var mysql = require('mysql')
-var config = require('../../configuration')
-var escapeStringForSql = require('../escapeStringForSql')
-var connection = mysql.createConnection({
+const _ = require('lodash')
+const async = require('async')
+const mysql = require('mysql')
+const config = require('../../configuration')
+const escapeStringForSql = require('../escapeStringForSql')
+const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
   database: 'apflora'
 })
-var erstelleTpopOrdner = require('./tpopOrdner')
-var erstellePopMassnBerOrdner = require('./popMassnBerOrdner')
-var erstellePopBerOrdner = require('./popBerOrdner')
+const erstelleTpopOrdner = require('./tpopOrdner')
+const erstellePopMassnBerOrdner = require('./popMassnBerOrdner')
+const erstellePopBerOrdner = require('./popBerOrdner')
 
 // erhält die höchste PopNr der Liste und die aktuelle
 // stellt der aktuellen PopNr soviele Nullen voran, dass
 // alle Nummern dieselbe Anzahl stellen haben
-function ergaenzePopNrUmFuehrendeNullen (popNrMax, popNr) {
+const ergaenzePopNrUmFuehrendeNullen = (popNrMax, popNr) => {
   /* jslint white: true, plusplus: true */
-  if (!popNr && popNr !== 0) { return null }
-  if (!popNrMax && popNrMax !== 0) { return null }
+  if (!popNr && popNr !== 0) return null
+  if (!popNrMax && popNrMax !== 0) return null
 
   // Nummern in Strings umwandeln
   popNrMax = popNrMax.toString()
   popNr = popNr.toString()
 
-  var stellendifferenz = popNrMax.length - popNr.length
+  let stellendifferenz = popNrMax.length - popNr.length
 
   // Voranzustellende Nullen generieren
   while (stellendifferenz > 0) {
-    popNr = '0' + popNr
+    popNr = `0${popNr}`
     stellendifferenz--
   }
 
   return popNr
 }
 
-module.exports = function (request, reply) {
-  var apId = escapeStringForSql(request.params.apId)
+module.exports = (request, reply) => {
+  const apId = escapeStringForSql(request.params.apId)
 
   // zuerst die popliste holen
   async.waterfall([
-    function (callback) {
+    (callback) => {
       connection.query(
-        'SELECT PopNr, PopName, PopId, ApArtId FROM pop where ApArtId = ' + apId + ' ORDER BY PopNr, PopName',
-        function (err, result) {
-          var popListe = result
-          var popIds = _.map(popListe, 'PopId')
+        `SELECT PopNr, PopName, PopId, ApArtId FROM pop where ApArtId = ${apId} ORDER BY PopNr, PopName`,
+        (err, popListe) => {
+          const popIds = _.map(popListe, 'PopId')
           callback(err, popIds, popListe)
         }
       )
     },
-    function (popIds, popListe, callback) {
+    (popIds, popListe, callback) => {
       if (popIds.length > 0) {
         connection.query(
-          'SELECT TPopNr, TPopFlurname, TPopId, PopId FROM tpop where PopId in (' + popIds.join() + ') ORDER BY TPopNr, TPopFlurname',
-          function (err, result) {
-            var tpopListe = result
-            var tpopIds = _.map(tpopListe, 'TPopId')
+          `SELECT TPopNr, TPopFlurname, TPopId, PopId FROM tpop where PopId in (${popIds.join()}) ORDER BY TPopNr, TPopFlurname`,
+          (err, tpopListe) => {
+            const tpopIds = _.map(tpopListe, 'TPopId')
             callback(err, [popIds, tpopIds, popListe, tpopListe])
           }
         )
@@ -67,12 +65,12 @@ module.exports = function (request, reply) {
         callback(null, [popIds, [], popListe, []])
       }
     }
-  ], function (err, result) {
-    var popIds = result[0]
-    var tpopIds = result[1]
-    var popListe = result[2]
-    var tpopListe = result[3]
-    var popOrdnerNode = {}
+  ], (err, result) => {
+    const popIds = result[0]
+    const tpopIds = result[1]
+    let popListe = result[2]
+    let tpopListe = result[3]
+    let popOrdnerNode = {}
 
     if (tpopIds.length > 0) {
       // jetzt parallel alle übrigen Daten aus dem pop-baum
