@@ -1,56 +1,47 @@
 'use strict'
 
-var mysql = require('mysql')
-var config = require('../../configuration')
-var escapeStringForSql = require('../escapeStringForSql')
-var connection = mysql.createConnection({
+const mysql = require('mysql')
+const config = require('../../configuration')
+const escapeStringForSql = require('../escapeStringForSql')
+const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
   database: 'apflora'
 })
 
-function buildChildFromData (data) {
-  var childrenArray = []
-  var object
-  var beschriftung
-  var berjahrText
-  var bertitelText
+const buildChildrenFromData = (data) => {
+  return data.map(ber => {
+    const berjahrText = ber.BerJahr || '(kein Jahr)'
+    const bertitelText = ber.BerTitel || '(kein Titel)'
+    const beschriftung = `${berjahrText}: ${bertitelText}`
 
-  data.forEach(function (ber) {
-    berjahrText = ber.BerJahr || '(kein Jahr)'
-    bertitelText = ber.BerTitel || '(kein Titel)'
-    beschriftung = berjahrText + ': ' + bertitelText
-
-    object = {}
-    object.data = beschriftung
-    object.attr = {
-      id: ber.BerId,
-      typ: 'ber'
+    return {
+      data: beschriftung,
+      attr: {
+        id: ber.BerId,
+        typ: 'ber'
+      }
     }
-    childrenArray.push(object)
   })
-
-  return childrenArray
 }
 
-module.exports = function (request, reply) {
-  var apId = escapeStringForSql(request.params.apId)
+module.exports = (request, reply) => {
+  const apId = escapeStringForSql(request.params.apId)
 
   connection.query(
-    'SELECT BerId, ApArtId, BerJahr, BerTitel FROM ber where ApArtId =' + apId + ' ORDER BY BerJahr DESC, BerTitel',
-    function (err, data) {
-      var node
+    `SELECT BerId, ApArtId, BerJahr, BerTitel FROM ber where ApArtId = ${apId} ORDER BY BerJahr DESC, BerTitel`,
+    (err, data) => {
+      if (err) return reply(err)
 
-      if (err) { return reply(err) }
-
-      node = {}
-      node.data = 'Berichte (' + data.length + ')'
-      node.attr = {
-        id: 'apOrdnerBer' + apId,
-        typ: 'apOrdnerBer'
+      const node = {
+        data: `Berichte (${data.length})`,
+        attr: {
+          id: `apOrdnerBer${apId}`,
+          typ: 'apOrdnerBer'
+        },
+        children: buildChildrenFromData(data)
       }
-      node.children = buildChildFromData(data)
 
       reply(null, node)
     }
