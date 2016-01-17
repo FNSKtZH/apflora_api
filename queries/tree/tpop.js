@@ -1,23 +1,16 @@
 'use strict'
 
-var erstelleTpopMassnOrdner = require('./tpopMassnOrdner')
-var erstelleTpopMassnBerOrdner = require('./tpopMassnBerOrdner')
-var erstelleTpopFeldkontrOrdner = require('./tpopFeldkontrOrdner')
-var erstelleTpopFreiwkontrOrdner = require('./tpopFreiwkontrOrdner')
-var erstelleTpopBerOrdner = require('./tpopBerOrdner')
-var erstelleTpopBeobOrdner = require('./tpopBeobOrdner')
+const erstelleTpopMassnOrdner = require('./tpopMassnOrdner')
+const erstelleTpopMassnBerOrdner = require('./tpopMassnBerOrdner')
+const erstelleTpopFeldkontrOrdner = require('./tpopFeldkontrOrdner')
+const erstelleTpopFreiwkontrOrdner = require('./tpopFreiwkontrOrdner')
+const erstelleTpopBerOrdner = require('./tpopBerOrdner')
+const erstelleTpopBeobOrdner = require('./tpopBeobOrdner')
 
-var returnFunction = function (results, tpop) {
-  var tpopNode = {}
-  var tpopNodeText
-  var tpopSort
-  var tpopNodeChildren = []
-  var tpopMassnNode
-  var tpopMassnBerNode
-  var tpopFeldkontrNode
-  var tpopFreiwkontrNode
-  var tpopBerNode
-  var tpopBeobZugeordnetNode
+module.exports = (results, tpop) => {
+  let tpopNodeText
+  let tpopSort
+  let tpopNodeChildren = []
 
   // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden
   if (tpop.TPopNr && tpop.TPopFlurname) {
@@ -35,39 +28,39 @@ var returnFunction = function (results, tpop) {
   }
 
   // node aufbauen
-  tpopNode.data = tpopNodeText
-  tpopNode.attr = {
-    id: tpop.TPopId,
-    typ: 'tpop',
-    sort: tpopSort
+  let tpopNode = {
+    data: tpopNodeText,
+    attr: {
+      id: tpop.TPopId,
+      typ: 'tpop',
+      sort: tpopSort
+    },
+    children: tpopNodeChildren
   }
-  tpopNode.children = tpopNodeChildren
 
   // tpopOrdnerMassnahmen aufbauen
-  tpopMassnNode = erstelleTpopMassnOrdner(results.tpopMassnListe, tpop)
+  const tpopMassnNode = erstelleTpopMassnOrdner(results.tpopMassnListe, tpop)
   tpopNodeChildren.push(tpopMassnNode)
 
   // tpopOrdnerMassnBer aufbauen
-  tpopMassnBerNode = erstelleTpopMassnBerOrdner(results.tpopMassnBerListe, tpop)
+  const tpopMassnBerNode = erstelleTpopMassnBerOrdner(results.tpopMassnBerListe, tpop)
   tpopNodeChildren.push(tpopMassnBerNode)
 
   // tpopOrdnerFeldkontr aufbauen
-  tpopFeldkontrNode = erstelleTpopFeldkontrOrdner(results.tpopFeldkontrListe, tpop)
+  const tpopFeldkontrNode = erstelleTpopFeldkontrOrdner(results.tpopFeldkontrListe, tpop)
   tpopNodeChildren.push(tpopFeldkontrNode)
 
   // tpopOrdnerFreiwkontr aufbauen
-  tpopFreiwkontrNode = erstelleTpopFreiwkontrOrdner(results.tpopFreiwkontrListe, tpop)
+  const tpopFreiwkontrNode = erstelleTpopFreiwkontrOrdner(results.tpopFreiwkontrListe, tpop)
   tpopNodeChildren.push(tpopFreiwkontrNode)
 
   // tpopOrdnerTpopber aufbauen
-  tpopBerNode = erstelleTpopBerOrdner(results.tpopBerListe, tpop)
+  const tpopBerNode = erstelleTpopBerOrdner(results.tpopBerListe, tpop)
   tpopNodeChildren.push(tpopBerNode)
 
   // tpopOrdnerBeobZugeordnet aufbauen
-  tpopBeobZugeordnetNode = erstelleTpopBeobOrdner(results.tpopBeobZugeordnetListe, tpop)
+  const tpopBeobZugeordnetNode = erstelleTpopBeobOrdner(results.tpopBeobZugeordnetListe, tpop)
   tpopNodeChildren.push(tpopBeobZugeordnetNode)
 
   return tpopNode
 }
-
-module.exports = returnFunction
