@@ -2,25 +2,19 @@
 
 const erstellePopMassnBer = require('./popMassnBer')
 
-module.exports = function (popMassnBerListe, pop) {
-  let popMassnberOrdner = {}
-
+module.exports = (popMassnBerListe, pop) => {
   // Liste der MassnBer dieser pop erstellen
   const massnberVonPop = popMassnBerListe.filter(popMassnBer => popMassnBer.PopId === pop.PopId)
 
   // tpopOrdnerTpopber aufbauen
-  popMassnberOrdner.data = `Massnahmen-Berichte (${massnberVonPop.length})`
-  popMassnberOrdner.attr = {
-    id: pop.PopId,
-    typ: 'popOrdnerMassnber'
+  const popMassnberOrdner = {
+    data: `Massnahmen-Berichte (${massnberVonPop.length})`,
+    attr: {
+      id: pop.PopId,
+      typ: 'popOrdnerMassnber'
+    },
+    children: massnberVonPop.map(massnber => erstellePopMassnBer(massnber))
   }
-  popMassnberOrdner.children = []
-
-  // massnber aufbauen
-  massnberVonPop.forEach(massnber => {
-    const popMassnberNode = erstellePopMassnBer(massnber)
-    popMassnberOrdner.children.push(popMassnberNode)
-  })
 
   return popMassnberOrdner
 }
