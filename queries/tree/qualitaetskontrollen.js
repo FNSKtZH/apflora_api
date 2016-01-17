@@ -1,18 +1,16 @@
 'use strict'
 
-var escapeStringForSql = require('../escapeStringForSql')
+const escapeStringForSql = require('../escapeStringForSql')
 
-module.exports = function (request, reply) {
-  var apId
-  var node
+module.exports = (request, reply) => {
+  const apId = escapeStringForSql(request.params.apId)
 
-  apId = escapeStringForSql(request.params.apId)
-
-  node = {}
-  node.data = 'Qualitätskontrollen'
-  node.attr = {
-    id: 'qualitaetskontrollen' + apId,
-    typ: 'qualitaetskontrollen'
+  const node = {
+    data: 'Qualitätskontrollen',
+    attr: {
+      id: `qualitaetskontrollen${apId}`,
+      typ: 'qualitaetskontrollen'
+    }
   }
 
   reply(null, node)
