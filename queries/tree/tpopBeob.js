@@ -1,33 +1,22 @@
 'use strict'
 
-var returnFunction = function (tpopbeob) {
-  var node = {}
-  var autor
-  var datum
+module.exports = (tpopbeob) => {
+  let node = {}
 
   if (tpopbeob) {
     // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden
-    if (tpopbeob.Autor && tpopbeob.Autor !== ' ') {
-      autor = tpopbeob.Autor
-    } else {
-      autor = '(kein Autor)'
-    }
-
-    if (tpopbeob.Datum) {
-      datum = tpopbeob.Datum
-    } else {
-      datum = '(kein Datum)'
-    }
+    const autor = tpopbeob.Autor && tpopbeob.Autor !== ' ' ? tpopbeob.Autor : '(kein Autor)'
+    const datum = tpopbeob.Datum ? tpopbeob.Datum : '(kein Datum)'
 
     // node aufbauen
-    node.data = datum + ': ' + autor
-    node.attr = {
-      id: 'beob' + tpopbeob.NO_NOTE,
-      typ: 'beobZugeordnet',
-      beobtyp: tpopbeob.beobtyp
+    node = {
+      data: `${datum}: ${autor}`,
+      attr: {
+        id: `beob${tpopbeob.NO_NOTE}`,
+        typ: 'beobZugeordnet',
+        beobtyp: tpopbeob.beobtyp
+      }
     }
   }
   return node
 }
-
-module.exports = returnFunction
