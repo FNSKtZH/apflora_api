@@ -1,20 +1,20 @@
 'use strict'
 
-module.exports = function (tpopMassnber) {
-  var node = {}
-  var nodeText1
-  var nodeText2
+module.exports = (tpopMassnber) => {
+  let node = {}
 
   if (tpopMassnber) {
     // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden
-    nodeText1 = tpopMassnber.TPopMassnBerJahr || '(kein Jahr)'
-    nodeText2 = tpopMassnber.BeurteilTxt || '(keine Beurteilung)'
+    const nodeText1 = tpopMassnber.TPopMassnBerJahr || '(kein Jahr)'
+    const nodeText2 = tpopMassnber.BeurteilTxt || '(keine Beurteilung)'
 
     // node aufbauen
-    node.data = nodeText1 + ': ' + nodeText2
-    node.attr = {
-      id: tpopMassnber.TPopMassnBerId,
-      typ: 'tpopmassnber'
+    node = {
+      data: `${nodeText1}: ${nodeText2}`,
+      attr: {
+        id: tpopMassnber.TPopMassnBerId,
+        typ: 'tpopmassnber'
+      }
     }
   }
 
