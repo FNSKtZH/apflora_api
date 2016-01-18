@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   password: config.db.passWord,
   database: 'apflora'
 })
-var connection2 = mysql.createConnection({
+const connection2 = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
@@ -18,27 +18,25 @@ var connection2 = mysql.createConnection({
 
 module.exports = (request, callback) => {
   const apId = escapeStringForSql(request.params.apId)
-  var user = escapeStringForSql(request.params.user)
-  var date = new Date().toISOString()
+  const user = escapeStringForSql(request.params.user)
+  const date = new Date().toISOString()
 
   // neuen AP einfügen
   connection.query(
-    'INSERT INTO apflora.ap (ApArtId, MutWann, MutWer) VALUES (' + apId + ', "' + date + '", "' + user + '")',
-    function (err, data) {
-      if (err) { callback(err, null) }
+    `INSERT INTO apflora.ap (ApArtId, MutWann, MutWer) VALUES (${apId}, "${date}", "${user}")`,
+    (err, data) => {
+      if (err) callback(err, null)
       // Artwert holen
       connection2.query(
-        'SELECT Artwert FROM apflora_beob.adb_eigenschaften WHERE TaxonomieId=' + apId,
-        function (err, data) {
+        `SELECT Artwert FROM apflora_beob.adb_eigenschaften WHERE TaxonomieId = ${apId}`,
+        (err, data) => {
           // keine Fehler melden, wenn bloss der Artwert nicht geholt wurde
           if (data && data[0]) {
-            var artwert = data[0]
+            const artwert = data[0]
             if (artwert) {
               connection.query(
-                'UPDATE apflora.ap SET ApArtwert="' + artwert + '" WHERE ApArtId = ' + apId,
-                function (err, data) {
-                  callback(err, apId)
-                }
+                `UPDATE apflora.ap SET ApArtwert = "${artwert}" WHERE ApArtId = ${apId}`,
+                (err, data) => callback(err, apId)
               )
             }
           } else {

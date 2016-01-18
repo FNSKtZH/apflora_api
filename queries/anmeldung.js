@@ -11,11 +11,11 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var userName = escapeStringForSql(request.params.name)
-  var password = escapeStringForSql(request.params.pwd)
+  const userName = escapeStringForSql(request.params.name)
+  const password = escapeStringForSql(request.params.pwd)
 
   connection.query(
-    'SELECT NurLesen FROM user WHERE UserName = "' + userName + '" AND Passwort = "' + password + '"',
+    `SELECT NurLesen FROM user WHERE UserName = "${userName}" AND Passwort = "${password}"`,
     (err, data) => callback(err, data)
   )
 }
