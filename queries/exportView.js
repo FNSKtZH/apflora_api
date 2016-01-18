@@ -12,23 +12,20 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var view = escapeStringForSql(request.params.view) // Name des Views, aus dem die Daten geholt werden sollen
-  var apId = escapeStringForSql(request.params.apId)
-  var selectString = apId ? 'SELECT * FROM ' + view + ' WHERE ApArtId=' + apId : 'SELECT * FROM ' + view
+  const view = escapeStringForSql(request.params.view) // Name des Views, aus dem die Daten geholt werden sollen
+  const apId = escapeStringForSql(request.params.apId)
+  const sql = apId ? `SELECT * FROM ${view} WHERE ApArtId = ${apId}` : `SELECT * FROM ${view}`
 
   connection.query(
-    selectString,
-    function (err, data) {
+    sql,
+    (err, data) => {
       // null-werte eliminieren
-      var data2 = data
-      data2.forEach(function (object) {
-        _.forEach(object, function (value, key) {
-          if (value === null) {
-            object[key] = ''
-          }
+      data.forEach(object => {
+        _.forEach(object, (value, key) => {
+          if (value === null) object[key] = ''
         })
       })
-      callback(err, data2)
+      callback(err, data)
     }
   )
 }

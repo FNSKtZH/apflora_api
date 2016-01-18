@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var apId = escapeStringForSql(request.params.apId)
+  const apId = escapeStringForSql(request.params.apId)
   var X = escapeStringForSql(request.params.X)
   var Y = escapeStringForSql(request.params.Y)
 

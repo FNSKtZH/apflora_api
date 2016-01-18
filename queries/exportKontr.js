@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var view = escapeStringForSql(request.params.view) // Name des Views, aus dem die Daten geholt werden sollen
+  const view = escapeStringForSql(request.params.view) // Name des Views, aus dem die Daten geholt werden sollen
 
   connection.query(
     'SELECT * FROM ' + view,
