@@ -36,7 +36,15 @@ module.exports = (request, callback) => {
     SELECT DISTINCT
       apflora.pop.ApArtId,
       'Teilpopulation mit Ansiedlung (vor dem Berichtjahr) und Kontrolle (im Berichtjahr) aber ohne Massnahmen-Bericht (im Berichtjahr):' AS hw,
-      CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: ', apflora.tpop.TPopId)), '</a>') AS link
+      CONCAT(
+        '<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId,
+        '&pop=', apflora.pop.PopId,
+        '&tpop=', apflora.tpop.TPopId,
+        '" target="_blank">',
+        IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)),
+        IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: ', apflora.tpop.TPopId)),
+        '</a>'
+        ) AS link
     FROM apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
     WHERE apflora.tpop.TPopId IN (${sqlTpopMitAnsVorBerjahr})
       AND apflora.tpop.TPopId IN (${sqlTpopMitKontrolleImBerjahr})

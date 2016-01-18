@@ -42,7 +42,13 @@ module.exports = (request, callback) => {
     SELECT DISTINCT
       apflora.pop.ApArtId,
       'Population mit angesiedelten Teilpopulationen (vor dem Berichtjahr), die (im Berichtjahr) kontrolliert wurden, aber ohne Populations-Bericht (im Berichtjahr):' AS hw,
-      CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+      CONCAT(
+        '<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId,
+        '&pop=', apflora.pop.PopId,
+        '" target="_blank">',
+        IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)),
+        '</a>'
+        ) AS link
     FROM apflora.pop
     WHERE
       apflora.pop.PopId IN (${sqlPopMitTpopMitVerlangtemTpopberImBerjahr})
