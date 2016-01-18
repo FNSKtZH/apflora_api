@@ -1,16 +1,16 @@
 'use strict'
 
-var mysql = require('mysql')
-var config = require('../../configuration')
-var escapeStringForSql = require('../escapeStringForSql')
-var connection = mysql.createConnection({
+const mysql = require('mysql')
+const config = require('../../configuration')
+const escapeStringForSql = require('../escapeStringForSql')
+const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
   database: 'apflora'
 })
 
-function buildChildrenFromData (data) {
+const buildChildrenFromData = (data) => {
   return data.map(beob => {
     const datum = beob.Datum || '(kein Datum)'
     const autor = beob.Autor || '(kein Autor)'
@@ -20,7 +20,7 @@ function buildChildrenFromData (data) {
         typ: 'beobNichtBeurteilt',
         // beob voransetzen, damit die ID im ganzen Baum eindeutig ist
         id: `beob${beob.NO_NOTE ? beob.NO_NOTE : beob.NO_NOTE_PROJET}`,
-        beobtyp: `beob${beob.NO_NOTE ? 'infospezies' : 'evab'}`
+        beobtyp: beob.NO_NOTE ? 'infospezies' : 'evab'
       }
     }
   })
