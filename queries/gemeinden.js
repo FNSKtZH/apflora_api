@@ -11,7 +11,9 @@ const connection = mysql.createConnection({
 
 module.exports = (request, callback) => {
   connection.query(
-    'SELECT GmdName FROM gemeinde ORDER BY GmdName',
+    `SELECT GmdName
+    FROM gemeinde
+    ORDER BY GmdName`,
     (err, data) => callback(err, data)
   )
 }

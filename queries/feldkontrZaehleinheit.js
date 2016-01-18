@@ -11,7 +11,11 @@ const connection = mysql.createConnection({
 
 module.exports = (request, callback) => {
   connection.query(
-    'SELECT ZaehleinheitCode as value, ZaehleinheitTxt as label FROM tpopkontrzaehl_einheit_werte ORDER BY ZaehleinheitOrd',
+    `SELECT
+      ZaehleinheitCode as value,
+      ZaehleinheitTxt as label
+    FROM tpopkontrzaehl_einheit_werte
+    ORDER BY ZaehleinheitOrd`,
     (err, data) => callback(err, data)
   )
 }

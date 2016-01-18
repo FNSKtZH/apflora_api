@@ -11,7 +11,11 @@ const connection = mysql.createConnection({
 
 module.exports = (request, callback) => {
   connection.query(
-    'SELECT DomainCode, DomainTxt FROM tpopkontr_idbiotuebereinst_werte ORDER BY DomainOrd',
+    `SELECT
+      DomainCode,
+      DomainTxt
+    FROM tpopkontr_idbiotuebereinst_werte
+    ORDER BY DomainOrd`,
     (err, data) => callback(err, data)
   )
 }

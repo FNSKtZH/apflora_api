@@ -15,11 +15,15 @@ module.exports = (request, callback) => {
   const tpopKontrtyp = escapeStringForSql(request.params.tpopKontrtyp) // feldkontr oder freiwkontr
   const user = escapeStringForSql(request.params.user) // der Benutzername
   const date = new Date().toISOString() // wann gespeichert wird
-  let sql = `INSERT INTO tpopkontr (TPopId, MutWann, MutWer) VALUES (${tpopId}, "${date}", "${user}")`
+  let sql = `
+    INSERT INTO tpopkontr (TPopId, MutWann, MutWer)
+    VALUES (${tpopId}, "${date}", "${user}")`
 
   // sql schreiben
   if (tpopKontrtyp === 'tpopfreiwkontr') {
-    sql = `INSERT INTO tpopkontr (TPopId, TPopKontrTyp, MutWann, MutWer) VALUES (${tpopId}, "Freiwilligen-Erfolgskontrolle", "${date}", "${user}")`
+    sql = `
+      INSERT INTO tpopkontr (TPopId, TPopKontrTyp, MutWann, MutWer)
+      VALUES (${tpopId}, "Freiwilligen-Erfolgskontrolle", "${date}", "${user}")`
   }
 
   connection.query(
