@@ -2,25 +2,17 @@
 
 const erstelleTpop = require('./tpop')
 
-module.exports = function (results, tpopListe, pop) {
-  let popTpopOrdner = {}
-
+module.exports = (results, tpopListe, pop) => {
   // Liste der tpop dieser pop erstellen
   const tpopVonPop = tpopListe.filter(tpop => tpop.PopId === pop.PopId)
 
   // tpopOrdnerTpop aufbauen
-  popTpopOrdner.data = `Teilpopulationen (${tpopVonPop.length})`
-  popTpopOrdner.attr = {
-    id: pop.PopId,
-    typ: 'popOrdnerTpop'
+  return {
+    data: `Teilpopulationen (${tpopVonPop.length})`,
+    attr: {
+      id: pop.PopId,
+      typ: 'popOrdnerTpop'
+    },
+    children: tpopVonPop.map(tpop => erstelleTpop(results, tpop))
   }
-  popTpopOrdner.children = []
-
-  // tpop aufbauen
-  tpopVonPop.forEach(tpop => {
-    const tpopNode = erstelleTpop(results, tpop)
-    popTpopOrdner.children.push(tpopNode)
-  })
-
-  return popTpopOrdner
 }

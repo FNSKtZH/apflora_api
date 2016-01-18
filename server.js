@@ -6,16 +6,15 @@
 
 const json2csv = require('json2csv')
 // wird nur in Entwicklung genutzt
-/*
 const serverOptionsDevelopment = {
   debug: {
     log: ['error'],
     request: ['error']
   }
-}*/
+}
 const Hapi = require('hapi')
 const Inert = require('inert')
-const server = new Hapi.Server()
+const server = new Hapi.Server(serverOptionsDevelopment)
 const mysql = require('mysql')
 const config = require('./configuration.js')
 const connectionApflora = mysql.createConnection({
