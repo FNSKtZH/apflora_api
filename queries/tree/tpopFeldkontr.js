@@ -1,33 +1,23 @@
 'use strict'
 
-var returnFunction = function (feldkontr) {
-  var node = {}
-  var nodeText1
-  var nodeText2
+module.exports = (feldkontr) => {
+  let node = {}
 
   if (feldkontr) {
+    const tPopKontrJahr = feldkontr.TPopKontrJahr
     // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden
-    if (feldkontr.TPopKontrJahr && feldkontr.TPopKontrJahr >= 0) {
-      nodeText1 = feldkontr.TPopKontrJahr.toString()
-    } else {
-      nodeText1 = '(kein Jahr)'
-    }
-
-    if (feldkontr.TPopKontrTyp) {
-      nodeText2 = feldkontr.TPopKontrTyp
-    } else {
-      nodeText2 = '(kein Typ)'
-    }
+    const nodeText1 = tPopKontrJahr && tPopKontrJahr >= 0 ? tPopKontrJahr.toString() : '(kein Jahr)'
+    const nodeText2 = feldkontr.TPopKontrTyp ? feldkontr.TPopKontrTyp : '(kein Typ)'
 
     // node aufbauen
-    node.data = nodeText1 + ': ' + nodeText2
-    node.attr = {
-      id: feldkontr.TPopKontrId,
-      typ: 'tpopfeldkontr'
+    node = {
+      data: `${nodeText1}: ${nodeText2}`,
+      attr: {
+        id: feldkontr.TPopKontrId,
+        typ: 'tpopfeldkontr'
+      }
     }
   }
 
   return node
 }
-
-module.exports = returnFunction

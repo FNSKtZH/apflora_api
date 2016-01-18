@@ -1,26 +1,18 @@
 'use strict'
 
-const erstelleTPopBer = require('./tpopBer')
+const erstelleTPopBer = require('./tpopBer.js')
 
-module.exports = function (tpopBerListe, tpop) {
-  let tpopTpopberOrdner = {}
-
+module.exports = (tpopBerListe, tpop) => {
   // Liste der Berichte dieser tpop erstellen
   const tpopberVonTpop = tpopBerListe.filter(tpopBer => tpopBer.TPopId === tpop.TPopId)
 
   // tpopOrdnerTpopber aufbauen
-  tpopTpopberOrdner.data = `Teilpopulations-Berichte (${tpopberVonTpop.length})`
-  tpopTpopberOrdner.attr = {
-    id: 'tpopOrdnerTpopber' + tpop.TPopId,
-    typ: 'tpopOrdnerTpopber'
+  return {
+    data: `Teilpopulations-Berichte (${tpopberVonTpop.length})`,
+    attr: {
+      id: 'tpopOrdnerTpopber' + tpop.TPopId,
+      typ: 'tpopOrdnerTpopber'
+    },
+    children: tpopberVonTpop.map(tpopber => erstelleTPopBer(tpopber))
   }
-  tpopTpopberOrdner.children = []
-
-  // tpopber aufbauen
-  tpopberVonTpop.forEach(function (tpopber) {
-    const tpopBerNode = erstelleTPopBer(tpopber)
-    tpopTpopberOrdner.children.push(tpopBerNode)
-  })
-
-  return tpopTpopberOrdner
 }
