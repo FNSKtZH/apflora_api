@@ -28,10 +28,22 @@ module.exports = (request, callback) => {
   const mutWannFeld = table.mutWannFeld // so heisst das Feld für MutWann
   const mutWerFeld = table.mutWerFeld // so heisst das Feld für MutWer
 
-  let sql = `UPDATE ${tabelle} SET ${feld} = "${wert}", ${mutWannFeld} = "${date}", ${mutWerFeld} = "${user}" WHERE ${tabelleIdFeld} = ${tabelleId}`
+  let sql = `
+    UPDATE ${tabelle}
+    SET
+      ${feld} = "${wert}",
+      ${mutWannFeld} = "${date}",
+      ${mutWerFeld} = "${user}"
+    WHERE ${tabelleIdFeld} = ${tabelleId}`
   // Ist ein Feld neu leer, muss NULL übergeben werden. wert ist dann 'undefined'
   if (!wert) {
-    sql = `UPDATE ${tabelle} SET ${feld} = NULL, ${mutWannFeld} = "${date}", ${mutWerFeld} = "${user}" WHERE ${tabelleIdFeld} = ${tabelleId}`
+    sql = `
+      UPDATE ${tabelle}
+      SET
+        ${feld} = NULL,
+        ${mutWannFeld} = "${date}",
+        ${mutWerFeld} = "${user}"
+      WHERE ${tabelleIdFeld} = ${tabelleId}`
   }
 
   connection.query(

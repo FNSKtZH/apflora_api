@@ -36,7 +36,11 @@ module.exports = (request, callback) => {
   delete felder.user
 
   // sql beginnen
-  sql = `UPDATE ${tabelle} SET ${nameMutwannFeld}="${date}", ${nameMutWerFeld}="${felder.user}"`
+  sql = `
+    UPDATE ${tabelle}
+    SET
+      ${nameMutwannFeld}="${date}",
+      ${nameMutWerFeld}="${felder.user}"`
 
   // jetzt für jedes key/value-Paar des Objekts set-Anweisungen generieren
   _.forEach(felder, (feldwert, feldname) => {
@@ -45,14 +49,14 @@ module.exports = (request, callback) => {
       if (typeof feldwert === 'string') {
         feldwert = feldwert.replace('"', '')
       }
-      sql += `,${feldname}="${feldwert}"`
+      sql += `, ${feldname} = "${feldwert}"`
     } else {
       // leeres Feld: Null speichern, sonst werden aus Nullwerten in Zahlenfeldern 0 gemacht
-      sql += `,${feldname}=NULL`
+      sql += `, ${feldname} = NULL`
     }
   })
 
-  sql += ` WHERE ${tabelleIdFeld}=${id}`
+  sql += ` WHERE ${tabelleIdFeld} = ${id}`
 
   connection.query(
     sql,
