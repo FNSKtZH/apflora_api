@@ -11,10 +11,10 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var apId = escapeStringForSql(request.params.apId)
+  const apId = escapeStringForSql(request.params.apId)
   var tpopId = escapeStringForSql(request.params.tpopId)
   var beobId = escapeStringForSql(request.params.beobId)
-  var nichtZuzuordnen = request.params.nichtZuzuordnen
+  var nichtZuzuordnen = escapeStringForSql(request.params.nichtZuzuordnen)
   var sql
 
   if (beobId) {

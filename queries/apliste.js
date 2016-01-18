@@ -2,6 +2,7 @@
 
 const mysql = require('mysql')
 const config = require('../configuration')
+const escapeStringForSql = require('./escapeStringForSql')
 const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
@@ -12,7 +13,7 @@ const connection = mysql.createConnection({
 module.exports = (request, callback) => {
   // Artname muss 'label' heissen, sonst funktioniert jquery ui autocomplete nicht
   var sql
-  var programm = request.params.programm
+  var programm = escapeStringForSql(request.params.programm)
 
   // url setzen
   switch (programm) {
