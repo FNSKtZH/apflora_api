@@ -12,21 +12,19 @@ const connection = mysql.createConnection({
 
 module.exports = (request, callback) => {
   const apId = escapeStringForSql(request.params.apId)
-  var popId = escapeStringForSql(request.params.popId)
-  var user = escapeStringForSql(request.params.user) // der Benutzername
-  var date = new Date().toISOString() // wann gespeichert wird
-  var sql = ''
+  const popId = escapeStringForSql(request.params.popId)
+  const user = escapeStringForSql(request.params.user) // der Benutzername
+  const date = new Date().toISOString() // wann gespeichert wird
 
   // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
-  sql += 'INSERT INTO pop (PopNr, PopName, PopHerkunft, PopHerkunftUnklar, PopHerkunftUnklarBegruendung, PopBekanntSeit, PopXKoord, PopYKoord, PopGuid, MutWann, MutWer, ApArtId)'
-  sql += ' SELECT pop.PopNr, pop.PopName, pop.PopHerkunft, pop.PopHerkunftUnklar, pop.PopHerkunftUnklarBegruendung, pop.PopBekanntSeit, pop.PopXKoord, pop.PopYKoord, pop.PopGuid, "' + date + '", "' + user + '", ' + apId
-  sql += ' FROM pop'
-  sql += ' WHERE pop.PopId=' + popId
+  const sql = `
+    INSERT INTO pop (PopNr, PopName, PopHerkunft, PopHerkunftUnklar, PopHerkunftUnklarBegruendung, PopBekanntSeit, PopXKoord, PopYKoord, PopGuid, MutWann, MutWer, ApArtId)
+    SELECT pop.PopNr, pop.PopName, pop.PopHerkunft, pop.PopHerkunftUnklar, pop.PopHerkunftUnklarBegruendung, pop.PopBekanntSeit, pop.PopXKoord, pop.PopYKoord, pop.PopGuid, "${date}", "${user}", ${apId}
+    FROM pop
+    WHERE pop.PopId = ${popId}`
   connection.query(
     sql,
-    function (err, data) {
-      // neue Id zurück liefern
-      callback(err, data.insertId)
-    }
+    // neue Id zurück liefern
+    (err, data) => callback(err, data.insertId)
   )
 }
