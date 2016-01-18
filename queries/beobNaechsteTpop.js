@@ -12,11 +12,14 @@ const connection = mysql.createConnection({
 
 module.exports = (request, callback) => {
   const apId = escapeStringForSql(request.params.apId)
-  var X = escapeStringForSql(request.params.X)
-  var Y = escapeStringForSql(request.params.Y)
+  const X = escapeStringForSql(request.params.X)
+  const Y = escapeStringForSql(request.params.Y)
 
   connection.query(
-    'SELECT PopNr, TPopNr, TPopId, TPopFlurname, SQRT((' + X + '-TPopXKoord)*(' + X + '-TPopXKoord)+(' + Y + '-TPopYKoord)*(' + Y + '-TPopYKoord)) AS DistZuTPop FROM pop INNER JOIN tpop ON pop.PopId = tpop.PopId WHERE ApArtId = ' + apId + ' AND TPopXKoord IS NOT NULL AND TPopYKoord IS NOT NULL ORDER BY DistzuTPop LIMIT 1',
+    `SELECT PopNr, TPopNr, TPopId, TPopFlurname, SQRT((${X} - TPopXKoord) * (${X} - TPopXKoord) + (${Y} - TPopYKoord) * (${Y} - TPopYKoord)) AS DistZuTPop
+    FROM pop INNER JOIN tpop ON pop.PopId = tpop.PopId
+    WHERE ApArtId = ${apId} AND TPopXKoord IS NOT NULL AND TPopYKoord IS NOT NULL
+    ORDER BY DistzuTPop LIMIT 1`,
     (err, data) => callback(err, data)
   )
 }

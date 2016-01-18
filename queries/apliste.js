@@ -12,8 +12,8 @@ const connection = mysql.createConnection({
 
 module.exports = (request, callback) => {
   // Artname muss 'label' heissen, sonst funktioniert jquery ui autocomplete nicht
-  var sql
-  var programm = escapeStringForSql(request.params.programm)
+  let sql
+  const programm = escapeStringForSql(request.params.programm)
 
   // url setzen
   switch (programm) {
