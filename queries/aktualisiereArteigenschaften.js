@@ -1,7 +1,7 @@
 'use strict'
 
 const mysql = require('mysql')
-var config = require('../configuration')
+const config = require('../configuration')
 var request = require('request')
 var createInsertSqlFromObjectArray = require('./createInsertSqlFromObjectArray')
 const connection = mysql.createConnection({

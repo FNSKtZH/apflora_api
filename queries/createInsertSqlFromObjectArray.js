@@ -1,7 +1,7 @@
 'use strict'
 
 var _ = require('lodash')
-var escapeStringForSql = require('./escapeStringForSql')
+const escapeStringForSql = require('./escapeStringForSql')
 
 module.exports = function (array) {
   var eigenschaftenString = ''
