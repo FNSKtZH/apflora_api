@@ -2,6 +2,7 @@
 
 const mysql = require('mysql')
 const config = require('../configuration')
+const escapeStringForSql = require('./escapeStringForSql')
 const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
@@ -11,8 +12,8 @@ const connection = mysql.createConnection({
 
 module.exports = (request, callback) => {
   var sql
-  var apId = request.params.apId
-  var berichtjahr = request.params.berichtjahr || null
+  var apId = escapeStringForSql(request.params.apId)
+  var berichtjahr = escapeStringForSql(request.params.berichtjahr) || null
   var sqlTpopMitAnsVorBerjahr
   var sqlTpopMitKontrolleImBerjahr
   var sqlPopMitTpopMitVerlangtemTpopmassnberImBerjahr
