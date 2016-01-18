@@ -5,11 +5,11 @@
 
 'use strict'
 
-var mysql = require('mysql')
+const mysql = require('mysql')
 var _ = require('lodash')
 var config = require('../configuration')
 var escapeStringForSql = require('./escapeStringForSql')
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
