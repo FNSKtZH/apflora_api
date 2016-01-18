@@ -12,51 +12,43 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var tpopId = escapeStringForSql(request.params.tpopId)
-  var tpopMassnId = escapeStringForSql(request.params.tpopMassnId)
-  var user = escapeStringForSql(request.params.user) // der Benutzername
-  var date = new Date().toISOString() // wann gespeichert wird
+  const tpopId = escapeStringForSql(request.params.tpopId)
+  const tpopMassnId = escapeStringForSql(request.params.tpopMassnId)
+  const user = escapeStringForSql(request.params.user) // der Benutzername
+  const date = new Date().toISOString() // wann gespeichert wird
 
   async.series([
-    function (callback) {
+    (callback) => {
       // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
       connection.query(
         'DROP TABLE IF EXISTS tmp',
-        function (err) {
-          // nur allfällige Fehler weiterleiten
-          callback(err, null)
-        }
+        // nur allfällige Fehler weiterleiten
+        (err) => callback(err, null)
       )
     },
-    function (callback) {
+    (callback) => {
       // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
       connection.query(
-        'CREATE TEMPORARY TABLE tmp SELECT * FROM tpopmassn WHERE TPopMassnId =' + tpopMassnId,
-        function (err) {
-          // nur allfällige Fehler weiterleiten
-          callback(err, null)
-        }
+        `CREATE TEMPORARY TABLE tmp SELECT * FROM tpopmassn WHERE TPopMassnId = ${tpopMassnId}`,
+        // nur allfällige Fehler weiterleiten
+        (err) => callback(err, null)
       )
     },
-    function (callback) {
+    (callback) => {
       // TPopId anpassen
       connection.query(
-        'UPDATE tmp SET TPopMassnId = NULL, TPopId = ' + tpopId + ', MutWann="' + date + '", MutWer="' + user + '"',
-        function (err) {
-          // nur allfällige Fehler weiterleiten
-          callback(err, null)
-        }
+        `UPDATE tmp SET TPopMassnId = NULL, TPopId = ${tpopId}, MutWann = "${date}", MutWer = "${user}"`,
+        // nur allfällige Fehler weiterleiten
+        (err) => callback(err, null)
       )
     },
-    function (callback) {
+    (callback) => {
       connection.query(
         'INSERT INTO tpopmassn SELECT * FROM tmp',
-        function (err, data) {
-          callback(err, data.insertId)
-        }
+        (err, data) => callback(err, data.insertId)
       )
     }
-  ], function (err, results) {
+  ], (err, results) => {
     // neue id zurück liefern
     callback(err, results[3])
   })

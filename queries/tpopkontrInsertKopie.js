@@ -18,37 +18,31 @@ module.exports = (request, callback) => {
   var date = new Date().toISOString()                // wann gespeichert wird
 
   async.series([
-    function (callback) {
+    (callback) => {
       // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
       connection.query(
         'DROP TABLE IF EXISTS tmp',
-        function (err) {
-          // nur allfällige Fehler weiterleiten
-          callback(err, null)
-        }
+        // nur allfällige Fehler weiterleiten
+        (err) => callback(err, null)
       )
     },
-    function (callback) {
+    (callback) => {
       // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
       connection.query(
         'CREATE TEMPORARY TABLE tmp SELECT * FROM tpopkontr WHERE TPopKontrId = ' + tpopKontrId,
-        function (err) {
-          // nur allfällige Fehler weiterleiten
-          callback(err, null)
-        }
+        // nur allfällige Fehler weiterleiten
+        (err) => callback(err, null)
       )
     },
-    function (callback) {
+    (callback) => {
       // TPopId anpassen
       connection.query(
         'UPDATE tmp SET TPopKontrId = NULL, TPopId = ' + tpopId + ', MutWann="' + date + '", MutWer="' + user + '"',
-        function (err) {
-          // nur allfällige Fehler weiterleiten
-          callback(err, null)
-        }
+        // nur allfällige Fehler weiterleiten
+        (err) => callback(err, null)
       )
     },
-    function (callback) {
+    (callback) => {
       connection.query(
         'INSERT INTO tpopkontr SELECT * FROM tmp',
         function (err, data) {

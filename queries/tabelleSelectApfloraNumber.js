@@ -11,12 +11,12 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var tabelle = escapeStringForSql(request.params.tabelle) // Name der Tabelle, aus der die Daten geholt werden sollen
-  var feld = escapeStringForSql(request.params.feld) // Name der ID der Tabelle
-  var wert = escapeStringForSql(request.params.wert) // Wert der ID
+  const tabelle = escapeStringForSql(request.params.tabelle) // Name der Tabelle, aus der die Daten geholt werden sollen
+  const feld = escapeStringForSql(request.params.feld) // Name der ID der Tabelle
+  const wert = escapeStringForSql(request.params.wert) // Wert der ID
 
   connection.query(
-    'SELECT * FROM ' + tabelle + ' WHERE ' + feld + '=' + wert,
+    `SELECT * FROM ${tabelle} WHERE ${feld} = ${wert}`,
     (err, data) => callback(err, data)
   )
 }

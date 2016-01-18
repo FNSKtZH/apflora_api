@@ -11,15 +11,10 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var tabelle = escapeStringForSql(request.params.tabelle) // Name der Tabelle, aus der die Daten geholt werden sollen
-  var feld = escapeStringForSql(request.params.feld) // Name der ID der Tabelle
-  var wert = escapeStringForSql(request.params.wert) // Wert der ID
-  const sql = 'SELECT * FROM ' + tabelle + ' WHERE ' + feld + '=' + wert
-
-  console.log('tabelle', tabelle)
-  console.log('feld', feld)
-  console.log('wert', wert)
-  console.log('sql', sql)
+  const tabelle = escapeStringForSql(request.params.tabelle) // Name der Tabelle, aus der die Daten geholt werden sollen
+  const feld = escapeStringForSql(request.params.feld) // Name der ID der Tabelle
+  const wert = escapeStringForSql(request.params.wert) // Wert der ID
+  const sql = `SELECT * FROM ${tabelle} WHERE ${feld} = ${wert}`
 
   connection.query(
     sql,
