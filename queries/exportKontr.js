@@ -14,7 +14,8 @@ module.exports = (request, callback) => {
   const view = escapeStringForSql(request.params.view) // Name des Views, aus dem die Daten geholt werden sollen
 
   connection.query(
-    `SELECT * FROM ${view}`,
+    `SELECT *
+    FROM ${view}`,
     (err, data) => {
       // null-werte eliminieren
       data.forEach(object => {
