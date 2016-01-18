@@ -4,88 +4,86 @@
 
 'use strict'
 
-var _ = require('underscore')
-var json2csv = require('json2csv')
+const json2csv = require('json2csv')
 // wird nur in Entwicklung genutzt
 /*
-var serverOptionsDevelopment = {
+const serverOptionsDevelopment = {
   debug: {
     log: ['error'],
     request: ['error']
   }
-},
-*/
-var Hapi = require('hapi')
-var Inert = require('inert')
-var server = new Hapi.Server()
-var mysql = require('mysql')
-var config = require('./configuration')
-var connectionApflora = mysql.createConnection({
+}*/
+const Hapi = require('hapi')
+const Inert = require('inert')
+const server = new Hapi.Server()
+const mysql = require('mysql')
+const config = require('./configuration.js')
+const connectionApflora = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
   database: 'apflora'
 })
-var queryGemeinden = require('./queries/gemeinden')
-var queryArtliste = require('./queries/artliste')
-var queryApliste = require('./queries/apliste')
-var queryQkView = require('./queries/qkView')
-var queryQkPopOhnePopber = require('./queries/qkPopOhnePopber')
-var queryQkPopOhnePopmassnber = require('./queries/qkPopOhnePopmassnber')
-var queryQkTpopOhneTpopber = require('./queries/qkTpopOhneTpopber')
-var queryQkTpopOhneMassnber = require('./queries/qkTpopOhneMassnber')
-var queryAdressen = require('./queries/adressen')
-var queryLrDelarze = require('./queries/lrDelarze')
-var queryTpopMassnTypen = require('./queries/tpopMassnTypen')
-var queryAp = require('./queries/ap')
-var queryApInsert = require('./queries/apInsert')
-var queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit')
-var queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst')
-var queryTabelleSelectApfloraNumber = require('./queries/tabelleSelectApfloraNumber')
-var queryTabelleSelectApfloraString = require('./queries/tabelleSelectApfloraString')
-var queryTabelleSelectBeobNumber = require('./queries/tabelleSelectBeobNumber')
-var queryTabelleSelectBeobString = require('./queries/tabelleSelectBeobString')
-var queryTabelleInsertApflora = require('./queries/tabelleInsertApflora')
-var queryTabelleInsertMultipleApflora = require('./queries/tabelleInsertMultipleApflora')
-var queryTpopmassnInsertKopie = require('./queries/tpopmassnInsertKopie')
-var queryTpopkontrInsertKopie = require('./queries/tpopkontrInsertKopie')
-var queryTpopInsertKopie = require('./queries/tpopInsertKopie')
-var queryTpopKoordFuerProgramm = require('./queries/tpopKoordFuerProgramm')
-var queryPopInsertKopie = require('./queries/popInsertKopie')
-var queryFeldkontrInsert = require('./queries/feldkontrInsert')
-var queryTabelleUpdateApflora = require('./queries/tabelleUpdateApflora')
-var queryTabelleUpdateMultipleApflora = require('./queries/tabelleUpdateMultipleApflora')
-var queryTabelleUpdateBeob = require('./queries/tabelleUpdateBeob')
-var queryTabelleDeleteApflora = require('./queries/tabelleDeleteApflora')
-var queryAnmeldung = require('./queries/anmeldung')
-var treeQualitaetskontrollen = require('./queries/tree/qualitaetskontrollen')
-var treeAssozarten = require('./queries/tree/assozarten')
-var treeIdealbiotop = require('./queries/tree/idealbiotop')
-var treeBeobNichtZuzuordnen = require('./queries/tree/beobNichtZuzuordnen')
-var treeBeobNichtBeurteilt = require('./queries/tree/beobNichtBeurteilt')
-var treeBer = require('./queries/tree/ber')
-var treeJBer = require('./queries/tree/jber')
-var treeErfkrit = require('./queries/tree/erfkrit')
-var treeApziel = require('./queries/tree/apziel')
-var treePop = require('./queries/tree/pop')
-var queryBeobDistzutpopEvab = require('./queries/beobDistzutpopEvab')
-var queryBeobNaechsteTpop = require('./queries/beobNaechsteTpop')
-var queryBeobDistzutpopInfospezies = require('./queries/beobDistzutpopInfospezies')
-var queryBeobKarte = require('./queries/beobKarte')
-var queryBeobZuordnen = require('./queries/beobZuordnen')
-var queryApKarte = require('./queries/apKarte')
-var queryPopKarte = require('./queries/popKarte')
-var queryPopKarteAlle = require('./queries/popKarteAlle')
-var queryPopChKarte = require('./queries/popChKarte')
-var queryPopsChKarte = require('./queries/popsChKarte')
-var queryTPopKarte = require('./queries/tpopKarte')
-var queryTPopsKarte = require('./queries/tpopsKarte')
-var queryTPopKarteAlle = require('./queries/tpopKarteAlle')
-var exportView = require('./queries/exportView')
-var exportViewWhereIdIn = require('./queries/exportViewWhereIdIn')
-var getKmlForPop = require('./src/getKmlForPop')
-var getKmlForTpop = require('./src/getKmlForTpop')
-var aktualisiereArteigenschaften = require('./queries/aktualisiereArteigenschaften')
+const queryGemeinden = require('./queries/gemeinden.js')
+const queryArtliste = require('./queries/artliste.js')
+const queryApliste = require('./queries/apliste.js')
+const queryQkView = require('./queries/qkView.js')
+const queryQkPopOhnePopber = require('./queries/qkPopOhnePopber.js')
+const queryQkPopOhnePopmassnber = require('./queries/qkPopOhnePopmassnber.js')
+const queryQkTpopOhneTpopber = require('./queries/qkTpopOhneTpopber.js')
+const queryQkTpopOhneMassnber = require('./queries/qkTpopOhneMassnber.js')
+const queryAdressen = require('./queries/adressen.js')
+const queryLrDelarze = require('./queries/lrDelarze.js')
+const queryTpopMassnTypen = require('./queries/tpopMassnTypen.js')
+const queryAp = require('./queries/ap.js')
+const queryApInsert = require('./queries/apInsert.js')
+const queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit.js')
+const queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst.js')
+const queryTabelleSelectApfloraNumber = require('./queries/tabelleSelectApfloraNumber.js')
+const queryTabelleSelectApfloraString = require('./queries/tabelleSelectApfloraString.js')
+const queryTabelleSelectBeobNumber = require('./queries/tabelleSelectBeobNumber.js')
+const queryTabelleSelectBeobString = require('./queries/tabelleSelectBeobString.js')
+const queryTabelleInsertApflora = require('./queries/tabelleInsertApflora.js')
+const queryTabelleInsertMultipleApflora = require('./queries/tabelleInsertMultipleApflora.js')
+const queryTpopmassnInsertKopie = require('./queries/tpopmassnInsertKopie.js')
+const queryTpopkontrInsertKopie = require('./queries/tpopkontrInsertKopie.js')
+const queryTpopInsertKopie = require('./queries/tpopInsertKopie.js')
+const queryTpopKoordFuerProgramm = require('./queries/tpopKoordFuerProgramm.js')
+const queryPopInsertKopie = require('./queries/popInsertKopie.js')
+const queryFeldkontrInsert = require('./queries/feldkontrInsert.js')
+const queryTabelleUpdateApflora = require('./queries/tabelleUpdateApflora.js')
+const queryTabelleUpdateMultipleApflora = require('./queries/tabelleUpdateMultipleApflora.js')
+const queryTabelleUpdateBeob = require('./queries/tabelleUpdateBeob.js')
+const queryTabelleDeleteApflora = require('./queries/tabelleDeleteApflora.js')
+const queryAnmeldung = require('./queries/anmeldung.js')
+const treeQualitaetskontrollen = require('./queries/tree/qualitaetskontrollen.js')
+const treeAssozarten = require('./queries/tree/assozarten.js')
+const treeIdealbiotop = require('./queries/tree/idealbiotop.js')
+const treeBeobNichtZuzuordnen = require('./queries/tree/beobNichtZuzuordnen.js')
+const treeBeobNichtBeurteilt = require('./queries/tree/beobNichtBeurteilt.js')
+const treeBer = require('./queries/tree/ber.js')
+const treeJBer = require('./queries/tree/jber.js')
+const treeErfkrit = require('./queries/tree/erfkrit.js')
+const treeApziel = require('./queries/tree/apziel.js')
+const treePop = require('./queries/tree/pop.js')
+const queryBeobDistzutpopEvab = require('./queries/beobDistzutpopEvab.js')
+const queryBeobNaechsteTpop = require('./queries/beobNaechsteTpop.js')
+const queryBeobDistzutpopInfospezies = require('./queries/beobDistzutpopInfospezies.js')
+const queryBeobKarte = require('./queries/beobKarte.js')
+const queryBeobZuordnen = require('./queries/beobZuordnen.js')
+const queryApKarte = require('./queries/apKarte.js')
+const queryPopKarte = require('./queries/popKarte.js')
+const queryPopKarteAlle = require('./queries/popKarteAlle.js')
+const queryPopChKarte = require('./queries/popChKarte.js')
+const queryPopsChKarte = require('./queries/popsChKarte.js')
+const queryTPopKarte = require('./queries/tpopKarte.js')
+const queryTPopsKarte = require('./queries/tpopsKarte.js')
+const queryTPopKarteAlle = require('./queries/tpopKarteAlle.js')
+const exportView = require('./queries/exportView.js')
+const exportViewWhereIdIn = require('./queries/exportViewWhereIdIn.js')
+const getKmlForPop = require('./src/getKmlForPop.js')
+const getKmlForTpop = require('./src/getKmlForTpop.js')
+const aktualisiereArteigenschaften = require('./queries/aktualisiereArteigenschaften.js')
 
 connectionApflora.connect()
 
@@ -106,7 +104,7 @@ server.register(Inert, function () {
   server.route({
     method: 'GET',
     path: '/{path*}',
-    handler: function (request, reply) {
+    handler (request, reply) {
       reply.file('index.html')
     }
   })
@@ -146,7 +144,7 @@ server.register(Inert, function () {
       method: 'GET',
       path: '/etc/beziehungen.png',
       // vhost: ['api.apflora.ch', 'api.localhost'],
-    handler: function (request, reply) {
+    handler (request, reply) {
           reply.file('etc/beziehungen.png')
       }
   });*/
@@ -409,7 +407,7 @@ server.register(Inert, function () {
         ]
 
       ],
-      handler: function (request, reply) {
+      handler (request, reply) {
         reply([
           request.pre.qualitaetskontrollen,
           request.pre.pop,
@@ -509,9 +507,9 @@ server.register(Inert, function () {
     method: 'GET',
     path: '/exportView/xslx/view={view}',
     // handler: exportView
-    handler: function (request, reply) {
-      exportView(request, function (err, data) {
-        if (err) { return reply(err) }
+    handler (request, reply) {
+      exportView(request, (err, data) => {
+        if (err) return reply(err)
         reply(data)
           .header('Content-Type', 'application/json;')
           .header('Accept', 'application/json;')
@@ -525,24 +523,22 @@ server.register(Inert, function () {
   server.route({
     method: 'GET',
     path: '/exportView/csv/view={view}/filename={filename}',
-    handler: function (request, reply) {
-      var filename = request.params.filename
-      exportView(request, function (err, data) {
-        var fields = _.keys(data[0])
-        if (err) { return reply(err) }
-        json2csv({
-          data: data,
-          fields: fields
-        }, function (err, csv) {
-          if (err) {
-            return reply(err)
+    handler (request, reply) {
+      const filename = request.params.filename
+      exportView(request, (err, data) => {
+        const fields = Object.keys(data[0])
+        if (err) return reply(err)
+        json2csv(
+          { data, fields },
+          (err, csv) => {
+            if (err) return reply(err)
+            reply(csv)
+              .header('Content-Type', 'text/x-csv; charset=utf-8')
+              .header('Content-disposition', `attachment; filename=${filename}.csv`)
+              .header('Pragma', 'no-cache')
+              .header('Set-Cookie', 'fileDownload=true; path=/')
           }
-          reply(csv)
-            .header('Content-Type', 'text/x-csv; charset=utf-8')
-            .header('Content-disposition', 'attachment; filename=' + filename + '.csv')
-            .header('Pragma', 'no-cache')
-            .header('Set-Cookie', 'fileDownload=true; path=/')
-        })
+        )
       })
     }
   })
@@ -550,24 +546,22 @@ server.register(Inert, function () {
   server.route({
     method: 'GET',
     path: '/exportView/csv/view={view}/filename={filename}/{apId}',
-    handler: function (request, reply) {
-      var filename = request.params.filename
-      exportView(request, function (err, data) {
-        var fields = _.keys(data[0])
-        if (err) { return reply(err) }
-        json2csv({
-          data: data,
-          fields: fields
-        }, function (err, csv) {
-          if (err) {
-            return reply(err)
+    handler (request, reply) {
+      const filename = request.params.filename
+      exportView(request, (err, data) => {
+        const fields = Object.keys(data[0])
+        if (err) return reply(err)
+        json2csv(
+          { data, fields },
+          (err, csv) => {
+            if (err) return reply(err)
+            reply(csv)
+              .header('Content-Type', 'text/x-csv; charset=utf-8')
+              .header('Content-disposition', `attachment; filename=${filename}.csv`)
+              .header('Pragma', 'no-cache')
+              .header('Set-Cookie', 'fileDownload=true; path=/')
           }
-          reply(csv)
-            .header('Content-Type', 'text/x-csv; charset=utf-8')
-            .header('Content-disposition', 'attachment; filename=' + filename + '.csv')
-            .header('Pragma', 'no-cache')
-            .header('Set-Cookie', 'fileDownload=true; path=/')
-        })
+        )
       })
     }
   })
@@ -575,22 +569,22 @@ server.register(Inert, function () {
   server.route({
     method: 'GET',
     path: '/exportViewWhereIdIn/csv/view={view}/idName={idName}/idListe={idListe}/filename={filename}',
-    handler: function (request, reply) {
-      var filename = request.params.filename
-      exportViewWhereIdIn(request, function (err, data) {
-        if (err) { return reply(err) }
-        var fields = _.keys(data[0])
-        json2csv({
-          data: data,
-          fields: fields
-        }, function (err, csv) {
-          if (err) { return reply(err) }
-          reply(csv)
-            .header('Content-Type', 'text/x-csv; charset=utf-8')
-            .header('Content-disposition', 'attachment; filename=' + filename + '.csv')
-            .header('Pragma', 'no-cache')
-            .header('Set-Cookie', 'fileDownload=true; path=/')
-        })
+    handler (request, reply) {
+      const filename = request.params.filename
+      exportViewWhereIdIn(request, (err, data) => {
+        if (err) return reply(err)
+        const fields = Object.keys(data[0])
+        json2csv(
+          { data, fields },
+          (err, csv) => {
+            if (err) return reply(err)
+            reply(csv)
+              .header('Content-Type', 'text/x-csv; charset=utf-8')
+              .header('Content-disposition', `attachment; filename=${filename}.csv`)
+              .header('Pragma', 'no-cache')
+              .header('Set-Cookie', 'fileDownload=true; path=/')
+          }
+        )
       })
     }
   })
@@ -598,13 +592,13 @@ server.register(Inert, function () {
   server.route({
     method: 'GET',
     path: '/exportView/kml/view={view}/filename={filename}',
-    handler: function (request, reply) {
-      var filename = request.params.filename,
-        view = request.params.view,
-        kml
+    handler (request, reply) {
+      const filename = request.params.filename
+      const view = request.params.view
+      let kml
 
-      exportView(request, function (err, data) {
-        if (err) { return reply(err) }
+      exportView(request, (err, data) => {
+        if (err) return reply(err)
         switch (view) {
           case 'v_pop_kml':
           case 'v_pop_kmlnamen':
@@ -618,7 +612,7 @@ server.register(Inert, function () {
         if (kml) {
           reply(kml)
             .header('Content-Type', 'application/vnd.google-earth.kml+xml kml; charset=utf-8')
-            .header('Content-disposition', 'attachment; filename=' + filename + '.kml')
+            .header('Content-disposition', `attachment; filename=${filename}.kml`)
             .header('Pragma', 'no-cache')
             .header('Set-Cookie', 'fileDownload=true; path=/')
         }
@@ -629,9 +623,8 @@ server.register(Inert, function () {
   server.route({
     method: 'GET',
     path: '/aktualisiereArteigenschaften',
-    handler: function (request, reply) {
+    handler (request, reply) {
       aktualisiereArteigenschaften(request, reply)
     }
   })
-
 })
