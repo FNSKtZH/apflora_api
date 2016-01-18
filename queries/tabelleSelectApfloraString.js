@@ -15,8 +15,10 @@ module.exports = (request, callback) => {
   const feld = escapeStringForSql(request.params.feld) // das ist der Name des Feldes, das verglichen wird
   const wert = escapeStringForSql(request.params.wert) // der Wert im Feld, das verglichen wird
 
-  connection.query(
-    `SELECT * FROM ${tabelle} WHERE ${feld} = "${wert}"`,
+  connection.query(`
+    SELECT *
+    FROM ${tabelle}
+    WHERE ${feld} = "${wert}"`,
     (err, data) => callback(err, data)
   )
 }

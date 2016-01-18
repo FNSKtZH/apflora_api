@@ -15,8 +15,10 @@ module.exports = (request, callback) => {
   const feld = escapeStringForSql(request.params.feld) // Name der ID der Tabelle
   const wert = escapeStringForSql(request.params.wert) // Wert der ID
 
-  connection.query(
-    `SELECT * FROM ${tabelle} WHERE ${feld} = ${wert}`,
+  connection.query(`
+    SELECT *
+    FROM ${tabelle}
+    WHERE ${feld} = ${wert}`,
     (err, data) => callback(err, data)
   )
 }
