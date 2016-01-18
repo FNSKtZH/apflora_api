@@ -23,7 +23,7 @@ module.exports = (request, callback) => {
   var date = new Date().toISOString()
 
   async.parallel({
-    insertIntoTblAktionsplan: function (callback) {
+    insertIntoTblAktionsplan: (callback) => {
       connection.query(
         'INSERT INTO apflora.ap (ApArtId, MutWann, MutWer) VALUES (' + apId + ', "' + date + '", "' + user + '")',
         function (err, data) {
@@ -32,7 +32,7 @@ module.exports = (request, callback) => {
         }
       )
     },
-    getArtwert: function (callback) {
+    getArtwert: (callback) => {
       connection2.query(
         'SELECT Artwert FROM apflora_beob.adb_eigenschaften WHERE TaxonomieId=' + apId,
         function (err, data) {

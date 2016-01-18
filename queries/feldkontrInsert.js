@@ -11,25 +11,19 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var tpopId = escapeStringForSql(request.params.tpopId) // die id
-  var tpopKontrtyp = escapeStringForSql(request.params.tpopKontrtyp) // feldkontr oder freiwkontr
-  var user = escapeStringForSql(request.params.user) // der Benutzername
-  var date = new Date().toISOString() // wann gespeichert wird
-  var sql
+  const tpopId = escapeStringForSql(request.params.tpopId) // die id
+  const tpopKontrtyp = escapeStringForSql(request.params.tpopKontrtyp) // feldkontr oder freiwkontr
+  const user = escapeStringForSql(request.params.user) // der Benutzername
+  const date = new Date().toISOString() // wann gespeichert wird
+  let sql = `INSERT INTO tpopkontr (TPopId, MutWann, MutWer) VALUES (${tpopId}, "${date}", "${user}")`
 
   // sql schreiben
   if (tpopKontrtyp === 'tpopfreiwkontr') {
-    // Die Freiwilligen-Erfolgskontrolle erhält direkt einen Typ
-    sql = 'INSERT INTO tpopkontr (TPopId, TPopKontrTyp, MutWann, MutWer) VALUES (' + tpopId + ', "Freiwilligen-Erfolgskontrolle", "' + date + '", "' + user + '")'
-  } else {
-    // die feldkontrolle erhält erst später einen Typ
-    sql = 'INSERT INTO tpopkontr (TPopId, MutWann, MutWer) VALUES (' + tpopId + ', "' + date + '", "' + user + '")'
+    sql = `INSERT INTO tpopkontr (TPopId, TPopKontrTyp, MutWann, MutWer) VALUES (${tpopId}, "Freiwilligen-Erfolgskontrolle", "${date}", "${user}")`
   }
 
   connection.query(
     sql,
-    function (err, data) {
-      callback(err, data.insertId)
-    }
+    (err, data) => callback(err, data.insertId)
   )
 }

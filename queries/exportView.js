@@ -1,7 +1,7 @@
 'use strict'
 
 const mysql = require('mysql')
-var _ = require('lodash')
+const _ = require('lodash')
 const config = require('../configuration')
 const escapeStringForSql = require('./escapeStringForSql')
 const connection = mysql.createConnection({

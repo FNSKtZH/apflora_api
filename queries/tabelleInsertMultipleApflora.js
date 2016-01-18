@@ -6,7 +6,7 @@
 'use strict'
 
 const mysql = require('mysql')
-var _ = require('underscore')
+const _ = require('lodash')
 const config = require('../configuration')
 const escapeStringForSql = require('./escapeStringForSql')
 const connection = mysql.createConnection({
@@ -17,25 +17,20 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, in der die Daten gespeichert werden sollen
-  var felder = request.params.felder // Ein Objekt mit allen feldern und deren Werten des wiederherzustellenden Datensatzes
-  var sql
-  var feldnamen
-  var feldwerte
+  const tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, in der die Daten gespeichert werden sollen
+  let felder = request.params.felder // Ein Objekt mit allen feldern und deren Werten des wiederherzustellenden Datensatzes
 
   felder = JSON.parse(felder)
 
   // Feldnamen und -werte extrahieren
-  feldnamen = _.keys(felder).join()
-  feldwerte = _.values(felder).join('","')
+  const feldnamen = Object.keys(felder).join()
+  const feldwerte = _.values(felder).join('","')
 
   // sql beginnen
-  sql = 'INSERT INTO ' + tabelle + ' (' + feldnamen + ') VALUES ("' + feldwerte + '")'
+  const sql = `INSERT INTO ${tabelle} (${feldnamen}) VALUES ("${feldwerte}")`
 
   connection.query(
     sql,
-    function (err, data) {
-      callback(err, data.insertId)
-    }
+    (err, data) => callback(err, data.insertId)
   )
 }
