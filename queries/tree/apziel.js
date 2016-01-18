@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
   database: 'apflora'
 })
 
-module.exports = function (request, reply) {
+module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
 
   // zuerst die Daten holen
@@ -29,7 +29,7 @@ module.exports = function (request, reply) {
       // Liste aller ZielId erstellen
       const zielIds = _.map(apzielListe, 'ZielId')
       connection.query(
-        'SELECT ZielBerId, ZielId, ZielBerJahr, ZielBerErreichung FROM zielber where ZielId in (' + zielIds.join() + ') ORDER BY ZielBerJahr, ZielBerErreichung',
+        `SELECT ZielBerId, ZielId, ZielBerJahr, ZielBerErreichung FROM zielber where ZielId in (${zielIds.join()}) ORDER BY ZielBerJahr, ZielBerErreichung`,
         (err, zielberListe) => {
           // das Ergebnis der vorigen Abfrage anfügen
           const resultArray = [apzielListe, zielberListe]
@@ -102,11 +102,11 @@ module.exports = function (request, reply) {
         zielbere.forEach(zielber => {
           let data = ''
           if (zielber.ZielBerJahr && zielber.ZielBerErreichung) {
-            data = zielber.ZielBerJahr + ': ' + zielber.ZielBerErreichung
+            data = `${zielber.ZielBerJahr}: ${zielber.ZielBerErreichung}`
           } else if (zielber.ZielBerJahr) {
-            data = zielber.ZielBerJahr + ': (keine Entwicklung)'
+            data = `${zielber.ZielBerJahr} + : (keine Entwicklung)`
           } else if (zielber.ZielBerErreichung) {
-            data = '(kein jahr): ' + zielber.ZielBerErreichung
+            data = `(kein jahr): ${zielber.ZielBerErreichung}`
           } else {
             data = '(kein jahr): (keine Entwicklung)'
           }
