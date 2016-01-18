@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
   database: 'apflora_beob'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   var tabelle = escapeStringForSql(request.params.tabelle) // Name der Tabelle, aus der die Daten geholt werden sollen
   var feld = escapeStringForSql(request.params.feld) // Name der ID der Tabelle
   var wert = escapeStringForSql(request.params.wert) // Wert der ID
@@ -23,8 +23,6 @@ module.exports = function (request, callback) {
 
   connection.query(
     sql,
-    function (err, data) {
-      callback(err, data)
-    }
+    (err, data) => callback(err, data)
   )
 }

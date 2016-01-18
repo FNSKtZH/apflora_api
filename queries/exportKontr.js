@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
   database: 'apflora_views'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   var view = escapeStringForSql(request.params.view) // Name des Views, aus dem die Daten geholt werden sollen
 
   connection.query(

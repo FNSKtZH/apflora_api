@@ -39,8 +39,6 @@ module.exports = (request, callback) => {
 
   connection.query(
     sql,
-    function (err, data) {
-      callback(err, data)
-    }
+    (err, data) => callback(err, data)
   )
 }

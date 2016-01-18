@@ -9,11 +9,9 @@ const connection = mysql.createConnection({
   database: 'apflora'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   connection.query(
     'SELECT DomainCode, DomainTxt FROM tpopkontr_idbiotuebereinst_werte ORDER BY DomainOrd',
-    function (err, data) {
-      callback(err, data)
-    }
+    (err, data) => callback(err, data)
   )
 }
