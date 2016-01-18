@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   database: 'apflora_views'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   var sql
   var apId = request.params.apId
   var berichtjahr = request.params.berichtjahr || null
@@ -29,8 +29,6 @@ module.exports = function (request, callback) {
   // Daten abfragen
   connection.query(
     sql,
-    function (err, data) {
-      callback(err, data)
-    }
+    (err, data) => callback(err, data)
   )
 }

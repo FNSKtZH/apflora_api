@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
   database: 'apflora'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   var apId = escapeStringForSql(request.params.apId)
   var popId = escapeStringForSql(request.params.popId)
   var user = escapeStringForSql(request.params.user) // der Benutzername
