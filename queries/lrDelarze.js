@@ -11,7 +11,10 @@ const connection = mysql.createConnection({
 
 module.exports = (request, callback) => {
   connection.query(
-    'SELECT Label AS id, CONCAT(Label, ": ", REPEAT(" ",(7-LENGTH(Label))), Einheit) AS Einheit FROM adb_lr WHERE LrMethodId = 1 ORDER BY Label',
+    `SELECT Label AS id, CONCAT(Label, ": ", REPEAT(" ",(7-LENGTH(Label))), Einheit) AS Einheit
+      FROM adb_lr
+      WHERE LrMethodId = 1
+      ORDER BY Label`,
     (err, data) => callback(err, data)
   )
 }

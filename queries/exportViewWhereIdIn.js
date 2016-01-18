@@ -22,8 +22,8 @@ module.exports = (request, callback) => {
     (err, data) => {
       // null-werte eliminieren
       data.forEach((object) => {
-        _.forEach(object, (value, key) => {
-          if (value === null) object[key] = ''
+        Object.keys(object).forEach((key) => {
+          if (object[key] === null) object[key] = ''
         })
       })
       callback(err, data)

@@ -1,7 +1,6 @@
 'use strict'
 
 const mysql = require('mysql')
-const _ = require('lodash')
 const config = require('../configuration')
 const escapeStringForSql = require('./escapeStringForSql')
 const connection = mysql.createConnection({
@@ -21,8 +20,8 @@ module.exports = (request, callback) => {
     (err, data) => {
       // null-werte eliminieren
       data.forEach(object => {
-        _.forEach(object, (value, key) => {
-          if (value === null) object[key] = ''
+        Object.keys(object).forEach((key) => {
+          if (object[key] === null) object[key] = ''
         })
       })
       callback(err, data)

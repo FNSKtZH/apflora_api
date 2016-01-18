@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function (str) {
+module.exports = (str) => {
   if (str) {
     if (typeof str === 'string') {
       return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
@@ -21,7 +21,7 @@ module.exports = function (str) {
           case "'":
           case '\\':
           case '%':
-            return '\\' + char // prepends a backslash to backslash, percent and double/single quotes
+            return `\\${char}` // prepends a backslash to backslash, percent and double/single quotes
         }
       })
     } else {
