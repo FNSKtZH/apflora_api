@@ -7,8 +7,8 @@
 
 const mysql = require('mysql')
 var _ = require('underscore')
-var config = require('../configuration')
-var escapeStringForSql = require('./escapeStringForSql')
+const config = require('../configuration')
+const escapeStringForSql = require('./escapeStringForSql')
 const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
