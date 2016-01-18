@@ -15,7 +15,7 @@ const buildChildrenFromData = (data) => {
     const datum = beob.Datum || '(kein Datum)'
     const autor = beob.Autor || '(kein Autor)'
     return {
-      data: datum + ': ' + autor,
+      data: `${datum}: ${autor}`,
       attr: {
         typ: 'beobNichtBeurteilt',
         // beob voransetzen, damit die ID im ganzen Baum eindeutig ist
