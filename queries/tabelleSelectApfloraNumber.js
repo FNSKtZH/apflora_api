@@ -10,15 +10,13 @@ const connection = mysql.createConnection({
   database: 'apflora'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   var tabelle = escapeStringForSql(request.params.tabelle) // Name der Tabelle, aus der die Daten geholt werden sollen
   var feld = escapeStringForSql(request.params.feld) // Name der ID der Tabelle
   var wert = escapeStringForSql(request.params.wert) // Wert der ID
 
   connection.query(
     'SELECT * FROM ' + tabelle + ' WHERE ' + feld + '=' + wert,
-    function (err, data) {
-      callback(err, data)
-    }
+    (err, data) => callback(err, data)
   )
 }
