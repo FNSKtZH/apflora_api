@@ -1,10 +1,10 @@
 'use strict'
 
-var mysql = require('mysql')
+const mysql = require('mysql')
 var config = require('../configuration')
 var request = require('request')
 var createInsertSqlFromObjectArray = require('./createInsertSqlFromObjectArray')
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
