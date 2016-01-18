@@ -18,8 +18,33 @@ module.exports = (request, callback) => {
 
   // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
   const sql = `
-    INSERT INTO pop (PopNr, PopName, PopHerkunft, PopHerkunftUnklar, PopHerkunftUnklarBegruendung, PopBekanntSeit, PopXKoord, PopYKoord, PopGuid, MutWann, MutWer, ApArtId)
-    SELECT pop.PopNr, pop.PopName, pop.PopHerkunft, pop.PopHerkunftUnklar, pop.PopHerkunftUnklarBegruendung, pop.PopBekanntSeit, pop.PopXKoord, pop.PopYKoord, pop.PopGuid, "${date}", "${user}", ${apId}
+    INSERT INTO pop (
+      PopNr,
+      PopName,
+      PopHerkunft,
+      PopHerkunftUnklar,
+      PopHerkunftUnklarBegruendung,
+      PopBekanntSeit,
+      PopXKoord,
+      PopYKoord,
+      PopGuid,
+      MutWann,
+      MutWer,
+      ApArtId
+      )
+    SELECT
+      pop.PopNr,
+      pop.PopName,
+      pop.PopHerkunft,
+      pop.PopHerkunftUnklar,
+      pop.PopHerkunftUnklarBegruendung,
+      pop.PopBekanntSeit,
+      pop.PopXKoord,
+      pop.PopYKoord,
+      pop.PopGuid,
+      "${date}",
+      "${user}",
+      ${apId}
     FROM pop
     WHERE pop.PopId = ${popId}`
   connection.query(
