@@ -10,13 +10,11 @@ const connection = mysql.createConnection({
   database: 'apflora'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   var apId = escapeStringForSql(request.params.apId)
 
   connection.query(
     'SELECT apflora.ap.ApArtId, apflora_beob.adb_eigenschaften.Artname, apflora.ap.ApStatus, apflora.ap.ApJahr, apflora.ap.ApUmsetzung, apflora.ap.ApBearb, apflora.ap.ApArtwert, apflora.ap.MutWann, apflora.ap.MutWer FROM apflora.ap INNER JOIN apflora_beob.adb_eigenschaften ON apflora.ap.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId WHERE ApArtId = ' + apId,
-    function (err, data) {
-      callback(err, data)
-    }
+    (err, data) => callback(err, data)
   )
 }

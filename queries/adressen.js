@@ -9,11 +9,9 @@ const connection = mysql.createConnection({
   database: 'apflora'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   connection.query(
     'SELECT AdrId AS id, AdrName FROM adresse ORDER BY AdrName',
-    function (err, data) {
-      callback(err, data)
-    }
+    (err, data) => callback(err, data)
   )
 }

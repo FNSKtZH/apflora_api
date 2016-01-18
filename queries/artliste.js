@@ -9,12 +9,10 @@ const connection = mysql.createConnection({
   database: 'apflora_beob'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   // Artname muss 'label' heissen, sonst funktioniert jquery ui autocomplete nicht
   connection.query(
     "SELECT TaxonomieId AS id, IF(Status NOT LIKE 'akzeptierter Name', CONCAT(Artname, ' (', Status, ')'), Artname) AS label FROM apflora_beob.adb_eigenschaften ORDER BY Artname",
-    function (err, data) {
-      callback(err, data)
-    }
+    (err, data) => callback(err, data)
   )
 }

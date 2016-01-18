@@ -10,14 +10,12 @@ const connection = mysql.createConnection({
   database: 'apflora'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   var userName = escapeStringForSql(request.params.name)
   var password = escapeStringForSql(request.params.pwd)
 
   connection.query(
     'SELECT NurLesen FROM user WHERE UserName = "' + userName + '" AND Passwort = "' + password + '"',
-    function (err, data) {
-      callback(err, data)
-    }
+    (err, data) => callback(err, data)
   )
 }

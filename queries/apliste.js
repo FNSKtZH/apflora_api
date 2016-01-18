@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   database: 'apflora'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   // Artname muss 'label' heissen, sonst funktioniert jquery ui autocomplete nicht
   var sql
   var programm = request.params.programm
@@ -31,8 +31,6 @@ module.exports = function (request, callback) {
   // Daten abfragen
   connection.query(
     sql,
-    function (err, data) {
-      callback(err, data)
-    }
+    (err, data) => callback(err, data)
   )
 }

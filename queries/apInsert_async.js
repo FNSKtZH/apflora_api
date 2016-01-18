@@ -1,7 +1,7 @@
 'use strict'
 
 const mysql = require('mysql')
-var async = require('async')
+const async = require('async')
 const config = require('../configuration')
 const escapeStringForSql = require('./escapeStringForSql')
 const connection = mysql.createConnection({
@@ -17,7 +17,7 @@ var connection2 = mysql.createConnection({
   database: 'apflora_beob'
 })
 
-module.exports = function (request, callback) {
+module.exports = (request, callback) => {
   var apId = escapeStringForSql(request.params.apId)
   var user = escapeStringForSql(request.params.user)
   var date = new Date().toISOString()
