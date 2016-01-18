@@ -1,7 +1,6 @@
 'use strict'
 
 const mysql = require('mysql')
-const _ = require('lodash')
 const config = require('../configuration')
 const escapeStringForSql = require('./escapeStringForSql')
 const connection = mysql.createConnection({
@@ -15,16 +14,15 @@ module.exports = (request, callback) => {
   const view = escapeStringForSql(request.params.view) // Name des Views, aus dem die Daten geholt werden sollen
 
   connection.query(
-    'SELECT * FROM ' + view,
-    function (err, data) {
+    `SELECT * FROM ${view}`,
+    (err, data) => {
       // null-werte eliminieren
-      var data2 = data
-      data2.forEach(function (object) {
-        _.forEach(object, function (value, key) {
-          if (value === null) object[key] = ''
+      data.forEach(object => {
+        Object.keys(object).forEach((key) => {
+          if (object[key] === null) object[key] = ''
         })
       })
-      callback(err, data2)
+      callback(err, data)
     }
   )
 }

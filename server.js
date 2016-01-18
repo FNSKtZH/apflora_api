@@ -83,6 +83,7 @@ const exportViewWhereIdIn = require('./queries/exportViewWhereIdIn.js')
 const getKmlForPop = require('./src/getKmlForPop.js')
 const getKmlForTpop = require('./src/getKmlForTpop.js')
 const aktualisiereArteigenschaften = require('./queries/aktualisiereArteigenschaften.js')
+const escapeStringForSql = require('./queries/escapeStringForSql.js')
 
 connectionApflora.connect()
 
@@ -523,7 +524,7 @@ server.register(Inert, function () {
     method: 'GET',
     path: '/exportView/csv/view={view}/filename={filename}',
     handler (request, reply) {
-      const filename = request.params.filename
+      const filename = escapeStringForSql(request.params.filename)
       exportView(request, (err, data) => {
         const fields = Object.keys(data[0])
         if (err) return reply(err)
@@ -546,7 +547,7 @@ server.register(Inert, function () {
     method: 'GET',
     path: '/exportView/csv/view={view}/filename={filename}/{apId}',
     handler (request, reply) {
-      const filename = request.params.filename
+      const filename = escapeStringForSql(request.params.filename)
       exportView(request, (err, data) => {
         const fields = Object.keys(data[0])
         if (err) return reply(err)
