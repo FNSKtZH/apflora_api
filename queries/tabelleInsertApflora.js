@@ -20,9 +20,9 @@ module.exports = (request, callback) => {
   const configTable = _.find(config.tables, {tabelleInDb: tabelle}) // die table in der Konfiguration, welche die Informationen dieser Tabelle enthält
   const nameMutwannFeld = configTable.mutWannFeld || 'MutWann' // so heisst das MutWann-Feld in dieser Tabelle
   const nameMutWerFeld = configTable.mutWerFeld || 'MutWer' // so heisst das MutWer-Feld in dieser Tabelle
-
-  // const sql = 'INSERT INTO ' + tabelle + ' (' + feld + ', ' + nameMutwannFeld + ', ' + nameMutWerFeld + ') VALUES ("' + wert + '", "' + date + '", "' + user + '")'
-  const sql = `INSERT INTO ${tabelle} (${feld}, ${nameMutwannFeld}, ${nameMutWerFeld}) VALUES ("${wert}", "${date}", "${user}")`
+  const sql = `
+    INSERT INTO ${tabelle} (${feld}, ${nameMutwannFeld}, ${nameMutWerFeld})
+    VALUES ("${wert}", "${date}", "${user}")`
 
   connection.query(
     sql,

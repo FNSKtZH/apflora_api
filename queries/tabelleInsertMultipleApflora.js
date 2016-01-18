@@ -28,7 +28,9 @@ module.exports = (request, callback) => {
   const feldwerte = _.values(felder).join('","')
 
   // sql beginnen
-  const sql = `INSERT INTO ${tabelle} (${feldnamen}) VALUES ("${feldwerte}")`
+  const sql = `
+    INSERT INTO ${tabelle} (${feldnamen})
+    VALUES ("${feldwerte}")`
 
   connection.query(
     sql,

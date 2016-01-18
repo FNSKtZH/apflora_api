@@ -15,8 +15,9 @@ module.exports = (request, callback) => {
   const tabelleIdFeld = escapeStringForSql(request.params.tabelleIdFeld) // das ist der Name der ID der Tabelle
   const tabelleId = escapeStringForSql(request.params.tabelleId) // der Wert der ID des zu löschenden Datensatzes
 
-  connection.query(
-    `DELETE FROM ${tabelle} WHERE ${tabelleIdFeld} = "${tabelleId}"`,
+  connection.query(`
+    DELETE FROM ${tabelle}
+    WHERE ${tabelleIdFeld} = "${tabelleId}"`,
     (err, data) => callback(err, data)
   )
 }
