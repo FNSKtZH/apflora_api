@@ -2,6 +2,7 @@
 
 const mysql = require('mysql')
 const config = require('../configuration')
+const escapeStringForSql = require('./escapeStringForSql')
 const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
@@ -10,17 +11,17 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var sql
-  var viewName = request.params.viewName
-  var apId = request.params.apId
-  var berichtjahr = request.params.berichtjahr || null
+  const viewName = escapeStringForSql(request.params.viewName)
+  const apId = escapeStringForSql(request.params.apId)
+  const berichtjahr = escapeStringForSql(request.params.berichtjahr) || null
 
   // url setzen
+  let sql
   if (berichtjahr) {
     // if berichtjahr was passed, get only data of that year
-    sql = 'SELECT * from ' + viewName + ' where ApArtId=' + apId + ' AND Berichtjahr=' + berichtjahr
+    sql = `SELECT * from ${viewName} where ApArtId = ${apId} AND Berichtjahr = ${berichtjahr}`
   } else {
-    sql = 'SELECT * from ' + viewName + ' where ApArtId=' + apId
+    sql = `SELECT * from ${viewName} where ApArtId = ${apId}`
   }
 
   // Daten abfragen

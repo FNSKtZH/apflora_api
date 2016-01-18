@@ -18,6 +18,7 @@ const connection = mysql.createConnection({
 
 module.exports = (request, callback) => {
   const tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, in der die Daten gespeichert werden sollen
+  // NICHT escapeStringForSql anwenden
   let felder = request.params.felder // Ein Objekt mit allen feldern und deren Werten des wiederherzustellenden Datensatzes
 
   felder = JSON.parse(felder)

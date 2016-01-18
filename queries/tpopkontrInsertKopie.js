@@ -60,7 +60,6 @@ module.exports = (request, callback) => {
     sql += ' SELECT tpopkontrzaehl.Anzahl, tpopkontrzaehl.Zaehleinheit, tpopkontrzaehl.Methode, "' + date + '", "' + user + '", ' + tpopkontridNeu
     sql += ' FROM tpopkontrzaehl'
     sql += ' WHERE tpopkontrzaehl.TPopKontrId=' + tpopKontrId
-    console.log('sql: ', sql)
     connection.query(
       sql,
       function (err, data) {

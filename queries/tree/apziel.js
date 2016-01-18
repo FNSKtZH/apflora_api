@@ -24,21 +24,21 @@ module.exports = (request, reply) => {
       )
     },
     (apzielListe, callback) => {
-      // sicherstellen, dass eine apzielListe existiert - auf wenn sie leer ist
-      apzielListe = apzielListe || []
-      // Liste aller ZielId erstellen
-      const zielIds = _.map(apzielListe, 'ZielId')
-      connection.query(
-        `SELECT ZielBerId, ZielId, ZielBerJahr, ZielBerErreichung FROM zielber where ZielId in (${zielIds.join()}) ORDER BY ZielBerJahr, ZielBerErreichung`,
-        (err, zielberListe) => {
+      // the query errors out if there are no zielIds
+      if (apzielListe.length > 0) {
+        // Liste aller ZielId erstellen
+        const zielIds = _.map(apzielListe, 'ZielId')
+        connection.query(
+          `SELECT ZielBerId, ZielId, ZielBerJahr, ZielBerErreichung FROM zielber where ZielId in (${zielIds.join()}) ORDER BY ZielBerJahr, ZielBerErreichung`,
           // das Ergebnis der vorigen Abfrage anfügen
-          const resultArray = [apzielListe, zielberListe]
-          callback(err, resultArray)
-        }
-      )
+          (err, zielberListe) => callback(err, [apzielListe, zielberListe])
+        )
+      } else {
+        callback(null, [apzielListe, []])
+      }
     }
   ], (err, result) => {
-    if (err || !result) reply(err, {})
+    if (err || !result) return reply(err, {})
     const apzielListe = result[0] || []
     const zielberListe = result[1] || []
 
