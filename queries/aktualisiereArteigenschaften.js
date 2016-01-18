@@ -35,7 +35,7 @@ module.exports = (req, reply) => {
     if (response && response.statusCode === 200) {
       // empty table
       connection.query(
-        'TRUNCATE TABLE apflora_beob.adb_eigenschaften',
+        `TRUNCATE TABLE apflora_beob.adb_eigenschaften`,
         (err) => {
           if (err) throw err
           // Daten müssen in mehrere Teile aufgeteilt werden
@@ -47,7 +47,9 @@ module.exports = (req, reply) => {
           const eigenschaftenString2 = createInsertSqlFromObjectArray(artenArray[2])
           const eigenschaftenString3 = createInsertSqlFromObjectArray(artenArray[3])
           const eigenschaftenString4 = createInsertSqlFromObjectArray(artenArray[4])
-          const sqlBase = 'INSERT INTO apflora_beob.adb_eigenschaften (GUID, TaxonomieId, Familie, Artname, NameDeutsch, Status, Artwert, KefArt, KefKontrolljahr) VALUES '
+          const sqlBase = `
+            INSERT INTO apflora_beob.adb_eigenschaften (GUID, TaxonomieId, Familie, Artname, NameDeutsch, Status, Artwert, KefArt, KefKontrolljahr)
+            VALUES `
 
           // add new values
           let sql = sqlBase + eigenschaftenString0

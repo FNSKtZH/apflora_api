@@ -14,8 +14,11 @@ module.exports = (request, callback) => {
   const userName = escapeStringForSql(request.params.name)
   const password = escapeStringForSql(request.params.pwd)
 
-  connection.query(
-    `SELECT NurLesen FROM user WHERE UserName = "${userName}" AND Passwort = "${password}"`,
+  connection.query(`
+    SELECT NurLesen
+    FROM user
+    WHERE UserName = "${userName}"
+      AND Passwort = "${password}"`,
     (err, data) => callback(err, data)
   )
 }

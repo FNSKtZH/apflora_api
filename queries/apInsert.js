@@ -22,20 +22,25 @@ module.exports = (request, callback) => {
   const date = new Date().toISOString()
 
   // neuen AP einfügen
-  connection.query(
-    `INSERT INTO apflora.ap (ApArtId, MutWann, MutWer) VALUES (${apId}, "${date}", "${user}")`,
+  connection.query(`
+    INSERT INTO apflora.ap (ApArtId, MutWann, MutWer)
+    VALUES (${apId}, "${date}", "${user}")`,
     (err, data) => {
       if (err) callback(err, null)
       // Artwert holen
-      connection2.query(
-        `SELECT Artwert FROM apflora_beob.adb_eigenschaften WHERE TaxonomieId = ${apId}`,
+      connection2.query(`
+        SELECT Artwert
+        FROM apflora_beob.adb_eigenschaften
+        WHERE TaxonomieId = ${apId}`,
         (err, data) => {
           // keine Fehler melden, wenn bloss der Artwert nicht geholt wurde
           if (data && data[0]) {
             const artwert = data[0]
             if (artwert) {
-              connection.query(
-                `UPDATE apflora.ap SET ApArtwert = "${artwert}" WHERE ApArtId = ${apId}`,
+              connection.query(`
+                UPDATE apflora.ap
+                SET ApArtwert = "${artwert}"
+                WHERE ApArtId = ${apId}`,
                 (err, data) => callback(err, apId)
               )
             }

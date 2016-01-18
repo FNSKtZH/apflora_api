@@ -10,8 +10,12 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  connection.query(
-    'SELECT AdrId AS id, AdrName FROM adresse ORDER BY AdrName',
+  connection.query(`
+    SELECT
+      AdrId AS id,
+      AdrName
+    FROM adresse
+    ORDER BY AdrName`,
     (err, data) => callback(err, data)
   )
 }
