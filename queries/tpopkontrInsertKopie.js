@@ -12,60 +12,82 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var tpopId = escapeStringForSql(request.params.tpopId)
-  var tpopKontrId = escapeStringForSql(request.params.tpopKontrId)
-  var user = escapeStringForSql(request.params.user) // der Benutzername
-  var date = new Date().toISOString()                // wann gespeichert wird
+  const tpopId = escapeStringForSql(request.params.tpopId)
+  const tpopKontrId = escapeStringForSql(request.params.tpopKontrId)
+  const user = escapeStringForSql(request.params.user) // der Benutzername
+  const date = new Date().toISOString()                // wann gespeichert wird
 
-  async.series([
-    (callback) => {
-      // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
-      connection.query(
-        'DROP TABLE IF EXISTS tmp',
-        // nur allfällige Fehler weiterleiten
-        (err) => callback(err, null)
+  async.series(
+    [
+      (callback) => {
+        // allfällige temporäre Tabelle löschen
+        connection.query(
+          `DROP TABLE IF EXISTS tmp`,
+          // nur allfällige Fehler weiterleiten
+          (err) => callback(err, null)
+        )
+      },
+      (callback) => {
+        // temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
+        connection.query(`
+          CREATE TEMPORARY TABLE tmp
+          SELECT *
+          FROM tpopkontr
+          WHERE TPopKontrId = ${tpopKontrId}`,
+          // nur allfällige Fehler weiterleiten
+          (err) => callback(err, null)
+        )
+      },
+      (callback) => {
+        // TPopId anpassen
+        connection.query(`
+          UPDATE tmp
+          SET
+            TPopKontrId = NULL,
+            TPopId = ${tpopId},
+            MutWann = "${date}",
+            MutWer = "${user}"`,
+          // nur allfällige Fehler weiterleiten
+          (err) => callback(err, null)
+        )
+      },
+      (callback) => {
+        connection.query(`
+          INSERT INTO tpopkontr
+          SELECT * FROM tmp`,
+          (err, data) => callback(err, data.insertId)
+        )
+      }
+    ],
+    (err, results) => {
+      const tpopkontridNeu = results[3]
+
+      if (err) { return callback(err, null) }
+      // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
+      const sql = `
+      INSERT INTO tpopkontrzaehl
+      (
+        Anzahl,
+        Zaehleinheit,
+        Methode,
+        MutWann,
+        MutWer,
+        TPopKontrId
       )
-    },
-    (callback) => {
-      // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
+      SELECT
+        tpopkontrzaehl.Anzahl,
+        tpopkontrzaehl.Zaehleinheit,
+        tpopkontrzaehl.Methode,
+        "${date}",
+        "${user}",
+        ${tpopkontridNeu}
+      FROM tpopkontrzaehl
+      WHERE tpopkontrzaehl.TPopKontrId = ${tpopKontrId}`
       connection.query(
-        'CREATE TEMPORARY TABLE tmp SELECT * FROM tpopkontr WHERE TPopKontrId = ' + tpopKontrId,
-        // nur allfällige Fehler weiterleiten
-        (err) => callback(err, null)
-      )
-    },
-    (callback) => {
-      // TPopId anpassen
-      connection.query(
-        'UPDATE tmp SET TPopKontrId = NULL, TPopId = ' + tpopId + ', MutWann="' + date + '", MutWer="' + user + '"',
-        // nur allfällige Fehler weiterleiten
-        (err) => callback(err, null)
-      )
-    },
-    (callback) => {
-      connection.query(
-        'INSERT INTO tpopkontr SELECT * FROM tmp',
-        function (err, data) {
-          callback(err, data.insertId)
-        }
+        sql,
+        // neue tpopkontrId zurück liefern
+        (err, data) => callback(null, tpopkontridNeu)
       )
     }
-  ], function (err, results) {
-    var sql = ''
-    var tpopkontridNeu = results[3]
-
-    if (err) { return callback(err, null) }
-    // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
-    sql += 'INSERT INTO tpopkontrzaehl (Anzahl, Zaehleinheit, Methode, MutWann, MutWer, TPopKontrId)'
-    sql += ' SELECT tpopkontrzaehl.Anzahl, tpopkontrzaehl.Zaehleinheit, tpopkontrzaehl.Methode, "' + date + '", "' + user + '", ' + tpopkontridNeu
-    sql += ' FROM tpopkontrzaehl'
-    sql += ' WHERE tpopkontrzaehl.TPopKontrId=' + tpopKontrId
-    connection.query(
-      sql,
-      function (err, data) {
-        // neue tpopkontrId zurück liefern
-        callback(null, tpopkontridNeu)
-      }
-    )
-  })
+  )
 }

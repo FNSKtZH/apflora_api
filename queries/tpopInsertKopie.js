@@ -12,46 +12,55 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  var tpopId = escapeStringForSql(request.params.tpopId)
-  var popId = escapeStringForSql(request.params.popId)
-  var user = escapeStringForSql(request.params.user) // der Benutzername
-  var date = new Date().toISOString() // wann gespeichert wird
+  const tpopId = escapeStringForSql(request.params.tpopId)
+  const popId = escapeStringForSql(request.params.popId)
+  const user = escapeStringForSql(request.params.user) // der Benutzername
+  const date = new Date().toISOString() // wann gespeichert wird
 
-  async.series([
-    (callback) => {
-      // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
-      connection.query(
-        'DROP TABLE IF EXISTS tmp',
-        // nur allfällige Fehler weiterleiten
-        (err) => callback(err, null)
-      )
-    },
-    (callback) => {
-      // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
-      connection.query(
-        'CREATE TEMPORARY TABLE tmp SELECT * FROM tpop WHERE TPopId = ' + tpopId,
-        // nur allfällige Fehler weiterleiten
-        (err) => callback(err, null)
-      )
-    },
-    (callback) => {
-      // TPopId anpassen
-      connection.query(
-        'UPDATE tmp SET TPopId = NULL, PopId = ' + popId + ', MutWann="' + date + '", MutWer="' + user + '"',
-        // nur allfällige Fehler weiterleiten
-        (err) => callback(err, null)
-      )
-    },
-    (callback) => {
-      connection.query(
-        'INSERT INTO tpop SELECT * FROM tmp',
-        function (err, data) {
-          callback(err, data.insertId)
-        }
-      )
-    }
-  ], function (err, results) {
+  async.series(
+    [
+      (callback) => {
+        // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
+        connection.query(
+          `DROP TABLE IF EXISTS tmp`,
+          // nur allfällige Fehler weiterleiten
+          (err) => callback(err, null)
+        )
+      },
+      (callback) => {
+        // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
+        connection.query(`
+          CREATE TEMPORARY TABLE tmp
+          SELECT *
+          FROM tpop
+          WHERE TPopId = ${tpopId}`,
+          // nur allfällige Fehler weiterleiten
+          (err) => callback(err, null)
+        )
+      },
+      (callback) => {
+        // TPopId anpassen
+        connection.query(`
+          UPDATE tmp
+          SET
+            TPopId = NULL,
+            PopId = ${popId},
+            MutWann = "${date}",
+            MutWer = "${user}"`,
+          // nur allfällige Fehler weiterleiten
+          (err) => callback(err, null)
+        )
+      },
+      (callback) => {
+        connection.query(`
+          INSERT INTO tpop
+          SELECT *
+          FROM tmp`,
+          (err, data) => callback(err, data.insertId)
+        )
+      }
+    ],
     // neue id zurück liefern
-    callback(err, results[3])
-  })
+    (err, results) => callback(err, results[3])
+  )
 }
