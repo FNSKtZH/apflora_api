@@ -36,7 +36,11 @@ module.exports = (pops) => {
           ${removeKmlNogoStrings(pop.Label)}
         </name>
         <description>
-          <![CDATA[${removeKmlNogoStrings(pop.Inhalte)}<br><a href='${pop.URL}'>Formular öffnen</a>]]>
+          <![CDATA[
+            ${pop.Art}<br><br>
+            ${removeKmlNogoStrings(pop.Inhalte)}<br><br>
+            <a href='${pop.URL}'>Formular öffnen</a>
+          ]]>
         </description>
         <styleUrl>
           #MyStyle
