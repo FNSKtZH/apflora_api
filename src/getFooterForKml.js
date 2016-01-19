@@ -4,6 +4,4 @@
 
 'use strict'
 
-module.exports = function () {
-  return '</Document></kml>'
-}
+module.exports = () => `  </Document>\n</kml>`

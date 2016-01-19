@@ -6,60 +6,55 @@
 
 'use strict'
 
-var removeKmlNogoStrings = require('./removeKmlNogoStrings')
-var getHeaderForKml = require('./getHeaderForKml')
-var getFooterForKml = require('./getFooterForKml')
-var getTimestamp = require('./getTimestamp')
+const removeKmlNogoStrings = require('./removeKmlNogoStrings')
+const getHeaderForKml = require('./getHeaderForKml')
+const getFooterForKml = require('./getFooterForKml')
+const getTimestamp = require('./getTimestamp')
 
-module.exports = function (pops) {
-  var filename = 'Populationen_' + getTimestamp()
-  var kml
-  var art
-  var zeile
+module.exports = (pops) => {
+  const filename = `Populationen_${getTimestamp()}`
 
   // header schreiben
-  kml = getHeaderForKml(filename)
+  let kml = getHeaderForKml(filename)
   // folder beginnen
-  kml += '<Folder>'
+  kml += `\n    <Folder>\n  `
 
   // Zeilen schreiben
-  pops.forEach(function (pop) {
-    zeile = ''
-    if (art && art !== pop.Art) {
-      // neue Art: Folder abschliessen und neuen beginnen
-      zeile += '</Folder><Folder>'
+  pops.forEach((pop, index) => {
+    let zeile = ''
+    // neue Art: Folder abschliessen und neuen beginnen
+
+    if (index > 0 && pops[index - 1].Art !== pop.Art) {
+      zeile += `  </Folder>\n    <Folder>\n  `
     }
-    zeile += '<name>'
-    zeile += removeKmlNogoStrings(pop.Art)
-    zeile += '</name>'
-    zeile += '<Placemark><name>'
-    zeile += removeKmlNogoStrings(pop.Label)
-    zeile += '</name>'
     // html in xml muss in cdata gewickelt werden
-    zeile += '<description><![CDATA['
-    zeile += removeKmlNogoStrings(pop.Inhalte)
-    zeile += "<br><a href='"
-    zeile += pop.URL
-    zeile += "'>Formular öffnen</a>"
-    zeile += ']]></description>'
-    zeile += '<styleUrl>#MyStyle</styleUrl>'
-    zeile += '<Point><coordinates>'
-    zeile += pop.Laengengrad
-    zeile += ','
-    zeile += pop.Breitengrad
-    zeile += ',0</coordinates></Point>'
-    zeile += '</Placemark>'
-    // art zwischenspeichern, um zu merken, wenn sie ändert
-    art = pop.Art
-    kml += zeile + '\n'
+    zeile += `    <name>
+        ${removeKmlNogoStrings(pop.Art)}
+      </name>
+      <Placemark>
+        <name>
+          ${removeKmlNogoStrings(pop.Label)}
+        </name>
+        <description>
+          <![CDATA[${removeKmlNogoStrings(pop.Inhalte)}<br><a href='${pop.URL}'>Formular öffnen</a>]]>
+        </description>
+        <styleUrl>
+          #MyStyle
+        </styleUrl>
+        <Point>
+          <coordinates>
+            ${pop.Laengengrad},${pop.Breitengrad},0
+          </coordinates>
+        </Point>
+      </Placemark>\n  `
+    kml += zeile
   })
 
   // folder abschliessen
-  kml += '</Folder>'
+  kml += `  </Folder>\n`
 
   // footer schreiben
   kml += getFooterForKml()
 
-  // kml zurück geben
   return kml
 }
