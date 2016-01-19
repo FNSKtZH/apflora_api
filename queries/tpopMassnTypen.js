@@ -10,8 +10,12 @@ const connection = mysql.createConnection({
 })
 
 module.exports = (request, callback) => {
-  connection.query(
-    'SELECT MassnTypCode as id, MassnTypTxt FROM tpopmassn_typ_werte ORDER BY MassnTypOrd',
+  connection.query(`
+    SELECT
+      MassnTypCode as id,
+      MassnTypTxt
+    FROM tpopmassn_typ_werte
+    ORDER BY MassnTypOrd`,
     (err, data) => callback(err, data)
   )
 }
