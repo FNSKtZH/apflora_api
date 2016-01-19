@@ -18,19 +18,3 @@ weil die Felder statt Nullwerten eine 0 enthalten!
 
 Beispielsabfrage:
 SELECT Datum, Autor FROM beob_bereitgestellt WHERE NO_ISFS=100 ORDER BY Datum
-
-
-
-*****************************************************
-
-EINMALIG
-(nur als Kontrolle behalten)
-Zuordnungen aus alter Struktur übernehmen
-Zuerst Tabelle leeren
-DELETE FROM beobzuordnung
-
-Zuerst von info flora
-INSERT INTO apflora.beobzuordnung (NO_NOTE, TPopId, BeobMutWann, BeobMutWer) SELECT NO_NOTE, TPopId, MutWann, MutWer FROM apflora_beob.tblBeob WHERE apflora_beob.tblBeob.TPopId > 0 AND apflora_beob.tblBeob.NO_NOTE is not null AND (apflora_beob.tblBeob.IdEvab is null OR apflora_beob.tblBeob.IdEvab = "")
-
-jetzt von evab
-INSERT INTO apflora.beobzuordnung (NO_NOTE, TPopId, BeobMutWann, BeobMutWer) SELECT IdEvab, TPopId, MutWann, MutWer FROM apflora_beob.tblBeob WHERE apflora_beob.tblBeob.TPopId > 0 AND (apflora_beob.tblBeob.IdEvab is not null AND tblBeob.IdEvab <> "")
