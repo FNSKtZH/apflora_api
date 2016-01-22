@@ -664,7 +664,7 @@ SELECT
   LEFT(apflora.tpop.TPopBeschr, 244) AS STATION,
   LEFT(CONCAT('Anzahlen: ', GROUP_CONCAT(apflora.tpopkontrzaehl.Anzahl SEPARATOR ', '), ', Zaehleinheiten: ', GROUP_CONCAT(apflora.tpopkontrzaehl_einheit_werte.ZaehleinheitTxt SEPARATOR ', '), ', Methoden: ', GROUP_CONCAT(apflora.tpopkontrzaehl_methode_werte.BeurteilTxt SEPARATOR ', ')), 160) AS ABONDANCE,
   'C' AS EXPERTISE_INTRODUIT,
-  tblAdresse_2.EvabIdPerson AS EXPERTISE_INTRODUITE_NOM
+  IF(tblAdresse_2.EvabIdPerson IS NOT NULL, tblAdresse_2.EvabIdPerson, apflora.adresse.EvabIdPerson) AS EXPERTISE_INTRODUITE_NOM
 FROM ((((((((apflora.ap
   INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId)
   INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
@@ -686,26 +686,110 @@ WHERE apflora.ap.ApArtId > 150
 GROUP BY apflora.tpopkontr.TPopKontrId;
 
 CREATE OR REPLACE VIEW v_exportevab_zeit AS
-SELECT CONCAT('{', apflora.tpop.TPopGuid, '}') AS fkOrt, CONCAT('{', apflora.tpopkontr.ZeitGuid, '}') AS idZeitpunkt, CAST(IF(apflora.tpopkontr.TPopKontrDatum Is Not Null, DATE_FORMAT(apflora.tpopkontr.TPopKontrDatum, '%d.%m.%Y'),CONCAT("01.01.", apflora.tpopkontr.TPopKontrJahr)) AS CHAR) AS Datum, IF(apflora.tpopkontr.TPopKontrDatum Is Not Null,"T","J") AS fkGenauigkeitDatum, IF(apflora.tpopkontr.TPopKontrDatum Is Not Null, 'P','X') AS fkGenauigkeitDatumZDSF, LEFT(apflora.tpopkontr.TPopKontrMoosschicht, 10) AS COUV_MOUSSES, LEFT(apflora.tpopkontr.TPopKontrKrautschicht, 10) AS COUV_HERBACEES, LEFT(apflora.tpopkontr.TPopKontrStrauchschicht, 10) AS COUV_BUISSONS, LEFT(apflora.tpopkontr.TPopKontrBaumschicht, 10) AS COUV_ARBRES
-FROM ((((apflora.ap INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId) LEFT JOIN apflora.adresse ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId) LEFT JOIN apflora.pop_status_werte AS tpopHerkunft ON apflora.tpop.TPopHerkunft = tpopHerkunft.HerkunftId
-WHERE apflora.ap.ApArtId > 150 AND apflora.tpop.TPopXKoord Is Not Null AND apflora.tpop.TPopYKoord Is Not Null AND apflora.tpopkontr.TPopKontrTyp In ("Zwischenbeurteilung", "Freiwilligen-Erfolgskontrolle") AND apflora.tpop.TPopHerkunft<>201 AND (apflora.tpopkontr.TPopKontrJahr Is Not Null OR apflora.tpopkontr.TPopKontrDatum Is Not Null);
+SELECT
+  CONCAT('{', apflora.tpop.TPopGuid, '}') AS fkOrt,
+  CONCAT('{', apflora.tpopkontr.ZeitGuid, '}') AS idZeitpunkt, CAST(IF(apflora.tpopkontr.TPopKontrDatum Is Not Null, DATE_FORMAT(apflora.tpopkontr.TPopKontrDatum, '%d.%m.%Y'),CONCAT("01.01.", apflora.tpopkontr.TPopKontrJahr)) AS CHAR) AS Datum,
+  IF(apflora.tpopkontr.TPopKontrDatum Is Not Null,"T","J") AS fkGenauigkeitDatum,
+  IF(apflora.tpopkontr.TPopKontrDatum Is Not Null, 'P','X') AS fkGenauigkeitDatumZDSF,
+  LEFT(apflora.tpopkontr.TPopKontrMoosschicht, 10) AS COUV_MOUSSES,
+  LEFT(apflora.tpopkontr.TPopKontrKrautschicht, 10) AS COUV_HERBACEES,
+  LEFT(apflora.tpopkontr.TPopKontrStrauchschicht, 10) AS COUV_BUISSONS,
+  LEFT(apflora.tpopkontr.TPopKontrBaumschicht, 10) AS COUV_ARBRES
+FROM ((((apflora.ap
+  INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId)
+  INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
+  INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
+  LEFT JOIN apflora.adresse ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
+  LEFT JOIN apflora.pop_status_werte AS tpopHerkunft ON apflora.tpop.TPopHerkunft = tpopHerkunft.HerkunftId
+WHERE apflora.ap.ApArtId > 150
+  AND apflora.tpop.TPopXKoord Is Not Null
+  AND apflora.tpop.TPopYKoord Is Not Null
+  AND apflora.tpopkontr.TPopKontrTyp In ("Zwischenbeurteilung", "Freiwilligen-Erfolgskontrolle")
+  AND apflora.tpop.TPopHerkunft <> 201
+  AND apflora.tpopkontr.TPopKontrJahr Is Not Null
+  AND apflora.tpop.TPopBekanntSeit Is Not Null
+  AND (apflora.tpopkontr.TPopKontrJahr - apflora.tpop.TPopBekanntSeit) > 5;
 
 CREATE OR REPLACE VIEW v_exportevab_ort AS
-SELECT CONCAT('{', apflora.pop.PopGuid, '}') AS fkRaum, CONCAT('{', apflora.tpop.TPopGuid, '}') AS idOrt, LEFT(CAST(CONCAT(apflora.tpop.TPopFlurname, IF(apflora.tpop.TPopNr Is Not Null,CONCAT(" (Nr. ", apflora.tpop.TPopNr, ")"),"")) AS CHAR), 40) AS Name, DATE_FORMAT(CURDATE(), '%d.%m.%Y') AS Erfassungsdatum, "{7C71B8AF-DF3E-4844-A83B-55735F80B993}" AS fkAutor, LEFT(apflora.tpopkontr.TPopKontrLeb, 9) AS fkLebensraumtyp, 1 AS fkGenauigkeitLage, 1 AS fkGeometryType, IF(apflora.tpop.TPopHoehe Is Not Null, apflora.tpop.TPopHoehe, 0) AS obergrenzeHoehe, 4 AS fkGenauigkeitHoehe, apflora.tpop.TPopXKoord AS X, apflora.tpop.TPopYKoord AS Y, LEFT(apflora.tpop.TPopGemeinde, 25) AS NOM_COMMUNE, LEFT(apflora.tpop.TPopFlurname, 255) AS DESC_LOCALITE, apflora.tpopkontr.TPopKontrLebUmg AS ENV
-FROM ((((apflora.ap INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId) LEFT JOIN apflora.adresse ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId) LEFT JOIN apflora.pop_status_werte AS tpopHerkunft ON apflora.tpop.TPopHerkunft = tpopHerkunft.HerkunftId
-WHERE apflora.ap.ApArtId > 150 AND apflora.tpop.TPopXKoord Is Not Null AND apflora.tpop.TPopYKoord Is Not Null AND apflora.tpopkontr.TPopKontrTyp In ("Zwischenbeurteilung", "Freiwilligen-Erfolgskontrolle") AND apflora.tpop.TPopHerkunft<>201 AND (apflora.tpopkontr.TPopKontrJahr Is Not Null OR apflora.tpopkontr.TPopKontrDatum Is Not Null)
+SELECT CONCAT('{', apflora.pop.PopGuid, '}') AS fkRaum,
+  CONCAT('{', apflora.tpop.TPopGuid, '}') AS idOrt,
+  LEFT(CAST(CONCAT(apflora.tpop.TPopFlurname, IF(apflora.tpop.TPopNr Is Not Null, CONCAT(" (Nr. ", apflora.tpop.TPopNr, ")"),"")) AS CHAR), 40) AS Name,
+  DATE_FORMAT(CURDATE(), '%d.%m.%Y') AS Erfassungsdatum,
+  "{7C71B8AF-DF3E-4844-A83B-55735F80B993}" AS fkAutor,
+  LEFT(apflora.tpopkontr.TPopKontrLeb, 9) AS fkLebensraumtyp,
+  1 AS fkGenauigkeitLage,
+  1 AS fkGeometryType,
+  IF(apflora.tpop.TPopHoehe Is Not Null, apflora.tpop.TPopHoehe, 0) AS obergrenzeHoehe,
+  4 AS fkGenauigkeitHoehe,
+  apflora.tpop.TPopXKoord AS X,
+  apflora.tpop.TPopYKoord AS Y,
+  LEFT(apflora.tpop.TPopGemeinde, 25) AS NOM_COMMUNE,
+  LEFT(apflora.tpop.TPopFlurname, 255) AS DESC_LOCALITE,
+  apflora.tpopkontr.TPopKontrLebUmg AS ENV
+FROM ((((apflora.ap
+  INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId)
+  INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
+  INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
+  LEFT JOIN apflora.adresse ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
+  LEFT JOIN apflora.pop_status_werte AS tpopHerkunft ON apflora.tpop.TPopHerkunft = tpopHerkunft.HerkunftId
+WHERE apflora.ap.ApArtId > 150
+  AND apflora.tpop.TPopXKoord Is Not Null
+  AND apflora.tpop.TPopYKoord Is Not Null
+  AND apflora.tpopkontr.TPopKontrTyp In ("Zwischenbeurteilung", "Freiwilligen-Erfolgskontrolle")
+  AND apflora.tpop.TPopHerkunft <> 201
+  AND apflora.tpopkontr.TPopKontrJahr Is Not Null
+  AND apflora.tpop.TPopBekanntSeit Is Not Null
+  AND (apflora.tpopkontr.TPopKontrJahr - apflora.tpop.TPopBekanntSeit) > 5
 GROUP BY apflora.pop.PopGuid, apflora.tpop.TPopGuid;
 
 CREATE OR REPLACE VIEW v_exportevab_raum AS
-SELECT CONCAT('{', apflora.ap.ApGuid, '}') AS fkProjekt, CONCAT('{', apflora.pop.PopGuid, '}') AS idRaum, CAST(CONCAT(apflora.pop.PopName, IF(apflora.pop.PopNr Is Not Null,CONCAT(" (Nr. ", apflora.pop.PopNr, ")"),"")) AS CHAR) AS Name, DATE_FORMAT(CURDATE(), '%d.%m.%Y') AS Erfassungsdatum, "{7C71B8AF-DF3E-4844-A83B-55735F80B993}" AS fkAutor, CAST(IF(apflora.pop.PopHerkunft Is Not Null,CONCAT("Status: ", popHerkunft.HerkunftTxt, IF(apflora.pop.PopBekanntSeit Is Not Null,CONCAT("; Bekannt seit: ", apflora.pop.PopBekanntSeit),"")),"") AS CHAR) AS Bemerkungen
-FROM ((((apflora.ap INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId) LEFT JOIN apflora.adresse ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId) LEFT JOIN apflora.pop_status_werte AS popHerkunft ON apflora.pop.PopHerkunft = popHerkunft.HerkunftId
-WHERE apflora.ap.ApArtId > 150 AND apflora.tpop.TPopXKoord Is Not Null AND apflora.tpop.TPopYKoord Is Not Null AND apflora.tpopkontr.TPopKontrTyp In ("Zwischenbeurteilung", "Freiwilligen-Erfolgskontrolle") AND apflora.tpop.TPopHerkunft<>201 AND (apflora.tpopkontr.TPopKontrJahr Is Not Null OR apflora.tpopkontr.TPopKontrDatum Is Not Null)
+SELECT
+  CONCAT('{', apflora.ap.ApGuid, '}') AS fkProjekt,
+  CONCAT('{', apflora.pop.PopGuid, '}') AS idRaum,
+  CAST(CONCAT(apflora.pop.PopName, IF(apflora.pop.PopNr Is Not Null,CONCAT(" (Nr. ", apflora.pop.PopNr, ")"),"")) AS CHAR) AS Name,
+  DATE_FORMAT(CURDATE(), '%d.%m.%Y') AS Erfassungsdatum,
+  "{7C71B8AF-DF3E-4844-A83B-55735F80B993}" AS fkAutor,
+  CAST(IF(apflora.pop.PopHerkunft Is Not Null, CONCAT("Status: ", popHerkunft.HerkunftTxt, IF(apflora.pop.PopBekanntSeit Is Not Null,CONCAT("; Bekannt seit: ", apflora.pop.PopBekanntSeit),"")),"") AS CHAR) AS Bemerkungen
+FROM ((((apflora.ap
+  INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId)
+  INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
+  INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
+  LEFT JOIN apflora.adresse ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
+  LEFT JOIN apflora.pop_status_werte AS popHerkunft ON apflora.pop.PopHerkunft = popHerkunft.HerkunftId
+WHERE apflora.ap.ApArtId > 150
+  AND apflora.tpop.TPopXKoord Is Not Null
+  AND apflora.tpop.TPopYKoord Is Not Null
+  AND apflora.tpopkontr.TPopKontrTyp In ("Zwischenbeurteilung", "Freiwilligen-Erfolgskontrolle")
+  AND apflora.tpop.TPopHerkunft <> 201
+  AND apflora.tpopkontr.TPopKontrJahr Is Not Null
+  AND apflora.tpop.TPopBekanntSeit Is Not Null
+  AND (apflora.tpopkontr.TPopKontrJahr - apflora.tpop.TPopBekanntSeit) > 5
 GROUP BY apflora.pop.PopGuid;
 
 CREATE OR REPLACE VIEW v_exportevab_projekt AS
-SELECT CONCAT('{', apflora.ap.ApGuid, '}') AS idProjekt, CONCAT("AP Flora ZH: ", apflora_beob.adb_eigenschaften.Artname) AS Name, CAST(IF(apflora.ap.ApJahr Is Not Null,CONCAT("01.01.", apflora.ap.ApJahr),DATE_FORMAT(CURDATE(), '%d.%m.%Y')) AS CHAR) AS Eroeffnung, "{7C71B8AF-DF3E-4844-A83B-55735F80B993}" AS fkAutor, CAST(CONCAT("Aktionsplan: ", apflora.ap_bearbstand_werte.DomainTxt, IF(apflora.ap.ApJahr Is Not Null,CONCAT("; Start im Jahr: ", apflora.ap.ApJahr),""), IF(apflora.ap.ApUmsetzung Is Not Null,CONCAT("; Stand Umsetzung: ", apflora.ap_umsetzung_werte.DomainTxt),""),"") AS CHAR) AS Bemerkungen
-FROM (((((((apflora.ap INNER JOIN apflora_beob.adb_eigenschaften ON apflora.ap.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId) INNER JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode) LEFT JOIN apflora.ap_umsetzung_werte ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode) INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId) LEFT JOIN apflora.adresse ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId) LEFT JOIN apflora.pop_status_werte AS popHerkunft ON apflora.pop.PopHerkunft = popHerkunft.HerkunftId
-WHERE apflora.ap.ApArtId > 150 AND apflora.tpop.TPopXKoord Is Not Null AND apflora.tpop.TPopYKoord Is Not Null AND apflora.tpopkontr.TPopKontrTyp In ("Zwischenbeurteilung", "Freiwilligen-Erfolgskontrolle") AND apflora.tpop.TPopHerkunft<>201 AND (apflora.tpopkontr.TPopKontrJahr Is Not Null OR apflora.tpopkontr.TPopKontrDatum Is Not Null)
+SELECT
+  CONCAT('{', apflora.ap.ApGuid, '}') AS idProjekt,
+  CONCAT("AP Flora ZH: ", apflora_beob.adb_eigenschaften.Artname) AS Name,
+  CAST(IF(apflora.ap.ApJahr Is Not Null,CONCAT("01.01.", apflora.ap.ApJahr),DATE_FORMAT(CURDATE(), '%d.%m.%Y')) AS CHAR) AS Eroeffnung,
+  "{7C71B8AF-DF3E-4844-A83B-55735F80B993}" AS fkAutor,
+  CAST(CONCAT("Aktionsplan: ", apflora.ap_bearbstand_werte.DomainTxt, IF(apflora.ap.ApJahr Is Not Null,CONCAT("; Start im Jahr: ", apflora.ap.ApJahr),""), IF(apflora.ap.ApUmsetzung Is Not Null, CONCAT("; Stand Umsetzung: ", apflora.ap_umsetzung_werte.DomainTxt),""),"") AS CHAR) AS Bemerkungen
+FROM (((((((apflora.ap
+  INNER JOIN apflora_beob.adb_eigenschaften ON apflora.ap.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId)
+  INNER JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
+  LEFT JOIN apflora.ap_umsetzung_werte ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
+  INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId)
+  INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
+  INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
+  LEFT JOIN apflora.adresse ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
+  LEFT JOIN apflora.pop_status_werte AS popHerkunft ON apflora.pop.PopHerkunft = popHerkunft.HerkunftId
+WHERE apflora.ap.ApArtId > 150
+  AND apflora.tpop.TPopXKoord Is Not Null
+  AND apflora.tpop.TPopYKoord Is Not Null
+  AND apflora.tpopkontr.TPopKontrTyp In ("Zwischenbeurteilung", "Freiwilligen-Erfolgskontrolle")
+  AND apflora.tpop.TPopHerkunft <> 201
+  AND apflora.tpopkontr.TPopKontrJahr Is Not Null
+  AND apflora.tpop.TPopBekanntSeit Is Not Null
+  AND (apflora.tpopkontr.TPopKontrJahr - apflora.tpop.TPopBekanntSeit) > 5
 GROUP BY apflora.ap.ApGuid;
 
 CREATE OR REPLACE VIEW v_tpopmassnber AS
