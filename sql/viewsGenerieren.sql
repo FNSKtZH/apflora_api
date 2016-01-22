@@ -3243,67 +3243,122 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_feldkontrzaehlung_ohneeinheit AS 
 SELECT
-	apflora.ap.ApArtId, 'Zaehlung ohne Zaehleinheit (Feldkontrolle):' AS hw, CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfeldkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link, apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
+	apflora.ap.ApArtId,
+	'Zaehlung ohne Zaehleinheit (Feldkontrolle):' AS hw,
+	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfeldkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link,
+	apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
 FROM (((apflora.ap INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId) INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE apflora.tpopkontrzaehl.Zaehleinheit IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
-	apflora.ap.ApArtId, apflora.pop.PopNr, apflora.tpop.TPopNr, apflora.tpopkontr.TPopKontrJahr, apflora.tpopkontr.TPopKontrId;
+	apflora.ap.ApArtId,
+	apflora.pop.PopNr,
+	apflora.tpop.TPopNr,
+	apflora.tpopkontr.TPopKontrJahr,
+	apflora.tpopkontr.TPopKontrId;
 
 CREATE OR REPLACE VIEW v_qk_freiwkontrzaehlung_ohneeinheit AS 
 SELECT
-	apflora.ap.ApArtId, 'Zaehlung ohne Zaehleinheit (Freiwilligen-Kontrolle):' AS hw, CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfreiwkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link, apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
+	apflora.ap.ApArtId,
+	'Zaehlung ohne Zaehleinheit (Freiwilligen-Kontrolle):' AS hw,
+	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfreiwkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link,
+	apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
 FROM (((apflora.ap INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId) INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE apflora.tpopkontrzaehl.Zaehleinheit IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
-	apflora.ap.ApArtId, apflora.pop.PopNr, apflora.tpop.TPopNr, apflora.tpopkontr.TPopKontrJahr, apflora.tpopkontr.TPopKontrId;
+	apflora.ap.ApArtId,
+	apflora.pop.PopNr,
+	apflora.tpop.TPopNr,
+	apflora.tpopkontr.TPopKontrJahr,
+	apflora.tpopkontr.TPopKontrId;
 
 CREATE OR REPLACE VIEW v_qk_feldkontrzaehlung_ohnemethode AS 
 SELECT
-	apflora.ap.ApArtId, 'Zaehlung ohne Methode (Feldkontrolle):' AS hw, CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfeldkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link, apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
+	apflora.ap.ApArtId,
+	'Zaehlung ohne Methode (Feldkontrolle):' AS hw,
+	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfeldkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link,
+	apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
 FROM (((apflora.ap INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId) INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE apflora.tpopkontrzaehl.Methode IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
-	apflora.ap.ApArtId, apflora.pop.PopNr, apflora.tpop.TPopNr, apflora.tpopkontr.TPopKontrJahr, apflora.tpopkontr.TPopKontrId;
+	apflora.ap.ApArtId,
+	apflora.pop.PopNr,
+	apflora.tpop.TPopNr,
+	apflora.tpopkontr.TPopKontrJahr,
+	apflora.tpopkontr.TPopKontrId;
 
 CREATE OR REPLACE VIEW v_qk_freiwkontrzaehlung_ohnemethode AS 
 SELECT
-	apflora.ap.ApArtId, 'Zaehlung ohne Methode (Freiwilligen-Kontrolle):' AS hw, CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfreiwkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link, apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
+	apflora.ap.ApArtId,
+	'Zaehlung ohne Methode (Freiwilligen-Kontrolle):' AS hw,
+	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfreiwkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link,
+	apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
 FROM (((apflora.ap INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId) INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE apflora.tpopkontrzaehl.Methode IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
-	apflora.ap.ApArtId, apflora.pop.PopNr, apflora.tpop.TPopNr, apflora.tpopkontr.TPopKontrJahr, apflora.tpopkontr.TPopKontrId;
+	apflora.ap.ApArtId,
+	apflora.pop.PopNr,
+	apflora.tpop.TPopNr,
+	apflora.tpopkontr.TPopKontrJahr,
+	apflora.tpopkontr.TPopKontrId;
 
 CREATE OR REPLACE VIEW v_qk_feldkontrzaehlung_ohneanzahl AS 
 SELECT
-	apflora.ap.ApArtId, 'Zaehlung ohne Anzahl (Feldkontrolle):' AS hw, CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfeldkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link, apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
+	apflora.ap.ApArtId,
+	'Zaehlung ohne Anzahl (Feldkontrolle):' AS hw,
+	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfeldkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link,
+	apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
 FROM (((apflora.ap INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId) INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE apflora.tpopkontrzaehl.Anzahl IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
-	apflora.ap.ApArtId, apflora.pop.PopNr, apflora.tpop.TPopNr, apflora.tpopkontr.TPopKontrJahr, apflora.tpopkontr.TPopKontrId;
+	apflora.ap.ApArtId,
+	apflora.pop.PopNr,
+	apflora.tpop.TPopNr,
+	apflora.tpopkontr.TPopKontrJahr,
+	apflora.tpopkontr.TPopKontrId;
 
 CREATE OR REPLACE VIEW v_qk_freiwkontrzaehlung_ohneanzahl AS 
 SELECT
-	apflora.ap.ApArtId, 'Zaehlung ohne Anzahl (Freiwilligen-Kontrolle):' AS hw, CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfreiwkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link, apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
+	apflora.ap.ApArtId,
+	'Zaehlung ohne Anzahl (Freiwilligen-Kontrolle):' AS hw,
+	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopfreiwkontr=', apflora.tpopkontr.TPopKontrId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > KontrJahr: ', apflora.tpopkontr.TPopKontrJahr), CONCAT(' > Kontr.-ID: ', apflora.tpopkontr.TPopKontrId)), '</a>') AS link,
+	apflora.tpopkontr.TPopKontrJahr AS Berichtjahr
 FROM (((apflora.ap INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId) INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE apflora.tpopkontrzaehl.Anzahl IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
-	apflora.ap.ApArtId, apflora.pop.PopNr, apflora.tpop.TPopNr, apflora.tpopkontr.TPopKontrJahr, apflora.tpopkontr.TPopKontrId;
+	apflora.ap.ApArtId,
+	apflora.pop.PopNr,
+	apflora.tpop.TPopNr,
+	apflora.tpopkontr.TPopKontrJahr,
+	apflora.tpopkontr.TPopKontrId;
 
 CREATE OR REPLACE VIEW v_qk_tpopber_ohnejahr AS 
 SELECT
-	apflora.ap.ApArtId, 'Teilpopulations-Bericht ohne Jahr:' AS hw, CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopber=', apflora.tpopber.TPopBerId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > TPopBerJahr: ', apflora.tpopber.TPopBerJahr), CONCAT(' > TPopBer.-ID: ', apflora.tpopber.TPopBerId)), '</a>') AS link
+	apflora.ap.ApArtId,
+	'Teilpopulations-Bericht ohne Jahr:' AS hw,
+	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopber=', apflora.tpopber.TPopBerId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > TPopBerJahr: ', apflora.tpopber.TPopBerJahr), CONCAT(' > TPopBer.-ID: ', apflora.tpopber.TPopBerId)), '</a>') AS link
 FROM ((apflora.ap INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopber ON apflora.tpop.TPopId = apflora.tpopber.TPopId
 WHERE apflora.tpopber.TPopBerJahr IS NULL
 ORDER BY
-	apflora.ap.ApArtId, apflora.pop.PopNr, apflora.tpop.TPopNr, apflora.tpopber.TPopBerJahr, apflora.tpopber.TPopBerId;
+	apflora.ap.ApArtId,
+	apflora.pop.PopNr,
+	apflora.tpop.TPopNr,
+	apflora.tpopber.TPopBerJahr,
+	apflora.tpopber.TPopBerId;
 
 CREATE OR REPLACE VIEW v_qk_tpopber_ohneentwicklung AS 
 SELECT
-	apflora.ap.ApArtId, 'Teilpopulations-Bericht ohne Entwicklung:' AS hw, CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopber=', apflora.tpopber.TPopBerId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > TPopBerJahr: ', apflora.tpopber.TPopBerJahr), CONCAT(' > TPopBer.-ID: ', apflora.tpopber.TPopBerId)), '</a>') AS link, apflora.tpopber.TPopBerJahr AS Berichtjahr
+	apflora.ap.ApArtId,
+	'Teilpopulations-Bericht ohne Entwicklung:' AS hw,
+	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopber=', apflora.tpopber.TPopBerId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), IFNULL(CONCAT(' > TPopBerJahr: ', apflora.tpopber.TPopBerJahr), CONCAT(' > TPopBer.-ID: ', apflora.tpopber.TPopBerId)), '</a>') AS link,
+	apflora.tpopber.TPopBerJahr AS Berichtjahr
 FROM ((apflora.ap INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopber ON apflora.tpop.TPopId = apflora.tpopber.TPopId
 WHERE apflora.tpopber.TPopBerEntwicklung IS NULL AND apflora.tpopber.TPopBerJahr IS NOT NULL
 ORDER BY
-	apflora.ap.ApArtId, apflora.pop.PopNr, apflora.tpop.TPopNr, apflora.tpopber.TPopBerJahr, apflora.tpopber.TPopBerId;
+	apflora.ap.ApArtId,
+	apflora.pop.PopNr,
+	apflora.tpop.TPopNr,
+	apflora.tpopber.TPopBerJahr,
+	apflora.tpopber.TPopBerId;
 
 CREATE OR REPLACE VIEW v_qk_popber_ohneentwicklung AS 
 SELECT
