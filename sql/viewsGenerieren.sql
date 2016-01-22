@@ -1,16 +1,27 @@
 CREATE OR REPLACE VIEW v_pop_berundmassnjahre AS
-SELECT apflora.pop.PopId, apflora.popber.PopBerJahr as "Jahr"
+SELECT
+  apflora.pop.PopId,
+	apflora.popber.PopBerJahr as "Jahr"
 FROM apflora.pop INNER JOIN apflora.popber ON apflora.pop.PopId = apflora.popber.PopId
-UNION DISTINCT SELECT apflora.pop.PopId, apflora.popmassnber.PopMassnBerJahr as "Jahr"
+UNION DISTINCT SELECT
+  apflora.pop.PopId,
+	apflora.popmassnber.PopMassnBerJahr as "Jahr"
 FROM apflora.pop INNER JOIN apflora.popmassnber ON apflora.pop.PopId = apflora.popmassnber.PopId
 ORDER BY Jahr;
 
 CREATE OR REPLACE VIEW v_popmassnber_anzmassn0 AS
-SELECT apflora.popmassnber.PopId, apflora.popmassnber.PopMassnBerJahr, Count(apflora.tpopmassn.TPopMassnId) AS AnzahlvonTPopMassnId
+SELECT
+  apflora.popmassnber.PopId,
+	apflora.popmassnber.PopMassnBerJahr,
+	Count(apflora.tpopmassn.TPopMassnId) AS AnzahlvonTPopMassnId
 FROM apflora.popmassnber INNER JOIN (apflora.tpop LEFT JOIN apflora.tpopmassn ON apflora.tpop.TPopId = apflora.tpopmassn.TPopId) ON apflora.popmassnber.PopId = apflora.tpop.PopId
 WHERE apflora.tpopmassn.TPopMassnJahr=apflora.popmassnber.PopMassnBerJahr Or apflora.tpopmassn.TPopMassnJahr Is Null
-GROUP BY apflora.popmassnber.PopId, apflora.popmassnber.PopMassnBerJahr
-ORDER BY apflora.popmassnber.PopId, apflora.popmassnber.PopMassnBerJahr;
+GROUP BY
+  apflora.popmassnber.PopId,
+	apflora.popmassnber.PopMassnBerJahr
+ORDER BY
+  apflora.popmassnber.PopId,
+	apflora.popmassnber.PopMassnBerJahr;
 
 CREATE OR REPLACE VIEW v_massn_jahre AS
 SELECT apflora.tpopmassn.TPopMassnJahr 
@@ -793,21 +804,88 @@ WHERE apflora.ap.ApArtId > 150
 GROUP BY apflora.ap.ApGuid;
 
 CREATE OR REPLACE VIEW v_tpopmassnber AS
-SELECT apflora_beob.adb_eigenschaften.TaxonomieId AS ApArtId, apflora_beob.adb_eigenschaften.Artname AS "AP Art", apflora.ap_bearbstand_werte.DomainTxt AS "AP Status", apflora.ap.ApJahr AS "AP Start im Jahr", apflora.ap_umsetzung_werte.DomainTxt AS "AP Stand Umsetzung", apflora.pop.PopGuid AS "Pop Guid", apflora.pop.PopNr AS "Pop Nr", apflora.pop.PopName AS "Pop Name", pop_status_werte.HerkunftTxt AS "Pop Status", apflora.pop.PopBekanntSeit AS "Pop bekannt seit", apflora.pop.PopHerkunftUnklar AS "Pop Status unklar", apflora.pop.PopHerkunftUnklarBegruendung AS "Pop Begruendung fuer unklaren Status", apflora.pop.PopXKoord AS "Pop X-Koordinaten", apflora.pop.PopYKoord AS "Pop Y-Koordinaten", apflora.tpop.TPopId AS "TPop ID", apflora.tpop.TPopGuid AS "TPop Guid", apflora.tpop.TPopNr AS "TPop Nr", apflora.tpop.TPopGemeinde AS "TPop Gemeinde", apflora.tpop.TPopFlurname AS "TPop Flurname", tpopHerkunft.HerkunftTxt AS "TPop Status", apflora.tpop.TPopBekanntSeit AS "TPop bekannt seit", apflora.tpop.TPopHerkunftUnklar AS "TPop Status unklar", apflora.tpop.TPopHerkunftUnklarBegruendung AS "TPop Begruendung fuer unklaren Status", apflora.tpop.TPopXKoord AS "TPop X-Koordinaten", apflora.tpop.TPopYKoord AS "TPop Y-Koordinaten", apflora.tpop.TPopRadius AS "TPop Radius (m)", apflora.tpop.TPopHoehe AS "TPop Hoehe", apflora.tpop.TPopExposition AS "TPop Exposition", apflora.tpop.TPopKlima AS "TPop Klima", apflora.tpop.TPopNeigung AS "TPop Hangneigung", apflora.tpop.TPopBeschr AS "TPop Beschreibung", apflora.tpop.TPopKatNr AS "TPop Kataster-Nr", apflora.tpop.TPopApBerichtRelevant AS "TPop fuer AP-Bericht relevant", apflora.tpop.TPopEigen AS "TPop EigentuemerIn", apflora.tpop.TPopKontakt AS "TPop Kontakt vor Ort", apflora.tpop.TPopNutzungszone AS "TPop Nutzungszone", apflora.tpop.TPopBewirtschafterIn AS "TPop BewirtschafterIn", apflora.tpop.TPopBewirtschaftung AS "TPop Bewirtschaftung", apflora.tpopmassnber.TPopMassnBerId AS "TPopMassnBer Id", apflora.tpopmassnber.TPopMassnBerJahr AS "TPopMassnBer Jahr", tpopmassn_erfbeurt_werte.BeurteilTxt AS "TPopMassnBer Entwicklung", apflora.tpopmassnber.TPopMassnBerTxt AS "TPopMassnBer Interpretation", apflora.tpopmassnber.MutWann AS "TPopMassnBer MutWann", apflora.tpopmassnber.MutWer AS "TPopMassnBer MutWer"
+SELECT
+  apflora_beob.adb_eigenschaften.TaxonomieId AS ApArtId,
+  apflora_beob.adb_eigenschaften.Artname AS "AP Art",
+  apflora.ap_bearbstand_werte.DomainTxt AS "AP Status",
+  apflora.ap.ApJahr AS "AP Start im Jahr",
+  apflora.ap_umsetzung_werte.DomainTxt AS "AP Stand Umsetzung",
+  apflora.pop.PopGuid AS "Pop Guid",
+  apflora.pop.PopNr AS "Pop Nr",
+  apflora.pop.PopName AS "Pop Name",
+  pop_status_werte.HerkunftTxt AS "Pop Status",
+  apflora.pop.PopBekanntSeit AS "Pop bekannt seit",
+  apflora.pop.PopHerkunftUnklar AS "Pop Status unklar",
+  apflora.pop.PopHerkunftUnklarBegruendung AS "Pop Begruendung fuer unklaren Status",
+  apflora.pop.PopXKoord AS "Pop X-Koordinaten",
+  apflora.pop.PopYKoord AS "Pop Y-Koordinaten",
+  apflora.tpop.TPopId AS "TPop ID",
+  apflora.tpop.TPopGuid AS "TPop Guid",
+  apflora.tpop.TPopNr AS "TPop Nr",
+  apflora.tpop.TPopGemeinde AS "TPop Gemeinde",
+  apflora.tpop.TPopFlurname AS "TPop Flurname",
+  tpopHerkunft.HerkunftTxt AS "TPop Status",
+  apflora.tpop.TPopBekanntSeit AS "TPop bekannt seit",
+  apflora.tpop.TPopHerkunftUnklar AS "TPop Status unklar",
+  apflora.tpop.TPopHerkunftUnklarBegruendung AS "TPop Begruendung fuer unklaren Status",
+  apflora.tpop.TPopXKoord AS "TPop X-Koordinaten",
+  apflora.tpop.TPopYKoord AS "TPop Y-Koordinaten",
+  apflora.tpop.TPopRadius AS "TPop Radius (m)",
+  apflora.tpop.TPopHoehe AS "TPop Hoehe",
+  apflora.tpop.TPopExposition AS "TPop Exposition",
+  apflora.tpop.TPopKlima AS "TPop Klima",
+  apflora.tpop.TPopNeigung AS "TPop Hangneigung",
+  apflora.tpop.TPopBeschr AS "TPop Beschreibung",
+  apflora.tpop.TPopKatNr AS "TPop Kataster-Nr",
+  apflora.tpop.TPopApBerichtRelevant AS "TPop fuer AP-Bericht relevant",
+  apflora.tpop.TPopEigen AS "TPop EigentuemerIn",
+  apflora.tpop.TPopKontakt AS "TPop Kontakt vor Ort",
+  apflora.tpop.TPopNutzungszone AS "TPop Nutzungszone",
+  apflora.tpop.TPopBewirtschafterIn AS "TPop BewirtschafterIn",
+  apflora.tpop.TPopBewirtschaftung AS "TPop Bewirtschaftung",
+  apflora.tpopmassnber.TPopMassnBerId AS "TPopMassnBer Id",
+  apflora.tpopmassnber.TPopMassnBerJahr AS "TPopMassnBer Jahr",
+  tpopmassn_erfbeurt_werte.BeurteilTxt AS "TPopMassnBer Entwicklung",
+  apflora.tpopmassnber.TPopMassnBerTxt AS "TPopMassnBer Interpretation",
+  apflora.tpopmassnber.MutWann AS "TPopMassnBer MutWann",
+  apflora.tpopmassnber.MutWer AS "TPopMassnBer MutWer"
 FROM (((((((apflora_beob.adb_eigenschaften RIGHT JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) RIGHT JOIN (apflora.pop RIGHT JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) ON apflora.ap.ApArtId = apflora.pop.ApArtId) LEFT JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode) LEFT JOIN apflora.ap_umsetzung_werte ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode) LEFT JOIN apflora.pop_status_werte ON apflora.pop.PopHerkunft = pop_status_werte.HerkunftId) LEFT JOIN apflora.pop_status_werte AS tpopHerkunft ON apflora.tpop.TPopHerkunft = tpopHerkunft.HerkunftId)INNER JOIN apflora.tpopmassnber ON apflora.tpop.TPopId = apflora.tpopmassnber.TPopId) LEFT JOIN apflora.tpopmassn_erfbeurt_werte ON apflora.tpopmassnber.TPopMassnBerErfolgsbeurteilung = tpopmassn_erfbeurt_werte.BeurteilId
 ORDER BY apflora_beob.adb_eigenschaften.Artname, apflora.pop.PopNr, apflora.tpop.TPopNr, apflora.tpopmassnber.TPopMassnBerJahr;
 
 CREATE OR REPLACE VIEW v_tpop_kml AS
-SELECT apflora_beob.adb_eigenschaften.Artname AS Art, CAST(CONCAT(apflora.pop.PopNr,'/', apflora.tpop.TPopNr) AS CHAR) AS Label, CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName, '<br /> Teilpopulation: ', apflora.tpop.TPopNr, ' ', apflora.tpop.TPopGemeinde, ' ', apflora.tpop.TPopFlurname),225) AS CHAR) AS Inhalte, (2.6779094+(4.728982*((apflora.tpop.TPopXKoord-600000)/1000000))+(0.791484*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))+(0.1306*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0436*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)))*100/36 AS Laengengrad, (16.9023892+(3.238272*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.270978*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000))-(0.002528*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0447*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.014*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)))*100/36 AS Breitengrad, CAST(CONCAT('http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.tpop.TPopId) AS CHAR) AS URL
+SELECT apflora_beob.adb_eigenschaften.Artname AS Art,
+  CAST(CONCAT(apflora.pop.PopNr,'/', apflora.tpop.TPopNr) AS CHAR) AS Label,
+  CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName, '<br /> Teilpopulation: ', apflora.tpop.TPopNr, ' ', apflora.tpop.TPopGemeinde, ' ', apflora.tpop.TPopFlurname),225) AS CHAR) AS Inhalte,
+	(2.6779094+(4.728982*((apflora.tpop.TPopXKoord-600000)/1000000))+(0.791484*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))+(0.1306*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0436*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)))*100/36 AS Laengengrad,
+	(16.9023892+(3.238272*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.270978*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000))-(0.002528*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0447*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.014*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)))*100/36 AS Breitengrad,
+	CAST(CONCAT('http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.tpop.TPopId) AS CHAR) AS URL
 FROM (apflora_beob.adb_eigenschaften INNER JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN (apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE apflora.tpop.TPopYKoord > 0 AND apflora.tpop.TPopXKoord > 0
-ORDER BY apflora_beob.adb_eigenschaften.Artname, apflora.pop.PopNr, apflora.pop.PopName, apflora.tpop.TPopNr, apflora.tpop.TPopGemeinde, apflora.tpop.TPopFlurname;
+ORDER BY
+  apflora_beob.adb_eigenschaften.Artname,
+	apflora.pop.PopNr,
+	apflora.pop.PopName,
+	apflora.tpop.TPopNr,
+	apflora.tpop.TPopGemeinde,
+	apflora.tpop.TPopFlurname;
 
 CREATE OR REPLACE VIEW v_tpop_kmlnamen AS
-SELECT apflora_beob.adb_eigenschaften.Artname AS Art, CAST(CONCAT(apflora_beob.adb_eigenschaften.Artname, ' ', apflora.pop.PopNr,'/', apflora.tpop.TPopNr) AS CHAR) AS Label, CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName, '<br /> Teilpopulation: ', apflora.tpop.TPopNr, ' ', apflora.tpop.TPopGemeinde, ' ', apflora.tpop.TPopFlurname),225) AS CHAR) AS Inhalte, (2.6779094+(4.728982*((apflora.tpop.TPopXKoord-600000)/1000000))+(0.791484*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))+(0.1306*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0436*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)))*100/36 AS Laengengrad, (16.9023892+(3.238272*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.270978*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000))-(0.002528*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0447*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.014*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)))*100/36 AS Breitengrad, CAST(CONCAT('http://www.apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.tpop.TPopId) AS CHAR) AS URL
+SELECT
+  apflora_beob.adb_eigenschaften.Artname AS Art,
+	CAST(CONCAT(apflora_beob.adb_eigenschaften.Artname, ' ', apflora.pop.PopNr,'/', apflora.tpop.TPopNr) AS CHAR) AS Label,
+	CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName, '<br /> Teilpopulation: ', apflora.tpop.TPopNr, ' ', apflora.tpop.TPopGemeinde, ' ', apflora.tpop.TPopFlurname),225) AS CHAR) AS Inhalte,
+	(2.6779094+(4.728982*((apflora.tpop.TPopXKoord-600000)/1000000))+(0.791484*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))+(0.1306*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0436*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)))*100/36 AS Laengengrad,
+	(16.9023892+(3.238272*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.270978*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000))-(0.002528*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0447*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.014*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)))*100/36 AS Breitengrad,
+	CAST(CONCAT('http://www.apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.tpop.TPopId) AS CHAR) AS URL
 FROM (apflora_beob.adb_eigenschaften INNER JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN (apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE apflora.tpop.TPopYKoord > 0 AND apflora.tpop.TPopXKoord > 0
-ORDER BY apflora_beob.adb_eigenschaften.Artname, apflora.pop.PopNr, apflora.pop.PopName, apflora.tpop.TPopNr, apflora.tpop.TPopGemeinde, apflora.tpop.TPopFlurname;
+ORDER BY
+  apflora_beob.adb_eigenschaften.Artname,
+	apflora.pop.PopNr,
+	apflora.pop.PopName,
+	apflora.tpop.TPopNr,
+	apflora.tpop.TPopGemeinde,
+	apflora.tpop.TPopFlurname;
 
 CREATE OR REPLACE VIEW v_pop_kml AS
 SELECT apflora_beob.adb_eigenschaften.Artname AS Art, apflora.pop.PopNr AS Label, CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName),225) AS CHAR) AS Inhalte, (2.6779094+(4.728982*((apflora.pop.PopXKoord-600000)/1000000))+(0.791484*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))+(0.1306*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))-(0.0436*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000)))*100/36 AS Laengengrad, (16.9023892+(3.238272*((apflora.pop.PopYKoord-200000)/1000000))-(0.270978*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000))-(0.002528*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))-(0.0447*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))-(0.014*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000)))*100/36 AS Breitengrad, CAST(CONCAT('http://www.apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId) AS CHAR) AS URL
