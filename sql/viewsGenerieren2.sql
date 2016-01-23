@@ -23,7 +23,7 @@ ORDER BY apflora_beob.adb_eigenschaften.Artname, apflora.pop.PopNr, apflora_view
 CREATE OR REPLACE VIEW v_ap_anzmassnbisjahr AS
 SELECT apflora_views.v_ap_massnjahre.ApArtId, apflora_views.v_ap_massnjahre.TPopMassnJahr, Sum(apflora_views.v_ap_anzmassnprojahr.AnzahlMassnahmen) AS "AnzahlMassnahmen" 
 FROM apflora_views.v_ap_massnjahre INNER JOIN apflora_views.v_ap_anzmassnprojahr ON apflora_views.v_ap_massnjahre.ApArtId = apflora_views.v_ap_anzmassnprojahr.ApArtId 
-WHERE apflora_views.v_ap_anzmassnprojahr.TPopMassnJahr<=apflora_views.v_ap_massnjahre.TPopMassnJahr 
+WHERE apflora_views.v_ap_anzmassnprojahr.TPopMassnJahr <= apflora_views.v_ap_massnjahre.TPopMassnJahr 
 GROUP BY apflora_views.v_ap_massnjahre.ApArtId, apflora_views.v_ap_massnjahre.TPopMassnJahr 
 ORDER BY apflora_views.v_ap_massnjahre.ApArtId, apflora_views.v_ap_massnjahre.TPopMassnJahr;
 
@@ -202,7 +202,7 @@ GROUP BY apflora.pop.ApArtId, apflora.tpop.TPopId;
 CREATE OR REPLACE VIEW v_apber_c1rpop AS 
 SELECT apflora.pop.ApArtId, apflora.pop.PopId
 FROM apflora._variable, (apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) INNER JOIN apflora.tpopmassn ON apflora.tpop.TPopId = apflora.tpopmassn.TPopId
-WHERE apflora.tpopmassn.TPopMassnJahr<=apflora._variable.JBerJahr AND apflora.tpop.TPopApBerichtRelevant=1 AND apflora.pop.PopHerkunft <> 300
+WHERE apflora.tpopmassn.TPopMassnJahr <= apflora._variable.JBerJahr AND apflora.tpop.TPopApBerichtRelevant=1 AND apflora.pop.PopHerkunft <> 300
 GROUP BY apflora.pop.ApArtId, apflora.pop.PopId;
 
 CREATE OR REPLACE VIEW v_apber_c3rpop AS 
