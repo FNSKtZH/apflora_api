@@ -397,5 +397,13 @@ CREATE OR REPLACE VIEW v_qk_tpop_erloschenundrelevantaberletztebeobvor1950 AS
 SELECT apflora.ap.ApArtId, 'erloschene Teilpopulation "Fuer AP-Bericht relevant" aber letzte Beobachtung vor 1950:' AS hw, CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
 FROM apflora.ap INNER JOIN (apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE
-	apflora.tpop.TPopHerkunft IN (101, 202, 211) AND apflora.tpop.TPopApBerichtRelevant = 1 AND apflora.tpop.TPopId NOT IN (SELECT DISTINCT apflora.tpopkontr.TPopId FROM apflora.tpopkontr INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId WHERE apflora.tpopkontr.TPopKontrTyp NOT IN ('Zwischenziel', 'Ziel') AND apflora.tpopkontrzaehl.Anzahl > 0) AND apflora.tpop.TPopId IN (SELECT apflora.beobzuordnung.TPopId FROM apflora.beobzuordnung INNER JOIN apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr ON apflora.beobzuordnung.TPopId = apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr.TPopId WHERE apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr.MaxJahr < 1950)
+	apflora.tpop.TPopHerkunft IN (101, 202, 211)
+	AND apflora.tpop.TPopApBerichtRelevant = 1
+	AND apflora.tpop.TPopId NOT IN (
+    SELECT DISTINCT
+      apflora.tpopkontr.TPopId FROM apflora.tpopkontr INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
+    WHERE
+      apflora.tpopkontr.TPopKontrTyp NOT IN ('Zwischenziel', 'Ziel')
+      AND apflora.tpopkontrzaehl.Anzahl > 0)
+      AND apflora.tpop.TPopId IN (SELECT apflora.beobzuordnung.TPopId FROM apflora.beobzuordnung INNER JOIN apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr ON apflora.beobzuordnung.TPopId = apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr.TPopId WHERE apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr.MaxJahr < 1950)
 ORDER BY apflora.ap.ApArtId, apflora.pop.PopNr, apflora.tpop.TPopNr;
