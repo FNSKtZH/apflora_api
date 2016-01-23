@@ -2916,7 +2916,10 @@ SELECT
 	apflora_beob.beob_infospezies.FNS_XGIS AS X,
 	apflora_beob.beob_infospezies.FNS_YGIS AS Y,
 	IF (
-		apflora_beob.beob_infospezies.FNS_XGIS>0 AND apflora.tpop.TPopXKoord>0 AND apflora_beob.beob_infospezies.FNS_YGIS>0 AND apflora.tpop.TPopYKoord>0,
+		apflora_beob.beob_infospezies.FNS_XGIS>0
+		AND apflora.tpop.TPopXKoord>0
+		AND apflora_beob.beob_infospezies.FNS_YGIS>0
+		AND apflora.tpop.TPopYKoord>0,
 		ROUND(SQRT((apflora_beob.beob_infospezies.FNS_XGIS-apflora.tpop.TPopXKoord)*(apflora_beob.beob_infospezies.FNS_XGIS-apflora.tpop.TPopXKoord)+(apflora_beob.beob_infospezies.FNS_YGIS-apflora.tpop.TPopYKoord)*(apflora_beob.beob_infospezies.FNS_YGIS-apflora.tpop.TPopYKoord)), 0),
 		null
 	) AS "Distanz zur Teilpopulation (m)",
@@ -2949,7 +2952,14 @@ UNION SELECT
 	apflora_beob.beob_evab.DESC_LOCALITE_ AS DESC_LOCALITE,
 	apflora_beob.beob_evab.COORDONNEE_FED_E AS X,
 	apflora_beob.beob_evab.COORDONNEE_FED_N AS Y,
-	IF (apflora_beob.beob_evab.COORDONNEE_FED_E>0 AND apflora.tpop.TPopXKoord>0 AND apflora_beob.beob_evab.COORDONNEE_FED_N>0 AND apflora.tpop.TPopYKoord>0, ROUND(SQRT((apflora_beob.beob_evab.COORDONNEE_FED_E-apflora.tpop.TPopXKoord)*(apflora_beob.beob_evab.COORDONNEE_FED_E-apflora.tpop.TPopXKoord)+(apflora_beob.beob_evab.COORDONNEE_FED_N-apflora.tpop.TPopYKoord)*(apflora_beob.beob_evab.COORDONNEE_FED_N-apflora.tpop.TPopYKoord)), 0), null) AS "Distanz zur Teilpopulation (m)",
+	IF (
+		apflora_beob.beob_evab.COORDONNEE_FED_E>0
+		AND apflora.tpop.TPopXKoord>0
+		AND apflora_beob.beob_evab.COORDONNEE_FED_N>0
+		AND apflora.tpop.TPopYKoord>0,
+		ROUND(SQRT((apflora_beob.beob_evab.COORDONNEE_FED_E-apflora.tpop.TPopXKoord)*(apflora_beob.beob_evab.COORDONNEE_FED_E-apflora.tpop.TPopXKoord)+(apflora_beob.beob_evab.COORDONNEE_FED_N-apflora.tpop.TPopYKoord)*(apflora_beob.beob_evab.COORDONNEE_FED_N-apflora.tpop.TPopYKoord)), 0),
+		null
+	) AS "Distanz zur Teilpopulation (m)",
 	apflora_beob.beob_bereitgestellt.Datum,
 	apflora_beob.beob_bereitgestellt.Autor,
 	apflora.beobzuordnung.beobNichtZuordnen,
@@ -2988,7 +2998,14 @@ SELECT
 	apflora_beob.beob_infospezies.DESC_LOCALITE,
 	apflora_beob.beob_infospezies.FNS_XGIS AS X,
 	apflora_beob.beob_infospezies.FNS_YGIS AS Y,
-	IF (apflora_beob.beob_infospezies.FNS_XGIS>0 AND apflora.tpop.TPopXKoord>0 AND apflora_beob.beob_infospezies.FNS_YGIS>0 AND apflora.tpop.TPopYKoord>0, ROUND(SQRT((apflora_beob.beob_infospezies.FNS_XGIS-apflora.tpop.TPopXKoord)*(apflora_beob.beob_infospezies.FNS_XGIS-apflora.tpop.TPopXKoord)+(apflora_beob.beob_infospezies.FNS_YGIS-apflora.tpop.TPopYKoord)*(apflora_beob.beob_infospezies.FNS_YGIS-apflora.tpop.TPopYKoord)), 0), null) AS "Distanz zur Teilpopulation (m)",
+	IF (
+		apflora_beob.beob_infospezies.FNS_XGIS>0
+		AND apflora.tpop.TPopXKoord>0
+		AND apflora_beob.beob_infospezies.FNS_YGIS>0
+		AND apflora.tpop.TPopYKoord>0,
+		ROUND(SQRT((apflora_beob.beob_infospezies.FNS_XGIS-apflora.tpop.TPopXKoord)*(apflora_beob.beob_infospezies.FNS_XGIS-apflora.tpop.TPopXKoord)+(apflora_beob.beob_infospezies.FNS_YGIS-apflora.tpop.TPopYKoord)*(apflora_beob.beob_infospezies.FNS_YGIS-apflora.tpop.TPopYKoord)), 0),
+		null
+		) AS "Distanz zur Teilpopulation (m)",
 	apflora_beob.beob_bereitgestellt.Datum,
 	apflora_beob.beob_bereitgestellt.Autor,
 	apflora.beobzuordnung.beobNichtZuordnen,
@@ -3362,7 +3379,8 @@ FROM (apflora_beob.adb_eigenschaften
 		INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
 	ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE
-	apflora.tpop.TPopYKoord > 0 AND apflora.tpop.TPopXKoord > 0
+	apflora.tpop.TPopYKoord > 0
+	AND apflora.tpop.TPopXKoord > 0
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname,
 	apflora.pop.PopNr,
@@ -3385,7 +3403,8 @@ FROM (apflora_beob.adb_eigenschaften
 		INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
 	ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE
-	apflora.tpop.TPopYKoord > 0 AND apflora.tpop.TPopXKoord > 0
+	apflora.tpop.TPopYKoord > 0
+	AND apflora.tpop.TPopXKoord > 0
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname,
 	apflora.pop.PopNr,
@@ -3406,7 +3425,8 @@ FROM (apflora_beob.adb_eigenschaften
 	INNER JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE
-	apflora.pop.PopYKoord > 0 AND apflora.pop.PopXKoord > 0
+	apflora.pop.PopYKoord > 0
+	AND apflora.pop.PopXKoord > 0
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname,
 	apflora.pop.PopNr,
@@ -3424,7 +3444,8 @@ FROM (apflora_beob.adb_eigenschaften
 	INNER JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE
-	apflora.pop.PopYKoord > 0 AND apflora.pop.PopXKoord > 0
+	apflora.pop.PopYKoord > 0
+	AND apflora.pop.PopXKoord > 0
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname,
 	apflora.pop.PopNr,
@@ -3688,7 +3709,8 @@ SELECT
 FROM apflora.pop
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
-	apflora.tpop.TPopApBerichtRelevant = 1 AND apflora.pop.PopHerkunft NOT IN (300, 201)
+	apflora.tpop.TPopApBerichtRelevant = 1
+	AND apflora.pop.PopHerkunft NOT IN (300, 201)
 GROUP BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopId;
@@ -3700,7 +3722,8 @@ SELECT
 FROM apflora.pop
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
-	apflora.pop.PopHerkunft = 100 AND apflora.tpop.TPopApBerichtRelevant = 1
+	apflora.pop.PopHerkunft = 100
+	AND apflora.tpop.TPopApBerichtRelevant = 1
 GROUP BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopId;
@@ -3721,7 +3744,8 @@ FROM apflora_beob.adb_eigenschaften
 		INNER JOIN apflora.ap ON apflora.pop.ApArtId = apflora.ap.ApArtId)
 	ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId
 WHERE
-	apflora.tpop.TPopApBerichtRelevant Is Null AND apflora.ap.ApArtId > 150
+	apflora.tpop.TPopApBerichtRelevant Is Null
+	AND apflora.ap.ApArtId > 150
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname,
 	apflora.pop.PopNr,
@@ -3860,7 +3884,8 @@ SELECT
 FROM apflora.ap
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE
-	apflora.pop.PopHerkunftUnklar = 1 AND apflora.pop.PopHerkunftUnklarBegruendung IS NULL
+	apflora.pop.PopHerkunftUnklar = 1
+	AND apflora.pop.PopHerkunftUnklarBegruendung IS NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr;
@@ -3969,7 +3994,8 @@ FROM apflora.ap
 		INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
 	ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE
-	apflora.tpop.TPopHerkunft = 300 AND apflora.tpop.TPopApBerichtRelevant = 1
+	apflora.tpop.TPopHerkunft = 300
+	AND apflora.tpop.TPopApBerichtRelevant = 1
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -3985,7 +4011,8 @@ FROM apflora.ap
 		INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
 	ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE
-	apflora.tpop.TPopHerkunftUnklar = 1 AND apflora.tpop.TPopHerkunftUnklarBegruendung IS NULL
+	apflora.tpop.TPopHerkunftUnklar = 1
+	AND apflora.tpop.TPopHerkunftUnklarBegruendung IS NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4035,7 +4062,8 @@ FROM ((apflora.ap
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
 	INNER JOIN apflora.tpopmassn ON apflora.tpop.TPopId = apflora.tpopmassn.TPopId
 WHERE
-	apflora.tpopmassn.TPopMassnTyp IS NULL AND apflora.tpopmassn.TPopMassnJahr IS NOT NULL
+	apflora.tpopmassn.TPopMassnTyp IS NULL
+	AND apflora.tpopmassn.TPopMassnJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4072,7 +4100,8 @@ FROM ((apflora.ap
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
 	INNER JOIN apflora.tpopmassnber ON apflora.tpop.TPopId = apflora.tpopmassnber.TPopId
 WHERE
-	apflora.tpopmassnber.TPopMassnBerErfolgsbeurteilung IS NULL AND apflora.tpopmassnber.TPopMassnBerJahr IS NOT NULL
+	apflora.tpopmassnber.TPopMassnBerErfolgsbeurteilung IS NULL
+	AND apflora.tpopmassnber.TPopMassnBerJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4127,7 +4156,8 @@ FROM ((apflora.ap
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
 	INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId
 WHERE
-	(apflora.tpopkontr.TPopKontrTyp IS NULL OR apflora.tpopkontr.TPopKontrTyp = 2)  AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
+	(apflora.tpopkontr.TPopKontrTyp IS NULL OR apflora.tpopkontr.TPopKontrTyp = 2)
+	AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4147,7 +4177,8 @@ FROM (((apflora.ap
 	INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
 	LEFT JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE
-	apflora.tpopkontrzaehl.TPopKontrZaehlId IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
+	apflora.tpopkontrzaehl.TPopKontrZaehlId IS NULL
+	AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4167,7 +4198,8 @@ FROM (((apflora.ap
 	INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
 	LEFT JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE
-	apflora.tpopkontrzaehl.TPopKontrZaehlId IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
+	apflora.tpopkontrzaehl.TPopKontrZaehlId IS NULL
+	AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4187,7 +4219,8 @@ FROM (((apflora.ap
 	INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
 	INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE
-	apflora.tpopkontrzaehl.Zaehleinheit IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
+	apflora.tpopkontrzaehl.Zaehleinheit IS NULL
+	AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4207,7 +4240,8 @@ FROM (((apflora.ap
 	INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
 	INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE
-	apflora.tpopkontrzaehl.Zaehleinheit IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
+	apflora.tpopkontrzaehl.Zaehleinheit IS NULL
+	AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4227,7 +4261,8 @@ FROM (((apflora.ap
 	INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
 	INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE
-	apflora.tpopkontrzaehl.Methode IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
+	apflora.tpopkontrzaehl.Methode IS NULL
+	AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4247,7 +4282,8 @@ FROM (((apflora.ap
 	INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
 	INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE
-	apflora.tpopkontrzaehl.Methode IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
+	apflora.tpopkontrzaehl.Methode IS NULL
+	AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4267,7 +4303,8 @@ FROM (((apflora.ap
 	INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
 	INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE
-	apflora.tpopkontrzaehl.Anzahl IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
+	apflora.tpopkontrzaehl.Anzahl IS NULL
+	AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4287,7 +4324,8 @@ FROM (((apflora.ap
 	INNER JOIN apflora.tpopkontr ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
 	INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 WHERE
-	apflora.tpopkontrzaehl.Anzahl IS NULL AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
+	apflora.tpopkontrzaehl.Anzahl IS NULL
+	AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4324,7 +4362,8 @@ FROM ((apflora.ap
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId)
 	INNER JOIN apflora.tpopber ON apflora.tpop.TPopId = apflora.tpopber.TPopId
 WHERE
-	apflora.tpopber.TPopBerEntwicklung IS NULL AND apflora.tpopber.TPopBerJahr IS NOT NULL
+	apflora.tpopber.TPopBerEntwicklung IS NULL
+	AND apflora.tpopber.TPopBerJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4341,7 +4380,8 @@ FROM (apflora.ap
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId)
 	INNER JOIN apflora.popber ON apflora.pop.PopId = apflora.popber.PopId
 WHERE
-	apflora.popber.PopBerEntwicklung IS NULL AND apflora.popber.PopBerJahr IS NOT NULL
+	apflora.popber.PopBerEntwicklung IS NULL
+	AND apflora.popber.PopBerJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4387,7 +4427,8 @@ FROM (apflora.ap
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId)
 	INNER JOIN apflora.popmassnber ON apflora.pop.PopId = apflora.popmassnber.PopId
 WHERE
-	apflora.popmassnber.PopMassnBerErfolgsbeurteilung IS NULL AND apflora.popmassnber.PopMassnBerJahr IS NOT NULL
+	apflora.popmassnber.PopMassnBerErfolgsbeurteilung IS NULL
+	AND apflora.popmassnber.PopMassnBerJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
@@ -4403,7 +4444,8 @@ FROM (apflora.ap
 	INNER JOIN apflora.ziel ON apflora.ap.ApArtId = apflora.ziel.ApArtId)
 	INNER JOIN apflora.zielber ON apflora.ziel.ZielId = apflora.zielber.ZielId
 WHERE
-	apflora.zielber.ZielBerErreichung IS NULL AND apflora.zielber.ZielBerJahr IS NOT NULL
+	apflora.zielber.ZielBerErreichung IS NULL
+	AND apflora.zielber.ZielBerJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.ziel.ZielJahr,
@@ -4511,7 +4553,8 @@ SELECT
 FROM apflora.ap
 	INNER JOIN apflora.apber ON apflora.ap.ApArtId = apflora.apber.ApArtId
 WHERE
-	apflora.apber.JBerVergleichVorjahrGesamtziel IS NULL AND apflora.apber.JBerJahr IS NOT NULL
+	apflora.apber.JBerVergleichVorjahrGesamtziel IS NULL
+	AND apflora.apber.JBerJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.apber.JBerJahr,
@@ -4525,7 +4568,8 @@ SELECT
 FROM apflora.ap
 	INNER JOIN apflora.apber ON apflora.ap.ApArtId = apflora.apber.ApArtId
 WHERE
-	apflora.apber.JBerBeurteilung IS NULL AND apflora.apber.JBerJahr IS NOT NULL
+	apflora.apber.JBerBeurteilung IS NULL
+	AND apflora.apber.JBerJahr IS NOT NULL
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.apber.JBerJahr,
@@ -4551,9 +4595,16 @@ SELECT DISTINCT
 	apflora.pop.PopYKoord AS YKoord
 FROM apflora.pop
 WHERE
-	apflora.pop.PopXKoord Is NOT Null AND apflora.pop.PopYKoord IS NOT NULL AND apflora.pop.PopId NOT IN (SELECT
-	apflora.tpop.PopId FROM apflora.tpop WHERE
-	apflora.tpop.TPopXKoord = PopXKoord AND apflora.tpop.TPopYKoord = PopYKoord)
+	apflora.pop.PopXKoord Is NOT Null
+	AND apflora.pop.PopYKoord IS NOT NULL
+	AND apflora.pop.PopId NOT IN (
+		SELECT
+			apflora.tpop.PopId
+		FROM apflora.tpop
+		WHERE
+			apflora.tpop.TPopXKoord = PopXKoord
+			AND apflora.tpop.TPopYKoord = PopYKoord
+	)
 ORDER BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopNr;
@@ -4564,9 +4615,14 @@ SELECT DISTINCT
 	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
 FROM apflora.pop
 WHERE
-	apflora.pop.PopHerkunft = 201 AND apflora.pop.PopId IN (SELECT DISTINCT
-	apflora.tpop.PopId FROM apflora.tpop WHERE
-	apflora.tpop.TPopHerkunft = 100)
+	apflora.pop.PopHerkunft = 201
+	AND apflora.pop.PopId IN (
+		SELECT DISTINCT
+			apflora.tpop.PopId
+		FROM apflora.tpop
+		WHERE
+			apflora.tpop.TPopHerkunft = 100
+	)
 ORDER BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopNr;
@@ -4577,9 +4633,14 @@ SELECT DISTINCT
 	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
 FROM apflora.pop
 WHERE
-	apflora.pop.PopHerkunft = 201 AND apflora.pop.PopId IN (SELECT DISTINCT
-	apflora.tpop.PopId FROM apflora.tpop WHERE
-	apflora.tpop.TPopHerkunft = 101)
+	apflora.pop.PopHerkunft = 201
+	AND apflora.pop.PopId IN (
+		SELECT DISTINCT
+			apflora.tpop.PopId
+		FROM apflora.tpop
+		WHERE
+			apflora.tpop.TPopHerkunft = 101
+	)
 ORDER BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopNr;
@@ -4590,9 +4651,14 @@ SELECT DISTINCT
 	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
 FROM apflora.pop
 WHERE
-	apflora.pop.PopHerkunft IN (101, 202, 211) AND apflora.pop.PopId IN (SELECT DISTINCT
-	apflora.tpop.PopId FROM apflora.tpop WHERE
-	apflora.tpop.TPopHerkunft IN (100, 200, 210))
+	apflora.pop.PopHerkunft IN (101, 202, 211)
+	AND apflora.pop.PopId IN (
+		SELECT DISTINCT
+			apflora.tpop.PopId
+		FROM apflora.tpop
+		WHERE
+			apflora.tpop.TPopHerkunft IN (100, 200, 210)
+	)
 ORDER BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopNr;
@@ -4603,9 +4669,15 @@ SELECT DISTINCT
 	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
 FROM apflora.pop
 WHERE
-	apflora.pop.PopHerkunft IN (101, 202, 211) AND apflora.pop.PopId IN (SELECT DISTINCT
-	apflora.tpop.PopId FROM apflora.tpop WHERE
-	apflora.tpop.TPopHerkunft = 201)
+	apflora.pop.PopHerkunft IN (101, 202, 211)
+	AND apflora.pop.PopId IN (
+		SELECT DISTINCT
+			apflora.tpop.PopId
+		FROM
+			apflora.tpop
+		WHERE
+			apflora.tpop.TPopHerkunft = 201
+	)
 ORDER BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopNr;
@@ -4616,9 +4688,15 @@ SELECT DISTINCT
 	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
 FROM apflora.pop
 WHERE
-	apflora.pop.PopHerkunft IN (200, 201, 202, 210, 211) AND apflora.pop.PopId IN (SELECT DISTINCT
-	apflora.tpop.PopId FROM apflora.tpop WHERE
-	apflora.tpop.TPopHerkunft = 100)
+	apflora.pop.PopHerkunft IN (200, 201, 202, 210, 211)
+	AND apflora.pop.PopId IN (
+		SELECT DISTINCT
+			apflora.tpop.PopId
+		FROM
+			apflora.tpop
+		WHERE
+			apflora.tpop.TPopHerkunft = 100
+	)
 ORDER BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopNr;
@@ -4629,9 +4707,15 @@ SELECT DISTINCT
 	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
 FROM apflora.pop
 WHERE
-	apflora.pop.PopHerkunft = 300 AND apflora.pop.PopId IN (SELECT DISTINCT
-	apflora.tpop.PopId FROM apflora.tpop WHERE
-	apflora.tpop.TPopHerkunft < 300)
+	apflora.pop.PopHerkunft = 300
+	AND apflora.pop.PopId IN (
+		SELECT DISTINCT
+			apflora.tpop.PopId
+		FROM
+			apflora.tpop
+		WHERE
+			apflora.tpop.TPopHerkunft < 300
+	)
 ORDER BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopNr;
@@ -4646,10 +4730,17 @@ SELECT DISTINCT
 FROM apflora.pop
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
-	apflora.tpop.TPopHerkunft = 201 AND apflora.tpop.TPopId IN (SELECT DISTINCT
-	apflora.tpopkontr.TPopId FROM apflora.tpopkontr
-	INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId WHERE
-	apflora.tpopkontr.TPopKontrTyp NOT IN ('Zwischenziel', 'Ziel') AND apflora.tpopkontrzaehl.Anzahl > 0)
+	apflora.tpop.TPopHerkunft = 201
+	AND apflora.tpop.TPopId IN (
+		SELECT DISTINCT
+			apflora.tpopkontr.TPopId
+		FROM
+			apflora.tpopkontr
+		INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
+		WHERE
+			apflora.tpopkontr.TPopKontrTyp NOT IN ('Zwischenziel', 'Ziel')
+			AND apflora.tpopkontrzaehl.Anzahl > 0
+	)
 ORDER BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopNr,
@@ -4667,10 +4758,17 @@ SELECT DISTINCT
 FROM apflora.pop
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
-	apflora.tpop.TPopHerkunft = 300 AND apflora.tpop.TPopId IN (SELECT DISTINCT
-	apflora.tpopkontr.TPopId FROM apflora.tpopkontr
-	INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId WHERE
-	apflora.tpopkontr.TPopKontrTyp NOT IN ('Zwischenziel', 'Ziel') AND apflora.tpopkontrzaehl.Anzahl > 0)
+	apflora.tpop.TPopHerkunft = 300
+	AND apflora.tpop.TPopId IN (
+		SELECT DISTINCT
+			apflora.tpopkontr.TPopId
+		FROM
+			apflora.tpopkontr
+		INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
+		WHERE
+			apflora.tpopkontr.TPopKontrTyp NOT IN ('Zwischenziel', 'Ziel')
+			AND apflora.tpopkontrzaehl.Anzahl > 0
+	)
 ORDER BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopNr,
@@ -4688,9 +4786,15 @@ SELECT DISTINCT
 FROM apflora.pop
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
-	apflora.tpop.TPopHerkunft = 300 AND apflora.tpop.TPopId IN (SELECT DISTINCT
-	apflora.tpopmassn.TPopId FROM apflora.tpopmassn WHERE
-	apflora.tpopmassn.TPopMassnTyp < 4)
+	apflora.tpop.TPopHerkunft = 300
+	AND apflora.tpop.TPopId IN (
+		SELECT DISTINCT
+			apflora.tpopmassn.TPopId
+		FROM
+			apflora.tpopmassn
+		WHERE
+			apflora.tpopmassn.TPopMassnTyp < 4
+	)
 ORDER BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopNr,
