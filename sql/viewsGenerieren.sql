@@ -48,7 +48,7 @@ FROM
 GROUP BY
 	apflora.tpopmassn.TPopMassnJahr 
 HAVING
-	apflora.tpopmassn.TPopMassnJahr Between 1900 And 2100
+	apflora.tpopmassn.TPopMassnJahr BETWEEN 1900 AND 2100
 ORDER BY
 	apflora.tpopmassn.TPopMassnJahr;
 
