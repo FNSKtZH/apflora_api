@@ -77,7 +77,13 @@ FROM
 	((((((apflora_beob.adb_eigenschaften
 		INNER JOIN
 			apflora.ap
-			ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) LEFT JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode) LEFT JOIN apflora.ap_umsetzung_werte ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode) LEFT JOIN apflora.adresse ON apflora.ap.ApBearb = apflora.adresse.AdrId) INNER JOIN apflora_views.v_ap_anzmassnprojahr ON apflora.ap.ApArtId = apflora_views.v_ap_anzmassnprojahr.ApArtId) INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON (apflora_views.v_ap_anzmassnprojahr.TPopMassnJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr) AND (apflora_views.v_ap_anzmassnprojahr.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId)) LEFT JOIN apflora.apber ON (apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr = apflora.apber.JBerJahr) AND (apflora_views.v_ap_anzmassnbisjahr.ApArtId = apflora.apber.ApArtId)
+			ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
+		LEFT JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
+		LEFT JOIN apflora.ap_umsetzung_werte ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
+		LEFT JOIN apflora.adresse ON apflora.ap.ApBearb = apflora.adresse.AdrId)
+		INNER JOIN apflora_views.v_ap_anzmassnprojahr ON apflora.ap.ApArtId = apflora_views.v_ap_anzmassnprojahr.ApArtId)
+		INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON (apflora_views.v_ap_anzmassnprojahr.TPopMassnJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr) AND (apflora_views.v_ap_anzmassnprojahr.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId))
+		LEFT JOIN apflora.apber ON (apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr = apflora.apber.JBerJahr) AND (apflora_views.v_ap_anzmassnbisjahr.ApArtId = apflora.apber.ApArtId)
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname,
 	apflora_views.v_ap_anzmassnprojahr.TPopMassnJahr;
