@@ -215,7 +215,7 @@ SELECT
 	apflora.tpopmassn.TPopMassnAnsiedForm AS "Massn Form der Ansiedlung",
 	apflora.tpopmassn.TPopMassnAnsiedPflanzanordnung AS "Massn Pflanzanordnung",
 	apflora.tpopmassn.TPopMassnMarkierung AS "Massn Markierung",
-	 apflora.tpopmassn.TPopMassnAnsiedAnzTriebe AS "Massn Anz Triebe",
+	apflora.tpopmassn.TPopMassnAnsiedAnzTriebe AS "Massn Anz Triebe",
 	apflora.tpopmassn.TPopMassnAnsiedAnzPfl AS "Massn Pflanzen",
 	apflora.tpopmassn.TPopMassnAnzPflanzstellen AS "Massn Anz Pflanzstellen",
 	apflora.tpopmassn.TPopMassnAnsiedWirtspfl AS "Massn Wirtspflanze",
@@ -3046,9 +3046,9 @@ SELECT
 	apflora.tpopkontr.TPopKontrGefaehrdung AS "Kontr Gefaehrdung",
 	apflora.tpopkontr.MutWann AS "Kontrolle zuletzt geaendert",
 	apflora.tpopkontr.MutWer AS "Kontrolle zuletzt geaendert von",
-	GROUP_CONCAT(apflora.tpopkontrzaehl.Anzahl SEPARATOR ',
-	') AS Anzahlen,
-	GROUP_CONCAT(apflora.tpopkontrzaehl_einheit_werte.ZaehleinheitTxt SEPARATOR ', ') AS Zaehleinheiten, GROUP_CONCAT(apflora.tpopkontrzaehl_methode_werte.BeurteilTxt SEPARATOR ', ') AS Methoden
+	GROUP_CONCAT(apflora.tpopkontrzaehl.Anzahl SEPARATOR ',') AS Anzahlen,
+	GROUP_CONCAT(apflora.tpopkontrzaehl_einheit_werte.ZaehleinheitTxt SEPARATOR ', ') AS Zaehleinheiten,
+	GROUP_CONCAT(apflora.tpopkontrzaehl_methode_werte.BeurteilTxt SEPARATOR ', ') AS Methoden
 FROM
 	apflora.pop_status_werte AS domPopHerkunft_1
 	RIGHT JOIN (((((((apflora_beob.adb_eigenschaften
@@ -3890,9 +3890,29 @@ SELECT
   		225
 		) AS CHAR
 	) AS Inhalte,
-	(2.6779094 + (4.728982 * ((apflora.tpop.TPopXKoord - 600000) / 1000000)) + (0.791484 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000)) + (0.1306 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000)) - (0.0436 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000))) * 100 / 36 AS Laengengrad,
-	(16.9023892 + (3.238272 * ((apflora.tpop.TPopYKoord - 200000) / 1000000)) - (0.270978 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000)) - (0.002528 * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000)) - (0.0447 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000)) - (0.014 * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))) * 100 / 36 AS Breitengrad,
-	CAST(CONCAT('http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.tpop.TPopId) AS CHAR) AS URL
+	(
+		2.6779094
+		+ (4.728982 * ((apflora.tpop.TPopXKoord - 600000) / 1000000))
+		+ (0.791484 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+		+ (0.1306 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+		- (0.0436 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000))
+	) * 100 / 36 AS Laengengrad,
+	(
+		16.9023892
+		+ (3.238272 * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+		- (0.270978 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000))
+		- (0.002528 * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+		- (0.0447 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+		- (0.014 * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+	) * 100 / 36 AS Breitengrad,
+	CAST(
+		CONCAT(
+			'http://apflora.ch/index.html?ap=',
+			apflora.ap.ApArtId,
+			'&pop=',
+			apflora.tpop.TPopId
+		) AS CHAR
+	) AS URL
 FROM
 	(apflora_beob.adb_eigenschaften
 	INNER JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
@@ -3913,11 +3933,54 @@ ORDER BY
 CREATE OR REPLACE VIEW v_tpop_kmlnamen AS
 SELECT
   apflora_beob.adb_eigenschaften.Artname AS Art,
-	CAST(CONCAT(apflora_beob.adb_eigenschaften.Artname, ' ', apflora.pop.PopNr,'/', apflora.tpop.TPopNr) AS CHAR) AS Label,
-	CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName, '<br /> Teilpopulation: ', apflora.tpop.TPopNr, ' ', apflora.tpop.TPopGemeinde, ' ', apflora.tpop.TPopFlurname),225) AS CHAR) AS Inhalte,
-	(2.6779094 + (4.728982 * ((apflora.tpop.TPopXKoord - 600000) / 1000000)) + (0.791484 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000)) + (0.1306 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000)) - (0.0436 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000))) * 100 / 36 AS Laengengrad,
-	(16.9023892 + (3.238272 * ((apflora.tpop.TPopYKoord - 200000) / 1000000)) - (0.270978 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000)) - (0.002528 * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000)) - (0.0447 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000)) - (0.014 * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))) * 100 / 36 AS Breitengrad,
-	CAST(CONCAT('http://www.apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.tpop.TPopId) AS CHAR) AS URL
+	CAST(
+		CONCAT(
+			apflora_beob.adb_eigenschaften.Artname,
+			' ',
+			apflora.pop.PopNr,
+			'/',
+			apflora.tpop.TPopNr
+		) AS CHAR
+	) AS Label,
+	CAST(
+		LEFT(
+			CONCAT(
+				'Population: ',
+				apflora.pop.PopNr,
+				' ',
+				apflora.pop.PopName,
+				'<br /> Teilpopulation: ',
+				apflora.tpop.TPopNr,
+				' ',
+				apflora.tpop.TPopGemeinde,
+				' ',
+				apflora.tpop.TPopFlurname),
+			225
+		) AS CHAR
+	) AS Inhalte,
+	(
+		2.6779094
+		+ (4.728982 * ((apflora.tpop.TPopXKoord - 600000) / 1000000))
+		+ (0.791484 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+		+ (0.1306 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+		- (0.0436 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000))
+	) * 100 / 36 AS Laengengrad,
+	(
+		16.9023892
+		+ (3.238272 * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+		- (0.270978 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000))
+		- (0.002528 * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+		- (0.0447 * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopXKoord - 600000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+		- (0.014 * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000) * ((apflora.tpop.TPopYKoord - 200000) / 1000000))
+	) * 100 / 36 AS Breitengrad,
+	CAST(
+		CONCAT(
+			'http://www.apflora.ch/index.html?ap=',
+			apflora.ap.ApArtId,
+			'&pop=',
+			apflora.tpop.TPopId
+		) AS CHAR
+	) AS URL
 FROM
 	(apflora_beob.adb_eigenschaften
 	INNER JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
@@ -3939,10 +4002,35 @@ CREATE OR REPLACE VIEW v_pop_kml AS
 SELECT
 	apflora_beob.adb_eigenschaften.Artname AS Art,
 	apflora.pop.PopNr AS Label,
-	CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName),225) AS CHAR) AS Inhalte,
-	(2.6779094 + (4.728982 * ((apflora.pop.PopXKoord - 600000) / 1000000)) + (0.791484 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000)) + (0.1306 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000)) - (0.0436 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000))) * 100 / 36 AS Laengengrad,
-	(16.9023892 + (3.238272 * ((apflora.pop.PopYKoord - 200000) / 1000000)) - (0.270978 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000)) - (0.002528 * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000)) - (0.0447 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000)) - (0.014 * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))) * 100 / 36 AS Breitengrad,
-	CAST(CONCAT('http://www.apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId) AS CHAR) AS URL
+	CAST(
+		LEFT(
+			CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName),
+			225
+		) AS CHAR
+	) AS Inhalte,
+	(
+		2.6779094
+		+ (4.728982 * ((apflora.pop.PopXKoord - 600000) / 1000000))
+		+ (0.791484 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))
+		+ (0.1306 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))
+		- (0.0436 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000))
+	) * 100 / 36 AS Laengengrad,
+	(
+		16.9023892
+		+ (3.238272 * ((apflora.pop.PopYKoord - 200000) / 1000000))
+		- (0.270978 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000))
+		- (0.002528 * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))
+		- (0.0447 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))
+		- (0.014 * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))
+	) * 100 / 36 AS Breitengrad,
+	CAST(
+		CONCAT(
+			'http://www.apflora.ch/index.html?ap=',
+			apflora.ap.ApArtId,
+			'&pop=',
+			apflora.pop.PopId
+		) AS CHAR
+	) AS URL
 FROM
 	(apflora_beob.adb_eigenschaften
 	INNER JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
@@ -3958,11 +4046,42 @@ ORDER BY
 CREATE OR REPLACE VIEW v_pop_kmlnamen AS
 SELECT
 	apflora_beob.adb_eigenschaften.Artname AS Art,
-	CAST(CONCAT(apflora_beob.adb_eigenschaften.Artname, ' ', apflora.pop.PopNr) AS CHAR) AS Label,
-	CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName),225) AS CHAR) AS Inhalte,
-	(2.6779094 + (4.728982 * ((apflora.pop.PopXKoord - 600000) / 1000000)) + (0.791484 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000)) + (0.1306 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000)) - (0.0436 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000))) * 100 / 36 AS Laengengrad,
-	(16.9023892 + (3.238272 * ((apflora.pop.PopYKoord - 200000) / 1000000)) - (0.270978 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000)) - (0.002528 * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000)) - (0.0447 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000)) - (0.014 * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))) * 100 / 36 AS Breitengrad,
-	CAST(CONCAT('http://www.apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId) AS CHAR) AS URL
+	CAST(
+		CONCAT(
+			apflora_beob.adb_eigenschaften.Artname,
+			' ',
+			apflora.pop.PopNr
+		) AS CHAR
+	) AS Label,
+	CAST(
+		LEFT(
+			CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName),
+			225
+		) AS CHAR
+	) AS Inhalte,
+	(
+		2.6779094
+		+ (4.728982 * ((apflora.pop.PopXKoord - 600000) / 1000000))
+		+ (0.791484 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))
+		+ (0.1306 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))
+		- (0.0436 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000))
+	) * 100 / 36 AS Laengengrad,
+	(
+		16.9023892
+		+ (3.238272 * ((apflora.pop.PopYKoord - 200000) / 1000000))
+		- (0.270978 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000))
+		- (0.002528 * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))
+		- (0.0447 * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopXKoord - 600000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))
+		- (0.014 * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000) * ((apflora.pop.PopYKoord - 200000) / 1000000))
+		) * 100 / 36 AS Breitengrad,
+	CAST(
+		CONCAT(
+			'http://www.apflora.ch/index.html?ap=',
+			apflora.ap.ApArtId,
+			'&pop=',
+			apflora.pop.PopId
+		) AS CHAR
+	) AS URL
 FROM
 	(apflora_beob.adb_eigenschaften
 	INNER JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
@@ -4293,10 +4412,22 @@ SELECT
 	apflora_beob.adb_eigenschaften.Artname,
 	apflora.pop.PopNr,
 	apflora.tpop.TPopNr,
-	Count(apflora.tpop.TPopId) AS AnzahlvonTPopId, GROUP_CONCAT(DISTINCT TPopId ORDER BY
-	TPopId SEPARATOR ', ') AS TPopIds,
-	GROUP_CONCAT(DISTINCT CONCAT('http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.tpop.PopId, '&tpop=', apflora.tpop.TPopId) ORDER BY
-	apflora.tpop.TPopId SEPARATOR ', ') AS TPopUrls
+	Count(apflora.tpop.TPopId) AS AnzahlvonTPopId,
+	GROUP_CONCAT(
+		DISTINCT TPopId ORDER BY TPopId SEPARATOR ', '
+	) AS TPopIds,
+	GROUP_CONCAT(
+		DISTINCT
+		CONCAT(
+			'http://apflora.ch/index.html?ap=',
+			apflora.ap.ApArtId,
+			'&pop=',
+			apflora.tpop.PopId,
+			'&tpop=',
+			apflora.tpop.TPopId
+		)
+		ORDER BY apflora.tpop.TPopId SEPARATOR ', '
+	) AS TPopUrls
 FROM
 	apflora_beob.adb_eigenschaften
 	INNER JOIN ((apflora.tpop
@@ -4320,8 +4451,26 @@ CREATE OR REPLACE VIEW v_qk_tpop_popnrtpopnrmehrdeutig AS
 SELECT
 	apflora.ap.ApArtId,
 	'Teilpopulation: Die Kombination von Pop.-Nr. und TPop.-Nr. ist mehrdeutig:' AS hw,
-	GROUP_CONCAT(DISTINCT CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), ' > TPop: ', apflora.tpop.TPopNr, ' (id=', apflora.tpop.TPopId, ')', '</a>') ORDER BY
-	apflora.tpop.TPopId SEPARATOR '<br> ') AS link
+	GROUP_CONCAT(
+		DISTINCT
+		CONCAT(
+			'<a href="http://apflora.ch/index.html?ap=',
+			apflora.ap.ApArtId,
+			'&pop=',
+			apflora.pop.PopId,
+			'&tpop=',
+			apflora.tpop.TPopId,
+			'" target="_blank">',
+			IFNULL(
+				CONCAT('Pop: ', apflora.pop.PopNr),
+				CONCAT('Pop: id=', apflora.pop.PopId)
+			),
+			' > TPop: ',
+			apflora.tpop.TPopNr,
+			' (id=', apflora.tpop.TPopId, ')',
+			'</a>'
+		) ORDER BY apflora.tpop.TPopId SEPARATOR '<br> '
+	) AS link
 FROM
 	(apflora.tpop
 	INNER JOIN apflora.pop ON apflora.tpop.PopId = apflora.pop.PopId)
@@ -4341,7 +4490,23 @@ CREATE OR REPLACE VIEW v_qk_pop_popnrmehrdeutig AS
 SELECT
 	apflora.ap.ApArtId,
 	'Population: Die Nr. ist mehrdeutig:' AS hw,
-	GROUP_CONCAT(DISTINCT CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr, ' (id=', apflora.pop.PopId, ')'), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') ORDER BY apflora.pop.PopId SEPARATOR '<br> ') AS link
+	GROUP_CONCAT(
+		DISTINCT
+		CONCAT(
+			'<a href="http://apflora.ch/index.html?ap=',
+			apflora.ap.ApArtId,
+			'&pop=',
+			apflora.pop.PopId,
+			'" target="_blank">',
+			IFNULL(
+				CONCAT('Pop: ', apflora.pop.PopNr, ' (id=', apflora.pop.PopId, ')'),
+				CONCAT('Pop: id=', apflora.pop.PopId)
+			),
+			'</a>'
+		)
+		ORDER BY apflora.pop.PopId
+		SEPARATOR '<br> '
+	) AS link
 FROM
 	apflora.pop
 	INNER JOIN apflora.ap ON apflora.pop.ApArtId = apflora.ap.ApArtId
@@ -4358,7 +4523,18 @@ CREATE OR REPLACE VIEW v_qk_pop_ohnekoord AS
 SELECT
 	apflora.ap.ApArtId AS 'ApArtId',
 	'Population: Mindestens eine Koordinate fehlt:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId
@@ -4373,7 +4549,18 @@ CREATE OR REPLACE VIEW v_qk_pop_ohnepopnr AS
 SELECT
 	apflora.ap.ApArtId AS 'ApArtId',
 	'Population ohne Nr.:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopName), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopName),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId
@@ -4387,7 +4574,18 @@ CREATE OR REPLACE VIEW v_qk_pop_ohnepopname AS
 SELECT
 	apflora.ap.ApArtId AS 'ApArtId',
 	'Population ohne Name:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId
@@ -4401,7 +4599,18 @@ CREATE OR REPLACE VIEW v_qk_pop_ohnepopstatus AS
 SELECT
 	apflora.ap.ApArtId AS 'ApArtId',
 	'Population ohne Status:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId
@@ -4415,7 +4624,17 @@ CREATE OR REPLACE VIEW v_qk_pop_ohnebekanntseit AS
 SELECT
 	apflora.ap.ApArtId AS 'ApArtId',
 	'Population ohne "bekannt seit":' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=', apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId
@@ -4429,7 +4648,18 @@ CREATE OR REPLACE VIEW v_qk_pop_mitstatusunklarohnebegruendung AS
 SELECT
 	apflora.ap.ApArtId AS 'ApArtId',
 	'Population mit "Status unklar", ohne Begruendung:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId
@@ -4444,7 +4674,18 @@ CREATE OR REPLACE VIEW v_qk_pop_ohnetpop AS
 SELECT
 	apflora.ap.ApArtId AS 'ApArtId',
 	'Population ohne Teilpopulation:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	(apflora.ap
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId)
@@ -4459,7 +4700,24 @@ CREATE OR REPLACE VIEW v_qk_tpop_ohnenr AS
 SELECT
 	apflora.ap.ApArtId,
 	'Teilpopulation ohne Nr.:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopFlurname), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopFlurname),
+			CONCAT(' > TPop: id=', apflora.tpop.TPopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN (apflora.pop
@@ -4476,7 +4734,24 @@ CREATE OR REPLACE VIEW v_qk_tpop_ohneflurname AS
 SELECT
 	apflora.ap.ApArtId,
 	'Teilpopulation ohne Flurname:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopNr),
+			CONCAT(' > TPop: id=', apflora.tpop.TPopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN (apflora.pop
@@ -4493,7 +4768,24 @@ CREATE OR REPLACE VIEW v_qk_tpop_ohnestatus AS
 SELECT
 	apflora.ap.ApArtId,
 	'Teilpopulation ohne Status:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopNr),
+			CONCAT(' > TPop: id=', apflora.tpop.TPopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN (apflora.pop
@@ -4510,7 +4802,24 @@ CREATE OR REPLACE VIEW v_qk_tpop_ohnebekanntseit AS
 SELECT
 	apflora.ap.ApArtId,
 	'Teilpopulation ohne "bekannt seit":' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopNr),
+			CONCAT(' > TPop: id=', apflora.tpop.TPopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN (apflora.pop
@@ -4527,7 +4836,24 @@ CREATE OR REPLACE VIEW v_qk_tpop_ohneapberrelevant AS
 SELECT
 	apflora.ap.ApArtId,
 	'Teilpopulation ohne "Fuer AP-Bericht relevant":' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopNr),
+			CONCAT(' > TPop: id=', apflora.tpop.TPopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN (apflora.pop
@@ -4544,7 +4870,24 @@ CREATE OR REPLACE VIEW v_qk_tpop_statuspotentiellfuerapberrelevant AS
 SELECT
 	apflora.ap.ApArtId,
 	'Teilpopulation mit Status "potenzieller Wuchs-/Ansiedlungsort" und "Fuer AP-Bericht relevant?" = ja:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopNr),
+			CONCAT(' > TPop: id=', apflora.tpop.TPopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN (apflora.pop
@@ -4562,7 +4905,24 @@ CREATE OR REPLACE VIEW v_qk_tpop_mitstatusunklarohnebegruendung AS
 SELECT
 	apflora.ap.ApArtId,
 	'Teilpopulation mit "Status unklar", ohne Begruendung:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopNr),
+			CONCAT(' > TPop: id=', apflora.tpop.TPopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN (apflora.pop
@@ -4580,7 +4940,24 @@ CREATE OR REPLACE VIEW v_qk_tpop_ohnekoordinaten AS
 SELECT
 	apflora.ap.ApArtId,
 	'Teilpopulation: Mindestens eine Koordinate fehlt:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopNr),
+			CONCAT(' > TPop: id=', apflora.tpop.TPopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN (apflora.pop
@@ -4598,7 +4975,27 @@ CREATE OR REPLACE VIEW v_qk_massn_ohnejahr AS
 SELECT
 	apflora.ap.ApArtId,
 	'Massnahme ohne Jahr:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '&tpopmassn=', apflora.tpopmassn.TPopMassnId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop.-ID: ', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)), CONCAT(' > Massn.-ID: ', apflora.tpopmassn.TPopMassnId), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'&tpopmassn=',
+		apflora.tpopmassn.TPopMassnId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop.-ID: ', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopNr),
+			CONCAT(' > TPop.-ID: ', apflora.tpop.TPopId)
+		),
+		CONCAT(' > Massn.-ID: ', apflora.tpopmassn.TPopMassnId),
+		'</a>'
+	) AS link
 FROM
 	((apflora.ap
 	INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId)
