@@ -2065,7 +2065,6 @@ FROM
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
 	apflora.pop.PopHerkunft = 300
-	AND apflora.tpop.TPopApBerichtRelevant = 1
 GROUP BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopId;
@@ -2204,7 +2203,6 @@ FROM
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
 	apflora.tpop.TPopHerkunft = 300
-	AND apflora.tpop.TPopApBerichtRelevant = 1
 GROUP BY
 	apflora.pop.ApArtId,
 	apflora.tpop.TPopId;
