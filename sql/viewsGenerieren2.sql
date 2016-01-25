@@ -1148,7 +1148,18 @@ SELECT
 	apflora.pop.ApArtId,
 	apflora.tpop.TPopId
 FROM
-	apflora.pop INNER JOIN ((apflora_views.v_tpop_letztermassnber INNER JOIN apflora.tpopmassnber ON (apflora_views.v_tpop_letztermassnber.TPopId = apflora.tpopmassnber.TPopId) AND (apflora_views.v_tpop_letztermassnber.MaxvonTPopMassnBerJahr = apflora.tpopmassnber.TPopMassnBerJahr)) INNER JOIN apflora.tpop ON apflora.tpopmassnber.TPopId = apflora.tpop.TPopId) ON apflora.pop.PopId = apflora.tpop.PopId
+	apflora.pop
+	INNER JOIN
+		((apflora_views.v_tpop_letztermassnber
+		INNER JOIN
+			apflora.tpopmassnber
+			ON
+				(apflora_views.v_tpop_letztermassnber.TPopId = apflora.tpopmassnber.TPopId)
+				AND (apflora_views.v_tpop_letztermassnber.MaxvonTPopMassnBerJahr = apflora.tpopmassnber.TPopMassnBerJahr))
+		INNER JOIN
+			apflora.tpop
+			ON apflora.tpopmassnber.TPopId = apflora.tpop.TPopId)
+		ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
 	apflora.tpopmassnber.TPopMassnBerErfolgsbeurteilung = 5
 GROUP BY
@@ -1187,7 +1198,41 @@ SELECT
 	apflora.popmassnber.MutWann AS "PopMassnBer MutWann",
 	apflora.popmassnber.MutWer AS "PopMassnBer MutWer"
 FROM
-	(((((((apflora_beob.adb_eigenschaften INNER JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN apflora.pop ON apflora.ap.ApArtId = apflora.pop.ApArtId) LEFT JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode) LEFT JOIN apflora.ap_umsetzung_werte ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode) LEFT JOIN apflora.pop_status_werte ON apflora.pop.PopHerkunft = pop_status_werte.HerkunftId) LEFT JOIN apflora_views.v_pop_berundmassnjahre ON apflora.pop.PopId = apflora_views.v_pop_berundmassnjahre.PopId) LEFT JOIN (apflora.popmassnber LEFT JOIN apflora.tpopmassn_erfbeurt_werte ON apflora.popmassnber.PopMassnBerErfolgsbeurteilung = tpopmassn_erfbeurt_werte.BeurteilId) ON (apflora_views.v_pop_berundmassnjahre.Jahr = apflora.popmassnber.PopMassnBerJahr) AND (apflora_views.v_pop_berundmassnjahre.PopId = apflora.popmassnber.PopId)) LEFT JOIN (apflora.popber LEFT JOIN apflora.pop_entwicklung_werte ON apflora.popber.PopBerEntwicklung = pop_entwicklung_werte.EntwicklungId) ON (apflora_views.v_pop_berundmassnjahre.Jahr = apflora.popber.PopBerJahr) AND (apflora_views.v_pop_berundmassnjahre.PopId = apflora.popber.PopId)
+	(((((((apflora_beob.adb_eigenschaften
+	INNER JOIN
+		apflora.ap
+		ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
+	INNER JOIN
+		apflora.pop
+		ON apflora.ap.ApArtId = apflora.pop.ApArtId)
+	LEFT JOIN
+		apflora.ap_bearbstand_werte
+		ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
+	LEFT JOIN
+		apflora.ap_umsetzung_werte
+		ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
+	LEFT JOIN
+		apflora.pop_status_werte
+		ON apflora.pop.PopHerkunft = pop_status_werte.HerkunftId)
+	LEFT JOIN
+		apflora_views.v_pop_berundmassnjahre
+		ON apflora.pop.PopId = apflora_views.v_pop_berundmassnjahre.PopId)
+	LEFT JOIN
+		(apflora.popmassnber
+		LEFT JOIN
+			apflora.tpopmassn_erfbeurt_werte
+			ON apflora.popmassnber.PopMassnBerErfolgsbeurteilung = tpopmassn_erfbeurt_werte.BeurteilId)
+		ON
+			(apflora_views.v_pop_berundmassnjahre.Jahr = apflora.popmassnber.PopMassnBerJahr)
+			AND (apflora_views.v_pop_berundmassnjahre.PopId = apflora.popmassnber.PopId))
+	LEFT JOIN
+		(apflora.popber
+		LEFT JOIN
+			apflora.pop_entwicklung_werte
+			ON apflora.popber.PopBerEntwicklung = pop_entwicklung_werte.EntwicklungId)
+		ON
+			(apflora_views.v_pop_berundmassnjahre.Jahr = apflora.popber.PopBerJahr)
+			AND (apflora_views.v_pop_berundmassnjahre.PopId = apflora.popber.PopId)
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname,
 	apflora.pop.PopNr,
@@ -1246,7 +1291,46 @@ SELECT
 	apflora.tpopmassnber.MutWann AS "TPopMassnBer MutWann",
 	apflora.tpopmassnber.MutWer AS "TPopMassnBer MutWer"
 FROM
-	((((((((((apflora_beob.adb_eigenschaften RIGHT JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) RIGHT JOIN (apflora.pop RIGHT JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) ON apflora.ap.ApArtId = apflora.pop.ApArtId) LEFT JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode) LEFT JOIN apflora.ap_umsetzung_werte ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode) LEFT JOIN apflora.pop_status_werte ON apflora.pop.PopHerkunft = pop_status_werte.HerkunftId) LEFT JOIN apflora.pop_status_werte AS domPopHerkunft_1 ON apflora.tpop.TPopHerkunft = domPopHerkunft_1.HerkunftId) LEFT JOIN apflora_views.v_tpop_berjahrundmassnjahr ON apflora.tpop.TPopId = apflora_views.v_tpop_berjahrundmassnjahr.TPopId) LEFT JOIN apflora.tpopmassnber ON (apflora_views.v_tpop_berjahrundmassnjahr.TPopId = apflora.tpopmassnber.TPopId) AND (apflora_views.v_tpop_berjahrundmassnjahr.Jahr = apflora.tpopmassnber.TPopMassnBerJahr)) LEFT JOIN apflora.tpopmassn_erfbeurt_werte ON apflora.tpopmassnber.TPopMassnBerErfolgsbeurteilung = tpopmassn_erfbeurt_werte.BeurteilId) LEFT JOIN apflora.tpopber ON (apflora_views.v_tpop_berjahrundmassnjahr.Jahr = apflora.tpopber.TPopBerJahr) AND (apflora_views.v_tpop_berjahrundmassnjahr.TPopId = apflora.tpopber.TPopId)) LEFT JOIN apflora.pop_entwicklung_werte ON apflora.tpopber.TPopBerEntwicklung = pop_entwicklung_werte.EntwicklungId
+	((((((((((apflora_beob.adb_eigenschaften
+	RIGHT JOIN
+		apflora.ap
+		ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
+	RIGHT JOIN
+		(apflora.pop
+		RIGHT JOIN
+			apflora.tpop
+			ON apflora.pop.PopId = apflora.tpop.PopId)
+		ON apflora.ap.ApArtId = apflora.pop.ApArtId)
+	LEFT JOIN
+		apflora.ap_bearbstand_werte
+		ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
+	LEFT JOIN
+		apflora.ap_umsetzung_werte
+		ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
+	LEFT JOIN
+		apflora.pop_status_werte ON apflora.pop.PopHerkunft = pop_status_werte.HerkunftId)
+	LEFT JOIN
+		apflora.pop_status_werte AS domPopHerkunft_1
+		ON apflora.tpop.TPopHerkunft = domPopHerkunft_1.HerkunftId)
+	LEFT JOIN
+		apflora_views.v_tpop_berjahrundmassnjahr
+		ON apflora.tpop.TPopId = apflora_views.v_tpop_berjahrundmassnjahr.TPopId)
+	LEFT JOIN
+		apflora.tpopmassnber
+		ON
+			(apflora_views.v_tpop_berjahrundmassnjahr.TPopId = apflora.tpopmassnber.TPopId)
+			AND (apflora_views.v_tpop_berjahrundmassnjahr.Jahr = apflora.tpopmassnber.TPopMassnBerJahr))
+	LEFT JOIN
+		apflora.tpopmassn_erfbeurt_werte
+		ON apflora.tpopmassnber.TPopMassnBerErfolgsbeurteilung = tpopmassn_erfbeurt_werte.BeurteilId)
+	LEFT JOIN
+		apflora.tpopber
+		ON
+			(apflora_views.v_tpop_berjahrundmassnjahr.Jahr = apflora.tpopber.TPopBerJahr)
+			AND (apflora_views.v_tpop_berjahrundmassnjahr.TPopId = apflora.tpopber.TPopId))
+	LEFT JOIN
+		apflora.pop_entwicklung_werte
+		ON apflora.tpopber.TPopBerEntwicklung = pop_entwicklung_werte.EntwicklungId
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname,
 	apflora.pop.PopNr,
