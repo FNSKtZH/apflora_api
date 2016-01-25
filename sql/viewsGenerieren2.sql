@@ -174,7 +174,7 @@ FROM
 	(apflora_beob.adb_eigenschaften INNER JOIN ((apflora_views.v_ap_anzmassnbisjahr AS vApAnzMassnBisJahr_1 INNER JOIN apflora.ap ON vApAnzMassnBisJahr_1.ApArtId = apflora.ap.ApArtId) INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId) ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN (apflora.apber INNER JOIN apflora._variable ON apflora.apber.JBerJahr = apflora._variable.JBerJahr) ON (apflora._variable.JBerJahr = vApAnzMassnBisJahr_1.TPopMassnJahr) AND (apflora.ap.ApArtId = apflora.apber.ApArtId)
 WHERE
 	apflora.ap.ApStatus < 4
-	AND vApAnzMassnBisJahr_1.AnzahlMassnahmen="0"
+	AND vApAnzMassnBisJahr_1.AnzahlMassnahmen = "0"
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname;
 
@@ -251,7 +251,15 @@ SELECT
 		""
 	) AS FnsKefKontrJahr2
 FROM
-	apflora._variable AS tblKonstanten_1 INNER JOIN ((apflora_beob.adb_eigenschaften INNER JOIN (apflora.ap INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId) ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN ((apflora.apber INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON apflora.apber.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId) INNER JOIN apflora._variable ON apflora.apber.JBerJahr = apflora._variable.JBerJahr) ON apflora.ap.ApArtId = apflora.apber.ApArtId) ON tblKonstanten_1.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
+	apflora._variable AS tblKonstanten_1
+	INNER JOIN
+		((apflora_beob.adb_eigenschaften
+		INNER JOIN
+			(apflora.ap INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId)
+			ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
+		INNER JOIN ((apflora.apber INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON apflora.apber.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId) INNER JOIN apflora._variable ON apflora.apber.JBerJahr = apflora._variable.JBerJahr)
+		ON apflora.ap.ApArtId = apflora.apber.ApArtId)
+	ON tblKonstanten_1.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
 WHERE
 	apflora.apber.JBerBeurteilung = 4
 	AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen > 0
