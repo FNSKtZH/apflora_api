@@ -1765,13 +1765,24 @@ SELECT
 	apflora.assozart.MutWer AS "AA MutWer"
 FROM
 	apflora_beob.adb_eigenschaften AS ArtenDb_Arteigenschaften_1
-	RIGHT JOIN (((((apflora_beob.adb_eigenschaften
-		RIGHT JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
-		LEFT JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
-		LEFT JOIN apflora.ap_umsetzung_werte ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
-		LEFT JOIN apflora.adresse ON apflora.ap.ApBearb = apflora.adresse.AdrId)
-		RIGHT JOIN apflora.assozart ON apflora.ap.ApArtId = apflora.assozart.AaApArtId)
-	ON ArtenDb_Arteigenschaften_1.TaxonomieId = apflora.assozart.AaSisfNr
+	RIGHT JOIN
+		(((((apflora_beob.adb_eigenschaften
+		RIGHT JOIN
+			apflora.ap
+			ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
+		LEFT JOIN
+			apflora.ap_bearbstand_werte
+			ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
+		LEFT JOIN
+			apflora.ap_umsetzung_werte
+			ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
+		LEFT JOIN
+			apflora.adresse
+			ON apflora.ap.ApBearb = apflora.adresse.AdrId)
+		RIGHT JOIN
+			apflora.assozart
+			ON apflora.ap.ApArtId = apflora.assozart.AaApArtId)
+		ON ArtenDb_Arteigenschaften_1.TaxonomieId = apflora.assozart.AaSisfNr
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname;
 
@@ -1786,13 +1797,24 @@ SELECT
 	apflora.assozart.MutWer AS "AA MutWer"
 FROM
 	apflora_beob.adb_eigenschaften AS ArtenDb_Arteigenschaften_1
-	RIGHT JOIN (((((apflora_beob.adb_eigenschaften
-		RIGHT JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
-		LEFT JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
-		LEFT JOIN apflora.ap_umsetzung_werte ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
-		LEFT JOIN apflora.adresse ON apflora.ap.ApBearb = apflora.adresse.AdrId)
-		RIGHT JOIN apflora.assozart ON apflora.ap.ApArtId = apflora.assozart.AaApArtId)
-	ON ArtenDb_Arteigenschaften_1.TaxonomieId = apflora.assozart.AaSisfNr
+	RIGHT JOIN
+		(((((apflora_beob.adb_eigenschaften
+		RIGHT JOIN
+			apflora.ap
+			ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
+		LEFT JOIN
+			apflora.ap_bearbstand_werte
+			ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
+		LEFT JOIN
+			apflora.ap_umsetzung_werte
+			ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
+		LEFT JOIN
+			apflora.adresse
+			ON apflora.ap.ApBearb = apflora.adresse.AdrId)
+		RIGHT JOIN
+			apflora.assozart
+			ON apflora.ap.ApArtId = apflora.assozart.AaApArtId)
+		ON ArtenDb_Arteigenschaften_1.TaxonomieId = apflora.assozart.AaSisfNr
 WHERE
 	apflora.ap.ApArtId is Null
 ORDER BY
@@ -1809,7 +1831,9 @@ SELECT
 	apflora.pop.ApArtId AS "Population"
 FROM
 	((((apflora_beob.adb_eigenschaften
-	INNER JOIN apflora.ap ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
+	INNER JOIN
+		apflora.ap
+		ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
 	INNER JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
 	LEFT JOIN apflora.ap_umsetzung_werte ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
 	LEFT JOIN apflora.adresse ON apflora.ap.ApBearb = apflora.adresse.AdrId)
@@ -3565,7 +3589,7 @@ FROM
 	ON apflora_beob.beob_infospezies.NO_NOTE = apflora.beobzuordnung.NO_NOTE)
 	LEFT JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode
 ORDER BY
-	apflora_beob.adb_eigenschaften.Artname
+	apflora_beob.adb_eigenschaften.Artname;
 
 # this shall be added to export form
 CREATE OR REPLACE VIEW v_beob_infospezies AS
@@ -3589,7 +3613,7 @@ FROM
 	LEFT JOIN apflora.beobzuordnung ON apflora_beob.beob_infospezies.NO_NOTE = apflora.beobzuordnung.NO_NOTE)
 	LEFT JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode
 ORDER BY
-	apflora_beob.adb_eigenschaften.Artname
+	apflora_beob.adb_eigenschaften.Artname;
 
 # this shall be added to export form
 CREATE OR REPLACE VIEW v_beob_evab AS
@@ -3613,7 +3637,7 @@ FROM
 	LEFT JOIN apflora.beobzuordnung ON apflora_beob.beob_evab.NO_NOTE_PROJET = apflora.beobzuordnung.NO_NOTE)
 	LEFT JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode
 ORDER BY
-	apflora_beob.adb_eigenschaften.Artname
+	apflora_beob.adb_eigenschaften.Artname;
 
 CREATE OR REPLACE VIEW v_exportevab_beob AS
 SELECT

@@ -1109,7 +1109,7 @@ FROM
 			apflora.tpopmassnber
 			ON
 				(apflora_views.v_tpop_letztermassnber.TPopId = apflora.tpopmassnber.TPopId)
-				AND (apflora_views.v_tpop_letztermassnber.MaxvonTPopMassnBerJahr = apflora.tpopmassnber.TPopMassnBerJahr)
+				AND (apflora_views.v_tpop_letztermassnber.MaxvonTPopMassnBerJahr = apflora.tpopmassnber.TPopMassnBerJahr))
 		INNER JOIN
 			apflora.tpop
 			ON apflora.tpopmassnber.TPopId = apflora.tpop.TPopId)
