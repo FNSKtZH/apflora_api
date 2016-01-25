@@ -5855,7 +5855,24 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_zielber_ohneentwicklung AS 
 SELECT
 	apflora.ap.ApArtId, 'Ziel-Bericht ohne Entwicklung:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&apziel=', apflora.ziel.ZielId, '&zielber=', apflora.zielber.ZielBerId, '" target="_blank">', IFNULL(CONCAT('ZielJahr: ', apflora.ziel.ZielJahr, ' (id=', apflora.ziel.ZielId, ')'), CONCAT('Ziel.-ID: ', apflora.ziel.ZielId)), IFNULL(CONCAT(' > ZielBerJahr: ', apflora.zielber.ZielBerJahr), CONCAT(' > ZielBer.-ID: ', apflora.zielber.ZielBerId)), '</a>') AS link,
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&apziel=',
+		apflora.ziel.ZielId,
+		'&zielber=',
+		apflora.zielber.ZielBerId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('ZielJahr: ', apflora.ziel.ZielJahr, ' (id=', apflora.ziel.ZielId, ')'),
+			CONCAT('Ziel.-ID: ', apflora.ziel.ZielId)
+		),
+		IFNULL(
+			CONCAT(' > ZielBerJahr: ', apflora.zielber.ZielBerJahr),
+			CONCAT(' > ZielBer.-ID: ', apflora.zielber.ZielBerId)
+		),
+		'</a>'
+	) AS link,
 	apflora.zielber.ZielBerJahr AS Berichtjahr
 FROM
 	(apflora.ap
@@ -5874,7 +5891,24 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_zielber_ohnejahr AS 
 SELECT
 	apflora.ap.ApArtId, 'Ziel-Bericht ohne Jahr:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&apziel=', apflora.ziel.ZielId, '&zielber=', apflora.zielber.ZielBerId, '" target="_blank">', IFNULL(CONCAT('ZielJahr: ', apflora.ziel.ZielJahr, ' (id=', apflora.ziel.ZielId, ')'), CONCAT('Ziel.-ID: ', apflora.ziel.ZielId)), IFNULL(CONCAT(' > ZielBerJahr: ', apflora.zielber.ZielBerJahr), CONCAT(' > ZielBer.-ID: ', apflora.zielber.ZielBerId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&apziel=',
+		apflora.ziel.ZielId,
+		'&zielber=',
+		apflora.zielber.ZielBerId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('ZielJahr: ', apflora.ziel.ZielJahr, ' (id=', apflora.ziel.ZielId, ')'),
+			CONCAT('Ziel.-ID: ', apflora.ziel.ZielId)
+		),
+		IFNULL(
+			CONCAT(' > ZielBerJahr: ', apflora.zielber.ZielBerJahr),
+			CONCAT(' > ZielBer.-ID: ', apflora.zielber.ZielBerId)
+		),
+		'</a>'
+	) AS link
 FROM
 	(apflora.ap
 	INNER JOIN apflora.ziel ON apflora.ap.ApArtId = apflora.ziel.ApArtId)
@@ -5891,7 +5925,18 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_ziel_ohnejahr AS 
 SELECT
 	apflora.ap.ApArtId, 'Ziel ohne Jahr:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&apziel=', apflora.ziel.ZielId, '" target="_blank">', IFNULL(CONCAT('ZielJahr: ', apflora.ziel.ZielJahr, ' (id=', apflora.ziel.ZielId, ')'), CONCAT('Ziel.-ID: ', apflora.ziel.ZielId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&apziel=',
+		apflora.ziel.ZielId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('ZielJahr: ', apflora.ziel.ZielJahr, ' (id=', apflora.ziel.ZielId, ')'),
+			CONCAT('Ziel.-ID: ', apflora.ziel.ZielId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.ziel ON apflora.ap.ApArtId = apflora.ziel.ApArtId
@@ -5905,7 +5950,18 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_ziel_ohnetyp AS 
 SELECT
 	apflora.ap.ApArtId, 'Ziel ohne Typ:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&apziel=', apflora.ziel.ZielId, '" target="_blank">', IFNULL(CONCAT('ZielJahr: ', apflora.ziel.ZielJahr, ' (id=', apflora.ziel.ZielId, ')'), CONCAT('Ziel.-ID: ', apflora.ziel.ZielId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&apziel=',
+		apflora.ziel.ZielId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('ZielJahr: ', apflora.ziel.ZielJahr, ' (id=', apflora.ziel.ZielId, ')'),
+			CONCAT('Ziel.-ID: ', apflora.ziel.ZielId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.ziel ON apflora.ap.ApArtId = apflora.ziel.ApArtId
@@ -5919,7 +5975,18 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_ziel_ohneziel AS 
 SELECT
 	apflora.ap.ApArtId, 'Ziel ohne Ziel:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&apziel=', apflora.ziel.ZielId, '" target="_blank">', IFNULL(CONCAT('ZielJahr: ', apflora.ziel.ZielJahr, ' (id=', apflora.ziel.ZielId, ')'), CONCAT('Ziel.-ID: ', apflora.ziel.ZielId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&apziel=',
+		apflora.ziel.ZielId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('ZielJahr: ', apflora.ziel.ZielJahr, ' (id=', apflora.ziel.ZielId, ')'),
+			CONCAT('Ziel.-ID: ', apflora.ziel.ZielId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.ziel ON apflora.ap.ApArtId = apflora.ziel.ApArtId
@@ -5933,7 +6000,15 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_erfkrit_ohnebeurteilung AS 
 SELECT
 	apflora.ap.ApArtId, 'Erfolgskriterium ohne Beurteilung:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&erfkrit=', apflora.erfkrit.ErfkritId, '" target="_blank">', CONCAT('Erfkrit.-ID: ', apflora.erfkrit.ErfkritId), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&erfkrit=',
+		apflora.erfkrit.ErfkritId,
+		'" target="_blank">',
+		CONCAT('Erfkrit.-ID: ', apflora.erfkrit.ErfkritId),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.erfkrit ON apflora.ap.ApArtId = apflora.erfkrit.ApArtId
@@ -5946,7 +6021,15 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_erfkrit_ohnekriterien AS 
 SELECT
 	apflora.ap.ApArtId, 'Erfolgskriterium ohne Kriterien:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&erfkrit=', apflora.erfkrit.ErfkritId, '" target="_blank">', CONCAT('Erfkrit.-ID: ', apflora.erfkrit.ErfkritId), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&erfkrit=',
+		apflora.erfkrit.ErfkritId,
+		'" target="_blank">',
+		CONCAT('Erfkrit.-ID: ', apflora.erfkrit.ErfkritId),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.erfkrit ON apflora.ap.ApArtId = apflora.erfkrit.ApArtId
@@ -5959,7 +6042,18 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_apber_ohnejahr AS 
 SELECT
 	apflora.ap.ApArtId, 'AP-Bericht ohne Jahr:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&jber=', apflora.apber.JBerId, '" target="_blank">', IFNULL(CONCAT('Jahr: ', apflora.apber.JBerJahr, ' (id=', apflora.apber.JBerId, ')'), CONCAT('AP-Ber.-ID: ', apflora.apber.JBerId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&jber=',
+		apflora.apber.JBerId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Jahr: ', apflora.apber.JBerJahr, ' (id=', apflora.apber.JBerId, ')'),
+			CONCAT('AP-Ber.-ID: ', apflora.apber.JBerId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.apber ON apflora.ap.ApArtId = apflora.apber.ApArtId
@@ -5973,7 +6067,18 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_apber_ohnevergleichvorjahrgesamtziel AS 
 SELECT
 	apflora.ap.ApArtId, 'AP-Bericht ohne Vergleich Vorjahr - Gesamtziel:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&jber=', apflora.apber.JBerId, '" target="_blank">', IFNULL(CONCAT('Jahr: ', apflora.apber.JBerJahr, ' (id=', apflora.apber.JBerId, ')'), CONCAT('AP-Ber.-ID: ', apflora.apber.JBerId)), '</a>') AS link,
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&jber=',
+		apflora.apber.JBerId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Jahr: ', apflora.apber.JBerJahr, ' (id=', apflora.apber.JBerId, ')'),
+			CONCAT('AP-Ber.-ID: ', apflora.apber.JBerId)
+		),
+		'</a>'
+	) AS link,
 	apflora.apber.JBerJahr AS Berichtjahr
 FROM
 	apflora.ap
@@ -5989,7 +6094,18 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_apber_ohnebeurteilung AS 
 SELECT
 	apflora.ap.ApArtId, 'AP-Bericht ohne Vergleich Vorjahr - Gesamtziel:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&jber=', apflora.apber.JBerId, '" target="_blank">', IFNULL(CONCAT('Jahr: ', apflora.apber.JBerJahr, ' (id=', apflora.apber.JBerId, ')'), CONCAT('AP-Ber.-ID: ', apflora.apber.JBerId)), '</a>') AS link,
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&jber=',
+		apflora.apber.JBerId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Jahr: ', apflora.apber.JBerJahr, ' (id=', apflora.apber.JBerId, ')'),
+			CONCAT('AP-Ber.-ID: ', apflora.apber.JBerId)
+		),
+		'</a>'
+	) AS link,
 	apflora.apber.JBerJahr AS Berichtjahr
 FROM
 	apflora.ap
@@ -6005,7 +6121,15 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_assozart_ohneart AS 
 SELECT
 	apflora.ap.ApArtId, 'Assoziierte Art ohne Art:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&assozarten=', apflora.assozart.AaId, '" target="_blank">', CONCAT('Assoz.-Art-ID: ', apflora.assozart.AaId), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.ap.ApArtId,
+		'&assozarten=',
+		apflora.assozart.AaId,
+		'" target="_blank">',
+		CONCAT('Assoz.-Art-ID: ', apflora.assozart.AaId),
+		'</a>'
+	) AS link
 FROM
 	apflora.ap
 	INNER JOIN apflora.assozart ON apflora.ap.ApArtId = apflora.assozart.AaApArtId
@@ -6019,7 +6143,18 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_pop_koordentsprechenkeinertpop AS 
 SELECT DISTINCT
 	apflora.pop.ApArtId, 'Population: Koordinaten entsprechen keiner Teilpopulation:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link,
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.pop.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link,
 	apflora.pop.PopXKoord AS XKoord,
 	apflora.pop.PopYKoord AS YKoord
 FROM
@@ -6043,7 +6178,18 @@ ORDER BY
 CREATE OR REPLACE VIEW v_qk_pop_statusansaatversuchmitaktuellentpop AS 
 SELECT DISTINCT
 	apflora.pop.ApArtId, 'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine Teilpopulation mit Status "urspruenglich, aktuell":' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.pop.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.pop
 WHERE
@@ -6062,8 +6208,20 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_statusansaatversuchmittpopursprerloschen AS 
 SELECT DISTINCT
-	apflora.pop.ApArtId, 'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine Teilpopulation mit Status "urspruenglich, erloschen":' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	apflora.pop.ApArtId,
+	'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine Teilpopulation mit Status "urspruenglich, erloschen":' AS hw,
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.pop.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.pop
 WHERE
@@ -6082,8 +6240,20 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_statuserloschenmittpopaktuell AS 
 SELECT DISTINCT
-	apflora.pop.ApArtId, 'Population: Status ist "erloschen" (urspruenglich oder angesiedelt), es gibt aber eine Teilpopulation mit Status "aktuell" (urspruenglich oder angesiedelt):' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	apflora.pop.ApArtId,
+	'Population: Status ist "erloschen" (urspruenglich oder angesiedelt), es gibt aber eine Teilpopulation mit Status "aktuell" (urspruenglich oder angesiedelt):' AS hw,
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.pop.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.pop
 WHERE
@@ -6102,8 +6272,20 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_statuserloschenmittpopansaatversuch AS 
 SELECT DISTINCT
-	apflora.pop.ApArtId, 'Population: Status ist "erloschen" (urspruenglich oder angesiedelt), es gibt aber eine Teilpopulation mit Status "angesiedelt, Ansaatversuch":' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	apflora.pop.ApArtId,
+	'Population: Status ist "erloschen" (urspruenglich oder angesiedelt), es gibt aber eine Teilpopulation mit Status "angesiedelt, Ansaatversuch":' AS hw,
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.pop.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.pop
 WHERE
@@ -6122,8 +6304,20 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_statusangesiedeltmittpopurspruenglich AS 
 SELECT DISTINCT
-	apflora.pop.ApArtId, 'Population: Status ist "angesiedelt", es gibt aber eine Teilpopulation mit Status "urspruenglich":' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	apflora.pop.ApArtId,
+	'Population: Status ist "angesiedelt", es gibt aber eine Teilpopulation mit Status "urspruenglich":' AS hw,
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.pop.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.pop
 WHERE
