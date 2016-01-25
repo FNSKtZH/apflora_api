@@ -22,7 +22,7 @@ SELECT
 	apflora_views.v_ap_massnjahre.ApArtId,
 	apflora_views.v_ap_massnjahre.TPopMassnJahr,
 	IF(
-		apflora_views.v_ap_anzmassnprojahr0.AnzahlvonTPopMassnId Is Not Null,
+		apflora_views.v_ap_anzmassnprojahr0.AnzahlvonTPopMassnId IS NOT NULL,
 		apflora_views.v_ap_anzmassnprojahr0.AnzahlvonTPopMassnId,
 		0
 	) AS "AnzahlMassnahmen" 
@@ -458,7 +458,7 @@ FROM
 		apflora._variable
 		ON apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr = apflora._variable.JBerJahr
 WHERE
-	apflora.apber.ApArtId Is Null
+	apflora.apber.ApArtId IS NULL
 	AND apflora.ap.ApStatus < 4;
 
 CREATE OR REPLACE VIEW v_apber_uebnb00 AS 
@@ -484,7 +484,7 @@ FROM
 		ON tblKonstanten_1.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
 WHERE
 	apflora.ap.ApStatus < 4
-	AND apflora.apber.JBerBeurteilung Is Null;
+	AND apflora.apber.JBerBeurteilung IS NULL;
 
 CREATE OR REPLACE VIEW v_apber_uebnb0 AS 
 SELECT
