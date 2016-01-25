@@ -11,7 +11,7 @@ FROM
 	apflora.ap,
 	apflora_views.v_massn_jahre 
 WHERE
-	apflora.ap.ApArtId>0
+	apflora.ap.ApArtId > 0
 	AND apflora.ap.ApStatus < 4
 ORDER BY
 	apflora.ap.ApArtId,
@@ -151,7 +151,7 @@ SELECT
 FROM
 	apflora._variable AS tblKonstanten_1 INNER JOIN ((apflora_beob.adb_eigenschaften INNER JOIN (apflora.ap INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId) ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN (apflora._variable INNER JOIN (apflora.apber INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON apflora.apber.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId) ON apflora._variable.JBerJahr = apflora.apber.JBerJahr) ON apflora.ap.ApArtId = apflora.apber.ApArtId) ON tblKonstanten_1.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr 
 WHERE
-	apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen>0
+	apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen > 0
 	AND apflora.apber.JBerBeurteilung = 1
 	AND apflora.ap.ApStatus < 4
 ORDER BY
@@ -160,8 +160,13 @@ ORDER BY
 CREATE OR REPLACE VIEW v_apber_uebkm AS 
 SELECT
 	apflora_beob.adb_eigenschaften.Artname,
-	IF(apflora_beob.adb_eigenschaften.KefArt=-1,"Ja","") AS FnsKefArt2,
-	IF(Round((apflora._variable.JBerJahr-apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,0)=(apflora._variable.JBerJahr-apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,"Ja","") AS FnsKefKontrJahr2
+	IF(
+		apflora_beob.adb_eigenschaften.KefArt = -1,
+		"Ja",
+		""
+	) AS FnsKefArt2,
+	IF(
+		Round((apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,0) = (apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,"Ja","") AS FnsKefKontrJahr2
 FROM
 	(apflora_beob.adb_eigenschaften INNER JOIN ((apflora_views.v_ap_anzmassnbisjahr AS vApAnzMassnBisJahr_1 INNER JOIN apflora.ap ON vApAnzMassnBisJahr_1.ApArtId = apflora.ap.ApArtId) INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId) ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN (apflora.apber INNER JOIN apflora._variable ON apflora.apber.JBerJahr = apflora._variable.JBerJahr) ON (apflora._variable.JBerJahr = vApAnzMassnBisJahr_1.TPopMassnJahr) AND (apflora.ap.ApArtId = apflora.apber.ApArtId)
 WHERE
@@ -177,7 +182,7 @@ SELECT
 FROM
 	apflora._variable INNER JOIN ((apflora_beob.adb_eigenschaften INNER JOIN (apflora.ap INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId) ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON apflora.ap.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId) ON apflora._variable.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
 WHERE
-	apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen>0
+	apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen > 0
 	AND apflora.ap.ApStatus < 4
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname;
@@ -186,13 +191,21 @@ CREATE OR REPLACE VIEW v_apber_uebme AS
 SELECT
 	apflora.apber.*,
 	apflora_beob.adb_eigenschaften.Artname,
-	IF("KefArt"=-1,"Ja","") AS FnsKefArt2,
-	IF(Round((apflora._variable.JBerJahr-"KefKontrolljahr")/4,0)=(apflora._variable.JBerJahr-"KefKontrolljahr")/4,"Ja","") AS FnsKefKontrJahr2
+	IF(
+		"KefArt" = -1,
+		"Ja",
+		""
+	) AS FnsKefArt2,
+	IF(
+		Round((apflora._variable.JBerJahr - "KefKontrolljahr") / 4, 0) = (apflora._variable.JBerJahr - "KefKontrolljahr") / 4,
+		"Ja",
+		""
+	) AS FnsKefKontrJahr2
 FROM
 	apflora._variable AS tblKonstanten_1 INNER JOIN ((apflora_beob.adb_eigenschaften INNER JOIN (apflora.ap INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId) ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN ((apflora.apber INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON apflora.apber.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId) INNER JOIN apflora._variable ON apflora.apber.JBerJahr = apflora._variable.JBerJahr) ON apflora.ap.ApArtId = apflora.apber.ApArtId) ON tblKonstanten_1.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
 WHERE
 	apflora.apber.JBerBeurteilung = 5
-	AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen>0
+	AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen > 0
 	AND apflora.ap.ApStatus < 4
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname;
@@ -201,14 +214,22 @@ CREATE OR REPLACE VIEW v_apber_uebne AS
 SELECT
 	apflora.apber.*,
 	apflora_beob.adb_eigenschaften.Artname,
-	IF(apflora_beob.adb_eigenschaften.KefArt=-1,"Ja","") AS FnsKefArt2,
-	IF(Round((apflora._variable.JBerJahr-apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,0)=(apflora._variable.JBerJahr-apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,"Ja","") AS FnsKefKontrJahr2
+	IF(
+		apflora_beob.adb_eigenschaften.KefArt = -1,
+		"Ja",
+		""
+	) AS FnsKefArt2,
+	IF(
+		Round((apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4, 0) = (apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,
+		"Ja",
+		""
+	) AS FnsKefKontrJahr2
 FROM
 	apflora._variable AS tblKonstanten_1 INNER JOIN ((apflora_beob.adb_eigenschaften INNER JOIN (apflora.ap INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId) ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN ((apflora.apber INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON apflora.apber.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId) INNER JOIN apflora._variable ON apflora.apber.JBerJahr = apflora._variable.JBerJahr) ON apflora.ap.ApArtId = apflora.apber.ApArtId) ON tblKonstanten_1.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
 WHERE
 	apflora.apber.JBerBeurteilung = 3
 	AND apflora.ap.ApStatus < 4
-	AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen>0
+	AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen > 0
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname;
 
@@ -216,13 +237,21 @@ CREATE OR REPLACE VIEW v_apber_uebse AS
 SELECT
 	apflora.apber.*,
 	apflora_beob.adb_eigenschaften.Artname,
-	IF(apflora_beob.adb_eigenschaften.KefArt=-1,"Ja","") AS FnsKefArt2,
-	IF(Round((apflora._variable.JBerJahr-apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,0)=(apflora._variable.JBerJahr-apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,"Ja","") AS FnsKefKontrJahr2
+	IF(
+		apflora_beob.adb_eigenschaften.KefArt = -1,
+		"Ja",
+		""
+	) AS FnsKefArt2,
+	IF(
+		Round((apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4, 0) = (apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,
+		"Ja",
+		""
+	) AS FnsKefKontrJahr2
 FROM
 	apflora._variable AS tblKonstanten_1 INNER JOIN ((apflora_beob.adb_eigenschaften INNER JOIN (apflora.ap INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId) ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN ((apflora.apber INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON apflora.apber.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId) INNER JOIN apflora._variable ON apflora.apber.JBerJahr = apflora._variable.JBerJahr) ON apflora.ap.ApArtId = apflora.apber.ApArtId) ON tblKonstanten_1.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
 WHERE
 	apflora.apber.JBerBeurteilung = 4
-	AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen>0
+	AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen > 0
 	AND apflora.ap.ApStatus < 4
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname;
@@ -231,13 +260,21 @@ CREATE OR REPLACE VIEW v_apber_uebun AS
 SELECT
 	apflora.apber.*,
 	apflora_beob.adb_eigenschaften.Artname,
-	IF(apflora_beob.adb_eigenschaften.KefArt=-1,"Ja","") AS FnsKefArt2,
-	IF(Round((apflora._variable.JBerJahr-apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,0)=(apflora._variable.JBerJahr-apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,"Ja","") AS FnsKefKontrJahr2
+	IF(
+		apflora_beob.adb_eigenschaften.KefArt = -1,
+		"Ja",
+		""
+	) AS FnsKefArt2,
+	IF(
+		Round((apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4, 0) = (apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,
+		"Ja",
+		""
+	) AS FnsKefKontrJahr2
 FROM
 	apflora._variable AS tblKonstanten_1 INNER JOIN ((apflora_beob.adb_eigenschaften INNER JOIN (apflora.ap INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId) ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN ((apflora.apber INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON apflora.apber.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId) INNER JOIN apflora._variable ON apflora.apber.JBerJahr = apflora._variable.JBerJahr) ON apflora.ap.ApArtId = apflora.apber.ApArtId) ON tblKonstanten_1.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
 WHERE
 	apflora.apber.JBerBeurteilung = 1168274204
-	AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen>0
+	AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen > 0
 	AND apflora.ap.ApStatus < 4
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname;
@@ -246,13 +283,18 @@ CREATE OR REPLACE VIEW v_apber_uebwe AS
 SELECT
 	apflora.apber.*,
 	apflora_beob.adb_eigenschaften.Artname,
-	IF(apflora_beob.adb_eigenschaften.KefArt=-1,"Ja","") AS FnsKefArt2,
-	IF(Round((apflora._variable.JBerJahr-apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,0)=(apflora._variable.JBerJahr-apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,"Ja","") AS FnsKefKontrJahr2
+	IF(
+		apflora_beob.adb_eigenschaften.KefArt = -1,
+		"Ja",
+		""
+	) AS FnsKefArt2,
+	IF(
+		Round((apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4, 0) = (apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,"Ja","") AS FnsKefKontrJahr2
 FROM
 	apflora._variable AS tblKonstanten_1 INNER JOIN ((apflora_beob.adb_eigenschaften INNER JOIN (apflora.ap INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId) ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN ((apflora.apber INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON apflora.apber.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId) INNER JOIN apflora._variable ON apflora.apber.JBerJahr = apflora._variable.JBerJahr) ON apflora.ap.ApArtId = apflora.apber.ApArtId) ON tblKonstanten_1.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
 WHERE
 	apflora.apber.JBerBeurteilung = 6
-	AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen>0
+	AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen > 0
 	AND apflora.ap.ApStatus < 4
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname;
@@ -336,7 +378,7 @@ WHERE
     	apflora.tpop.TPopHerkunft = 101
     	OR apflora.tpop.TPopHerkunft = 202
   	)
-    AND apflora.tpopber.TPopBerEntwicklung<>8
+    AND apflora.tpopber.TPopBerEntwicklung <> 8
   )
   OR (
     apflora.ap.ApStatus < 4
