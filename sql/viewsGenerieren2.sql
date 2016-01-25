@@ -596,7 +596,7 @@ WHERE
   )
   OR (
     apflora.ap.ApStatus < 4
-    AND apflora.tpop.TPopHerkunft Not in (101, 202)
+    AND apflora.tpop.TPopHerkunft NOT IN (101, 202)
     AND apflora.tpopber.TPopBerEntwicklung = 8
   )
 ORDER BY
