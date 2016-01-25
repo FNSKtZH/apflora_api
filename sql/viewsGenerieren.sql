@@ -5718,7 +5718,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_popber_ohneentwicklung AS 
 SELECT
-	apflora.ap.ApArtId, 'Populations-Bericht ohne Entwicklung:' AS hw,
+	apflora.ap.ApArtId,
+	'Populations-Bericht ohne Entwicklung:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -5753,7 +5754,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_popber_ohnejahr AS 
 SELECT
-	apflora.ap.ApArtId, 'Populations-Bericht ohne Jahr:' AS hw,
+	apflora.ap.ApArtId,
+	'Populations-Bericht ohne Jahr:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -5786,7 +5788,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_popmassnber_ohnejahr AS 
 SELECT
-	apflora.ap.ApArtId, 'Populations-Massnahmen-Bericht ohne Jahr:' AS hw,
+	apflora.ap.ApArtId,
+	'Populations-Massnahmen-Bericht ohne Jahr:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -5819,7 +5822,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_popmassnber_ohneentwicklung AS 
 SELECT
-	apflora.ap.ApArtId, 'Populations-Massnahmen-Bericht ohne Entwicklung:' AS hw,
+	apflora.ap.ApArtId,
+	'Populations-Massnahmen-Bericht ohne Entwicklung:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -5854,7 +5858,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_zielber_ohneentwicklung AS 
 SELECT
-	apflora.ap.ApArtId, 'Ziel-Bericht ohne Entwicklung:' AS hw,
+	apflora.ap.ApArtId,
+	'Ziel-Bericht ohne Entwicklung:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -5890,7 +5895,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_zielber_ohnejahr AS 
 SELECT
-	apflora.ap.ApArtId, 'Ziel-Bericht ohne Jahr:' AS hw,
+	apflora.ap.ApArtId,
+	'Ziel-Bericht ohne Jahr:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -5924,7 +5930,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_ziel_ohnejahr AS 
 SELECT
-	apflora.ap.ApArtId, 'Ziel ohne Jahr:' AS hw,
+	apflora.ap.ApArtId,
+	'Ziel ohne Jahr:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -5949,7 +5956,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_ziel_ohnetyp AS 
 SELECT
-	apflora.ap.ApArtId, 'Ziel ohne Typ:' AS hw,
+	apflora.ap.ApArtId,
+	'Ziel ohne Typ:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -5974,7 +5982,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_ziel_ohneziel AS 
 SELECT
-	apflora.ap.ApArtId, 'Ziel ohne Ziel:' AS hw,
+	apflora.ap.ApArtId,
+	'Ziel ohne Ziel:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -5999,7 +6008,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_erfkrit_ohnebeurteilung AS 
 SELECT
-	apflora.ap.ApArtId, 'Erfolgskriterium ohne Beurteilung:' AS hw,
+	apflora.ap.ApArtId,
+	'Erfolgskriterium ohne Beurteilung:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -6020,7 +6030,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_erfkrit_ohnekriterien AS 
 SELECT
-	apflora.ap.ApArtId, 'Erfolgskriterium ohne Kriterien:' AS hw,
+	apflora.ap.ApArtId,
+	'Erfolgskriterium ohne Kriterien:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -6041,7 +6052,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_apber_ohnejahr AS 
 SELECT
-	apflora.ap.ApArtId, 'AP-Bericht ohne Jahr:' AS hw,
+	apflora.ap.ApArtId,
+	'AP-Bericht ohne Jahr:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -6066,7 +6078,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_apber_ohnevergleichvorjahrgesamtziel AS 
 SELECT
-	apflora.ap.ApArtId, 'AP-Bericht ohne Vergleich Vorjahr - Gesamtziel:' AS hw,
+	apflora.ap.ApArtId,
+	'AP-Bericht ohne Vergleich Vorjahr - Gesamtziel:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -6093,7 +6106,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_apber_ohnebeurteilung AS 
 SELECT
-	apflora.ap.ApArtId, 'AP-Bericht ohne Vergleich Vorjahr - Gesamtziel:' AS hw,
+	apflora.ap.ApArtId,
+	'AP-Bericht ohne Vergleich Vorjahr - Gesamtziel:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -6120,7 +6134,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_assozart_ohneart AS 
 SELECT
-	apflora.ap.ApArtId, 'Assoziierte Art ohne Art:' AS hw,
+	apflora.ap.ApArtId,
+	'Assoziierte Art ohne Art:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.ap.ApArtId,
@@ -6142,7 +6157,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_koordentsprechenkeinertpop AS 
 SELECT DISTINCT
-	apflora.pop.ApArtId, 'Population: Koordinaten entsprechen keiner Teilpopulation:' AS hw,
+	apflora.pop.ApArtId,
+	'Population: Koordinaten entsprechen keiner Teilpopulation:' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.pop.ApArtId,
@@ -6177,7 +6193,8 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_statusansaatversuchmitaktuellentpop AS 
 SELECT DISTINCT
-	apflora.pop.ApArtId, 'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine Teilpopulation mit Status "urspruenglich, aktuell":' AS hw,
+	apflora.pop.ApArtId,
+	'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine Teilpopulation mit Status "urspruenglich, aktuell":' AS hw,
 	CONCAT(
 		'<a href="http://apflora.ch/index.html?ap=',
 		apflora.pop.ApArtId,
@@ -6336,8 +6353,20 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_statuspotwuchsortmittpopanders AS 
 SELECT DISTINCT
-	apflora.pop.ApArtId, 'Population: Status ist "potenzieller Wuchs-/Ansiedlungsort", es gibt aber eine Teilpopulation mit Status "angesiedelt" oder "urspruenglich":' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), '</a>') AS link
+	apflora.pop.ApArtId,
+	'Population: Status ist "potenzieller Wuchs-/Ansiedlungsort", es gibt aber eine Teilpopulation mit Status "angesiedelt" oder "urspruenglich":' AS hw,
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.pop.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.pop
 WHERE
@@ -6360,7 +6389,24 @@ SELECT DISTINCT
 	apflora.pop.PopId,
 	apflora.tpop.TPopId,
 	'Teilpopulation mit Status "Ansaatversuch", bei denen in einer Kontrolle eine Anzahl festgestellt wurde:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.pop.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopNr),
+			CONCAT(' > TPop: id=', apflora.tpop.TPopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.pop
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
@@ -6389,7 +6435,24 @@ SELECT DISTINCT
 	apflora.pop.PopId,
 	apflora.tpop.TPopId,
 	'Teilpopulation mit Status "potentieller Wuchs-/Ansiedlungsort", bei denen in einer Kontrolle eine Anzahl festgestellt wurde:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.pop.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopNr),
+			CONCAT(' > TPop: id=', apflora.tpop.TPopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.pop
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
@@ -6418,7 +6481,24 @@ SELECT DISTINCT
 	apflora.pop.PopId,
 	apflora.tpop.TPopId,
 	'Teilpopulation mit Status "potentieller Wuchs-/Ansiedlungsort", bei der eine Massnahme des Typs "Ansiedlung" existiert:' AS hw,
-	CONCAT('<a href="http://apflora.ch/index.html?ap=', apflora.pop.ApArtId, '&pop=', apflora.pop.PopId, '&tpop=', apflora.tpop.TPopId, '" target="_blank">', IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)), IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)), '</a>') AS link
+	CONCAT(
+		'<a href="http://apflora.ch/index.html?ap=',
+		apflora.pop.ApArtId,
+		'&pop=',
+		apflora.pop.PopId,
+		'&tpop=',
+		apflora.tpop.TPopId,
+		'" target="_blank">',
+		IFNULL(
+			CONCAT('Pop: ', apflora.pop.PopNr),
+			CONCAT('Pop: id=', apflora.pop.PopId)
+		),
+		IFNULL(
+			CONCAT(' > TPop: ', apflora.tpop.TPopNr),
+			CONCAT(' > TPop: id=', apflora.tpop.TPopId)
+		),
+		'</a>'
+	) AS link
 FROM
 	apflora.pop
 	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
