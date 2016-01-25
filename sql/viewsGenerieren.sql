@@ -1252,8 +1252,16 @@ FROM
 CREATE OR REPLACE VIEW v_fnskef AS 
 SELECT
 	apflora_beob.adb_eigenschaften.TaxonomieId,
-	IF(apflora_beob.adb_eigenschaften.KefArt="-1","Ja","") AS FnsKefArt2,
-	IF(Round((apflora._variable.JBerJahr- apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,0)=(apflora._variable.JBerJahr-apflora_beob.adb_eigenschaften.KefKontrolljahr)/4,"Ja","") AS FnsKefKontrJahr2
+	IF(
+		apflora_beob.adb_eigenschaften.KefArt = "-1",
+		"Ja",
+		""
+	) AS FnsKefArt2,
+	IF(
+		Round((apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4, 0) = (apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,
+		"Ja",
+		""
+	) AS FnsKefKontrJahr2
 FROM
 	apflora_beob.adb_eigenschaften,
 	apflora._variable
@@ -3285,11 +3293,11 @@ SELECT
 	apflora_beob.beob_infospezies.FNS_XGIS AS X,
 	apflora_beob.beob_infospezies.FNS_YGIS AS Y,
 	IF (
-		apflora_beob.beob_infospezies.FNS_XGIS>0
-		AND apflora.tpop.TPopXKoord>0
-		AND apflora_beob.beob_infospezies.FNS_YGIS>0
-		AND apflora.tpop.TPopYKoord>0,
-		ROUND(SQRT((apflora_beob.beob_infospezies.FNS_XGIS-apflora.tpop.TPopXKoord)*(apflora_beob.beob_infospezies.FNS_XGIS-apflora.tpop.TPopXKoord)+(apflora_beob.beob_infospezies.FNS_YGIS-apflora.tpop.TPopYKoord)*(apflora_beob.beob_infospezies.FNS_YGIS-apflora.tpop.TPopYKoord)), 0),
+		apflora_beob.beob_infospezies.FNS_XGIS > 0
+		AND apflora.tpop.TPopXKoord > 0
+		AND apflora_beob.beob_infospezies.FNS_YGIS > 0
+		AND apflora.tpop.TPopYKoord > 0,
+		ROUND(SQRT((apflora_beob.beob_infospezies.FNS_XGIS - apflora.tpop.TPopXKoord) * (apflora_beob.beob_infospezies.FNS_XGIS - apflora.tpop.TPopXKoord) + (apflora_beob.beob_infospezies.FNS_YGIS - apflora.tpop.TPopYKoord) * (apflora_beob.beob_infospezies.FNS_YGIS - apflora.tpop.TPopYKoord)), 0),
 		null
 	) AS "Distanz zur Teilpopulation (m)",
 	apflora_beob.beob_bereitgestellt.Datum,
@@ -3323,11 +3331,11 @@ UNION SELECT
 	apflora_beob.beob_evab.COORDONNEE_FED_E AS X,
 	apflora_beob.beob_evab.COORDONNEE_FED_N AS Y,
 	IF (
-		apflora_beob.beob_evab.COORDONNEE_FED_E>0
-		AND apflora.tpop.TPopXKoord>0
-		AND apflora_beob.beob_evab.COORDONNEE_FED_N>0
-		AND apflora.tpop.TPopYKoord>0,
-		ROUND(SQRT((apflora_beob.beob_evab.COORDONNEE_FED_E-apflora.tpop.TPopXKoord)*(apflora_beob.beob_evab.COORDONNEE_FED_E-apflora.tpop.TPopXKoord)+(apflora_beob.beob_evab.COORDONNEE_FED_N-apflora.tpop.TPopYKoord)*(apflora_beob.beob_evab.COORDONNEE_FED_N-apflora.tpop.TPopYKoord)), 0),
+		apflora_beob.beob_evab.COORDONNEE_FED_E > 0
+		AND apflora.tpop.TPopXKoord > 0
+		AND apflora_beob.beob_evab.COORDONNEE_FED_N > 0
+		AND apflora.tpop.TPopYKoord > 0,
+		ROUND(SQRT((apflora_beob.beob_evab.COORDONNEE_FED_E - apflora.tpop.TPopXKoord) * (apflora_beob.beob_evab.COORDONNEE_FED_E - apflora.tpop.TPopXKoord) + (apflora_beob.beob_evab.COORDONNEE_FED_N - apflora.tpop.TPopYKoord) * (apflora_beob.beob_evab.COORDONNEE_FED_N - apflora.tpop.TPopYKoord)), 0),
 		null
 	) AS "Distanz zur Teilpopulation (m)",
 	apflora_beob.beob_bereitgestellt.Datum,
@@ -3370,11 +3378,11 @@ SELECT
 	apflora_beob.beob_infospezies.FNS_XGIS AS X,
 	apflora_beob.beob_infospezies.FNS_YGIS AS Y,
 	IF (
-		apflora_beob.beob_infospezies.FNS_XGIS>0
-		AND apflora.tpop.TPopXKoord>0
-		AND apflora_beob.beob_infospezies.FNS_YGIS>0
-		AND apflora.tpop.TPopYKoord>0,
-		ROUND(SQRT((apflora_beob.beob_infospezies.FNS_XGIS-apflora.tpop.TPopXKoord)*(apflora_beob.beob_infospezies.FNS_XGIS-apflora.tpop.TPopXKoord)+(apflora_beob.beob_infospezies.FNS_YGIS-apflora.tpop.TPopYKoord)*(apflora_beob.beob_infospezies.FNS_YGIS-apflora.tpop.TPopYKoord)), 0),
+		apflora_beob.beob_infospezies.FNS_XGIS > 0
+		AND apflora.tpop.TPopXKoord > 0
+		AND apflora_beob.beob_infospezies.FNS_YGIS > 0
+		AND apflora.tpop.TPopYKoord > 0,
+		ROUND(SQRT((apflora_beob.beob_infospezies.FNS_XGIS - apflora.tpop.TPopXKoord) * (apflora_beob.beob_infospezies.FNS_XGIS - apflora.tpop.TPopXKoord) + (apflora_beob.beob_infospezies.FNS_YGIS - apflora.tpop.TPopYKoord) * (apflora_beob.beob_infospezies.FNS_YGIS - apflora.tpop.TPopYKoord)), 0),
 		null
 		) AS "Distanz zur Teilpopulation (m)",
 	apflora_beob.beob_bereitgestellt.Datum,
@@ -3751,8 +3759,8 @@ SELECT
 	apflora_beob.adb_eigenschaften.Artname AS Art,
   CAST(CONCAT(apflora.pop.PopNr,'/', apflora.tpop.TPopNr) AS CHAR) AS Label,
   CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName, '<br /> Teilpopulation: ', apflora.tpop.TPopNr, ' ', apflora.tpop.TPopGemeinde, ' ', apflora.tpop.TPopFlurname),225) AS CHAR) AS Inhalte,
-	(2.6779094+(4.728982*((apflora.tpop.TPopXKoord-600000)/1000000))+(0.791484*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))+(0.1306*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0436*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)))*100/36 AS Laengengrad,
-	(16.9023892+(3.238272*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.270978*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000))-(0.002528*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0447*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.014*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)))*100/36 AS Breitengrad,
+	(2.6779094 + (4.728982 * ((apflora.tpop.TPopXKoord-600000) / 1000000)) + (0.791484 * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000)) + (0.1306 * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000))-(0.0436 * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopXKoord-600000) / 1000000))) * 100 / 36 AS Laengengrad,
+	(16.9023892 + (3.238272 * ((apflora.tpop.TPopYKoord-200000) / 1000000))-(0.270978 * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopXKoord-600000) / 1000000))-(0.002528 * ((apflora.tpop.TPopYKoord-200000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000))-(0.0447 * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000))-(0.014 * ((apflora.tpop.TPopYKoord-200000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000))) * 100 / 36 AS Breitengrad,
 	CAST(CONCAT('http://apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.tpop.TPopId) AS CHAR) AS URL
 FROM
 	(apflora_beob.adb_eigenschaften
@@ -3776,8 +3784,8 @@ SELECT
   apflora_beob.adb_eigenschaften.Artname AS Art,
 	CAST(CONCAT(apflora_beob.adb_eigenschaften.Artname, ' ', apflora.pop.PopNr,'/', apflora.tpop.TPopNr) AS CHAR) AS Label,
 	CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName, '<br /> Teilpopulation: ', apflora.tpop.TPopNr, ' ', apflora.tpop.TPopGemeinde, ' ', apflora.tpop.TPopFlurname),225) AS CHAR) AS Inhalte,
-	(2.6779094+(4.728982*((apflora.tpop.TPopXKoord-600000)/1000000))+(0.791484*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))+(0.1306*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0436*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)))*100/36 AS Laengengrad,
-	(16.9023892+(3.238272*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.270978*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000))-(0.002528*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.0447*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopXKoord-600000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000))-(0.014*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)*((apflora.tpop.TPopYKoord-200000)/1000000)))*100/36 AS Breitengrad,
+	(2.6779094 + (4.728982 * ((apflora.tpop.TPopXKoord-600000) / 1000000)) + (0.791484 * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000)) + (0.1306 * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000))-(0.0436 * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopXKoord-600000) / 1000000))) * 100 / 36 AS Laengengrad,
+	(16.9023892 + (3.238272 * ((apflora.tpop.TPopYKoord-200000) / 1000000))-(0.270978 * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopXKoord-600000) / 1000000))-(0.002528 * ((apflora.tpop.TPopYKoord-200000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000))-(0.0447 * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopXKoord-600000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000))-(0.014 * ((apflora.tpop.TPopYKoord-200000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000) * ((apflora.tpop.TPopYKoord-200000) / 1000000))) * 100 / 36 AS Breitengrad,
 	CAST(CONCAT('http://www.apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.tpop.TPopId) AS CHAR) AS URL
 FROM
 	(apflora_beob.adb_eigenschaften
@@ -3801,8 +3809,8 @@ SELECT
 	apflora_beob.adb_eigenschaften.Artname AS Art,
 	apflora.pop.PopNr AS Label,
 	CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName),225) AS CHAR) AS Inhalte,
-	(2.6779094+(4.728982*((apflora.pop.PopXKoord-600000)/1000000))+(0.791484*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))+(0.1306*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))-(0.0436*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000)))*100/36 AS Laengengrad,
-	(16.9023892+(3.238272*((apflora.pop.PopYKoord-200000)/1000000))-(0.270978*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000))-(0.002528*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))-(0.0447*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))-(0.014*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000)))*100/36 AS Breitengrad,
+	(2.6779094 + (4.728982 * ((apflora.pop.PopXKoord-600000) / 1000000)) + (0.791484 * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000)) + (0.1306 * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000))-(0.0436 * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopXKoord-600000) / 1000000))) * 100 / 36 AS Laengengrad,
+	(16.9023892 + (3.238272 * ((apflora.pop.PopYKoord-200000) / 1000000))-(0.270978 * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopXKoord-600000) / 1000000))-(0.002528 * ((apflora.pop.PopYKoord-200000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000))-(0.0447 * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000))-(0.014 * ((apflora.pop.PopYKoord-200000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000))) * 100 / 36 AS Breitengrad,
 	CAST(CONCAT('http://www.apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId) AS CHAR) AS URL
 FROM
 	(apflora_beob.adb_eigenschaften
@@ -3821,8 +3829,8 @@ SELECT
 	apflora_beob.adb_eigenschaften.Artname AS Art,
 	CAST(CONCAT(apflora_beob.adb_eigenschaften.Artname, ' ', apflora.pop.PopNr) AS CHAR) AS Label,
 	CAST(LEFT(CONCAT('Population: ', apflora.pop.PopNr, ' ', apflora.pop.PopName),225) AS CHAR) AS Inhalte,
-	(2.6779094+(4.728982*((apflora.pop.PopXKoord-600000)/1000000))+(0.791484*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))+(0.1306*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))-(0.0436*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000)))*100/36 AS Laengengrad,
-	(16.9023892+(3.238272*((apflora.pop.PopYKoord-200000)/1000000))-(0.270978*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000))-(0.002528*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))-(0.0447*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopXKoord-600000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000))-(0.014*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000)*((apflora.pop.PopYKoord-200000)/1000000)))*100/36 AS Breitengrad,
+	(2.6779094 + (4.728982 * ((apflora.pop.PopXKoord-600000) / 1000000)) + (0.791484 * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000)) + (0.1306 * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000))-(0.0436 * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopXKoord-600000) / 1000000))) * 100 / 36 AS Laengengrad,
+	(16.9023892 + (3.238272 * ((apflora.pop.PopYKoord-200000) / 1000000))-(0.270978 * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopXKoord-600000) / 1000000))-(0.002528 * ((apflora.pop.PopYKoord-200000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000))-(0.0447 * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopXKoord-600000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000))-(0.014 * ((apflora.pop.PopYKoord-200000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000) * ((apflora.pop.PopYKoord-200000) / 1000000))) * 100 / 36 AS Breitengrad,
 	CAST(CONCAT('http://www.apflora.ch/index.html?ap=', apflora.ap.ApArtId, '&pop=', apflora.pop.PopId) AS CHAR) AS URL
 FROM
 	(apflora_beob.adb_eigenschaften
@@ -4171,7 +4179,7 @@ GROUP BY
 	apflora.pop.PopNr,
 	apflora.tpop.TPopNr
 HAVING
-	Count(apflora.tpop.TPopId)>1
+	Count(apflora.tpop.TPopId) > 1
 ORDER BY
 	apflora_beob.adb_eigenschaften.Artname,
 	apflora.pop.PopNr,
