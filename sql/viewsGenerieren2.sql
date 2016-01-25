@@ -1342,7 +1342,10 @@ SELECT
 	apflora.tpop.PopId,
 	apflora_views.v_tpop_berjahrundmassnjahr.Jahr
 FROM
-	apflora_views.v_tpop_berjahrundmassnjahr INNER JOIN apflora.tpop ON apflora_views.v_tpop_berjahrundmassnjahr.TPopId = apflora.tpop.TPopId
+	apflora_views.v_tpop_berjahrundmassnjahr
+	INNER JOIN
+		apflora.tpop
+		ON apflora_views.v_tpop_berjahrundmassnjahr.TPopId = apflora.tpop.TPopId
 GROUP BY
 	apflora.tpop.PopId,
 	apflora_views.v_tpop_berjahrundmassnjahr.Jahr;
@@ -1358,7 +1361,15 @@ SELECT
 	apflora.tpopber.MutWann AS "TPopBer  MutWann",
 	apflora.tpopber.MutWer AS "TPopBer MutWer"
 FROM
-	apflora_views.v_tpopber_letzteid INNER JOIN apflora.tpopber ON (apflora_views.v_tpopber_letzteid.MaxTPopBerId = apflora.tpopber.TPopBerId) AND (apflora_views.v_tpopber_letzteid.TPopId = apflora.tpopber.TPopId) LEFT JOIN apflora.pop_entwicklung_werte ON apflora.tpopber.TPopBerEntwicklung = pop_entwicklung_werte.EntwicklungId;
+	apflora_views.v_tpopber_letzteid
+	INNER JOIN
+		apflora.tpopber
+		ON
+			(apflora_views.v_tpopber_letzteid.MaxTPopBerId = apflora.tpopber.TPopBerId)
+			AND (apflora_views.v_tpopber_letzteid.TPopId = apflora.tpopber.TPopId)
+	LEFT JOIN
+		apflora.pop_entwicklung_werte
+		ON apflora.tpopber.TPopBerEntwicklung = pop_entwicklung_werte.EntwicklungId;
 
 #funktioniert nicht, wenn letzeKontrolle als Unterabfrage eingebunden wird. Grund: Unterabfragen in der FROM-Klausel duerfen keine korrellierten Unterabfragen sein
 CREATE OR REPLACE VIEW v_tpop_anzkontrinklletzter AS
@@ -1456,7 +1467,13 @@ SELECT
 	apflora_views.v_tpopkontr.Zaehleinheiten,
 	apflora_views.v_tpopkontr.Methoden
 FROM
-	(apflora_views.v_tpop_letzteKontrId LEFT JOIN apflora_views.v_tpopkontr ON apflora_views.v_tpop_letzteKontrId.MaxTPopKontrId = apflora_views.v_tpopkontr.TPopKontrId) INNER JOIN apflora_views.v_tpop ON apflora_views.v_tpop_letzteKontrId.TPopId = apflora_views.v_tpop.TPopId;
+	(apflora_views.v_tpop_letzteKontrId
+	LEFT JOIN
+		apflora_views.v_tpopkontr
+		ON apflora_views.v_tpop_letzteKontrId.MaxTPopKontrId = apflora_views.v_tpopkontr.TPopKontrId)
+	INNER JOIN
+		apflora_views.v_tpop
+		ON apflora_views.v_tpop_letzteKontrId.TPopId = apflora_views.v_tpop.TPopId;
 
 CREATE OR REPLACE VIEW v_qk_tpop_mitstatusaktuellundtpopbererloschen AS 
 SELECT DISTINCT
@@ -1486,7 +1503,11 @@ WHERE
       apflora.tpopber.TPopId
     FROM
       apflora.tpopber
-      INNER JOIN apflora_views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr ON apflora.tpopber.TPopId = apflora_views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr.TPopId AND apflora.tpopber.TPopBerJahr = apflora_views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr.MaxTPopBerJahr
+      INNER JOIN
+      	apflora_views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr
+      	ON
+      		apflora.tpopber.TPopId = apflora_views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr.TPopId
+      		AND apflora.tpopber.TPopBerJahr = apflora_views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr.MaxTPopBerJahr
     WHERE
       apflora.tpopber.TPopBerEntwicklung = 8
   )
@@ -1514,19 +1535,38 @@ SELECT
 		'</a>'
 	) AS link
 FROM
-	apflora.ap INNER JOIN (apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) ON apflora.ap.ApArtId = apflora.pop.ApArtId
+	apflora.ap
+	INNER JOIN
+		(apflora.pop
+		INNER JOIN
+			apflora.tpop
+			ON apflora.pop.PopId = apflora.tpop.PopId)
+		ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE
 	apflora.tpop.TPopHerkunft IN (101, 202, 211)
 	AND apflora.tpop.TPopApBerichtRelevant = 1
 	AND apflora.tpop.TPopId NOT IN (
     SELECT DISTINCT
-      apflora.tpopkontr.TPopId FROM
-	apflora.tpopkontr INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
+      apflora.tpopkontr.TPopId
+    FROM
+			apflora.tpopkontr
+			INNER JOIN
+				apflora.tpopkontrzaehl
+				ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
     WHERE
       apflora.tpopkontr.TPopKontrTyp NOT IN ('Zwischenziel', 'Ziel')
-      AND apflora.tpopkontrzaehl.Anzahl > 0)
-      AND apflora.tpop.TPopId IN (SELECT apflora.beobzuordnung.TPopId FROM
-	apflora.beobzuordnung INNER JOIN apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr ON apflora.beobzuordnung.TPopId = apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr.TPopId WHERE apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr.MaxJahr < 1950)
+      AND apflora.tpopkontrzaehl.Anzahl > 0
+  )
+  AND apflora.tpop.TPopId IN (
+  	SELECT apflora.beobzuordnung.TPopId
+  	FROM
+			apflora.beobzuordnung
+			INNER JOIN
+				apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr
+				ON apflora.beobzuordnung.TPopId = apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr.TPopId
+		WHERE
+			apflora_views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr.MaxJahr < 1950
+	)
 ORDER BY
 	apflora.ap.ApArtId,
 	apflora.pop.PopNr,
