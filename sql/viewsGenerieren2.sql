@@ -166,7 +166,10 @@ SELECT
 		""
 	) AS FnsKefArt2,
 	IF(
-		Round((apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,0) = (apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,"Ja","") AS FnsKefKontrJahr2
+		Round((apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,0) = (apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,
+		"Ja",
+		""
+	) AS FnsKefKontrJahr2
 FROM
 	(apflora_beob.adb_eigenschaften INNER JOIN ((apflora_views.v_ap_anzmassnbisjahr AS vApAnzMassnBisJahr_1 INNER JOIN apflora.ap ON vApAnzMassnBisJahr_1.ApArtId = apflora.ap.ApArtId) INNER JOIN apflora_views.v_ap_apberrelevant ON apflora.ap.ApArtId = apflora_views.v_ap_apberrelevant.ApArtId) ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId) INNER JOIN (apflora.apber INNER JOIN apflora._variable ON apflora.apber.JBerJahr = apflora._variable.JBerJahr) ON (apflora._variable.JBerJahr = vApAnzMassnBisJahr_1.TPopMassnJahr) AND (apflora.ap.ApArtId = apflora.apber.ApArtId)
 WHERE
