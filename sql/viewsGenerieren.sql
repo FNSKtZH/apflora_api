@@ -5038,7 +5038,9 @@ UNION DISTINCT SELECT
 	apflora.tpopmassnber.TPopMassnBerJahr AS "Jahr"
 FROM
 	apflora.tpop
-	INNER JOIN apflora.tpopmassnber ON apflora.tpop.TPopId = apflora.tpopmassnber.TPopId
+	INNER JOIN
+		apflora.tpopmassnber
+		ON apflora.tpop.TPopId = apflora.tpopmassnber.TPopId
 UNION DISTINCT SELECT
 	apflora.tpop.TPopId,
 	apflora.tpopkontr.TPopKontrJahr AS "Jahr"
@@ -5058,9 +5060,15 @@ SELECT
 	"tblBeobZuordnung_Infospezies" AS Tabelle
 FROM
 	((apflora.ap
-	INNER JOIN apflora_beob.adb_eigenschaften ON apflora.ap.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId)
-	INNER JOIN apflora_beob.beob_infospezies ON apflora.ap.ApArtId = apflora_beob.beob_infospezies.NO_ISFS)
-	INNER JOIN apflora.beobzuordnung ON apflora_beob.beob_infospezies.NO_NOTE = apflora.beobzuordnung.NO_NOTE
+	INNER JOIN
+		apflora_beob.adb_eigenschaften
+		ON apflora.ap.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId)
+	INNER JOIN
+		apflora_beob.beob_infospezies
+		ON apflora.ap.ApArtId = apflora_beob.beob_infospezies.NO_ISFS)
+	INNER JOIN
+		apflora.beobzuordnung
+		ON apflora_beob.beob_infospezies.NO_NOTE = apflora.beobzuordnung.NO_NOTE
 WHERE
 	apflora.ap.ApArtId > 150
 GROUP BY
@@ -5079,12 +5087,15 @@ SELECT
 	COLUMNS.COLUMN_COMMENT AS "Feld: Bemerkungen"
 FROM
 	information_schema.COLUMNS
-	INNER JOIN information_schema.TABLES ON information_schema.TABLES.TABLE_NAME = information_schema.COLUMNS.TABLE_NAME
+	INNER JOIN
+		information_schema.TABLES
+		ON information_schema.TABLES.TABLE_NAME = information_schema.COLUMNS.TABLE_NAME
 WHERE
-	information_schema.COLUMNS.TABLE_NAME IN (SELECT
-	TABLE_NAME FROM
-	information_schema.TABLES WHERE
-	TABLE_SCHEMA='apflora');
+	information_schema.COLUMNS.TABLE_NAME IN (
+		SELECT TABLE_NAME
+		FROM information_schema.TABLES
+		WHERE TABLE_SCHEMA = 'apflora'
+	);
 
 CREATE OR REPLACE VIEW v_apbera1lpop AS 
 SELECT
@@ -5092,7 +5103,9 @@ SELECT
 	apflora.pop.PopId
 FROM
 	apflora.pop
-	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
+	INNER JOIN
+		apflora.tpop
+		ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
 	apflora.tpop.TPopApBerichtRelevant = 1
 	AND apflora.pop.PopHerkunft NOT IN (300, 201)
@@ -5106,7 +5119,9 @@ SELECT
 	apflora.pop.PopId
 FROM
 	apflora.pop
-	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
+	INNER JOIN
+		apflora.tpop
+		ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
 	apflora.pop.PopHerkunft = 100
 	AND apflora.tpop.TPopApBerichtRelevant = 1
@@ -5116,27 +5131,32 @@ GROUP BY
 
 CREATE OR REPLACE VIEW v_tpop_ohneapberichtrelevant AS
 SELECT
-	apflora_beob.adb_eigenschaften.Artname,
-	apflora.pop.PopNr,
-	apflora.pop.PopName,
-	apflora.tpop.TPopId,
-	apflora.tpop.TPopNr,
-	apflora.tpop.TPopGemeinde,
-	apflora.tpop.TPopFlurname,
-	apflora.tpop.TPopApBerichtRelevant
+  apflora_beob.adb_eigenschaften.Artname,
+  apflora.pop.PopNr,
+  apflora.pop.PopName,
+  apflora.tpop.TPopId,
+  apflora.tpop.TPopNr,
+  apflora.tpop.TPopGemeinde,
+  apflora.tpop.TPopFlurname,
+  apflora.tpop.TPopApBerichtRelevant
 FROM
-	apflora_beob.adb_eigenschaften
-	INNER JOIN ((apflora.tpop
-		INNER JOIN apflora.pop ON apflora.tpop.PopId = apflora.pop.PopId)
-		INNER JOIN apflora.ap ON apflora.pop.ApArtId = apflora.ap.ApArtId)
-	ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId
+  apflora_beob.adb_eigenschaften
+  INNER JOIN
+    (apflora.ap
+    INNER JOIN
+      (apflora.pop
+      INNER JOIN
+        apflora.tpop
+        ON apflora.tpop.PopId = apflora.pop.PopId)
+      ON apflora.pop.ApArtId = apflora.ap.ApArtId)
+    ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId
 WHERE
-	apflora.tpop.TPopApBerichtRelevant IS NULL
-	AND apflora.ap.ApArtId > 150
+  apflora.tpop.TPopApBerichtRelevant IS NULL
+  AND apflora.ap.ApArtId > 150
 ORDER BY
-	apflora_beob.adb_eigenschaften.Artname,
-	apflora.pop.PopNr,
-	apflora.tpop.TPopNr;
+  apflora_beob.adb_eigenschaften.Artname,
+  apflora.pop.PopNr,
+  apflora.tpop.TPopNr;
 
 CREATE OR REPLACE VIEW v_tpop_popnrtpopnrmehrdeutig AS
 SELECT
