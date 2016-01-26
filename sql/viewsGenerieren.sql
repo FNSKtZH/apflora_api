@@ -7209,7 +7209,7 @@ WHERE
 		SELECT DISTINCT
 			apflora.tpop.PopId
 		FROM
-	apflora.tpop
+			apflora.tpop
 		WHERE
 			apflora.tpop.TPopHerkunft = 101
 	)
@@ -7240,8 +7240,7 @@ WHERE
 	AND apflora.pop.PopId IN (
 		SELECT DISTINCT
 			apflora.tpop.PopId
-		FROM
-	apflora.tpop
+		FROM apflora.tpop
 		WHERE
 			apflora.tpop.TPopHerkunft IN (100, 200, 210)
 	)
@@ -7371,7 +7370,9 @@ SELECT DISTINCT
 	) AS link
 FROM
 	apflora.pop
-	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
+	INNER JOIN
+		apflora.tpop
+		ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
 	apflora.tpop.TPopHerkunft = 201
 	AND apflora.tpop.TPopId IN (
@@ -7379,7 +7380,9 @@ WHERE
 			apflora.tpopkontr.TPopId
 		FROM
 			apflora.tpopkontr
-		INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
+			INNER JOIN
+				apflora.tpopkontrzaehl
+				ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 		WHERE
 			apflora.tpopkontr.TPopKontrTyp NOT IN ('Zwischenziel', 'Ziel')
 			AND apflora.tpopkontrzaehl.Anzahl > 0
@@ -7417,7 +7420,9 @@ SELECT DISTINCT
 	) AS link
 FROM
 	apflora.pop
-	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
+	INNER JOIN
+		apflora.tpop
+		ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
 	apflora.tpop.TPopHerkunft = 300
 	AND apflora.tpop.TPopId IN (
@@ -7425,7 +7430,9 @@ WHERE
 			apflora.tpopkontr.TPopId
 		FROM
 			apflora.tpopkontr
-		INNER JOIN apflora.tpopkontrzaehl ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
+			INNER JOIN
+				apflora.tpopkontrzaehl
+				ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 		WHERE
 			apflora.tpopkontr.TPopKontrTyp NOT IN ('Zwischenziel', 'Ziel')
 			AND apflora.tpopkontrzaehl.Anzahl > 0
@@ -7463,7 +7470,9 @@ SELECT DISTINCT
 	) AS link
 FROM
 	apflora.pop
-	INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
+	INNER JOIN
+		apflora.tpop
+		ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
 	apflora.tpop.TPopHerkunft = 300
 	AND apflora.tpop.TPopId IN (
@@ -7493,9 +7502,16 @@ GROUP BY
 CREATE OR REPLACE VIEW v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr AS 
 SELECT
 	apflora.beobzuordnung.TPopId,
-	MAX(CONVERT(LEFT(apflora_beob.beob_bereitgestellt.Datum, 4), SIGNED)) AS 'MaxJahr'
+	MAX(
+		CONVERT(
+			LEFT(apflora_beob.beob_bereitgestellt.Datum, 4),
+			SIGNED
+		)
+	) AS 'MaxJahr'
 FROM
 	apflora.beobzuordnung
-	INNER JOIN apflora_beob.beob_bereitgestellt ON apflora.beobzuordnung.NO_NOTE = apflora_beob.beob_bereitgestellt.NO_NOTE
+	INNER JOIN
+		apflora_beob.beob_bereitgestellt
+		ON apflora.beobzuordnung.NO_NOTE = apflora_beob.beob_bereitgestellt.NO_NOTE
 GROUP BY
 	apflora.beobzuordnung.TPopId

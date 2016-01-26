@@ -56,37 +56,52 @@ ORDER BY
 	apflora_views.v_ap_massnjahre.ApArtId,
 	apflora_views.v_ap_massnjahre.TPopMassnJahr;
 
-CREATE OR REPLACE VIEW v_ap_apberundmassn AS
 SELECT
-	apflora.ap.ApArtId,
-	apflora_beob.adb_eigenschaften.Artname AS Art,
-	apflora.ap_bearbstand_werte.DomainTxt AS "AP Status",
-	apflora.ap.ApJahr AS "AP Start im Jahr",
-	apflora.ap_umsetzung_werte.DomainTxt AS "AP Stand Umsetzung",
-	apflora.adresse.AdrName AS "AP Verantwortlich",
-	apflora.ap.ApArtwert AS Artwert,
-	apflora_views.v_ap_anzmassnprojahr.TPopMassnJahr AS Jahr,
-	apflora_views.v_ap_anzmassnprojahr.AnzahlMassnahmen AS "Anzahl Massnahmen",
-	apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen AS "Anzahl Massnahmen bisher",
-	IF(
-		apflora.apber.JBerJahr > 0,
-		"Ja",
-		"Nein"
-	) AS "Bericht erstellt"
+  apflora.ap.ApArtId,
+  apflora_beob.adb_eigenschaften.Artname AS Art,
+  apflora.ap_bearbstand_werte.DomainTxt AS "AP Status",
+  apflora.ap.ApJahr AS "AP Start im Jahr",
+  apflora.ap_umsetzung_werte.DomainTxt AS "AP Stand Umsetzung",
+  apflora.adresse.AdrName AS "AP Verantwortlich",
+  apflora.ap.ApArtwert AS Artwert,
+  apflora_views.v_ap_anzmassnprojahr.TPopMassnJahr AS Jahr,
+  apflora_views.v_ap_anzmassnprojahr.AnzahlMassnahmen AS "Anzahl Massnahmen",
+  apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen AS "Anzahl Massnahmen bisher",
+  IF(
+    apflora.apber.JBerJahr > 0,
+    "Ja",
+    "Nein"
+  ) AS "Bericht erstellt"
 FROM
-	((((((apflora_beob.adb_eigenschaften
-		INNER JOIN
-			apflora.ap
-			ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
-		LEFT JOIN apflora.ap_bearbstand_werte ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
-		LEFT JOIN apflora.ap_umsetzung_werte ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
-		LEFT JOIN apflora.adresse ON apflora.ap.ApBearb = apflora.adresse.AdrId)
-		INNER JOIN apflora_views.v_ap_anzmassnprojahr ON apflora.ap.ApArtId = apflora_views.v_ap_anzmassnprojahr.ApArtId)
-		INNER JOIN apflora_views.v_ap_anzmassnbisjahr ON (apflora_views.v_ap_anzmassnprojahr.TPopMassnJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr) AND (apflora_views.v_ap_anzmassnprojahr.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId))
-		LEFT JOIN apflora.apber ON (apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr = apflora.apber.JBerJahr) AND (apflora_views.v_ap_anzmassnbisjahr.ApArtId = apflora.apber.ApArtId)
+  apflora_beob.adb_eigenschaften
+    INNER JOIN
+      ((((apflora.ap
+      LEFT JOIN
+        apflora.ap_bearbstand_werte
+        ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
+      LEFT JOIN
+        apflora.ap_umsetzung_werte
+        ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
+      LEFT JOIN
+        apflora.adresse
+        ON apflora.ap.ApBearb = apflora.adresse.AdrId)
+      INNER JOIN
+        (apflora_views.v_ap_anzmassnprojahr
+        INNER JOIN
+          (apflora_views.v_ap_anzmassnbisjahr
+          LEFT JOIN
+            apflora.apber
+            ON
+              (apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr = apflora.apber.JBerJahr)
+              AND (apflora_views.v_ap_anzmassnbisjahr.ApArtId = apflora.apber.ApArtId))
+          ON
+            (apflora_views.v_ap_anzmassnprojahr.TPopMassnJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr)
+            AND (apflora_views.v_ap_anzmassnprojahr.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId))
+        ON apflora.ap.ApArtId = apflora_views.v_ap_anzmassnprojahr.ApArtId)
+      ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId
 ORDER BY
-	apflora_beob.adb_eigenschaften.Artname,
-	apflora_views.v_ap_anzmassnprojahr.TPopMassnJahr;
+  apflora_beob.adb_eigenschaften.Artname,
+  apflora_views.v_ap_anzmassnprojahr.TPopMassnJahr;
 
 CREATE OR REPLACE VIEW v_tpop_letztermassnber AS
 SELECT
