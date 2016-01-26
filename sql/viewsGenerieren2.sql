@@ -56,6 +56,7 @@ ORDER BY
 	apflora_views.v_ap_massnjahre.ApArtId,
 	apflora_views.v_ap_massnjahre.TPopMassnJahr;
 
+CREATE OR REPLACE VIEW v_ap_apberundmassn AS
 SELECT
   apflora.ap.ApArtId,
   apflora_beob.adb_eigenschaften.Artname AS Art,
