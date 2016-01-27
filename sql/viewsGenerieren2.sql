@@ -726,59 +726,29 @@ FROM
 
 CREATE OR REPLACE VIEW v_apber_uebnb AS 
 SELECT
-  apflora.ap.ApArtId,
+ apflora.ap.ApArtId,
   apflora_beob.adb_eigenschaften.Artname,
   apflora_views.v_fnskef.FnsKefArt2,
   apflora_views.v_fnskef.FnsKefKontrJahr2
 FROM
-  apflora._variable
-  INNER JOIN
-    ((((apflora_beob.adb_eigenschaften
+    apflora_beob.adb_eigenschaften
     INNER JOIN
-      apflora.ap
-      ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
-    LEFT JOIN
-      apflora_views.v_fnskef
-      ON apflora.ap.ApArtId = apflora_views.v_fnskef.TaxonomieId)
-    INNER JOIN
-      apflora_views.v_apber_uebnb0
-      ON apflora.ap.ApArtId = apflora_views.v_apber_uebnb0.ApArtId)
-    INNER JOIN
-      apflora_views.v_ap_anzmassnbisjahr
-      ON apflora.ap.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId)
-    ON apflora._variable.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
+      (apflora.ap
+      LEFT JOIN
+        apflora_views.v_fnskef
+        ON apflora.ap.ApArtId = apflora_views.v_fnskef.TaxonomieId)
+      ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId
 WHERE
   apflora.ap.ApStatus BETWEEN 1 AND 3
-  AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen > 0
+  AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebse_apid)
+  AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebe_apid)
+  AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebme_apid)
+  AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebwe_apid)
+  AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebne_apid)
+  AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebun_apid)
+  AND apflora.ap.ApArtId IN (SELECT * FROM apflora_views.v_apber_uebma_apid)
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname;
-
-# ALTERNATIVE METHODE
-# CREATE OR REPLACE VIEW v_apber_uebnb AS 
-# SELECT
-#  apflora.ap.ApArtId,
-#   apflora_beob.adb_eigenschaften.Artname,
-#   apflora_views.v_fnskef.FnsKefArt2,
-#   apflora_views.v_fnskef.FnsKefKontrJahr2
-# FROM
-#     apflora_beob.adb_eigenschaften
-#     INNER JOIN
-#       (apflora.ap
-#       LEFT JOIN
-#         apflora_views.v_fnskef
-#         ON apflora.ap.ApArtId = apflora_views.v_fnskef.TaxonomieId)
-#       ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId
-# WHERE
-#   apflora.ap.ApStatus BETWEEN 1 AND 3
-#   AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebse_apid)
-#   AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebe_apid)
-#   AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebme_apid)
-#   AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebwe_apid)
-#   AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebne_apid)
-#   AND apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebun_apid)
-#   # AND apflora.ap.ApArtId IN (SELECT * FROM apflora_views.v_apber_uebma_apid)
-# ORDER BY
-#   apflora_beob.adb_eigenschaften.Artname;
 
 CREATE OR REPLACE VIEW v_apber_uet01 AS 
 SELECT
