@@ -560,7 +560,7 @@ FROM
       ON apflora.ap.ApArtId = apflora_views.v_ap_anzmassnbisjahr.ApArtId)
     ON apflora._variable.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
 WHERE
-  apflora.ap.ApStatus < 4
+  apflora.ap.ApStatus BETWEEN 1 AND 4
   # AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen > 0
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname;
@@ -1783,3 +1783,84 @@ ORDER BY
   apflora.pop.ApArtId,
   apflora.pop.PopNr,
   apflora.tpop.TPopNr;
+
+CREATE OR REPLACE VIEW v_exportevab_beob AS
+SELECT
+  CONCAT('{', apflora.tpopkontr.ZeitGuid, '}') AS fkZeitpunkt,
+  CONCAT('{', apflora.tpopkontr.TPopKontrGuid, '}') AS idBeobachtung,
+  IF(
+      apflora.adresse.EvabIdPerson IS NOT NULL,
+      apflora.adresse.EvabIdPerson,
+      '{A1146AE4-4E03-4032-8AA8-BC46BA02F468}'
+    ) AS fkAutor,
+  apflora.ap.ApArtId AS fkArt,
+  18 AS fkArtgruppe,
+  1 AS fkAA1,
+  tpopHerkunft.ZdsfHerkunft AS fkAAINTRODUIT,
+  IF(
+      apflora_views.v_tpopkontr_maxanzahl.Anzahl = 0,
+      2,
+      1
+    ) AS fkAAPRESENCE,
+  apflora.tpopkontr.TPopKontrGefaehrdung AS MENACES,
+  LEFT(apflora.tpopkontr.TPopKontrVitalitaet, 200) AS VITALITE_PLANTE,
+  LEFT(apflora.tpop.TPopBeschr, 244) AS STATION,
+  LEFT(
+    CONCAT(
+      'Anzahlen: ',
+      GROUP_CONCAT(apflora.tpopkontrzaehl.Anzahl SEPARATOR ', '),
+      ', Zaehleinheiten: ',
+      GROUP_CONCAT(apflora.tpopkontrzaehl_einheit_werte.ZaehleinheitTxt SEPARATOR ', '),
+      ', Methoden: ',
+      GROUP_CONCAT(apflora.tpopkontrzaehl_methode_werte.BeurteilTxt SEPARATOR ', ')
+      ), 160
+    ) AS ABONDANCE,
+  'C' AS EXPERTISE_INTRODUIT,
+  IF(
+    tblAdresse_2.EvabIdPerson IS NOT NULL,
+    tblAdresse_2.EvabIdPerson,
+    '{7C71B8AF-DF3E-4844-A83B-55735F80B993}'
+  ) AS EXPERTISE_INTRODUITE_NOM
+FROM
+  (apflora.ap
+  LEFT JOIN
+    apflora.adresse AS tblAdresse_2
+    ON apflora.ap.ApBearb = tblAdresse_2.AdrId)
+  INNER JOIN
+    (apflora.pop
+    INNER JOIN
+      ((apflora.tpop
+      LEFT JOIN
+        apflora.pop_status_werte AS tpopHerkunft
+        ON apflora.tpop.TPopHerkunft = tpopHerkunft.HerkunftId)
+      INNER JOIN
+        (((apflora.tpopkontr
+        LEFT JOIN
+          apflora.adresse
+          ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
+        INNER JOIN
+          apflora_views.v_tpopkontr_maxanzahl
+          ON apflora_views.v_tpopkontr_maxanzahl.TPopKontrId = apflora.tpopkontr.TPopKontrId)
+        LEFT JOIN
+          ((apflora.tpopkontrzaehl
+          LEFT JOIN
+            apflora.tpopkontrzaehl_einheit_werte
+            ON apflora.tpopkontrzaehl.Zaehleinheit = apflora.tpopkontrzaehl_einheit_werte.ZaehleinheitCode)
+          LEFT JOIN
+            apflora.tpopkontrzaehl_methode_werte
+            ON apflora.tpopkontrzaehl.Methode = apflora.tpopkontrzaehl_methode_werte.BeurteilCode)
+          ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId)
+        ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
+      ON apflora.pop.PopId = apflora.tpop.PopId)
+    ON apflora.ap.ApArtId = apflora.pop.ApArtId
+WHERE
+  apflora.ap.ApArtId > 150
+  AND apflora.tpop.TPopXKoord IS NOT NULL
+  AND apflora.tpop.TPopYKoord IS NOT NULL
+  AND apflora.tpopkontr.TPopKontrTyp IN ("Zwischenbeurteilung", "Freiwilligen-Erfolgskontrolle")
+  AND apflora.tpop.TPopHerkunft <> 201
+  AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
+  AND apflora.tpop.TPopBekanntSeit IS NOT NULL
+  AND (apflora.tpopkontr.TPopKontrJahr - apflora.tpop.TPopBekanntSeit) > 5
+GROUP BY
+  apflora.tpopkontr.TPopKontrId;

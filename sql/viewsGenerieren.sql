@@ -4140,82 +4140,21 @@ FROM
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname;
 
-CREATE OR REPLACE VIEW v_exportevab_beob AS
+CREATE OR REPLACE VIEW v_tpopkontr_maxanzahl AS
 SELECT
-  CONCAT('{', apflora.tpopkontr.ZeitGuid, '}') AS fkZeitpunkt,
-  CONCAT('{', apflora.tpopkontr.TPopKontrGuid, '}') AS idBeobachtung,
-  IF(
-      apflora.adresse.EvabIdPerson IS NOT NULL,
-      apflora.adresse.EvabIdPerson,
-      '{A1146AE4-4E03-4032-8AA8-BC46BA02F468}'
-    ) AS fkAutor,
-  apflora.ap.ApArtId AS fkArt,
-  18 AS fkArtgruppe,
-  1 AS fkAA1,
-  tpopHerkunft.ZdsfHerkunft AS fkAAINTRODUIT,
-  IF(
-      apflora.tpopkontr.TPopKontrEntwicklung = 8,
-      2,
-      1
-    ) AS fkAAPRESENCE,
-  apflora.tpopkontr.TPopKontrGefaehrdung AS MENACES,
-  LEFT(apflora.tpopkontr.TPopKontrVitalitaet, 200) AS VITALITE_PLANTE,
-  LEFT(apflora.tpop.TPopBeschr, 244) AS STATION,
-  LEFT(
-    CONCAT(
-      'Anzahlen: ',
-      GROUP_CONCAT(apflora.tpopkontrzaehl.Anzahl SEPARATOR ', '),
-      ', Zaehleinheiten: ',
-      GROUP_CONCAT(apflora.tpopkontrzaehl_einheit_werte.ZaehleinheitTxt SEPARATOR ', '),
-      ', Methoden: ',
-      GROUP_CONCAT(apflora.tpopkontrzaehl_methode_werte.BeurteilTxt SEPARATOR ', ')
-      ), 160
-    ) AS ABONDANCE,
-  'C' AS EXPERTISE_INTRODUIT,
-  IF(
-    tblAdresse_2.EvabIdPerson IS NOT NULL,
-    tblAdresse_2.EvabIdPerson, apflora.adresse.EvabIdPerson
-  ) AS EXPERTISE_INTRODUITE_NOM
+	apflora.tpopkontr.TPopKontrId,
+	MAX(apflora.tpopkontrzaehl.Anzahl) AS Anzahl
 FROM
-  (apflora.ap
-  LEFT JOIN
-    apflora.adresse AS tblAdresse_2
-    ON apflora.ap.ApBearb = tblAdresse_2.AdrId)
-  INNER JOIN
-    (apflora.pop
-    INNER JOIN
-      ((apflora.tpop
-      LEFT JOIN
-        apflora.pop_status_werte AS tpopHerkunft
-        ON apflora.tpop.TPopHerkunft = tpopHerkunft.HerkunftId)
-      INNER JOIN
-        ((apflora.tpopkontr
-        LEFT JOIN
-          apflora.adresse
-          ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
-        LEFT JOIN
-          ((apflora.tpopkontrzaehl
-          LEFT JOIN
-            apflora.tpopkontrzaehl_einheit_werte
-            ON apflora.tpopkontrzaehl.Zaehleinheit = apflora.tpopkontrzaehl_einheit_werte.ZaehleinheitCode)
-          LEFT JOIN
-            apflora.tpopkontrzaehl_methode_werte
-            ON apflora.tpopkontrzaehl.Methode = apflora.tpopkontrzaehl_methode_werte.BeurteilCode)
-          ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId)
-        ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
-      ON apflora.pop.PopId = apflora.tpop.PopId)
-    ON apflora.ap.ApArtId = apflora.pop.ApArtId
-WHERE
-  apflora.ap.ApArtId > 150
-  AND apflora.tpop.TPopXKoord IS NOT NULL
-  AND apflora.tpop.TPopYKoord IS NOT NULL
-  AND apflora.tpopkontr.TPopKontrTyp IN ("Zwischenbeurteilung", "Freiwilligen-Erfolgskontrolle")
-  AND apflora.tpop.TPopHerkunft <> 201
-  AND apflora.tpopkontr.TPopKontrJahr IS NOT NULL
-  AND apflora.tpop.TPopBekanntSeit IS NOT NULL
-  AND (apflora.tpopkontr.TPopKontrJahr - apflora.tpop.TPopBekanntSeit) > 5
+	apflora.tpopkontr
+	INNER JOIN
+		apflora.tpopkontrzaehl
+    ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 GROUP BY
-  apflora.tpopkontr.TPopKontrId;
+	apflora.tpopkontr.TPopKontrId
+ORDER BY
+	apflora.tpopkontr.TPopKontrId;
+
+# v_exportevab_beob is in viewsGenerieren2 because dependant on v_tpopkontr_maxanzahl
 
 CREATE OR REPLACE VIEW v_exportevab_zeit AS
 SELECT
@@ -4893,9 +4832,9 @@ SELECT
   apflora.tpopkontrzaehl_methode_werte.BeurteilTxt AS Methode,
   apflora.tpopkontrzaehl.Anzahl
 FROM
-  (apflora_beob.adb_eigenschaften
+  apflora_beob.adb_eigenschaften
   INNER JOIN
-    (((apflora.ap
+    ((((apflora.ap
     LEFT JOIN
       apflora.adresse AS tblAdresse_1
       ON apflora.ap.ApBearb = tblAdresse_1.AdrId)
@@ -4905,43 +4844,43 @@ FROM
     LEFT JOIN
       apflora.ap_umsetzung_werte
       ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
-    ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
-  INNER JOIN
-    ((apflora.pop
-    LEFT JOIN
-      apflora.pop_status_werte
-      ON apflora.pop.PopHerkunft = apflora.pop_status_werte.HerkunftId)
     INNER JOIN
-      ((apflora.tpop
+      ((apflora.pop
       LEFT JOIN
-        apflora.pop_status_werte AS tpopHerkunft
-        ON tpopHerkunft.HerkunftId = apflora.tpop.TPopHerkunft)
+        apflora.pop_status_werte
+        ON apflora.pop.PopHerkunft = apflora.pop_status_werte.HerkunftId)
       INNER JOIN
-        (((((apflora.tpopkontr
+        ((apflora.tpop
         LEFT JOIN
-          apflora.tpopkontr_idbiotuebereinst_werte
-          ON apflora.tpopkontr.TPopKontrIdealBiotopUebereinst = apflora.tpopkontr_idbiotuebereinst_werte.DomainCode)
-        LEFT JOIN
-          apflora.tpopkontr_typ_werte
-          ON apflora.tpopkontr.TPopKontrTyp = apflora.tpopkontr_typ_werte.DomainTxt)
-        LEFT JOIN
-          apflora.adresse
-          ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
-        LEFT JOIN
-          apflora.pop_entwicklung_werte
-          ON apflora.tpopkontr.TPopKontrEntwicklung = apflora.pop_entwicklung_werte.EntwicklungId)
+          apflora.pop_status_werte AS tpopHerkunft
+          ON tpopHerkunft.HerkunftId = apflora.tpop.TPopHerkunft)
         INNER JOIN
-          ((apflora.tpopkontrzaehl
+          (((((apflora.tpopkontr
           LEFT JOIN
-            apflora.tpopkontrzaehl_einheit_werte
-            ON apflora.tpopkontrzaehl.Zaehleinheit = apflora.tpopkontrzaehl_einheit_werte.ZaehleinheitCode)
+            apflora.tpopkontr_idbiotuebereinst_werte
+            ON apflora.tpopkontr.TPopKontrIdealBiotopUebereinst = apflora.tpopkontr_idbiotuebereinst_werte.DomainCode)
           LEFT JOIN
-            apflora.tpopkontrzaehl_methode_werte
-            ON apflora.tpopkontrzaehl.Methode = apflora.tpopkontrzaehl_methode_werte.BeurteilCode)
-          ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId)
-        ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
-      ON apflora.pop.PopId = apflora.tpop.PopId)
-    ON apflora.ap.ApArtId = apflora.pop.ApArtId
+            apflora.tpopkontr_typ_werte
+            ON apflora.tpopkontr.TPopKontrTyp = apflora.tpopkontr_typ_werte.DomainTxt)
+          LEFT JOIN
+            apflora.adresse
+            ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
+          LEFT JOIN
+            apflora.pop_entwicklung_werte
+            ON apflora.tpopkontr.TPopKontrEntwicklung = apflora.pop_entwicklung_werte.EntwicklungId)
+          INNER JOIN
+            ((apflora.tpopkontrzaehl
+            LEFT JOIN
+              apflora.tpopkontrzaehl_einheit_werte
+              ON apflora.tpopkontrzaehl.Zaehleinheit = apflora.tpopkontrzaehl_einheit_werte.ZaehleinheitCode)
+            LEFT JOIN
+              apflora.tpopkontrzaehl_methode_werte
+              ON apflora.tpopkontrzaehl.Methode = apflora.tpopkontrzaehl_methode_werte.BeurteilCode)
+            ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId)
+          ON apflora.tpop.TPopId = apflora.tpopkontr.TPopId)
+        ON apflora.pop.PopId = apflora.tpop.PopId)
+      ON apflora.ap.ApArtId = apflora.pop.ApArtId)
+    ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId
 WHERE
   apflora_beob.adb_eigenschaften.TaxonomieId > 150
 ORDER BY
