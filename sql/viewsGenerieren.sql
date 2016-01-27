@@ -647,22 +647,22 @@ SELECT
   apflora.pop.MutWann AS "Datensatz zuletzt geaendert",
   apflora.pop.MutWer AS "Datensatz zuletzt geaendert von"
 FROM
-  ((((apflora_beob.adb_eigenschaften
+  apflora_beob.adb_eigenschaften
   INNER JOIN
-    apflora.ap
-    ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId)
-  INNER JOIN
-    apflora.pop
-    ON apflora.ap.ApArtId = apflora.pop.ApArtId)
-  LEFT JOIN
-    apflora.ap_bearbstand_werte
-    ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
-  LEFT JOIN
-    apflora.ap_umsetzung_werte
-    ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
-  LEFT JOIN
-    apflora.pop_status_werte
-    ON apflora.pop.PopHerkunft = pop_status_werte.HerkunftId
+    (((apflora.ap
+	  LEFT JOIN
+	    apflora.ap_bearbstand_werte
+	    ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
+	  LEFT JOIN
+	    apflora.ap_umsetzung_werte
+	    ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
+	  INNER JOIN
+	    (apflora.pop
+		  LEFT JOIN
+		    apflora.pop_status_werte
+		    ON apflora.pop.PopHerkunft = pop_status_werte.HerkunftId)
+	    ON apflora.ap.ApArtId = apflora.pop.ApArtId)
+    ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname,
   apflora.pop.PopNr;
@@ -4203,7 +4203,10 @@ FROM
         apflora.pop_status_werte AS tpopHerkunft
         ON apflora.tpop.TPopHerkunft = tpopHerkunft.HerkunftId)
       INNER JOIN
-        (apflora.tpopkontr
+        ((apflora.tpopkontr
+        INNER JOIN
+          apflora_views.v_tpopkontr_maxanzahl
+          ON apflora_views.v_tpopkontr_maxanzahl.TPopKontrId = apflora.tpopkontr.TPopKontrId)
         LEFT JOIN
           apflora.adresse
           ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
@@ -4263,7 +4266,10 @@ FROM
         apflora.pop_status_werte
         AS tpopHerkunft ON apflora.tpop.TPopHerkunft = tpopHerkunft.HerkunftId)
       INNER JOIN
-        (apflora.tpopkontr
+        ((apflora.tpopkontr
+        INNER JOIN
+          apflora_views.v_tpopkontr_maxanzahl
+          ON apflora_views.v_tpopkontr_maxanzahl.TPopKontrId = apflora.tpopkontr.TPopKontrId)
         LEFT JOIN
           apflora.adresse
           ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
@@ -4326,7 +4332,10 @@ FROM
     INNER JOIN
       (apflora.tpop
       INNER JOIN
-        (apflora.tpopkontr
+        ((apflora.tpopkontr
+        INNER JOIN
+          apflora_views.v_tpopkontr_maxanzahl
+          ON apflora_views.v_tpopkontr_maxanzahl.TPopKontrId = apflora.tpopkontr.TPopKontrId)
         LEFT JOIN
           apflora.adresse
           ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
@@ -4393,7 +4402,10 @@ FROM
     INNER JOIN
       (apflora.tpop
       INNER JOIN
-        (apflora.tpopkontr
+        ((apflora.tpopkontr
+        INNER JOIN
+          apflora_views.v_tpopkontr_maxanzahl
+          ON apflora_views.v_tpopkontr_maxanzahl.TPopKontrId = apflora.tpopkontr.TPopKontrId)
         LEFT JOIN
           apflora.adresse
           ON apflora.tpopkontr.TPopKontrBearb = apflora.adresse.AdrId)
