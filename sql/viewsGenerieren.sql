@@ -2605,8 +2605,8 @@ FROM
 WHERE
 	apflora.tpop.TPopApBerichtRelevant = 1
 	AND apflora.pop.PopHerkunft IS NOT NULL
-	AND apflora.pop.PopHerkunft NOT IN (300, 201)
-	AND apflora.tpop.TPopHerkunft NOT IN (300, 201)
+	AND apflora.pop.PopHerkunft <> 300
+	AND apflora.tpop.TPopHerkunft <> 300
 	AND apflora.tpop.TPopHerkunft IS NOT NULL
 GROUP BY
 	apflora.pop.ApArtId,
@@ -2622,7 +2622,7 @@ FROM
 		apflora.tpop
 		ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
-	apflora.pop.PopHerkunft NOT IN (300, 201)
+	apflora.pop.PopHerkunft NOT IN (300)
 	AND apflora.tpop.TPopHerkunft = 100
 	AND apflora.tpop.TPopApBerichtRelevant = 1
 GROUP BY
@@ -2642,7 +2642,7 @@ FROM
       ON apflora.pop.PopId = apflora.tpop.PopId)
     ON apflora.pop.ApArtId = apflora.ap.ApArtId
 WHERE
-  apflora.pop.PopHerkunft NOT IN (300, 201)
+  apflora.pop.PopHerkunft NOT IN (300)
   AND apflora.tpop.TPopHerkunft IN (200, 210)
   AND apflora.tpop.TPopApBerichtRelevant = 1
   AND (
@@ -2667,7 +2667,7 @@ FROM
       ON apflora.pop.PopId = apflora.tpop.PopId)
     ON apflora.pop.ApArtId = apflora.ap.ApArtId
 WHERE
-  apflora.pop.PopHerkunft NOT IN (300, 201)
+  apflora.pop.PopHerkunft NOT IN (300)
   AND apflora.tpop.TPopHerkunft IN (200, 210)
   AND apflora.tpop.TPopApBerichtRelevant = 1
   AND apflora.tpop.TPopBekanntSeit >= apflora.ap.ApJahr
@@ -2719,7 +2719,7 @@ FROM
 		apflora.ap
 		ON apflora.pop.ApArtId = apflora.ap.ApArtId
 WHERE
-	apflora.pop.PopHerkunft NOT IN (300, 201)
+	apflora.pop.PopHerkunft NOT IN (300)
 	AND (
 		apflora.tpop.TPopHerkunft = 101
 		OR (
@@ -2749,7 +2749,7 @@ FROM
 		apflora.ap
 		ON apflora.pop.ApArtId = apflora.ap.ApArtId
 WHERE
-	apflora.pop.PopHerkunft NOT IN (300, 201)
+	apflora.pop.PopHerkunft NOT IN (300)
 	AND apflora.tpop.TPopHerkunft IN (202, 211)
 	AND apflora.tpop.TPopApBerichtRelevant = 1
 	AND apflora.tpop.TPopBekanntSeit >= apflora.ap.ApJahr
@@ -5097,7 +5097,7 @@ WHERE
 		WHERE TABLE_SCHEMA = 'apflora'
 	);
 
-CREATE OR REPLACE VIEW v_apbera1lpop AS 
+CREATE OR REPLACE VIEW v_apbera1lpop AS
 SELECT
 	apflora.pop.ApArtId,
 	apflora.pop.PopId
@@ -5108,7 +5108,7 @@ FROM
 		ON apflora.pop.PopId = apflora.tpop.PopId
 WHERE
 	apflora.tpop.TPopApBerichtRelevant = 1
-	AND apflora.pop.PopHerkunft NOT IN (300, 201)
+	AND apflora.pop.PopHerkunft <> 300
 GROUP BY
 	apflora.pop.ApArtId,
 	apflora.pop.PopId;
