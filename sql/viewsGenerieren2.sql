@@ -477,7 +477,7 @@ WHERE
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname;
 
-CREATE OR REPLACE VIEW v_apber_uebnb000 AS 
+CREATE OR REPLACE VIEW v_apber_uebnb000 AS
 SELECT
   apflora.ap.ApArtId,
   apflora.apber.JBerJahr
@@ -497,7 +497,7 @@ FROM
     ON apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr = apflora._variable.JBerJahr
 WHERE
   apflora.apber.ApArtId IS NULL
-  AND apflora.ap.ApStatus < 4;
+  AND apflora.ap.ApStatus BETWEEN 1 AND 4;
 
 CREATE OR REPLACE VIEW v_apber_uebnb00 AS 
 SELECT
@@ -521,7 +521,7 @@ FROM
       ON apflora.ap.ApArtId = apflora.apber.ApArtId)
     ON tblKonstanten_1.JBerJahr = apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr
 WHERE
-  apflora.ap.ApStatus < 4
+  apflora.ap.ApStatus BETWEEN 1 AND 4
   AND apflora.apber.JBerBeurteilung IS NULL;
 
 CREATE OR REPLACE VIEW v_apber_uebnb0 AS 
