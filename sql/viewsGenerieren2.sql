@@ -769,8 +769,8 @@ FROM
     apflora._variable
     ON apflora_views.v_ap_anzmassnbisjahr.TPopMassnJahr = apflora._variable.JBerJahr
 WHERE
-  apflora.ap.ApStatus < 4
-  AND apflora_views.v_ap_anzmassnbisjahr.AnzahlMassnahmen > 0
+  apflora.ap.ApStatus BETWEEN 1 AND 3
+  AND apflora.ap.ApArtId IN (SELECT * FROM apflora_views.v_apber_uebma_apid)
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname;
 
