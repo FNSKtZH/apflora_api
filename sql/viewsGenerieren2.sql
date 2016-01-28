@@ -777,7 +777,8 @@ ORDER BY
 CREATE OR REPLACE VIEW v_apber_uet_veraengegenvorjahr AS
 SELECT
   apflora.ap.ApArtId,
-  apflora.apber.JBerVeraenGegenVorjahr
+  apflora.apber.JBerVeraenGegenVorjahr,
+  apflora.apber.JBerJahr
 FROM
   apflora.ap
   LEFT JOIN
@@ -785,9 +786,10 @@ FROM
     ON apflora.ap.ApArtId = apflora.apber.ApArtId
 WHERE
   apflora.ap.ApStatus BETWEEN 1 AND 3
-  AND
-    (apflora.apber.JBerJahr In (SELECT apflora._variable.JBerJahr FROM apflora._variable)
-    Or apflora.apber.JBerJahr Is Null);
+  AND (
+    apflora.apber.JBerJahr In (SELECT apflora._variable.JBerJahr FROM apflora._variable)
+    Or apflora.apber.JBerJahr Is Null
+  );
 
 CREATE OR REPLACE VIEW v_tpop_statuswidersprichtbericht AS 
 SELECT
