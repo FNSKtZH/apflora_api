@@ -650,18 +650,18 @@ FROM
   apflora_beob.adb_eigenschaften
   INNER JOIN
     (((apflora.ap
-	  LEFT JOIN
-	    apflora.ap_bearbstand_werte
-	    ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
-	  LEFT JOIN
-	    apflora.ap_umsetzung_werte
-	    ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
-	  INNER JOIN
-	    (apflora.pop
-		  LEFT JOIN
-		    apflora.pop_status_werte
-		    ON apflora.pop.PopHerkunft = pop_status_werte.HerkunftId)
-	    ON apflora.ap.ApArtId = apflora.pop.ApArtId)
+    LEFT JOIN
+      apflora.ap_bearbstand_werte
+      ON apflora.ap.ApStatus = apflora.ap_bearbstand_werte.DomainCode)
+    LEFT JOIN
+      apflora.ap_umsetzung_werte
+      ON apflora.ap.ApUmsetzung = apflora.ap_umsetzung_werte.DomainCode)
+    INNER JOIN
+      (apflora.pop
+      LEFT JOIN
+        apflora.pop_status_werte
+        ON apflora.pop.PopHerkunft = pop_status_werte.HerkunftId)
+      ON apflora.ap.ApArtId = apflora.pop.ApArtId)
     ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname,
@@ -4142,17 +4142,17 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_tpopkontr_maxanzahl AS
 SELECT
-	apflora.tpopkontr.TPopKontrId,
-	MAX(apflora.tpopkontrzaehl.Anzahl) AS Anzahl
+  apflora.tpopkontr.TPopKontrId,
+  MAX(apflora.tpopkontrzaehl.Anzahl) AS Anzahl
 FROM
-	apflora.tpopkontr
-	INNER JOIN
-		apflora.tpopkontrzaehl
+  apflora.tpopkontr
+  INNER JOIN
+    apflora.tpopkontrzaehl
     ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
 GROUP BY
-	apflora.tpopkontr.TPopKontrId
+  apflora.tpopkontr.TPopKontrId
 ORDER BY
-	apflora.tpopkontr.TPopKontrId;
+  apflora.tpopkontr.TPopKontrId;
 
 # v_exportevab_beob is in viewsGenerieren2 because dependant on v_tpopkontr_maxanzahl
 
@@ -7495,18 +7495,45 @@ GROUP BY
 CREATE OR REPLACE VIEW v_apber_pop_uebersicht AS
 SELECT
   apflora_beob.adb_eigenschaften.TaxonomieId AS ApArtId,
-  apflora_beob.adb_eigenschaften.Artname AS Art
+  apflora_beob.adb_eigenschaften.Artname AS Art,
+  (
+    SELECT
+      COUNT(*)
+    FROM
+      apflora.pop
+    WHERE
+      apflora.pop.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId
+      AND apflora.pop.PopHerkunft IN (100)
+  ) AS aktuellUrspruenglich,
+  (
+    SELECT
+      COUNT(*)
+    FROM
+      apflora.pop
+    WHERE
+      apflora.pop.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId
+      AND apflora.pop.PopHerkunft IN (200, 210)
+  ) AS aktuellAngesiedelt,
+  (
+    SELECT
+      COUNT(*)
+    FROM
+      apflora.pop
+    WHERE
+      apflora.pop.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId
+      AND apflora.pop.PopHerkunft IN (100, 200, 210)
+  ) AS aktuell
 FROM
   apflora_beob.adb_eigenschaften
   INNER JOIN
     (apflora.ap
-	  INNER JOIN
-	    apflora.pop
-	    ON apflora.ap.ApArtId = apflora.pop.ApArtId)
+    INNER JOIN
+      apflora.pop
+      ON apflora.ap.ApArtId = apflora.pop.ApArtId)
     ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId
 WHERE
-	apflora.ap.ApStatus BETWEEN 1 AND 3
+  apflora.ap.ApStatus BETWEEN 1 AND 3
 GROUP BY
-	apflora_beob.adb_eigenschaften.TaxonomieId
+  apflora_beob.adb_eigenschaften.TaxonomieId
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname;
