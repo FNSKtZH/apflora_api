@@ -7490,4 +7490,23 @@ FROM
     apflora_beob.beob_bereitgestellt
     ON apflora.beobzuordnung.NO_NOTE = apflora_beob.beob_bereitgestellt.NO_NOTE
 GROUP BY
-  apflora.beobzuordnung.TPopId
+  apflora.beobzuordnung.TPopId;
+
+CREATE OR REPLACE VIEW v_apber_pop_uebersicht AS
+SELECT
+  apflora_beob.adb_eigenschaften.TaxonomieId AS ApArtId,
+  apflora_beob.adb_eigenschaften.Artname AS Art
+FROM
+  apflora_beob.adb_eigenschaften
+  INNER JOIN
+    (apflora.ap
+	  INNER JOIN
+	    apflora.pop
+	    ON apflora.ap.ApArtId = apflora.pop.ApArtId)
+    ON apflora_beob.adb_eigenschaften.TaxonomieId = apflora.ap.ApArtId
+WHERE
+	apflora.ap.ApStatus BETWEEN 1 AND 3
+GROUP BY
+	apflora_beob.adb_eigenschaften.TaxonomieId
+ORDER BY
+  apflora_beob.adb_eigenschaften.Artname;
