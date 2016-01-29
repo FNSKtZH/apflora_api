@@ -7326,7 +7326,7 @@ SELECT DISTINCT
   apflora.pop.ApArtId,
   apflora.pop.PopId,
   apflora.tpop.TPopId,
-  'Teilpopulation mit Status "Ansaatversuch", bei denen in einer Kontrolle eine Anzahl festgestellt wurde:' AS hw,
+  'Teilpopulation mit Status "Ansaatversuch", bei denen in der letzten Kontrolle eine Anzahl festgestellt wurde:' AS hw,
   CONCAT(
     '<a href="http://apflora.ch/index.html?ap=',
     apflora.pop.ApArtId,
@@ -7356,10 +7356,17 @@ WHERE
     SELECT DISTINCT
       apflora.tpopkontr.TPopId
     FROM
-      apflora.tpopkontr
+      (apflora.tpopkontr
       INNER JOIN
         apflora.tpopkontrzaehl
-        ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId
+        ON apflora.tpopkontr.TPopKontrId = apflora.tpopkontrzaehl.TPopKontrId)
+      INNER JOIN
+        apflora_views.v_tpopkontr_letzteid
+        ON
+          (
+            apflora_views.v_tpopkontr_letzteid.TPopId = apflora.tpopkontr.TPopId
+            AND apflora_views.v_tpopkontr_letzteid.MaxTPopKontrId = apflora.tpopkontr.TPopKontrId
+          )
     WHERE
       apflora.tpopkontr.TPopKontrTyp NOT IN ('Zwischenziel', 'Ziel')
       AND apflora.tpopkontrzaehl.Anzahl > 0
