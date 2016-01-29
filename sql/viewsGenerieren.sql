@@ -5280,7 +5280,7 @@ FROM
     ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE
   apflora.pop.PopXKoord IS NULL
-  OR apflora.pop.PopYKoord IS NULL 
+  OR apflora.pop.PopYKoord IS NULL
 ORDER BY
   apflora.ap.ApArtId,
   apflora.pop.PopNr;
@@ -5307,7 +5307,7 @@ FROM
     apflora.pop
     ON apflora.ap.ApArtId = apflora.pop.ApArtId
 WHERE
-  apflora.pop.PopNr IS NULL 
+  apflora.pop.PopNr IS NULL
 ORDER BY
   apflora.ap.ApArtId,
   apflora.pop.PopName;
@@ -7120,7 +7120,7 @@ WHERE
     SELECT
       apflora.tpop.PopId
     FROM
-  apflora.tpop
+      apflora.tpop
     WHERE
       apflora.tpop.TPopXKoord = PopXKoord
       AND apflora.tpop.TPopYKoord = PopYKoord
@@ -7153,7 +7153,7 @@ WHERE
     SELECT DISTINCT
       apflora.tpop.PopId
     FROM
-  apflora.tpop
+      apflora.tpop
     WHERE
       apflora.tpop.TPopHerkunft = 100
   )
@@ -7216,7 +7216,8 @@ WHERE
   AND apflora.pop.PopId IN (
     SELECT DISTINCT
       apflora.tpop.PopId
-    FROM apflora.tpop
+    FROM
+      apflora.tpop
     WHERE
       apflora.tpop.TPopHerkunft IN (100, 200, 210)
   )
@@ -7504,6 +7505,14 @@ SELECT
     WHERE
       apflora.pop.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId
       AND apflora.pop.PopHerkunft IN (100)
+      AND apflora.pop.PopId IN(
+        SELECT
+          apflora.tpop.PopId
+        FROM
+          apflora.tpop
+        WHERE
+          apflora.tpop.TPopApBerichtRelevant = 1
+      )
   ) AS aktuellUrspruenglich,
   (
     SELECT
@@ -7513,6 +7522,14 @@ SELECT
     WHERE
       apflora.pop.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId
       AND apflora.pop.PopHerkunft IN (200, 210)
+      AND apflora.pop.PopId IN(
+        SELECT
+          apflora.tpop.PopId
+        FROM
+          apflora.tpop
+        WHERE
+          apflora.tpop.TPopApBerichtRelevant = 1
+      )
   ) AS aktuellAngesiedelt,
   (
     SELECT
@@ -7522,6 +7539,14 @@ SELECT
     WHERE
       apflora.pop.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId
       AND apflora.pop.PopHerkunft IN (100, 200, 210)
+      AND apflora.pop.PopId IN(
+        SELECT
+          apflora.tpop.PopId
+        FROM
+          apflora.tpop
+        WHERE
+          apflora.tpop.TPopApBerichtRelevant = 1
+      )
   ) AS aktuell
 FROM
   apflora_beob.adb_eigenschaften
