@@ -43,7 +43,8 @@ module.exports = (request, callback) => {
       apflora.pop
       INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
     WHERE
-      apflora.tpop.TPopId IN (${sqlTpopMitKontrolleImBerjahr})
+      apflora.tpop.TPopApBerichtRelevant = 1
+      AND apflora.tpop.TPopId IN (${sqlTpopMitKontrolleImBerjahr})
       AND apflora.tpop.TPopId NOT IN (${sqlTpopMitTpopberImBerjahr})
       AND apflora.pop.ApArtId = ${apId}`
 

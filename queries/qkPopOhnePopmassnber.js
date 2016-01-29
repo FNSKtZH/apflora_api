@@ -50,7 +50,9 @@ module.exports = (request, callback) => {
         '</a>'
         ) AS link
     FROM apflora.pop
-    WHERE apflora.pop.PopId IN (${sqlPopMitTpopMitVerlangtemTpopmassnberImBerjahr})
+    WHERE
+      apflora.tpop.TPopApBerichtRelevant = 1
+      AND apflora.pop.PopId IN (${sqlPopMitTpopMitVerlangtemTpopmassnberImBerjahr})
       AND apflora.pop.PopId NOT IN (${sqlPopMitPopmassnberImBerjahr})
       AND apflora.pop.ApArtId = ${apId}`
 
