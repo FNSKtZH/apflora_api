@@ -50,5 +50,9 @@
   "homepage": "https://github.com/FNSKtZH/apflora",
   "standard": {
     "ignore": []
+  },
+  "repository": {
+      "type": "git",
+      "url": "git://github.com/FNSKtZH/apflora_api.git"
   }
 }
