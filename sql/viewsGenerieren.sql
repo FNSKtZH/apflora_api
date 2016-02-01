@@ -1170,7 +1170,7 @@ FROM
 WHERE
   apflora.ziel.ZielTyp IN(1, 2, 1170775556)
 ORDER BY
-  apflora.ziel.ZielTyp,
+  apflora.ziel_typ_werte.ZieltypOrd,
   apflora.ziel.ZielBezeichnung;
 
 CREATE OR REPLACE VIEW v_apber_verwaist AS
