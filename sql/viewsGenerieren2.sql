@@ -688,18 +688,18 @@ SELECT
   apflora_beob.adb_eigenschaften.Artname,
   IF(
     apflora.ap.ApArtId NOT IN (SELECT * FROM apflora_views.v_apber_uebma_apid),
-    "1",
-    ""
+    1,
+    0
   ) AS "keineMassnahmen",
   IF(
     apflora_beob.adb_eigenschaften.KefArt = -1,
-    "1",
-    ""
+    1,
+    0
   ) AS FnsKefArt,
   IF(
     Round((apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4, 0) = (apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,
-    "1",
-    ""
+    1,
+    0
   ) AS FnsKefKontrJahr
 FROM
   apflora_beob.adb_eigenschaften
