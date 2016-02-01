@@ -1249,25 +1249,6 @@ FROM
       ON apflora.apber.JBerJahr = apflora._variable.JBerJahr)
     ON apflora.ap.ApArtId = apflora.apber.ApArtId;
 
-CREATE OR REPLACE VIEW v_fnskef AS 
-SELECT
-  apflora_beob.adb_eigenschaften.TaxonomieId,
-  IF(
-    apflora_beob.adb_eigenschaften.KefArt = "-1",
-    "Ja",
-    ""
-  ) AS FnsKefArt2,
-  IF(
-    Round((apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4, 0) = (apflora._variable.JBerJahr - apflora_beob.adb_eigenschaften.KefKontrolljahr) / 4,
-    "Ja",
-    ""
-  ) AS FnsKefKontrJahr2
-FROM
-  apflora_beob.adb_eigenschaften,
-  apflora._variable
-ORDER BY
-   apflora_beob.adb_eigenschaften.TaxonomieId;
-
 CREATE OR REPLACE VIEW v_pop_massnseitbeginnap AS 
 SELECT
   apflora.tpopmassn.TPopId
