@@ -99,7 +99,7 @@ WHERE
 GROUP BY
   apflora.ap.ApArtId;
 
-#wird von v_apber_injahr benutzt. Dieses Wiederum in Access:
+-- wird von v_apber_injahr benutzt. Dieses Wiederum in Access:
 CREATE OR REPLACE VIEW v_erstemassnproap AS 
 SELECT
   apflora.ap.ApArtId,
@@ -751,7 +751,7 @@ ORDER BY
   apflora_beob.adb_eigenschaften.Artname,
   apflora.pop.PopNr;
 
-#im Gebrauch (Access):
+-- im Gebrauch (Access):
 CREATE OR REPLACE VIEW v_pop_verwaist AS
 SELECT
   apflora.pop.PopGuid AS "Pop Guid",
@@ -875,7 +875,7 @@ ORDER BY
   apflora.popber.PopBerJahr,
   pop_entwicklung_werte.EntwicklungTxt;
 
-#im Gebrauch (Access):
+-- im Gebrauch (Access):
 CREATE OR REPLACE VIEW v_popber_verwaist AS
 SELECT
   apflora.popber.PopBerId AS "PopBer Id",
@@ -950,7 +950,7 @@ ORDER BY
   apflora_beob.adb_eigenschaften.Artname,
   apflora.pop.PopNr;
 
-#im Gebrauch (Access):
+-- im Gebrauch (Access):
 CREATE OR REPLACE VIEW v_popmassnber_verwaist AS
 SELECT
   apflora.popmassnber.PopMassnBerId AS "PopMassnBer Id",
@@ -1122,7 +1122,7 @@ ORDER BY
   apflora.pop.PopNr,
   apflora.tpop.TPopNr;
 
-#im Gebrauch durch exportPopVonApOhneStatus.php:
+-- im Gebrauch durch exportPopVonApOhneStatus.php:
 CREATE OR REPLACE VIEW v_pop_vonapohnestatus AS 
 SELECT
   apflora_beob.adb_eigenschaften.Artname AS Art,
@@ -1370,7 +1370,7 @@ WHERE
   AND apflora.tpopmassn.TPopMassnJahr <= apflora._variable.JBerJahr
   AND apflora.pop.PopHerkunft <> 300;
 
-# dieser view ist für den Bericht gedacht - daher letzter popber vor jBerJahr
+-- dieser view ist für den Bericht gedacht - daher letzter popber vor jBerJahr
 CREATE OR REPLACE VIEW v_pop_letzterpopber0 AS
 SELECT
   apflora.pop.ApArtId,
@@ -1390,7 +1390,7 @@ WHERE
   AND apflora.tpop.TPopApBerichtRelevant = 1
   AND apflora.pop.PopHerkunft <> 300;
 
-# dieser view ist für die Qualitätskontrolle gedacht - daher letzter popber überhaupt
+-- dieser view ist für die Qualitätskontrolle gedacht - daher letzter popber überhaupt
 CREATE OR REPLACE VIEW v_pop_letzterpopber0_overall AS
 SELECT
   apflora.popber.PopId,
@@ -1413,7 +1413,7 @@ WHERE
 GROUP BY
   apflora.popmassnber.PopId;
 
-# dieser view ist für die Qualitätskontrolle gedacht - daher letzter tpopber überhaupt
+-- dieser view ist für die Qualitätskontrolle gedacht - daher letzter tpopber überhaupt
 CREATE OR REPLACE VIEW v_tpop_letztertpopber0_overall AS
 SELECT
   apflora.tpopber.TPopId,
@@ -4024,7 +4024,7 @@ ORDER BY
   Datum DESC;
 
 
-# this is a test
+-- this is a test
 CREATE OR REPLACE VIEW v_beob_alle AS
 SELECT
   apflora_beob.adb_eigenschaften.Artname,
@@ -4063,7 +4063,7 @@ FROM
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname;
 
-# this shall be added to export form
+-- this shall be added to export form
 CREATE OR REPLACE VIEW v_beob_infospezies AS
 SELECT
   apflora_beob.adb_eigenschaften.Artname,
@@ -4097,7 +4097,7 @@ FROM
 ORDER BY
   apflora_beob.adb_eigenschaften.Artname;
 
-# this shall be added to export form
+-- this shall be added to export form
 CREATE OR REPLACE VIEW v_beob_evab AS
 SELECT
   apflora_beob.adb_eigenschaften.Artname,
@@ -4145,7 +4145,7 @@ GROUP BY
 ORDER BY
   apflora.tpopkontr.TPopKontrId;
 
-# v_exportevab_beob is in viewsGenerieren2 because dependant on v_tpopkontr_maxanzahl
+-- v_exportevab_beob is in viewsGenerieren2 because dependant on v_tpopkontr_maxanzahl
 
 CREATE OR REPLACE VIEW v_exportevab_zeit AS
 SELECT

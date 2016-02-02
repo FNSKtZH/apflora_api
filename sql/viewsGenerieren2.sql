@@ -137,7 +137,7 @@ GROUP BY
   apflora_views.v_pop_letztermassnber0.ApArtId,
   apflora_views.v_pop_letztermassnber0.PopId;
 
-# dieser view ist für den Bericht gedacht - daher letzter popber vor jBerJahr
+-- dieser view ist für den Bericht gedacht - daher letzter popber vor jBerJahr
 CREATE OR REPLACE VIEW v_pop_letzterpopber AS
 SELECT
   apflora_views.v_pop_letzterpopber0.ApArtId,
@@ -149,7 +149,7 @@ GROUP BY
   apflora_views.v_pop_letzterpopber0.ApArtId,
   apflora_views.v_pop_letzterpopber0.PopId;
 
-# dieser view ist für die Qualitätskontrolle gedacht - daher letzter popber überhaupt
+-- dieser view ist für die Qualitätskontrolle gedacht - daher letzter popber überhaupt
 CREATE OR REPLACE VIEW v_pop_letzterpopber_overall AS
 SELECT
   apflora.pop.ApArtId,
@@ -793,7 +793,7 @@ ORDER BY
   apflora.tpop.TPopGemeinde,
   apflora.tpop.TPopFlurname;
 
-#im Gebrauch (Access):
+-- im Gebrauch (Access):
 CREATE OR REPLACE VIEW v_apber_injahr AS 
 SELECT
   apflora.ap.*,
@@ -1677,7 +1677,7 @@ FROM
     apflora.pop_entwicklung_werte
     ON apflora.tpopber.TPopBerEntwicklung = pop_entwicklung_werte.EntwicklungId;
 
-#funktioniert nicht, wenn letzeKontrolle als Unterabfrage eingebunden wird. Grund: Unterabfragen in der FROM-Klausel duerfen keine korrellierten Unterabfragen sein
+-- funktioniert nicht, wenn letzeKontrolle als Unterabfrage eingebunden wird. Grund: Unterabfragen in der FROM-Klausel duerfen keine korrellierten Unterabfragen sein
 CREATE OR REPLACE VIEW v_tpop_anzkontrinklletzter AS
 SELECT
   apflora_views.v_tpop_letzteKontrId.TPopId,
@@ -1954,7 +1954,7 @@ WHERE
   apflora.tpopber.TPopBerEntwicklung = 8
   AND apflora.tpop.TPopHerkunft IN (100, 200, 210)
   AND apflora.tpop.TPopId NOT IN (
-    # Ansiedlungen since apflora.tpopber.TPopBerJahr
+    -- Ansiedlungen since apflora.tpopber.TPopBerJahr
     SELECT
       apflora.tpopmassn.TPopId
     FROM
@@ -2011,7 +2011,7 @@ WHERE
   apflora.tpopber.TPopBerEntwicklung < 8
   AND apflora.tpop.TPopHerkunft IN (101, 202, 211)
   AND apflora.tpop.TPopId NOT IN (
-    # Ansiedlungen since apflora.tpopber.TPopBerJahr
+    -- Ansiedlungen since apflora.tpopber.TPopBerJahr
     SELECT
       apflora.tpopmassn.TPopId
     FROM
