@@ -1,7 +1,7 @@
 CREATE OR REPLACE VIEW v_pop_berundmassnjahre AS
 SELECT
   apflora.pop.PopId,
-  apflora.popber.PopBerJahr as "Jahr"
+  apflora.popber.PopBerJahr AS Jahr
 FROM
   apflora.pop
   INNER JOIN
@@ -9,7 +9,7 @@ FROM
     ON apflora.pop.PopId = apflora.popber.PopId
 UNION DISTINCT SELECT
   apflora.pop.PopId,
-  apflora.popmassnber.PopMassnBerJahr as "Jahr"
+  apflora.popmassnber.PopMassnBerJahr AS Jahr
 FROM
   apflora.pop
   INNER JOIN
@@ -5250,7 +5250,7 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_ohnekoord AS
 SELECT
-  apflora.ap.ApArtId AS 'ApArtId',
+  apflora.ap.ApArtId AS ApArtId,
   'Population: Mindestens eine Koordinate fehlt:' AS hw,
   CONCAT(
     '<a href="http://apflora.ch/index.html?ap=',
@@ -5278,7 +5278,7 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_ohnepopnr AS
 SELECT
-  apflora.ap.ApArtId AS 'ApArtId',
+  apflora.ap.ApArtId AS ApArtId,
   'Population ohne Nr.:' AS hw,
   CONCAT(
     '<a href="http://apflora.ch/index.html?ap=',
@@ -5305,7 +5305,7 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_ohnepopname AS
 SELECT
-  apflora.ap.ApArtId AS 'ApArtId',
+  apflora.ap.ApArtId AS ApArtId,
   'Population ohne Name:' AS hw,
   CONCAT(
     '<a href="http://apflora.ch/index.html?ap=',
@@ -5332,7 +5332,7 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_ohnepopstatus AS
 SELECT
-  apflora.ap.ApArtId AS 'ApArtId',
+  apflora.ap.ApArtId AS ApArtId,
   'Population ohne Status:' AS hw,
   CONCAT(
     '<a href="http://apflora.ch/index.html?ap=',
@@ -5359,7 +5359,7 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_ohnebekanntseit AS
 SELECT
-  apflora.ap.ApArtId AS 'ApArtId',
+  apflora.ap.ApArtId AS ApArtId,
   'Population ohne "bekannt seit":' AS hw,
   CONCAT(
     '<a href="http://apflora.ch/index.html?ap=',
@@ -5385,7 +5385,7 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_mitstatusunklarohnebegruendung AS
 SELECT
-  apflora.ap.ApArtId AS 'ApArtId',
+  apflora.ap.ApArtId AS ApArtId,
   'Population mit "Status unklar", ohne Begruendung:' AS hw,
   CONCAT(
     '<a href="http://apflora.ch/index.html?ap=',
@@ -5413,7 +5413,7 @@ ORDER BY
 
 CREATE OR REPLACE VIEW v_qk_pop_ohnetpop AS
 SELECT
-  apflora.ap.ApArtId AS 'ApArtId',
+  apflora.ap.ApArtId AS ApArtId,
   'Population ohne Teilpopulation:' AS hw,
   CONCAT(
     '<a href="http://apflora.ch/index.html?ap=',
@@ -7482,7 +7482,7 @@ SELECT
       LEFT(apflora_beob.beob_bereitgestellt.Datum, 4),
       SIGNED
     )
-  ) AS 'MaxJahr'
+  ) AS MaxJahr
 FROM
   apflora.beobzuordnung
   INNER JOIN
