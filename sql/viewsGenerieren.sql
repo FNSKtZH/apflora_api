@@ -7,8 +7,7 @@ FROM
   INNER JOIN
     apflora.popber
     ON apflora.pop.PopId = apflora.popber.PopId
-UNION
-DISTINCT SELECT
+UNION DISTINCT SELECT
   apflora.pop.PopId,
   apflora.popmassnber.PopMassnBerJahr as "Jahr"
 FROM
@@ -1402,6 +1401,17 @@ WHERE
   apflora.popber.PopBerJahr IS NOT NULL
 GROUP BY
   apflora.popber.PopId;
+
+CREATE OR REPLACE VIEW v_pop_letzterpopbermassn AS
+SELECT
+  apflora.popmassnber.PopId,
+  MAX(apflora.popmassnber.PopMassnBerJahr) AS PopMassnBerJahr
+FROM
+  apflora.popmassnber
+WHERE
+  apflora.popmassnber.PopMassnBerJahr IS NOT NULL
+GROUP BY
+  apflora.popmassnber.PopId;
 
 # dieser view ist für die Qualitätskontrolle gedacht - daher letzter tpopber überhaupt
 CREATE OR REPLACE VIEW v_tpop_letztertpopber0_overall AS
