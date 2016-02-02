@@ -45,7 +45,10 @@ module.exports = (request, callback) => {
         IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: ', apflora.tpop.TPopId)),
         '</a>'
         ) AS link
-    FROM apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
+    FROM
+      apflora.pop
+        INNER JOIN apflora.tpop
+        ON apflora.pop.PopId = apflora.tpop.PopId
     WHERE
       apflora.tpop.TPopApBerichtRelevant = 1
       AND apflora.tpop.TPopId IN (${sqlTpopMitAnsVorBerjahr})

@@ -49,9 +49,19 @@ module.exports = (request, callback) => {
         IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)),
         '</a>'
         ) AS link
-    FROM apflora.pop
+    FROM
+      apflora.pop
     WHERE
-      apflora.tpop.TPopApBerichtRelevant = 1
+      apflora.pop.PopId IN (
+        SELECT
+          apflora.tpop.PopId
+        FROM
+          apflora.tpop
+        WHERE
+          apflora.tpop.TPopApBerichtRelevant = 1
+        GROUP BY
+          apflora.tpop.PopId
+      )
       AND apflora.pop.PopId IN (${sqlPopMitTpopMitVerlangtemTpopberImBerjahr})
       AND apflora.pop.PopId NOT IN (${sqlPopMitPopberImBerjahr})
       AND apflora.pop.ApArtId = ${apId}`
