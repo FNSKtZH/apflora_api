@@ -1781,49 +1781,6 @@ FROM
     apflora_views.v_tpop
     ON apflora_views.v_tpop_letzteKontrId.TPopId = apflora_views.v_tpop.TPopId;
 
-CREATE OR REPLACE VIEW v_qk_tpop_mitstatusaktuellundtpopbererloschen AS 
-SELECT DISTINCT
-  apflora.pop.ApArtId,
-  apflora.pop.PopId,
-  apflora.tpop.TPopId AS 'tpop_tpopid',
-  'Teilpopulation mit Status "aktuell",
-  gemaess dem letzten Teilpopulationsbericht erloschen' AS hw,
-  CONCAT(
-    '<a href="http://apflora.ch/index.html?ap=',
-    apflora.pop.ApArtId,
-    '&pop=',
-    apflora.pop.PopId,
-    '&tpop=',
-    apflora.tpop.TPopId,
-    '" target="_blank">',
-    IFNULL(CONCAT('Pop: ', apflora.pop.PopNr), CONCAT('Pop: id=', apflora.pop.PopId)),
-    IFNULL(CONCAT(' > TPop: ', apflora.tpop.TPopNr), CONCAT(' > TPop: id=', apflora.tpop.TPopId)),
-    '</a>'
-    ) AS link
-FROM
-  apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId
-WHERE
-  apflora.tpop.TPopHerkunft IN (100, 200, 210)
-  AND apflora.tpop.TPopId IN (
-    SELECT DISTINCT
-      apflora.tpopber.TPopId
-    FROM
-      apflora.tpopber
-      INNER JOIN
-        apflora_views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr
-        ON
-          apflora.tpopber.TPopId = apflora_views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr.TPopId
-          AND apflora.tpopber.TPopBerJahr = apflora_views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr.MaxTPopBerJahr
-    WHERE
-      apflora.tpopber.TPopBerEntwicklung = 8
-  )
-ORDER BY
-  apflora.pop.ApArtId,
-  apflora.pop.PopNr,
-  apflora.pop.PopId,
-  apflora.tpop.TPopNr,
-  apflora.tpop.TPopId;
-
 CREATE OR REPLACE VIEW v_qk_tpop_erloschenundrelevantaberletztebeobvor1950 AS 
 SELECT
   apflora.ap.ApArtId,
@@ -1996,7 +1953,18 @@ FROM
 WHERE
   apflora.tpopber.TPopBerEntwicklung = 8
   AND apflora.tpop.TPopHerkunft IN (100, 200, 210)
-  AND apflora.tpop.TPopApBerichtRelevant = 1
+  AND apflora.tpop.TPopId NOT IN (
+    # Ansiedlungen since apflora.tpopber.TPopBerJahr
+    SELECT
+      apflora.tpopmassn.TPopId
+    FROM
+      apflora.tpopmassn
+    WHERE
+      apflora.tpopmassn.TPopId = apflora.tpop.TPopId
+      AND apflora.tpopmassn.TPopMassnTyp BETWEEN 1 AND 3
+      AND apflora.tpopmassn.TPopMassnJahr IS NOT NULL
+      AND apflora.tpopmassn.TPopMassnJahr > apflora.tpopber.TPopBerJahr
+  )
 GROUP BY
   apflora.pop.ApArtId,
   apflora.pop.PopId
@@ -2042,7 +2010,18 @@ FROM
 WHERE
   apflora.tpopber.TPopBerEntwicklung < 8
   AND apflora.tpop.TPopHerkunft IN (101, 202, 211)
-  AND apflora.tpop.TPopApBerichtRelevant = 1
+  AND apflora.tpop.TPopId NOT IN (
+    # Ansiedlungen since apflora.tpopber.TPopBerJahr
+    SELECT
+      apflora.tpopmassn.TPopId
+    FROM
+      apflora.tpopmassn
+    WHERE
+      apflora.tpopmassn.TPopId = apflora.tpop.TPopId
+      AND apflora.tpopmassn.TPopMassnTyp BETWEEN 1 AND 3
+      AND apflora.tpopmassn.TPopMassnJahr IS NOT NULL
+      AND apflora.tpopmassn.TPopMassnJahr > apflora.tpopber.TPopBerJahr
+  )
 GROUP BY
   apflora.pop.ApArtId,
   apflora.pop.PopId,
