@@ -6,7 +6,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
-  database: 'apflora_beob'
+  database: 'beob'
 })
 
 module.exports = (request, callback) => {
@@ -20,7 +20,7 @@ module.exports = (request, callback) => {
         CONCAT(Artname, ' (', Status, ')'),
         Artname
       ) AS label
-    FROM apflora_beob.adb_eigenschaften
+    FROM beob.adb_eigenschaften
     ORDER BY Artname`,
     (err, data) => callback(err, data)
   )

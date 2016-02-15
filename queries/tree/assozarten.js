@@ -26,7 +26,7 @@ module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
 
   connection.query(
-    `SELECT AaId, apflora_beob.adb_eigenschaften.Artname FROM assozart LEFT JOIN apflora_beob.adb_eigenschaften ON AaSisfNr = apflora_beob.adb_eigenschaften.TaxonomieId where AaApArtId = ${apId} ORDER BY apflora_beob.adb_eigenschaften.Artname`,
+    `SELECT AaId, beob.adb_eigenschaften.Artname FROM assozart LEFT JOIN beob.adb_eigenschaften ON AaSisfNr = beob.adb_eigenschaften.TaxonomieId where AaApArtId = ${apId} ORDER BY beob.adb_eigenschaften.Artname`,
     (err, data) => {
       if (err) return reply(err)
       const response = {

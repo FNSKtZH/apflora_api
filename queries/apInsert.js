@@ -33,7 +33,7 @@ module.exports = (request, callback) => {
           SELECT
             "Artwert"
           FROM
-            apflora_beob.adb_eigenschaften
+            beob.adb_eigenschaften
           WHERE
             "TaxonomieId" = ${apId}`,
           (err, data) => {

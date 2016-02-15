@@ -27,7 +27,7 @@ module.exports = (request, callback) => {
       TPopNr,
       TPopFlurname,
       SQRT((FNS_XGIS - TPopXKoord) * (FNS_XGIS - TPopXKoord) + (FNS_YGIS - TPopYKoord) * (FNS_YGIS - TPopYKoord)) AS DistZuTPop
-    FROM apflora_beob.beob_infospezies
+    FROM beob.beob_infospezies
       INNER JOIN (apflora.pop INNER JOIN apflora.tpop ON apflora.pop.PopId = apflora.tpop.PopId) ON NO_ISFS = ApArtId
     WHERE NO_NOTE = "${beobId}"
       AND TPopXKoord IS NOT NULL

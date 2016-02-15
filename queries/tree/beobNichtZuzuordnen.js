@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
-  database: 'apflora_beob'
+  database: 'beob'
 })
 
 function buildChildrenFromData (data) {
@@ -31,7 +31,7 @@ module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
 
   connection.query(
-    `SELECT apflora_beob.beob_bereitgestellt.NO_ISFS, apflora.beobzuordnung.NO_NOTE, apflora.beobzuordnung.beobNichtZuordnen, apflora.beobzuordnung.BeobBemerkungen, apflora.beobzuordnung.BeobMutWann, apflora.beobzuordnung.BeobMutWer, apflora_beob.beob_bereitgestellt.Datum, apflora_beob.beob_bereitgestellt.Autor, "infospezies" AS beobtyp FROM apflora.beobzuordnung INNER JOIN apflora_beob.beob_bereitgestellt ON apflora.beobzuordnung.NO_NOTE = apflora_beob.beob_bereitgestellt.NO_NOTE WHERE apflora.beobzuordnung.NO_NOTE IS NOT NULL AND apflora.beobzuordnung.beobNichtZuordnen=1 AND apflora_beob.beob_bereitgestellt.NO_ISFS = ${apId} UNION SELECT apflora_beob.beob_bereitgestellt.NO_ISFS, apflora.beobzuordnung.NO_NOTE, apflora.beobzuordnung.beobNichtZuordnen, apflora.beobzuordnung.BeobBemerkungen, apflora.beobzuordnung.BeobMutWann, apflora.beobzuordnung.BeobMutWer, apflora_beob.beob_bereitgestellt.Datum, apflora_beob.beob_bereitgestellt.Autor, "evab" AS beobtyp FROM apflora.beobzuordnung INNER JOIN apflora_beob.beob_bereitgestellt ON apflora.beobzuordnung.NO_NOTE = apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET WHERE apflora.beobzuordnung.NO_NOTE IS NOT NULL AND apflora.beobzuordnung.beobNichtZuordnen=1 AND apflora_beob.beob_bereitgestellt.NO_ISFS = ${apId} ORDER BY Datum DESC LIMIT 100`,
+    `SELECT beob.beob_bereitgestellt.NO_ISFS, apflora.beobzuordnung.NO_NOTE, apflora.beobzuordnung.beobNichtZuordnen, apflora.beobzuordnung.BeobBemerkungen, apflora.beobzuordnung.BeobMutWann, apflora.beobzuordnung.BeobMutWer, beob.beob_bereitgestellt.Datum, beob.beob_bereitgestellt.Autor, "infospezies" AS beobtyp FROM apflora.beobzuordnung INNER JOIN beob.beob_bereitgestellt ON apflora.beobzuordnung.NO_NOTE = beob.beob_bereitgestellt.NO_NOTE WHERE apflora.beobzuordnung.NO_NOTE IS NOT NULL AND apflora.beobzuordnung.beobNichtZuordnen=1 AND beob.beob_bereitgestellt.NO_ISFS = ${apId} UNION SELECT beob.beob_bereitgestellt.NO_ISFS, apflora.beobzuordnung.NO_NOTE, apflora.beobzuordnung.beobNichtZuordnen, apflora.beobzuordnung.BeobBemerkungen, apflora.beobzuordnung.BeobMutWann, apflora.beobzuordnung.BeobMutWer, beob.beob_bereitgestellt.Datum, beob.beob_bereitgestellt.Autor, "evab" AS beobtyp FROM apflora.beobzuordnung INNER JOIN beob.beob_bereitgestellt ON apflora.beobzuordnung.NO_NOTE = beob.beob_bereitgestellt.NO_NOTE_PROJET WHERE apflora.beobzuordnung.NO_NOTE IS NOT NULL AND apflora.beobzuordnung.beobNichtZuordnen=1 AND beob.beob_bereitgestellt.NO_ISFS = ${apId} ORDER BY Datum DESC LIMIT 100`,
     (err, data) => {
       if (err) return reply(err)
       const node = {

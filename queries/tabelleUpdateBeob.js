@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: config.db.userName,
   password: config.db.passWord,
-  database: 'apflora_beob'
+  database: 'beob'
 })
 
 module.exports = (request, callback) => {

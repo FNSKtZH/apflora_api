@@ -17,7 +17,7 @@ module.exports = (request, callback) => {
   connection.query(
     `SELECT
       ap.ApArtId,
-      apflora_beob.adb_eigenschaften.Artname,
+      beob.adb_eigenschaften.Artname,
       ap_umsetzung_werte.DomainTxt AS ApUmsetzung,
       pop.PopId,
       pop.PopNr,
@@ -34,7 +34,7 @@ module.exports = (request, callback) => {
     FROM (((((ap
       INNER JOIN pop ON ap.ApArtId = pop.ApArtId)
       INNER JOIN tpop ON pop.PopId = tpop.PopId)
-      INNER JOIN apflora_beob.adb_eigenschaften ON ap.ApArtId = apflora_beob.adb_eigenschaften.TaxonomieId)
+      INNER JOIN beob.adb_eigenschaften ON ap.ApArtId = beob.adb_eigenschaften.TaxonomieId)
       LEFT JOIN pop_status_werte ON pop.PopHerkunft = pop_status_werte.HerkunftId)
       LEFT JOIN ap_umsetzung_werte ON ap.ApUmsetzung = ap_umsetzung_werte.DomainCode)
       LEFT JOIN pop_status_werte AS domPopHerkunft_1 ON tpop.TPopHerkunft = domPopHerkunft_1.HerkunftId

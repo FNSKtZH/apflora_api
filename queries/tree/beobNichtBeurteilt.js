@@ -30,7 +30,7 @@ module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
 
   connection.query(
-    `SELECT apflora_beob.beob_bereitgestellt.NO_NOTE, apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET, apflora_beob.beob_bereitgestellt.NO_ISFS, apflora_beob.beob_bereitgestellt.Datum, apflora_beob.beob_bereitgestellt.Autor FROM (apflora_beob.beob_bereitgestellt LEFT JOIN apflora.beobzuordnung ON apflora_beob.beob_bereitgestellt.NO_NOTE = apflora.beobzuordnung.NO_NOTE) LEFT JOIN apflora.beobzuordnung AS tblBeobZuordnung_1 ON apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET = tblBeobZuordnung_1.NO_NOTE WHERE apflora_beob.beob_bereitgestellt.NO_ISFS = ${apId} AND ((apflora_beob.beob_bereitgestellt.NO_NOTE_PROJET Is Not Null AND tblBeobZuordnung_1.NO_NOTE Is Null) OR (apflora_beob.beob_bereitgestellt.NO_NOTE Is Not Null AND apflora.beobzuordnung.NO_NOTE Is Null)) ORDER BY apflora_beob.beob_bereitgestellt.Datum DESC LIMIT 100`,
+    `SELECT beob.beob_bereitgestellt.NO_NOTE, beob.beob_bereitgestellt.NO_NOTE_PROJET, beob.beob_bereitgestellt.NO_ISFS, beob.beob_bereitgestellt.Datum, beob.beob_bereitgestellt.Autor FROM (beob.beob_bereitgestellt LEFT JOIN apflora.beobzuordnung ON beob.beob_bereitgestellt.NO_NOTE = apflora.beobzuordnung.NO_NOTE) LEFT JOIN apflora.beobzuordnung AS tblBeobZuordnung_1 ON beob.beob_bereitgestellt.NO_NOTE_PROJET = tblBeobZuordnung_1.NO_NOTE WHERE beob.beob_bereitgestellt.NO_ISFS = ${apId} AND ((beob.beob_bereitgestellt.NO_NOTE_PROJET Is Not Null AND tblBeobZuordnung_1.NO_NOTE Is Null) OR (beob.beob_bereitgestellt.NO_NOTE Is Not Null AND apflora.beobzuordnung.NO_NOTE Is Null)) ORDER BY beob.beob_bereitgestellt.Datum DESC LIMIT 100`,
     (err, data) => {
       if (err) return reply(err)
 
