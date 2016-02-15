@@ -89,3 +89,5 @@ sftpPass.json
 *.map
 *.TMP
 untitled.sublime-project
+
+pgDbPass.json

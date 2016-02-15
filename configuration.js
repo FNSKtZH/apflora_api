@@ -6,10 +6,13 @@
 
 var config = {}
 var dbPassfile = require('./dbPass.json')
+var pgPassfile = require('./pdDbPass.json')
 
 config.db = {}
 config.db.userName = dbPassfile.user
 config.db.passWord = dbPassfile.pass
+config.pg.userName = pgPassfile.user
+config.pg.passWord = pgPassfile.pass
 
 // für alle Formulare auflisten:
 // Formularname, Name der entsprechenden Tabelle in der DB, Name der ID dieser Tabelle
