@@ -15,12 +15,12 @@ module.exports = (request, callback) => {
     }
     const sql = `
       SELECT
-        apflora.adresse."AdrId" AS id,
-        apflora.adresse."AdrName"
+        "AdrId" AS id,
+        "AdrName"
       FROM
         apflora.adresse
       ORDER BY
-        apflora.adresse."AdrName"`
+        "AdrName"`
     apfDb.query(sql, (error, result) => {
       callback(error, result.rows)
     })

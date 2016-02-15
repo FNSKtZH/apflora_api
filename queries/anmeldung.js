@@ -1,24 +1,32 @@
 'use strict'
 
-const mysql = require('mysql')
-const config = require('../configuration')
 const escapeStringForSql = require('./escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'apflora'
-})
+const pg = require('pg')
+const dbPass = require('../pgDbPass.json')
+const user = dbPass.user
+const pwd = dbPass.pass
+const connectionString = `postgres://${user}:${pwd}@localhost/apflora`
 
 module.exports = (request, callback) => {
   const userName = escapeStringForSql(request.params.name)
   const password = escapeStringForSql(request.params.pwd)
 
-  connection.query(`
-    SELECT NurLesen
-    FROM user
-    WHERE UserName = "${userName}"
-      AND Passwort = "${password}"`,
-    (err, data) => callback(err, data)
-  )
+  // get a pg client from the connection pool
+  pg.connect(connectionString, (error, apfDb, done) => {
+    if (error) {
+      if (apfDb) done(apfDb)
+      console.log('an error occured when trying to connect to db apflora')
+    }
+    const sql = `
+      SELECT
+        "NurLesen"
+      FROM
+        apflora."user"
+      WHERE
+        "UserName" = '${userName}'
+        AND "Passwort" = '${password}'`
+    apfDb.query(sql, (error, result) => {
+      callback(error, result.rows)
+    })
+  })
 }

@@ -15,11 +15,11 @@ module.exports = (request, callback) => {
     }
     const sql = `
       SELECT
-        apflora.gemeinde."GmdName"
+        "GmdName"
       FROM
         apflora.gemeinde
       ORDER BY
-        apflora.gemeinde."GmdName"`
+        "GmdName"`
     apfDb.query(sql, (error, result) => {
       callback(error, result.rows)
     })
