@@ -1,27 +1,32 @@
 'use strict'
 
-const mysql = require('mysql')
+const pg = require('pg')
 const config = require('../configuration')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'beob'
-})
+const connectionString = config.pg.connectionString
+
 
 module.exports = (request, callback) => {
   // Artname muss 'label' heissen, sonst funktioniert jquery ui autocomplete nicht
-  connection.query(
-    `
-    SELECT
-      TaxonomieId AS id,
-      IF(
-        Status NOT LIKE 'akzeptierter Name',
-        CONCAT(Artname, ' (', Status, ')'),
-        Artname
-      ) AS label
-    FROM beob.adb_eigenschaften
-    ORDER BY Artname`,
-    (err, data) => callback(err, data)
-  )
+  // get a pg client from the connection pool
+  pg.connect(connectionString, (error, apfDb, done) => {
+    if (error) {
+      if (apfDb) done(apfDb)
+      console.log('an error occured when trying to connect to db apflora')
+    }
+    const sql = `
+      SELECT
+        "TaxonomieId" AS id,
+        CASE
+          WHEN "Status" NOT LIKE 'akzeptierter Name'
+          THEN CONCAT("Artname", ' (', "Status", ')')
+          ELSE "Artname"
+        END AS label
+      FROM
+        beob.adb_eigenschaften
+      ORDER BY
+        label`
+    apfDb.query(sql, (error, result) => {
+      callback(error, result.rows)
+    })
+  })
 }
