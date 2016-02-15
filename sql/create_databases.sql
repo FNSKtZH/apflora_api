@@ -1,0 +1,4 @@
+CREATE DATABASE apflora encoding 'UTF8';
+CREATE SCHEMA apflora;
+CREATE SCHEMA views;
+CREATE SCHEMA beob;
