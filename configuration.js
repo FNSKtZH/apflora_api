@@ -6,9 +6,10 @@
 
 var config = {}
 var dbPassfile = require('./dbPass.json')
-var pgPassfile = require('./pdDbPass.json')
+var pgPassfile = require('./pgDbPass.json')
 
 config.db = {}
+config.pg = {}
 config.db.userName = dbPassfile.user
 config.db.passWord = dbPassfile.pass
 config.pg.userName = pgPassfile.user
