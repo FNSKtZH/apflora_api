@@ -14,6 +14,7 @@ config.db.userName = dbPassfile.user
 config.db.passWord = dbPassfile.pass
 config.pg.userName = pgPassfile.user
 config.pg.passWord = pgPassfile.pass
+config.pg.connectionString = `postgres://${pgPassfile.user}:${pgPassfile.pass}@localhost/apflora`
 
 // für alle Formulare auflisten:
 // Formularname, Name der entsprechenden Tabelle in der DB, Name der ID dieser Tabelle

@@ -2,10 +2,8 @@
 
 const escapeStringForSql = require('./escapeStringForSql')
 const pg = require('pg')
-const dbPass = require('../pgDbPass.json')
-const user = dbPass.user
-const pwd = dbPass.pass
-const connectionString = `postgres://${user}:${pwd}@localhost/apflora`
+const config = require('../configuration')
+const connectionString = config.pg.connectionString
 
 module.exports = (request, callback) => {
   const userName = escapeStringForSql(request.params.name)

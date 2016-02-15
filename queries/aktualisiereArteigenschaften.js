@@ -7,10 +7,8 @@
 const request = require('request')
 const createInsertSqlFromObjectArray = require('./createInsertSqlFromObjectArray')
 const pg = require('pg')
-const dbPass = require('../pgDbPass.json')
-const user = dbPass.user
-const pwd = dbPass.pass
-const connectionString = `postgres://${user}:${pwd}@localhost/apflora`
+const config = require('../configuration')
+const connectionString = config.pg.connectionString
 
 // teilt einen Array in gleiche Teile
 const split = (a, n) => {
