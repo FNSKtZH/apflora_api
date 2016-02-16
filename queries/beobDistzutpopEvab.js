@@ -26,7 +26,10 @@ module.exports = (request, callback) => {
         apflora.pop."PopNr",
         apflora.tpop."TPopNr",
         apflora.tpop."TPopFlurname",
-        sqrt((beob.beob_evab."COORDONNEE_FED_E" - apflora.tpop."TPopXKoord") * (beob.beob_evab."COORDONNEE_FED_E" - apflora.tpop."TPopXKoord") + (beob.beob_evab."COORDONNEE_FED_N" - apflora.tpop."TPopYKoord") * (beob.beob_evab."COORDONNEE_FED_N" - apflora.tpop."TPopYKoord")) AS "DistZuTPop"
+        sqrt(
+          power((beob.beob_evab."COORDONNEE_FED_E" - apflora.tpop."TPopXKoord"), 2)
+          + power((beob.beob_evab."COORDONNEE_FED_N" - apflora.tpop."TPopYKoord"), 2)
+        ) AS "DistZuTPop"
       FROM
         beob.beob_evab
         INNER JOIN
