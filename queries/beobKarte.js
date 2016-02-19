@@ -1,14 +1,9 @@
 'use strict'
 
-const mysql = require('mysql')
+const pg = require('pg')
 const config = require('../configuration')
+const connectionString = config.pg.connectionString
 const escapeStringForSql = require('./escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'beob'
-})
 
 module.exports = (request, callback) => {
   const apId = escapeStringForSql(request.params.apId)
@@ -236,8 +231,14 @@ module.exports = (request, callback) => {
     }
   }
   // Daten abfragen
-  connection.query(
-    sql,
-    (err, data) => callback(err, data)
-  )
+  // get a pg client from the connection pool
+  pg.connect(connectionString, (error, apfDb, done) => {
+    if (error) {
+      if (apfDb) done(apfDb)
+      console.log('an error occured when trying to connect to db apflora')
+    }
+    apfDb.query(sql, (error, result) => {
+      callback(error, result.rows)
+    })
+  })
 }

@@ -27,8 +27,8 @@ module.exports = (request, callback) => {
         apflora.tpop."TPopNr",
         apflora.tpop."TPopFlurname",
         sqrt(
-          power((beob.beob_evab."COORDONNEE_FED_E" - apflora.tpop."TPopXKoord"), 2)
-          + power((beob.beob_evab."COORDONNEE_FED_N" - apflora.tpop."TPopYKoord"), 2)
+          power(beob.beob_evab."COORDONNEE_FED_E" - apflora.tpop."TPopXKoord", 2)
+          + power(beob.beob_evab."COORDONNEE_FED_N" - apflora.tpop."TPopYKoord", 2)
         ) AS "DistZuTPop"
       FROM
         beob.beob_evab
