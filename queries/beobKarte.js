@@ -129,42 +129,55 @@ module.exports = (request, callback) => {
       // die nicht zuzuordnenden
       sql = `
       SELECT
-        beob.beob_evab.NO_NOTE_PROJET AS NO_NOTE,
-        beob.beob_evab.NO_ISFS,
-        beob.beob_evab.COORDONNEE_FED_E AS X,
-        beob.beob_evab.COORDONNEE_FED_N AS Y,
-        beob.beob_evab.A_NOTE,
-        beob.beob_bereitgestellt.Datum AS Datum,
-        beob.beob_bereitgestellt.Autor,
-        beob.beob_evab.Projekt_ZH AS PROJET,
-        beob.beob_evab.DESC_LOCALITE_ AS DESC_LOCALITE,
-        apflora.beobzuordnung.TPopId
-      FROM (beob.beob_bereitgestellt
-        INNER JOIN beob.beob_evab ON beob.beob_bereitgestellt.NO_NOTE_PROJET = beob.beob_evab.NO_NOTE_PROJET)
-        LEFT JOIN apflora.beobzuordnung ON beob.beob_evab.NO_NOTE_PROJET = apflora.beobzuordnung.NO_NOTE
-      WHERE beob.beob_evab.COORDONNEE_FED_E > 0
-        AND beob.beob_evab.COORDONNEE_FED_N > 0
-        AND apflora.beobzuordnung.beobNichtZuordnen = 1
-        AND beob.beob_evab.NO_ISFS = ${apId}
+        beob.beob_evab."NO_NOTE_PROJET" AS "NO_NOTE",
+        beob.beob_evab."NO_ISFS",
+        beob.beob_evab."COORDONNEE_FED_E" AS "X",
+        beob.beob_evab."COORDONNEE_FED_N" AS "Y",
+        beob.beob_evab."A_NOTE",
+        beob.beob_bereitgestellt."Datum" AS "Datum",
+        beob.beob_bereitgestellt."Autor",
+        beob.beob_evab."Projekt_ZH" AS "PROJET",
+        beob.beob_evab."DESC_LOCALITE_" AS "DESC_LOCALITE",
+        apflora.beobzuordnung."TPopId"
+      FROM
+        (beob.beob_bereitgestellt
+        INNER JOIN
+          beob.beob_evab
+          ON beob.beob_bereitgestellt."NO_NOTE_PROJET" = beob.beob_evab."NO_NOTE_PROJET")
+        LEFT JOIN
+          apflora.beobzuordnung
+          ON beob.beob_evab."NO_NOTE_PROJET" = apflora.beobzuordnung."NO_NOTE"
+      WHERE
+        beob.beob_evab."COORDONNEE_FED_E" > 0
+        AND beob.beob_evab."COORDONNEE_FED_N" > 0
+        AND apflora.beobzuordnung."BeobNichtZuordnen" = 1
+        AND beob.beob_evab."NO_ISFS" = ${apId}
       UNION SELECT
-        beob.beob_infospezies.NO_NOTE,
-        beob.beob_infospezies.NO_ISFS,
-        beob.beob_infospezies.FNS_XGIS AS X,
-        beob.beob_infospezies.FNS_YGIS AS Y,
-        beob.beob_infospezies.A_NOTE,
-        beob.beob_bereitgestellt.Datum AS Datum,
-        beob.beob_bereitgestellt.Autor,
-        beob.beob_infospezies.PROJET,
-        beob.beob_infospezies.DESC_LOCALITE,
-        apflora.beobzuordnung.TPopId
-      FROM (beob.beob_infospezies
-        INNER JOIN beob.beob_bereitgestellt ON beob.beob_infospezies.NO_NOTE = beob.beob_bereitgestellt.NO_NOTE)
-        LEFT JOIN apflora.beobzuordnung ON beob.beob_infospezies.NO_NOTE = apflora.beobzuordnung.NO_NOTE
-      WHERE beob.beob_infospezies.FNS_XGIS > 0
-        AND beob.beob_infospezies.FNS_YGIS > 0
-        AND apflora.beobzuordnung.beobNichtZuordnen = 1
-        AND beob.beob_infospezies.NO_ISFS = ${apId}
-      ORDER BY Datum DESC
+        to_char(beob.beob_infospezies."NO_NOTE", '9999999'),
+        beob.beob_infospezies."NO_ISFS",
+        beob.beob_infospezies."FNS_XGIS" AS "X",
+        beob.beob_infospezies."FNS_YGIS" AS "Y",
+        to_char(beob.beob_infospezies."A_NOTE", '9999999'),
+        beob.beob_bereitgestellt."Datum" AS "Datum",
+        beob.beob_bereitgestellt."Autor",
+        beob.beob_infospezies."PROJET",
+        beob.beob_infospezies."DESC_LOCALITE",
+        apflora.beobzuordnung."TPopId"
+      FROM
+        (beob.beob_infospezies
+        INNER JOIN
+          beob.beob_bereitgestellt
+          ON beob.beob_infospezies."NO_NOTE" = beob.beob_bereitgestellt."NO_NOTE")
+        LEFT JOIN
+          apflora.beobzuordnung
+          ON to_char(beob.beob_infospezies."NO_NOTE", '9999999') = apflora.beobzuordnung."NO_NOTE"
+      WHERE
+        beob.beob_infospezies."FNS_XGIS" > 0
+        AND beob.beob_infospezies."FNS_YGIS" > 0
+        AND apflora.beobzuordnung."BeobNichtZuordnen" = 1
+        AND beob.beob_infospezies."NO_ISFS" = ${apId}
+      ORDER BY
+        "Datum" DESC
       LIMIT 100`
     } else {
       // die nicht beurteilten
