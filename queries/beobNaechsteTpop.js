@@ -16,18 +16,25 @@ module.exports = (request, callback) => {
   const Y = escapeStringForSql(request.params.Y)
 
   connection.query(
-    `SELECT
-      PopNr,
-      TPopNr,
-      TPopId,
-      TPopFlurname,
-      SQRT((${X} - TPopXKoord) * (${X} - TPopXKoord) + (${Y} - TPopYKoord) * (${Y} - TPopYKoord)) AS DistZuTPop
-    FROM pop
-      INNER JOIN tpop ON pop.PopId = tpop.PopId
-    WHERE ApArtId = ${apId}
-      AND TPopXKoord IS NOT NULL
-      AND TPopYKoord IS NOT NULL
-    ORDER BY DistzuTPop
+    `
+    SELECT
+      apflora.pop."PopNr",
+      apflora.tpop."TPopNr",
+      apflora.tpop."TPopId",
+      apflora.tpop."TPopFlurname",
+      SQRT(
+        power(${X} - apflora.tpop."TPopXKoord", 2) + power(${Y} - apflora.tpop."TPopYKoord", 2)
+      ) AS "DistZuTPop"
+    FROM apflora.pop
+      INNER JOIN
+        apflora.tpop
+        ON apflora.pop."PopId" = apflora.tpop."PopId"
+    WHERE
+      apflora.pop."ApArtId" = ${apId}
+      AND apflora.tpop."TPopXKoord" IS NOT NULL
+      AND apflora.tpop."TPopYKoord" IS NOT NULL
+    ORDER BY
+      "DistzuTPop"
     LIMIT 1`,
     (err, data) => callback(err, data)
   )
