@@ -65,11 +65,11 @@ module.exports = (request, callback) => {
     // tpopId wurde übergeben > auf tpop filtern
     sql = `
     SELECT
-      beob.beob_infospezies."NO_NOTE",
+      to_char(beob.beob_infospezies."NO_NOTE", '9999999'),
       beob.beob_infospezies."NO_ISFS",
       beob.beob_infospezies."FNS_XGIS" AS "X",
       beob.beob_infospezies."FNS_YGIS" AS "Y",
-      beob.beob_infospezies."A_NOTE",
+      to_char(beob.beob_infospezies."A_NOTE", '9999999'),
       beob.beob_bereitgestellt."Datum" AS "Datum",
       beob.beob_bereitgestellt."Autor",
       beob.beob_infospezies."PROJET",
@@ -87,7 +87,7 @@ module.exports = (request, callback) => {
         INNER JOIN
           apflora.beobzuordnung
           ON apflora.tpop."TPopId" = apflora.beobzuordnung."TPopId")
-        ON beob.beob_infospezies."NO_NOTE" = apflora.beobzuordnung."NO_NOTE"
+        ON to_char(beob.beob_infospezies."NO_NOTE", '9999999') = apflora.beobzuordnung."NO_NOTE"
     WHERE
       beob.beob_infospezies."FNS_XGIS" > 0
       AND beob.beob_infospezies."FNS_YGIS" > 0
