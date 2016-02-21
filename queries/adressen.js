@@ -20,6 +20,7 @@ module.exports = (request, callback) => {
       ORDER BY
         "AdrName"`
     apfDb.query(sql, (error, result) => {
+      // console.log('adressen length', result.rows.length)
       callback(error, result.rows)
     })
   })
