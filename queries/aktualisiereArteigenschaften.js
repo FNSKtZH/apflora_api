@@ -30,7 +30,8 @@ module.exports = (req, reply) => {
     uri: 'http://arteigenschaften.ch/artendb/_design/artendb/_list/export_apflora/flora?include_docs=true',
     json: true
   }, (error, response, body) => {
-    if (error) throw error
+    if (error) console.log(error)
+    // console.log('get arteigenschaften response', response)
     if (response && response.statusCode === 200) {
       pg.connect(connectionString, (error, apfDb, done) => {
         if (error) {
@@ -39,9 +40,9 @@ module.exports = (req, reply) => {
         }
         // empty table
         apfDb.query(
-          `TRUNCATE TABLE beob.adb_eigenschaften`,
+          'TRUNCATE TABLE beob.adb_eigenschaften',
           (err) => {
-            if (err) throw err
+            if (err) console.log(err)
             // Daten müssen in mehrere Teile aufgeteilt werden
             // sonst gibt es bei der Verarbeitung Abstürze
             // Idee: mit async.series automatisieren
@@ -52,7 +53,9 @@ module.exports = (req, reply) => {
             const eigenschaftenString3 = createInsertSqlFromObjectArray(artenArray[3])
             const eigenschaftenString4 = createInsertSqlFromObjectArray(artenArray[4])
             const sqlBase = `
-              INSERT INTO beob.adb_eigenschaften ("GUID", "TaxonomieId", "Familie", "Artname", "NameDeutsch", "Status", "Artwert", "KefArt", "KefKontrolljahr")
+              INSERT INTO
+                beob.adb_eigenschaften
+                ("GUID", "TaxonomieId", "Familie", "Artname", "NameDeutsch", "Status", "Artwert", "KefArt", "KefKontrolljahr")
               VALUES `
 
             // add new values

@@ -17,6 +17,21 @@ global.describe('/adressen', () => {
   })
 })
 
+global.describe('/aktualisiereArteigenschaften', function () {
+  // takes about 33 seconds!
+  this.timeout(100000)
+  global.it('should update Arteigenschaften', (done) => {
+    server
+      .get('/aktualisiereArteigenschaften')
+      .end((err, res) => {
+        if (err) throw err
+        res.status.should.equal(200)
+        res.error.should.equal(false)
+        done()
+      })
+  })
+})
+
 global.describe('/ap=900', () => {
   global.it('should return 1 row with ApArtId 900', (done) => {
     server

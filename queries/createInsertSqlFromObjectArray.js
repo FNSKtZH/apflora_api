@@ -6,9 +6,14 @@ const escapeStringForSql = require('./escapeStringForSql')
 module.exports = (array) => {
   let eigenschaftenString = ''
 
-  _.head(array, 6000).forEach((object, index) => {
+  array.forEach((object, index) => {
     if (index > 0) eigenschaftenString += ','
     eigenschaftenString += '('
+    // ensure length of varchars
+    if (object.Status) object.Status = object.Status.substring(0, 47)
+    if (object.Familie) object.Familie = object.Familie.substring(0, 100)
+    if (object.Artname) object.Artname = object.Artname.substring(0, 100)
+    if (object.NameDeutsch) object.NameDeutsch = object.NameDeutsch.substring(0, 100)
 
     // sicherstellen, dass strings keine unerlaubten Zeichen enthalten
     Object.keys(object).forEach((key) => {
