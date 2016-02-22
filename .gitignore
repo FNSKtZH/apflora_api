@@ -85,6 +85,7 @@ dist/
 .idea/
 npm-debug.log
 dbPass.json
+appPass.json
 sftpPass.json
 *.map
 *.TMP
