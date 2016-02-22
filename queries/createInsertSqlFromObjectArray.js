@@ -9,6 +9,7 @@ module.exports = (array) => {
   array.forEach((object, index) => {
     if (index > 0) eigenschaftenString += ','
     eigenschaftenString += '('
+
     // ensure length of varchars
     if (object.Status) object.Status = object.Status.substring(0, 47)
     if (object.Familie) object.Familie = object.Familie.substring(0, 100)

@@ -10,19 +10,6 @@ const pg = require('pg')
 const config = require('../configuration')
 const connectionString = config.pg.connectionString
 
-// teilt einen Array in gleiche Teile
-const split = (a, n) => {
-  let len = a.length
-  let out = []
-  let i = 0
-  let size
-  while (i < len) {
-    size = Math.ceil((len - i) / n--)
-    out.push(a.slice(i, i += size))
-  }
-  return out
-}
-
 module.exports = (req, reply) => {
   // neue Daten holen
   request({
@@ -43,15 +30,7 @@ module.exports = (req, reply) => {
           'TRUNCATE TABLE beob.adb_eigenschaften',
           (err) => {
             if (err) console.log(err)
-            // Daten müssen in mehrere Teile aufgeteilt werden
-            // sonst gibt es bei der Verarbeitung Abstürze
-            // Idee: mit async.series automatisieren
-            const artenArray = split(body, 5)
-            const eigenschaftenString0 = createInsertSqlFromObjectArray(artenArray[0])
-            const eigenschaftenString1 = createInsertSqlFromObjectArray(artenArray[1])
-            const eigenschaftenString2 = createInsertSqlFromObjectArray(artenArray[2])
-            const eigenschaftenString3 = createInsertSqlFromObjectArray(artenArray[3])
-            const eigenschaftenString4 = createInsertSqlFromObjectArray(artenArray[4])
+            const eigenschaftenString = createInsertSqlFromObjectArray(body)
             const sqlBase = `
               INSERT INTO
                 beob.adb_eigenschaften
@@ -59,42 +38,14 @@ module.exports = (req, reply) => {
               VALUES `
 
             // add new values
-            let sql = sqlBase + eigenschaftenString0
+            let sql = sqlBase + eigenschaftenString
 
             apfDb.query(
               sql,
               (err) => {
                 if (err) throw err
-                sql = sqlBase + eigenschaftenString1
-                apfDb.query(
-                  sql,
-                  (err) => {
-                    if (err) throw err
-                    sql = sqlBase + eigenschaftenString2
-                    apfDb.query(
-                      sql,
-                      (err) => {
-                        if (err) throw err
-                        sql = sqlBase + eigenschaftenString3
-                        apfDb.query(
-                          sql,
-                          (err) => {
-                            if (err) throw err
-                            sql = sqlBase + eigenschaftenString4
-                            apfDb.query(
-                              sql,
-                              (err) => {
-                                if (err) throw err
-                                reply('Arteigenschaften hinzugefügt')
-                                apfDb.end()
-                              }
-                            )
-                          }
-                        )
-                      }
-                    )
-                  }
-                )
+                reply('Arteigenschaften hinzugefügt')
+                apfDb.end()
               }
             )
           }
