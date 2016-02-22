@@ -23,8 +23,6 @@ module.exports = (request, callback) => {
       WHERE
         "UserName" = '${userName}'
         AND "Passwort" = '${password}'`
-    apfDb.query(sql, (error, result) => {
-      callback(error, result.rows)
-    })
+    apfDb.query(sql, (error, result) => callback(error, result.rows))
   })
 }
