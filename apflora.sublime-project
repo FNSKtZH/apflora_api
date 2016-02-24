@@ -29,6 +29,10 @@
 			"path": "sql"
 		},
 		{
+			"follow_symlinks": true,
+			"path": "test"
+		},
+		{
 			"file_exclude_patterns":
 			[
 				"jquery.js",
