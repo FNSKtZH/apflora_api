@@ -72,11 +72,24 @@ global.describe('/ap=900', () => {
   })
 })
 
+global.describe('delete from table', () => {
+  global.it('should delete the row with ApArtId 150', (done) => {
+    server
+      .delete('/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150')
+      .end((err, res) => {
+        if (err) throw err
+        console.log('res from delete', res)
+        res.status.should.be.oneOf(200, 404)
+        done()
+      })
+  })
+})
+
 global.describe('/apInsert', () => {
-  global.it('should return 1 row with ApArtId 900', (done) => {
+  global.it('should insert 1 row with ApArtId 150', (done) => {
     const name = appPassFile.user
     server
-      .get('/apInsert/apId=150/user=${name}')
+      .get(`/apInsert/apId=150/user=${name}`)
       .end((err, res) => {
         if (err) throw err
         res.body.length.should.equal(1)

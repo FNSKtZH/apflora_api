@@ -25,7 +25,8 @@ module.exports = (request, callback) => {
       INSERT INTO
         apflora.ap ("ApArtId", "MutWann", "MutWer")
       VALUES
-        (${apId}, '${date}', '${user}')`,
+        (${apId}, '${date}', '${user}')
+      ON CONFLICT DO NOTHING`,
       (err, data) => {
         if (err) callback(err, null)
         // Artwert holen
