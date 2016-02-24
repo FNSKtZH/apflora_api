@@ -72,7 +72,21 @@ global.describe('/ap=900', () => {
   })
 })
 
-global.describe('/apKarte/apId=900', () => {
+global.describe('/apInsert', () => {
+  global.it('should return 1 row with ApArtId 900', (done) => {
+    const name = appPassFile.user
+    server
+      .get('/apInsert/apId=150/user=${name}')
+      .end((err, res) => {
+        if (err) throw err
+        res.body.length.should.equal(1)
+        res.body[0].ApArtId.should.equal(900)
+        done()
+      })
+  })
+})
+
+global.describe('/apKarte', () => {
   global.it('should return more than 100 rows with ApArtId 900', (done) => {
     server
       .get('/apKarte/apId=900')
