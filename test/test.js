@@ -4,7 +4,7 @@ const supertest = require('supertest')
 const should = require('should')
 const appPassFile = require('../appPass.json')
 
-const server = supertest.agent('http://0.0.0.0:4001')
+const server = supertest.agent('http://localhost:4001')
 
 global.describe('/adressen', () => {
   global.it('should return more than 140 rows', (done) => {
