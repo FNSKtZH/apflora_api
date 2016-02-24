@@ -139,3 +139,17 @@ global.describe('/apliste', () => {
       })
   })
 })
+
+global.describe('/beobDistzutpopEvab', function () {
+  // takes about 33 seconds!
+  this.timeout(100000)
+  global.it('should return more than 100 rows for a sighting of Aceras anthropophoru', (done) => {
+    server
+      .get('/beobDistzutpopEvab/beobId=9CAD7177-BDD6-4E94-BC3B-F18CDE7EEA58')
+      .end((err, res) => {
+        if (err) throw err
+        res.body.length.should.be.above(100)
+        done()
+      })
+  })
+})
