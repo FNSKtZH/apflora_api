@@ -8,12 +8,15 @@ const escapeStringForSql = require('./escapeStringForSql')
 module.exports = (request, callback) => {
   const beobId = escapeStringForSql(request.params.beobId)
 
+  console.log('beobId', beobId)
+
   // get a pg client from the connection pool
   pg.connect(connectionString, (error, apfDb, done) => {
     if (error) {
       if (apfDb) done(apfDb)
       console.log('an error occured when trying to connect to db apflora')
     }
+    console.log('connected to db apflora')
     const sql = `
       SELECT
         beob.beob_evab."NO_NOTE_PROJET",
@@ -47,7 +50,9 @@ module.exports = (request, callback) => {
       ORDER BY
         "DistZuTPop",
         apflora.tpop."TPopFlurname"`
+    console.log('sql', sql)
     apfDb.query(sql, (error, result) => {
+      console.log('result.rows[0]', result.rows[0])
       callback(error, result.rows)
     })
   })
