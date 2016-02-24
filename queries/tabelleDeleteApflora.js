@@ -18,9 +18,9 @@ module.exports = (request, callback) => {
     }
     const sql = `
       DELETE FROM
-        ${tabelle}
+        apflora.${tabelle}
       WHERE
-        "${tabelleIdFeld}"" = '${tabelleId}'`
+        "${tabelleIdFeld}" = '${tabelleId}'`
     apfDb.query(sql, (error, result) => {
       if (error) callback(error, null)
       callback(error, result.rows)

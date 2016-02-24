@@ -78,7 +78,6 @@ global.describe('delete from table', () => {
       .delete('/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150')
       .end((err, res) => {
         if (err) throw err
-        console.log('res from delete', res)
         res.status.should.be.oneOf(200, 404)
         done()
       })
@@ -89,11 +88,10 @@ global.describe('/apInsert', () => {
   global.it('should insert 1 row with ApArtId 150', (done) => {
     const name = appPassFile.user
     server
-      .get(`/apInsert/apId=150/user=${name}`)
+      .post(`/apInsert/apId=150/user=${name}`)
       .end((err, res) => {
         if (err) throw err
-        res.body.length.should.equal(1)
-        res.body[0].ApArtId.should.equal(900)
+        res.status.should.equal(200)
         done()
       })
   })
