@@ -18,8 +18,8 @@ global.describe('/adressen', function () {
   })
 })
 
-/* dont test every time because of length
-global.describe('/aktualisiereArteigenschaften', function () {
+// dont test every time because of length
+global.describe.skip('/aktualisiereArteigenschaften', function () {
   // takes about 33 seconds!
   this.timeout(100000)
   global.it('should update Arteigenschaften', function (done) {
@@ -32,7 +32,7 @@ global.describe('/aktualisiereArteigenschaften', function () {
         done()
       })
   })
-})*/
+})
 
 global.describe('/anmeldung', function () {
   global.it('should accept known user', function (done) {
@@ -110,6 +110,19 @@ global.describe('/apKarte', function () {
   })
 })
 
+global.describe('/beobDistzutpopEvab', function () {
+  this.timeout(5000)
+  global.it('should return more than 100 rows for a sighting of Aceras anthropophorum', function (done) {
+    server
+      .get('/beobDistzutpopEvab/beobId=9CAD7177-BDD6-4E94-BC3B-F18CDE7EEA58')
+      .end((err, res) => {
+        if (err) throw err
+        res.body.length.should.be.above(100)
+        done()
+      })
+  })
+})
+
 global.describe('/apliste', function () {
   global.it('should return more than 50 rows for programmAp', function (done) {
     server
@@ -117,15 +130,6 @@ global.describe('/apliste', function () {
       .end((err, res) => {
         if (err) throw err
         res.body.length.should.be.above(50)
-        done()
-      })
-  })
-  global.it('should return more than 7400 rows for programmNeu', function (done) {
-    server
-      .get('/apliste/programm=programmNeu')
-      .end((err, res) => {
-        if (err) throw err
-        res.body.length.should.be.above(7400)
         done()
       })
   })
@@ -138,17 +142,12 @@ global.describe('/apliste', function () {
         done()
       })
   })
-})
-
-global.describe('/beobDistzutpopEvab', function () {
-  this.timeout(5000)
-  global.it('should return more than 100 rows for a sighting of Aceras anthropophorum', function (done) {
+  global.it('should return more than 7400 rows for programmNeu', function (done) {
     server
-      .get('/beobDistzutpopEvab/beobId=9CAD7177-BDD6-4E94-BC3B-F18CDE7EEA58')
+      .get('/apliste/programm=programmNeu')
       .end((err, res) => {
         if (err) throw err
-        console.log('res from beobDistzutpopEvab', res)
-        res.body.length.should.be.above(100)
+        res.body.length.should.be.above(7400)
         done()
       })
   })
