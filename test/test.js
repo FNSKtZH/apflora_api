@@ -59,7 +59,7 @@ global.describe('/anmeldung', () => {
   })
 })
 
-global.describe('/ap=900', () => {
+global.describe('/ap', () => {
   global.it('should return 1 row with ApArtId 900', (done) => {
     server
       .get('/ap=900')
@@ -72,8 +72,8 @@ global.describe('/ap=900', () => {
   })
 })
 
-global.describe('delete from table', () => {
-  global.it('should delete the row with ApArtId 150', (done) => {
+global.describe('/apflora (delete)', () => {
+  global.it('should delete from table ap the row with ApArtId 150', (done) => {
     server
       .delete('/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150')
       .end((err, res) => {
@@ -110,8 +110,8 @@ global.describe('/apKarte', () => {
   })
 })
 
-global.describe('/apliste/programm=programmAp', () => {
-  global.it('should return more than 50 rows', (done) => {
+global.describe('/apliste', () => {
+  global.it('should return more than 50 rows for programmAp', (done) => {
     server
       .get('/apliste/programm=programmAp')
       .end((err, res) => {
@@ -120,10 +120,7 @@ global.describe('/apliste/programm=programmAp', () => {
         done()
       })
   })
-})
-
-global.describe('/apliste/programm=programmNeu', () => {
-  global.it('should return more than 7400 rows', (done) => {
+  global.it('should return more than 7400 rows for programmNeu', (done) => {
     server
       .get('/apliste/programm=programmNeu')
       .end((err, res) => {
@@ -132,10 +129,7 @@ global.describe('/apliste/programm=programmNeu', () => {
         done()
       })
   })
-})
-
-global.describe('/apliste/programm=programmAlle', () => {
-  global.it('should return more than 520 rows', (done) => {
+  global.it('should return more than 520 rows for programmAlle', (done) => {
     server
       .get('/apliste/programm=programmAlle')
       .end((err, res) => {
