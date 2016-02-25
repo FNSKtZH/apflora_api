@@ -236,3 +236,26 @@ global.describe('/beobZuordnen', function () {
       })
   })
 })
+
+global.describe('/exportView', function () {
+  global.it('should return text/x-csv for view v_ap', function (done) {
+    server
+      .get('/exportView/csv/view=v_ap/filename=test')
+      .end((err, res) => {
+        if (err) throw err
+        res.status.should.equal(200)
+        res.type.should.equal('text/x-csv')
+        done()
+      })
+  })
+  global.it('should return text/x-csv for view v_ap and ApArtId 206200', function (done) {
+    server
+      .get('/exportView/csv/view=v_ap/filename=test/206200')
+      .end((err, res) => {
+        if (err) throw err
+        res.status.should.equal(200)
+        res.type.should.equal('text/x-csv')
+        done()
+      })
+  })
+})

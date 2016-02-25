@@ -8,7 +8,7 @@ const escapeStringForSql = require('./escapeStringForSql')
 module.exports = (request, callback) => {
   const view = escapeStringForSql(request.params.view) // Name des Views, aus dem die Daten geholt werden sollen
   const apId = escapeStringForSql(request.params.apId)
-  const sql = apId ? `SELECT * FROM ${view} WHERE ApArtId = ${apId}` : `SELECT * FROM ${view}`
+  const sql = apId ? `SELECT * FROM views.${view} WHERE "ApArtId" = ${apId}` : `SELECT * FROM views.${view}`
 
   // get a pg client from the connection pool
   pg.connect(connectionString, (error, apfDb, done) => {
@@ -16,8 +16,9 @@ module.exports = (request, callback) => {
       if (apfDb) done(apfDb)
       console.log('an error occured when trying to connect to db apflora')
     }
-    apfDb.query(sql, (error, data) => {
+    apfDb.query(sql, (error, result) => {
       // null-werte eliminieren
+      const data = result.rows
       data.forEach((object) => {
         Object.keys(object).forEach((key) => {
           if (object[key] === null) object[key] = ''
