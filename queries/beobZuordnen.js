@@ -41,11 +41,11 @@ module.exports = (request, callback) => {
       AND apflora.beobzuordnung."BeobNichtZuordnen" Is Null
       AND beob.beob_evab."NO_ISFS" = ${apId}
     UNION SELECT
-      beob.beob_infospezies."NO_NOTE",
+      to_char(beob.beob_infospezies."NO_NOTE", 'FM9999999'),
       beob.beob_infospezies."NO_ISFS",
       beob.beob_infospezies."FNS_XGIS" AS "X",
       beob.beob_infospezies."FNS_YGIS" AS "Y",
-      beob.beob_infospezies."A_NOTE",
+      to_char(beob.beob_infospezies."A_NOTE", 'FM9999999'),
       beob.beob_bereitgestellt."Datum" AS "Datum",
       beob.beob_bereitgestellt."Autor",
       beob.beob_infospezies."PROJET",

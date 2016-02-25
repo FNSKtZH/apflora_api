@@ -10,7 +10,6 @@ const should = require('should')
 const appPassFile = require('../appPass.json')
 
 const app = require('../server.js')
-// app.address = () => '127.0.0.1:4001'
 
 global.describe('hooks', function () {
   global.before(function () {
@@ -18,10 +17,6 @@ global.describe('hooks', function () {
       if (err) throw err
       console.log('Server running at:', app.info.uri)
     })
-    /*app.start(function (err) {
-      if (err) throw err
-      console.log('Server running at:', app.info.uri)
-    })*/
   })
 })
 
@@ -32,15 +27,13 @@ global.describe('hooks', function () {
 // const server = supertest.agent('http://127.0.0.1:4001')
 const server = supertest('http://127.0.0.1:4001')
 
-global.describe('/adressen', function () {
+global.describe.skip('/adressen', function () {
   global.it('should return more than 140 rows', function (done) {
     server
       .get('/adressen')
       .end((err, res) => {
         if (err) throw err
         res.body.length.should.be.above(140)
-        console.log('err adressen', err)
-        // console.log('res adressen', res)
         done()
       })
   })
@@ -62,7 +55,7 @@ global.describe.skip('/aktualisiereArteigenschaften', function () {
   })
 })
 
-global.describe('/anmeldung', function () {
+global.describe.skip('/anmeldung', function () {
   global.it('should accept known user', function (done) {
     const name = appPassFile.user
     const pwd = appPassFile.pass
@@ -72,8 +65,6 @@ global.describe('/anmeldung', function () {
         if (err) throw err
         res.status.should.equal(200)
         res.body.length.should.equal(1)
-        console.log('err anmeldung 1', err)
-        // console.log('res anmeldung 1', res)
         done()
       })
   })
@@ -84,14 +75,12 @@ global.describe('/anmeldung', function () {
         if (err) throw err
         res.status.should.equal(200)
         res.body.length.should.equal(0)
-        console.log('err anmeldung 2', err)
-        // console.log('res anmeldung 2', res)
         done()
       })
   })
 })
 
-global.describe('/ap', function () {
+global.describe.skip('/ap', function () {
   global.it('should return 1 row with ApArtId 900', function (done) {
     server
       .get('/ap=900')
@@ -99,8 +88,6 @@ global.describe('/ap', function () {
         if (err) throw err
         res.body.length.should.equal(1)
         res.body[0].ApArtId.should.equal(900)
-        console.log('err ap', err)
-        // console.log('res ap', res)
         done()
       })
   })
@@ -113,8 +100,6 @@ global.describe.skip('/apflora (delete)', function () {
       .end((err, res) => {
         if (err) throw err
         res.status.should.be.oneOf(200, 404)
-        console.log('err apflora (delete)', err)
-        console.log('res apflora (delete)', res)
         done()
       })
   })
@@ -128,8 +113,6 @@ global.describe.skip('/apInsert', function () {
       .end((err, res) => {
         if (err) throw err
         res.status.should.equal(200)
-        console.log('err apInsert', err)
-        // console.log('res apInsert', res)
         done()
       })
   })
@@ -143,8 +126,6 @@ global.describe.skip('/apKarte', function () {
         if (err) throw err
         res.body.length.should.be.above(100)
         res.body[0].ApArtId.should.equal(900)
-        console.log('err apKarte', err)
-        // console.log('res apKarte', res)
         done()
       })
   })
@@ -158,8 +139,6 @@ global.describe.skip('/apliste', function () {
       .end((err, res) => {
         if (err) throw err
         res.body.length.should.be.above(50)
-        console.log('err apliste 1', err)
-        console.log('res apliste 1', res)
         done()
       })
   })
@@ -169,8 +148,6 @@ global.describe.skip('/apliste', function () {
       .end((err, res) => {
         if (err) throw err
         res.body.length.should.be.above(520)
-        console.log('err apliste 2', err)
-        // console.log('res apliste 2', res)
         done()
       })
   })
@@ -180,8 +157,6 @@ global.describe.skip('/apliste', function () {
       .end((err, res) => {
         if (err) throw err
         res.body.length.should.be.above(7400)
-        console.log('err apliste 3', err)
-        // console.log('res apliste 3', res)
         done()
       })
   })
@@ -194,8 +169,6 @@ global.describe.skip('/beobDistzutpopEvab', function () {
       .end((err, res) => {
         if (err) throw err
         res.body.length.should.be.above(100)
-        // console.log('err beobDistzutpopEvab', err)
-        console.log('res beobDistzutpopEvab', res)
         done()
       })
   })
@@ -247,6 +220,18 @@ global.describe('/beobNaechsteTpop', function () {
       .end((err, res) => {
         if (err) throw err
         res.body.length.should.equal(1)
+        done()
+      })
+  })
+})
+
+global.describe('/beobZuordnen', function () {
+  global.it('should return more than 300 rows for ApId 206200', function (done) {
+    server
+      .get('/beobZuordnen/apId=206200')
+      .end((err, res) => {
+        if (err) throw err
+        res.body.length.should.be.above(300)
         done()
       })
   })
