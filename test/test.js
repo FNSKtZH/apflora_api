@@ -239,3 +239,15 @@ global.describe('/beobKarte', function () {
       })
   })
 })
+
+global.describe('/beobNaechsteTpop', function () {
+  global.it('should return one TPop for ApId 206200 and a set of koordinates', function (done) {
+    server
+      .get('/beobNaechsteTpop/apId=206200/X=682226/Y=268513')
+      .end((err, res) => {
+        if (err) throw err
+        res.body.length.should.equal(1)
+        done()
+      })
+  })
+})

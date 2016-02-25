@@ -23,7 +23,8 @@ module.exports = (request, callback) => {
         apflora.tpop."TPopId",
         apflora.tpop."TPopFlurname",
         SQRT(
-          power(${X} - apflora.tpop."TPopXKoord", 2) + power(${Y} - apflora.tpop."TPopYKoord", 2)
+          power(${X} - apflora.tpop."TPopXKoord", 2) +
+          power(${Y} - apflora.tpop."TPopYKoord", 2)
         ) AS "DistZuTPop"
       FROM apflora.pop
         INNER JOIN
@@ -34,7 +35,7 @@ module.exports = (request, callback) => {
         AND apflora.tpop."TPopXKoord" IS NOT NULL
         AND apflora.tpop."TPopYKoord" IS NOT NULL
       ORDER BY
-        "DistzuTPop"
+        "DistZuTPop"
       LIMIT 1`
     apfDb.query(sql, (error, result) => {
       callback(error, result.rows)
