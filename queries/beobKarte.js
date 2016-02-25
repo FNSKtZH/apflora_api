@@ -16,11 +16,11 @@ module.exports = (request, callback) => {
     // beobid wurde übergeben > auf eine Beobachtung filtern
     sql = `
     SELECT
-      to_char(beob_infospezies."NO_NOTE", '9999999'),
+      to_char(beob_infospezies."NO_NOTE", 'FM9999999') AS "NO_NOTE",
       beob_infospezies."NO_ISFS",
       beob_infospezies."FNS_XGIS" AS "X",
       beob_infospezies."FNS_YGIS" AS "Y",
-      to_char(beob_infospezies."A_NOTE", '9999999'),
+      to_char(beob_infospezies."A_NOTE", 'FM9999999') AS "A_NOTE",
       beob_bereitgestellt."Datum" AS "Datum",
       beob_bereitgestellt."Autor",
       beob_infospezies."PROJET",
@@ -60,11 +60,11 @@ module.exports = (request, callback) => {
     // tpopId wurde übergeben > auf tpop filtern
     sql = `
     SELECT
-      to_char(beob.beob_infospezies."NO_NOTE", '9999999'),
+      to_char(beob.beob_infospezies."NO_NOTE", 'FM9999999') AS "NO_NOTE",
       beob.beob_infospezies."NO_ISFS",
       beob.beob_infospezies."FNS_XGIS" AS "X",
       beob.beob_infospezies."FNS_YGIS" AS "Y",
-      to_char(beob.beob_infospezies."A_NOTE", '9999999'),
+      to_char(beob.beob_infospezies."A_NOTE", 'FM9999999') AS "A_NOTE",
       beob.beob_bereitgestellt."Datum" AS "Datum",
       beob.beob_bereitgestellt."Autor",
       beob.beob_infospezies."PROJET",
@@ -82,7 +82,7 @@ module.exports = (request, callback) => {
         INNER JOIN
           apflora.beobzuordnung
           ON apflora.tpop."TPopId" = apflora.beobzuordnung."TPopId")
-        ON to_char(beob.beob_infospezies."NO_NOTE", '9999999') = apflora.beobzuordnung."NO_NOTE"
+        ON to_char(beob.beob_infospezies."NO_NOTE", 'FM9999999') = apflora.beobzuordnung."NO_NOTE"
     WHERE
       beob.beob_infospezies."FNS_XGIS" > 0
       AND beob.beob_infospezies."FNS_YGIS" > 0
@@ -148,11 +148,11 @@ module.exports = (request, callback) => {
         AND apflora.beobzuordnung."BeobNichtZuordnen" = 1
         AND beob.beob_evab."NO_ISFS" = ${apId}
       UNION SELECT
-        to_char(beob.beob_infospezies."NO_NOTE", '9999999'),
+        to_char(beob.beob_infospezies."NO_NOTE", 'FM9999999') AS "NO_NOTE",
         beob.beob_infospezies."NO_ISFS",
         beob.beob_infospezies."FNS_XGIS" AS "X",
         beob.beob_infospezies."FNS_YGIS" AS "Y",
-        to_char(beob.beob_infospezies."A_NOTE", '9999999'),
+        to_char(beob.beob_infospezies."A_NOTE", 'FM9999999') AS "A_NOTE",
         beob.beob_bereitgestellt."Datum" AS "Datum",
         beob.beob_bereitgestellt."Autor",
         beob.beob_infospezies."PROJET",
@@ -165,7 +165,7 @@ module.exports = (request, callback) => {
           ON beob.beob_infospezies."NO_NOTE" = beob.beob_bereitgestellt."NO_NOTE")
         LEFT JOIN
           apflora.beobzuordnung
-          ON to_char(beob.beob_infospezies."NO_NOTE", '9999999') = apflora.beobzuordnung."NO_NOTE"
+          ON to_char(beob.beob_infospezies."NO_NOTE", 'FM9999999') = apflora.beobzuordnung."NO_NOTE"
       WHERE
         beob.beob_infospezies."FNS_XGIS" > 0
         AND beob.beob_infospezies."FNS_YGIS" > 0
@@ -202,11 +202,11 @@ module.exports = (request, callback) => {
         AND apflora.beobzuordnung."TPopId" Is Null
         AND beob.beob_evab."NO_ISFS" = ${apId}
       UNION SELECT
-        to_char(beob.beob_infospezies."NO_NOTE", '9999999'),
+        to_char(beob.beob_infospezies."NO_NOTE", 'FM9999999') AS "NO_NOTE",
         beob.beob_infospezies."NO_ISFS",
         beob.beob_infospezies."FNS_XGIS" AS "X",
         beob.beob_infospezies."FNS_YGIS" AS "Y",
-        to_char(beob.beob_infospezies."A_NOTE", '9999999'),
+        to_char(beob.beob_infospezies."A_NOTE", 'FM9999999') AS "A_NOTE",
         beob.beob_bereitgestellt."Datum" AS "Datum",
         beob.beob_bereitgestellt."Autor",
         beob.beob_infospezies."PROJET",
@@ -219,7 +219,7 @@ module.exports = (request, callback) => {
           ON beob.beob_infospezies."NO_NOTE" = beob.beob_bereitgestellt."NO_NOTE")
         LEFT JOIN
           apflora.beobzuordnung
-          ON to_char(beob.beob_infospezies."NO_NOTE", '9999999') = apflora.beobzuordnung."NO_NOTE"
+          ON to_char(beob.beob_infospezies."NO_NOTE", 'FM9999999') = apflora.beobzuordnung."NO_NOTE"
       WHERE
         beob.beob_infospezies."FNS_XGIS" > 0
         AND beob.beob_infospezies."FNS_YGIS" > 0
@@ -238,7 +238,11 @@ module.exports = (request, callback) => {
       console.log('an error occured when trying to connect to db apflora')
     }
     apfDb.query(sql, (error, result) => {
-      callback(error, result.rows)
+      if (error) {
+        callback(error, null)
+      } else {
+        callback(null, result.rows)
+      }
     })
   })
 }

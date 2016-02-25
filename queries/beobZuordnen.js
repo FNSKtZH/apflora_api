@@ -59,7 +59,7 @@ module.exports = (request, callback) => {
         ON beob.beob_infospezies."NO_NOTE" = beob.beob_bereitgestellt."NO_NOTE")
       LEFT JOIN
         apflora.beobzuordnung
-        ON to_char(beob.beob_infospezies."NO_NOTE", '9999999') = apflora.beobzuordnung."NO_NOTE")
+        ON to_char(beob.beob_infospezies."NO_NOTE", 'FM9999999') = apflora.beobzuordnung."NO_NOTE")
       LEFT JOIN
         apflora.tpop
         ON apflora.beobzuordnung."TPopId" = apflora.tpop."TPopId")

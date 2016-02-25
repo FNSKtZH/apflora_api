@@ -96,11 +96,6 @@ server.register(Inert, function () {
     }
   })
 
-  server.start(function (err) {
-    if (err) throw err
-    console.log('Server running at:', server.info.uri)
-  })
-
   server.route({
     method: 'GET',
     path: '/{path*}',
@@ -628,3 +623,10 @@ server.register(Inert, function () {
     }
   })
 })
+
+server.start(function (err) {
+  if (err) throw err
+  console.log('Server running at:', server.info.uri)
+})
+
+module.exports = server
