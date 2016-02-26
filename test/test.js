@@ -80,7 +80,7 @@ global.describe.skip('/anmeldung', function () {
   })
 })
 
-global.describe.skip('/ap', function () {
+global.describe('/ap', function () {
   global.it('should return 1 row with ApArtId 900', function (done) {
     server
       .get('/ap=900')
@@ -118,7 +118,7 @@ global.describe.skip('/apInsert', function () {
   })
 })
 
-global.describe.skip('/apKarte', function () {
+global.describe('/apKarte', function () {
   global.it('should return more than 100 rows with ApArtId 900', function (done) {
     server
       .get('/apKarte/apId=900')
@@ -174,7 +174,7 @@ global.describe.skip('/beobDistzutpopEvab', function () {
   })
 })
 
-global.describe('/beobKarte', function () {
+global.describe.skip('/beobKarte', function () {
   global.it('should return 1 row for beob_infospezies with NO_NOTE 214510', function (done) {
     server
       .get('/beobKarte/apId=/tpopId=/beobId=214510/nichtZuzuordnen=')
