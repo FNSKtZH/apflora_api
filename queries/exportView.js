@@ -17,6 +17,7 @@ module.exports = (request, callback) => {
       console.log('an error occured when trying to connect to db apflora')
     }
     apfDb.query(sql, (error, result) => {
+      if (error) callback(error, null)
       // null-werte eliminieren
       const data = result.rows
       data.forEach((object) => {
