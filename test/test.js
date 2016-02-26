@@ -80,7 +80,7 @@ global.describe.skip('/anmeldung', function () {
   })
 })
 
-global.describe('/ap', function () {
+global.describe.skip('/ap', function () {
   global.it('should return 1 row with ApArtId 900', function (done) {
     server
       .get('/ap=900')
@@ -118,7 +118,7 @@ global.describe.skip('/apInsert', function () {
   })
 })
 
-global.describe('/apKarte', function () {
+global.describe.skip('/apKarte', function () {
   global.it('should return more than 100 rows with ApArtId 900', function (done) {
     server
       .get('/apKarte/apId=900')
@@ -213,7 +213,7 @@ global.describe.skip('/beobKarte', function () {
   })
 })
 
-global.describe('/beobNaechsteTpop', function () {
+global.describe.skip('/beobNaechsteTpop', function () {
   global.it('should return one TPop for ApId 206200 and a set of koordinates', function (done) {
     server
       .get('/beobNaechsteTpop/apId=206200/X=682226/Y=268513')
@@ -225,7 +225,7 @@ global.describe('/beobNaechsteTpop', function () {
   })
 })
 
-global.describe('/beobZuordnen', function () {
+global.describe.skip('/beobZuordnen', function () {
   global.it('should return more than 300 rows for ApId 206200', function (done) {
     server
       .get('/beobZuordnen/apId=206200')
@@ -251,6 +251,19 @@ global.describe('/exportView', function () {
   global.it('should return text/x-csv for view v_ap and ApArtId 206200', function (done) {
     server
       .get('/exportView/csv/view=v_ap/filename=test/206200')
+      .end((err, res) => {
+        if (err) throw err
+        res.status.should.equal(200)
+        res.type.should.equal('text/x-csv')
+        done()
+      })
+  })
+})
+
+global.describe('/exportViewWhereIdIn', function () {
+  global.it('should return text/x-csv for view v_ap and ApId 900 and 206200', function (done) {
+    server
+      .get('/exportViewWhereIdIn/csv/view=v_ap/idName=ApArtId/idListe=900,206200/filename=test')
       .end((err, res) => {
         if (err) throw err
         res.status.should.equal(200)
