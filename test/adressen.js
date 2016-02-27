@@ -17,14 +17,14 @@ const expect = Code.expect
 // test
 
 describe('/adressen', () => {
+  const server = new Hapi.Server({ debug: false })
+  server.connection()
+  server.route({
+    method: 'GET',
+    path: '/adressen',
+    handler: queryAdressen
+  })
   it('should return more than 140 rows', (done) => {
-    const server = new Hapi.Server({ debug: false })
-    server.connection()
-    server.route({
-      method: 'GET',
-      path: '/adressen',
-      handler: queryAdressen
-    })
     server.inject('/adressen', (res) => {
       expect(res.result.length).to.be.above(140)
       done()
