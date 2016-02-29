@@ -15,16 +15,20 @@ const describe = lab.describe
 const it = lab.it
 const expect = Code.expect
 
+// start server
+
+const server = new Hapi.Server({ debug: false })
+server.connection()
+server.route({
+  method: 'GET',
+  path: '/anmeldung/name={name}/pwd={pwd}',
+  handler: queryAnmeldung
+})
+server.start()
+
 // test
 
 describe('/anmeldung', () => {
-  const server = new Hapi.Server({ debug: false })
-  server.connection()
-  server.route({
-    method: 'GET',
-    path: '/anmeldung/name={name}/pwd={pwd}',
-    handler: queryAnmeldung
-  })
   it('should accept known user', (done) => {
     const name = appPassFile.user
     const pwd = appPassFile.pass

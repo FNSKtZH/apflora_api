@@ -14,16 +14,20 @@ const describe = lab.describe
 const it = lab.it
 const expect = Code.expect
 
+// start server
+
+const server = new Hapi.Server({ debug: false })
+server.connection()
+server.route({
+  method: 'GET',
+  path: '/apliste/programm={programm}',
+  handler: queryApliste
+})
+server.start()
+
 // test
 
 describe('/adressen', () => {
-  const server = new Hapi.Server({ debug: false })
-  server.connection()
-  server.route({
-    method: 'GET',
-    path: '/apliste/programm={programm}',
-    handler: queryApliste
-  })
   it('should return more than 50 rows for programmAp', (done) => {
     server.inject('/apliste/programm=programmAp', (res) => {
       expect(res.result.length).to.be.above(50)

@@ -15,17 +15,21 @@ const describe = lab.describe
 const it = lab.it
 const expect = Code.expect
 
+// start server
+
+const server = new Hapi.Server({ debug: false })
+server.connection()
+server.route({
+  method: 'POST',
+  path: '/apInsert/apId={apId}/user={user}',
+  handler: queryApInsert
+})
+server.start()
+
 // test
 
 describe('/apInsert', () => {
   it('should insert in table ap 1 row with ApArtId 150', (done) => {
-    const server = new Hapi.Server({ debug: false })
-    server.connection()
-    server.route({
-      method: 'POST',
-      path: '/apInsert/apId={apId}/user={user}',
-      handler: queryApInsert
-    })
     const name = appPassFile.user
     server.inject({
       method: 'post',
