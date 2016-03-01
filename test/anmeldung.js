@@ -5,7 +5,7 @@
 const Code = require('code')
 const Hapi = require('hapi')
 const Lab = require('lab')
-const queryAnmeldung = require('../queries/anmeldung.js')
+const anmeldungGet = require('../routes/anmeldungGet.js')
 const appPassFile = require('../appPass.json')
 
 // test shortcuts
@@ -19,11 +19,7 @@ const expect = Code.expect
 
 const server = new Hapi.Server({ debug: false })
 server.connection()
-server.route({
-  method: 'GET',
-  path: '/anmeldung/name={name}/pwd={pwd}',
-  handler: queryAnmeldung
-})
+server.route(anmeldungGet)
 server.start()
 
 // test

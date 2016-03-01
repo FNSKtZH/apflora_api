@@ -5,7 +5,7 @@
 const Code = require('code')
 const Hapi = require('hapi')
 const Lab = require('lab')
-const queryAp = require('../queries/ap.js')
+const apGet = require('../routes/apGet.js')
 
 // test shortcuts
 
@@ -18,11 +18,7 @@ const expect = Code.expect
 
 const server = new Hapi.Server({ debug: false })
 server.connection()
-server.route({
-  method: 'GET',
-  path: '/ap={apId}',
-  handler: queryAp
-})
+server.route(apGet)
 server.start()
 
 // test

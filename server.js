@@ -34,7 +34,7 @@ const queryQkTpopOhneMassnber = require('./queries/qkTpopOhneMassnber.js')
 const adressenGet = require('./routes/adressenGet.js')
 const queryLrDelarze = require('./queries/lrDelarze.js')
 const queryTpopMassnTypen = require('./queries/tpopMassnTypen.js')
-const queryAp = require('./queries/ap.js')
+const apGet = require('./routes/apGet.js')
 const queryApInsert = require('./queries/apInsert.js')
 const queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit.js')
 const queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst.js')
@@ -54,7 +54,7 @@ const queryTabelleUpdateApflora = require('./queries/tabelleUpdateApflora.js')
 const queryTabelleUpdateMultipleApflora = require('./queries/tabelleUpdateMultipleApflora.js')
 const queryTabelleUpdateBeob = require('./queries/tabelleUpdateBeob.js')
 const queryTabelleDeleteApflora = require('./queries/tabelleDeleteApflora.js')
-const queryAnmeldung = require('./queries/anmeldung.js')
+const anmeldungGet = require('./routes/anmeldungGet.js')
 const treeQualitaetskontrollen = require('./queries/tree/qualitaetskontrollen.js')
 const treeAssozarten = require('./queries/tree/assozarten.js')
 const treeIdealbiotop = require('./queries/tree/idealbiotop.js')
@@ -233,11 +233,7 @@ server.register(Inert, function () {
     handler: queryQkTpopOhneMassnber
   })
 
-  server.route({
-    method: 'GET',
-    path: '/anmeldung/name={name}/pwd={pwd}',
-    handler: queryAnmeldung
-  })
+  server.route(anmeldungGet)
 
   server.route(adressenGet)
 
@@ -349,11 +345,7 @@ server.register(Inert, function () {
     handler: queryTpopMassnTypen
   })
 
-  server.route({
-    method: 'GET',
-    path: '/ap={apId}',
-    handler: queryAp
-  })
+  server.route(apGet)
 
   server.route({
     method: 'POST',
