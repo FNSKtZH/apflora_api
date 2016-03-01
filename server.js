@@ -68,7 +68,7 @@ const treePop = require('./queries/tree/pop.js')
 const beobDistzutpopEvabGet = require('./routes/beobDistzutpopEvabGet.js')
 const queryBeobNaechsteTpop = require('./queries/beobNaechsteTpop.js')
 const queryBeobDistzutpopInfospezies = require('./queries/beobDistzutpopInfospezies.js')
-const queryBeobKarte = require('./queries/beobKarte.js')
+const beobKarteGet = require('./routes/beobKarteGet.js')
 const queryBeobZuordnen = require('./queries/beobZuordnen.js')
 const apKarteGet = require('./routes/apKarteGet.js')
 const queryPopKarte = require('./queries/popKarte.js')
@@ -411,11 +411,7 @@ server.register(Inert, function () {
     handler: queryBeobNaechsteTpop
   })
 
-  server.route({
-    method: 'GET',
-    path: '/beobKarte/apId={apId?}/tpopId={tpopId?}/beobId={beobId?}/nichtZuzuordnen={nichtZuzuordnen?}',
-    handler: queryBeobKarte
-  })
+  server.route(beobKarteGet)
 
   server.route({
     method: 'GET',
