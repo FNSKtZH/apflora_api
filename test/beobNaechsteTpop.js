@@ -5,7 +5,7 @@
 const Code = require('code')
 const Hapi = require('hapi')
 const Lab = require('lab')
-const queryBeobNaechsteTpop = require('../queries/beobNaechsteTpop.js')
+const beobNaechsteTpopGet = require('../routes/beobNaechsteTpopGet.js')
 
 // test shortcuts
 
@@ -18,11 +18,7 @@ const expect = Code.expect
 
 const server = new Hapi.Server({ debug: false })
 server.connection()
-server.route({
-  method: 'GET',
-  path: '/beobNaechsteTpop/apId={apId}/X={X}/Y={Y}',
-  handler: queryBeobNaechsteTpop
-})
+server.route(beobNaechsteTpopGet)
 server.start()
 
 // test
