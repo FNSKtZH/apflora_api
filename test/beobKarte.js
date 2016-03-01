@@ -27,7 +27,7 @@ server.start()
 
 // test
 
-describe('/beobKarte', () => {
+describe.skip('/beobKarte', () => {
   it('should return 1 row for beob_infospezies with NO_NOTE 214510', (done) => {
     server.inject('/beobKarte/apId=/tpopId=/beobId=214510/nichtZuzuordnen=', (res) => {
       expect(res.result.length).to.equal(1)
