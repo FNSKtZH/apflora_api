@@ -31,7 +31,7 @@ const queryQkPopOhnePopber = require('./queries/qkPopOhnePopber.js')
 const queryQkPopOhnePopmassnber = require('./queries/qkPopOhnePopmassnber.js')
 const queryQkTpopOhneTpopber = require('./queries/qkTpopOhneTpopber.js')
 const queryQkTpopOhneMassnber = require('./queries/qkTpopOhneMassnber.js')
-const adressenGet = require('./routes/adressen_get.js')
+const adressenGet = require('./routes/adressenGet.js')
 const queryLrDelarze = require('./queries/lrDelarze.js')
 const queryTpopMassnTypen = require('./queries/tpopMassnTypen.js')
 const queryAp = require('./queries/ap.js')
@@ -79,10 +79,11 @@ const queryTPopKarte = require('./queries/tpopKarte.js')
 const queryTPopsKarte = require('./queries/tpopsKarte.js')
 const queryTPopKarteAlle = require('./queries/tpopKarteAlle.js')
 const exportView = require('./queries/exportView.js')
+const exportViewGetCsv = require('./routes/exportViewGetCsv.js')
 const exportViewWhereIdIn = require('./queries/exportViewWhereIdIn.js')
 const getKmlForPop = require('./src/getKmlForPop.js')
 const getKmlForTpop = require('./src/getKmlForTpop.js')
-const aktualisiereArteigenschaften = require('./queries/aktualisiereArteigenschaften.js')
+const aktualisiereArteigenschaftenGet = require('./routes/aktualisiereArteigenschaftenGet.js')
 const escapeStringForSql = require('./queries/escapeStringForSql.js')
 
 connectionApflora.connect()
@@ -511,28 +512,7 @@ server.register(Inert, function () {
     }
   })
 
-  server.route({
-    method: 'GET',
-    path: '/exportView/csv/view={view}/filename={filename}',
-    handler (request, reply) {
-      const filename = escapeStringForSql(request.params.filename)
-      exportView(request, (err, data) => {
-        const fields = Object.keys(data[0])
-        if (err) return reply(err)
-        json2csv(
-          { data, fields },
-          (err, csv) => {
-            if (err) return reply(err)
-            reply(csv)
-              .header('Content-Type', 'text/x-csv; charset=utf-8')
-              .header('Content-disposition', `attachment; filename=${filename}.csv`)
-              .header('Pragma', 'no-cache')
-              .header('Set-Cookie', 'fileDownload=true; path=/')
-          }
-        )
-      })
-    }
-  })
+  server.route(exportViewGetCsv)
 
   server.route({
     method: 'GET',
@@ -611,13 +591,7 @@ server.register(Inert, function () {
     }
   })
 
-  server.route({
-    method: 'GET',
-    path: '/aktualisiereArteigenschaften',
-    handler (request, reply) {
-      aktualisiereArteigenschaften(request, reply)
-    }
-  })
+  server.route(aktualisiereArteigenschaftenGet)
 })
 
 server.start(function (err) {

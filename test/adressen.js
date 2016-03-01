@@ -5,7 +5,7 @@
 const Code = require('code')
 const Hapi = require('hapi')
 const Lab = require('lab')
-const adressenGet = require('../routes/adressen_get.js')
+const adressenGet = require('../routes/adressenGet.js')
 
 // test shortcuts
 
