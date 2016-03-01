@@ -25,7 +25,7 @@ const connectionApflora = mysql.createConnection({
 })
 const queryGemeinden = require('./queries/gemeinden.js')
 const queryArtliste = require('./queries/artliste.js')
-const queryApliste = require('./queries/apliste.js')
+const aplisteGet = require('./routes/aplisteGet.js')
 const queryQkView = require('./queries/qkView.js')
 const queryQkPopOhnePopber = require('./queries/qkPopOhnePopber.js')
 const queryQkPopOhnePopmassnber = require('./queries/qkPopOhnePopmassnber.js')
@@ -197,11 +197,7 @@ server.register(Inert, function () {
     handler: queryArtliste
   })
 
-  server.route({
-    method: 'GET',
-    path: '/apliste/programm={programm}',
-    handler: queryApliste
-  })
+  server.route(aplisteGet)
 
   server.route({
     method: 'GET',

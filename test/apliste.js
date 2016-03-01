@@ -5,7 +5,7 @@
 const Code = require('code')
 const Hapi = require('hapi')
 const Lab = require('lab')
-const queryApliste = require('../queries/apliste.js')
+const aplisteGet = require('../routes/aplisteGet.js')
 
 // test shortcuts
 
@@ -18,16 +18,12 @@ const expect = Code.expect
 
 const server = new Hapi.Server({ debug: false })
 server.connection()
-server.route({
-  method: 'GET',
-  path: '/apliste/programm={programm}',
-  handler: queryApliste
-})
+server.route(aplisteGet)
 server.start()
 
 // test
 
-describe.skip('/adressen', () => {
+describe.skip('/apliste', () => {
   it('should return more than 50 rows for programmAp', (done) => {
     server.inject('/apliste/programm=programmAp', (res) => {
       expect(res.result.length).to.be.above(50)
