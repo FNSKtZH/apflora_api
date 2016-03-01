@@ -20,6 +20,7 @@ const expect = Code.expect
 const server = new Hapi.Server({ debug: false })
 server.connection()
 server.route(exportViewGetCsv)
+server.route(exportViewGetCsvForAp)
 server.start()
 
 // test
@@ -28,16 +29,15 @@ describe('/exportView', () => {
   it.skip('should return text/x-csv for view v_ap', (done) => {
     server.inject('/exportView/csv/view=v_ap/filename=test', (res) => {
       expect(res.statusCode).to.equal(200)
-      // TODO: res.type.should.equal('text/x-csv')
+      expect(res.headers['content-type']).to.equal('text/x-csv; charset=utf-8')
       // or check number of rows
       done()
     })
   })
   it('should return text/x-csv for view v_ap and ApArtId 206200', (done) => {
     server.inject('/exportView/csv/view=v_ap/filename=test/206200', (res) => {
-      console.log('res', res)
       expect(res.statusCode).to.equal(200)
-      // TODO: res.type.should.equal('text/x-csv')
+      expect(res.headers['content-type']).to.equal('text/x-csv; charset=utf-8')
       // or check number of rows
       done()
     })
