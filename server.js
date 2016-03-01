@@ -80,11 +80,11 @@ const queryTPopsKarte = require('./queries/tpopsKarte.js')
 const queryTPopKarteAlle = require('./queries/tpopKarteAlle.js')
 const exportView = require('./queries/exportView.js')
 const exportViewGetCsv = require('./routes/exportViewGetCsv.js')
+const exportViewGetCsvForAp = require('./routes/exportViewGetCsvForAp.js')
 const exportViewWhereIdIn = require('./queries/exportViewWhereIdIn.js')
 const getKmlForPop = require('./src/getKmlForPop.js')
 const getKmlForTpop = require('./src/getKmlForTpop.js')
 const aktualisiereArteigenschaftenGet = require('./routes/aktualisiereArteigenschaftenGet.js')
-const escapeStringForSql = require('./queries/escapeStringForSql.js')
 
 connectionApflora.connect()
 
@@ -474,28 +474,7 @@ server.register(Inert, function () {
 
   server.route(exportViewGetCsv)
 
-  server.route({
-    method: 'GET',
-    path: '/exportView/csv/view={view}/filename={filename}/{apId}',
-    handler (request, reply) {
-      const filename = escapeStringForSql(request.params.filename)
-      exportView(request, (err, data) => {
-        const fields = Object.keys(data[0])
-        if (err) return reply(err)
-        json2csv(
-          { data, fields },
-          (err, csv) => {
-            if (err) return reply(err)
-            reply(csv)
-              .header('Content-Type', 'text/x-csv; charset=utf-8')
-              .header('Content-disposition', `attachment; filename=${filename}.csv`)
-              .header('Pragma', 'no-cache')
-              .header('Set-Cookie', 'fileDownload=true; path=/')
-          }
-        )
-      })
-    }
-  })
+  server.route(exportViewGetCsvForAp)
 
   server.route({
     method: 'GET',
