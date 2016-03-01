@@ -5,7 +5,7 @@
 const Code = require('code')
 const Hapi = require('hapi')
 const Lab = require('lab')
-const queryApInsert = require('../queries/apInsert.js')
+const apInsertPost = require('../routes/apInsertPost.js')
 const appPassFile = require('../appPass.json')
 
 // test shortcuts
@@ -19,11 +19,7 @@ const expect = Code.expect
 
 const server = new Hapi.Server({ debug: false })
 server.connection()
-server.route({
-  method: 'POST',
-  path: '/apInsert/apId={apId}/user={user}',
-  handler: queryApInsert
-})
+server.route(apInsertPost)
 server.start()
 
 // test

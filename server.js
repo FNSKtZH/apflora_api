@@ -35,7 +35,7 @@ const adressenGet = require('./routes/adressenGet.js')
 const queryLrDelarze = require('./queries/lrDelarze.js')
 const queryTpopMassnTypen = require('./queries/tpopMassnTypen.js')
 const apGet = require('./routes/apGet.js')
-const queryApInsert = require('./queries/apInsert.js')
+const apInsertPost = require('./routes/apInsertPost.js')
 const queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit.js')
 const queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst.js')
 const queryTabelleSelectApfloraNumber = require('./queries/tabelleSelectApfloraNumber.js')
@@ -343,11 +343,7 @@ server.register(Inert, function () {
 
   server.route(apGet)
 
-  server.route({
-    method: 'POST',
-    path: '/apInsert/apId={apId}/user={user}',
-    handler: queryApInsert
-  })
+  server.route(apInsertPost)
 
   server.route({
     method: 'GET',
