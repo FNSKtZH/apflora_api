@@ -40,4 +40,16 @@ describe('/beobKarte', () => {
       done()
     })
   })
+  it('should return more than 5 rows for beobzuordnung with nichtZuzuordnen and apId 206200', (done) => {
+    server.inject('/beobKarte/apId=206200/tpopId=/beobId=/nichtZuzuordnen=1', (res) => {
+      expect(res.result.length).to.be.above(5)
+      done()
+    })
+  })
+  it('should return more than 90 rows for beobzuordnung with apId 206200', (done) => {
+    server.inject('/beobKarte/apId=206200/tpopId=/beobId=/nichtZuzuordnen=', (res) => {
+      expect(res.result.length).to.be.above(90)
+      done()
+    })
+  })
 })

@@ -27,7 +27,7 @@ server.start()
 
 // test
 
-describe('/apKarte', () => {
+describe.skip('/apKarte', () => {
   it('should return more than 100 rows with ApArtId 900', (done) => {
     server.inject('/apKarte/apId=900', (res) => {
       expect(res.result.length).to.be.above(100)

@@ -27,7 +27,7 @@ server.start()
 
 // test
 
-describe('/apflora (delete)', () => {
+describe.skip('/apflora (delete)', () => {
   it('should delete from table ap the row with ApArtId 150', (done) => {
     server.inject('/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150', (res) => {
       expect(res.statusCode).to.satisfy(() => 200 || 404)

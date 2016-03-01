@@ -27,7 +27,7 @@ server.start()
 
 // test
 
-describe('/beobDistzutpopEvab', () => {
+describe.skip('/beobDistzutpopEvab', () => {
   it('should return more than 100 rows for a sighting of Aceras anthropophorum', (done) => {
     server.inject('/beobDistzutpopEvab/beobId=9CAD7177-BDD6-4E94-BC3B-F18CDE7EEA58', (res) => {
       expect(res.result.length).to.be.above(100)

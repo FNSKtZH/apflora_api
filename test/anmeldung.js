@@ -28,7 +28,7 @@ server.start()
 
 // test
 
-describe('/anmeldung', () => {
+describe.skip('/anmeldung', () => {
   it('should accept known user', (done) => {
     const name = appPassFile.user
     const pwd = appPassFile.pass

@@ -27,7 +27,7 @@ server.start()
 
 // test
 
-describe('/ap', () => {
+describe.skip('/ap', () => {
   it('should return 1 row with ApArtId 900', (done) => {
     server.inject('/ap=900', (res) => {
       expect(res.result.length).to.equal(1)

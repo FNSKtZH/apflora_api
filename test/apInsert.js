@@ -28,7 +28,7 @@ server.start()
 
 // test
 
-describe('/apInsert', () => {
+describe.skip('/apInsert', () => {
   it('should insert in table ap 1 row with ApArtId 150', (done) => {
     const name = appPassFile.user
     server.inject({
