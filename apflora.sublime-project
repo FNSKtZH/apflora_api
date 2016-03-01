@@ -26,6 +26,10 @@
 		},
 		{
 			"follow_symlinks": true,
+			"path": "routes"
+		},
+		{
+			"follow_symlinks": true,
 			"path": "sql"
 		},
 		{

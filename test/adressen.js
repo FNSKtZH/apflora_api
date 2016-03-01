@@ -5,7 +5,7 @@
 const Code = require('code')
 const Hapi = require('hapi')
 const Lab = require('lab')
-const queryAdressen = require('../queries/adressen.js')
+const adressenGet = require('../routes/adressen_get.js')
 
 // test shortcuts
 
@@ -18,16 +18,12 @@ const expect = Code.expect
 
 const server = new Hapi.Server({ debug: false })
 server.connection()
-server.route({
-  method: 'GET',
-  path: '/adressen',
-  handler: queryAdressen
-})
+server.route(adressenGet)
 server.start()
 
 // test
 
-describe.skip('/adressen', () => {
+describe('/adressen', () => {
   it('should return more than 140 rows', (done) => {
     server.inject('/adressen', (res) => {
       expect(res.result.length).to.be.above(140)

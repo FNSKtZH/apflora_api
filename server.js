@@ -31,7 +31,7 @@ const queryQkPopOhnePopber = require('./queries/qkPopOhnePopber.js')
 const queryQkPopOhnePopmassnber = require('./queries/qkPopOhnePopmassnber.js')
 const queryQkTpopOhneTpopber = require('./queries/qkTpopOhneTpopber.js')
 const queryQkTpopOhneMassnber = require('./queries/qkTpopOhneMassnber.js')
-const queryAdressen = require('./queries/adressen.js')
+const adressenGet = require('./routes/adressen_get.js')
 const queryLrDelarze = require('./queries/lrDelarze.js')
 const queryTpopMassnTypen = require('./queries/tpopMassnTypen.js')
 const queryAp = require('./queries/ap.js')
@@ -238,11 +238,7 @@ server.register(Inert, function () {
     handler: queryAnmeldung
   })
 
-  server.route({
-    method: 'GET',
-    path: '/adressen',
-    handler: queryAdressen
-  })
+  server.route(adressenGet)
 
   server.route({
     method: 'GET',
