@@ -53,7 +53,7 @@ const queryFeldkontrInsert = require('./queries/feldkontrInsert.js')
 const queryTabelleUpdateApflora = require('./queries/tabelleUpdateApflora.js')
 const queryTabelleUpdateMultipleApflora = require('./queries/tabelleUpdateMultipleApflora.js')
 const queryTabelleUpdateBeob = require('./queries/tabelleUpdateBeob.js')
-const queryTabelleDeleteApflora = require('./queries/tabelleDeleteApflora.js')
+const apfloraDelete = require('./routes/apfloraDelete.js')
 const anmeldungGet = require('./routes/anmeldungGet.js')
 const treeQualitaetskontrollen = require('./queries/tree/qualitaetskontrollen.js')
 const treeAssozarten = require('./queries/tree/assozarten.js')
@@ -327,11 +327,7 @@ server.register(Inert, function () {
     handler: queryFeldkontrInsert
   })
 
-  server.route({
-    method: 'DELETE',
-    path: '/apflora/tabelle={tabelle}/tabelleIdFeld={tabelleIdFeld}/tabelleId={tabelleId}',
-    handler: queryTabelleDeleteApflora
-  })
+  server.route(apfloraDelete)
 
   server.route({
     method: 'GET',

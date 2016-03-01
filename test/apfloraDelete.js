@@ -5,7 +5,7 @@
 const Code = require('code')
 const Hapi = require('hapi')
 const Lab = require('lab')
-const queryTabelleDeleteApflora = require('../queries/tabelleDeleteApflora.js')
+const apfloraDelete = require('../routes/apfloraDelete.js')
 
 // test shortcuts
 
@@ -18,11 +18,7 @@ const expect = Code.expect
 
 const server = new Hapi.Server({ debug: false })
 server.connection()
-server.route({
-  method: 'DELETE',
-  path: '/apflora/tabelle={tabelle}/tabelleIdFeld={tabelleIdFeld}/tabelleId={tabelleId}',
-  handler: queryTabelleDeleteApflora
-})
+server.route(apfloraDelete)
 server.start()
 
 // test
