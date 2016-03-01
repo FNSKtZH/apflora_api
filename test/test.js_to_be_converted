@@ -29,30 +29,6 @@ const server = supertest('http://127.0.0.1:4001')
 
 // skipping because if not, ECONNRESET happens ???!!!
 
-global.describe.skip('/beobNaechsteTpop', function () {
-  global.it('should return one TPop for ApId 206200 and a set of koordinates', function (done) {
-    server
-      .get('/beobNaechsteTpop/apId=206200/X=682226/Y=268513')
-      .end((err, res) => {
-        if (err) throw err
-        res.body.length.should.equal(1)
-        done()
-      })
-  })
-})
-
-global.describe.skip('/beobZuordnen', function () {
-  global.it('should return more than 300 rows for ApId 206200', function (done) {
-    server
-      .get('/beobZuordnen/apId=206200')
-      .end((err, res) => {
-        if (err) throw err
-        res.body.length.should.be.above(300)
-        done()
-      })
-  })
-})
-
 global.describe('/exportView', function () {
   global.it('should return text/x-csv for view v_ap', function (done) {
     server
