@@ -19,9 +19,6 @@ module.exports = (request, callback) => {
         apflora.adresse
       ORDER BY
         "AdrName"`
-    apfDb.query(sql, (error, result) => {
-      // console.log('adressen length', result.rows.length)
-      callback(error, result.rows)
-    })
+    apfDb.query(sql, (error, result) => callback(error, result.rows))
   })
 }
