@@ -22,11 +22,8 @@ const connectionApflora = mysql.createConnection({
   password: config.db.passWord,
   database: 'apflora'
 })
-const queryLrDelarze = require('./queries/lrDelarze.js')
-const queryTpopMassnTypen = require('./queries/tpopMassnTypen.js')
 const queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit.js')
 const queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst.js')
-const queryFeldkontrInsert = require('./queries/feldkontrInsert.js')
 const treeQualitaetskontrollen = require('./queries/tree/qualitaetskontrollen.js')
 const treeAssozarten = require('./queries/tree/assozarten.js')
 const treeIdealbiotop = require('./queries/tree/idealbiotop.js')
@@ -106,30 +103,12 @@ server.register(Inert, function () {
   server.route(require('./routes/tpopPostKopie.js'))
   server.route(require('./routes/tpopKoordFuerProgrammGet.js'))
   server.route(require('./routes/popPostKopie.js'))
-
-  server.route({
-    method: 'POST',
-    path: '/insert/feldkontr/tpopId={tpopId}/tpopKontrtyp={tpopKontrtyp?}/user={user}',
-    handler: queryFeldkontrInsert
-  })
-
+  server.route(require('./routes/feldkontrPost.js'))
   server.route(require('./routes/apfloraDelete.js'))
-
-  server.route({
-    method: 'GET',
-    path: '/lrDelarze',
-    handler: queryLrDelarze
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/tpopMassnTypen',
-    handler: queryTpopMassnTypen
-  })
-
+  server.route(require('./routes/lrDelarzeGet.js'))
+  server.route(require('./routes/tpopMassnTypenGet.js'))
   server.route(require('./routes/apGet.js'))
-
-  server.route(require('./routes/apInsertPost.js'))
+  server.route(require('./routes/apPost.js'))
 
   server.route({
     method: 'GET',
