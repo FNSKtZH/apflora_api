@@ -26,9 +26,6 @@ const queryLrDelarze = require('./queries/lrDelarze.js')
 const queryTpopMassnTypen = require('./queries/tpopMassnTypen.js')
 const queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit.js')
 const queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst.js')
-const queryTabelleInsertApflora = require('./queries/tabelleInsertApflora.js')
-const queryTabelleInsertMultipleApflora = require('./queries/tabelleInsertMultipleApflora.js')
-const queryTpopmassnInsertKopie = require('./queries/tpopmassnInsertKopie.js')
 const queryTpopkontrInsertKopie = require('./queries/tpopkontrInsertKopie.js')
 const queryTpopInsertKopie = require('./queries/tpopInsertKopie.js')
 const queryTpopKoordFuerProgramm = require('./queries/tpopKoordFuerProgramm.js')
@@ -106,24 +103,9 @@ server.register(Inert, function () {
   server.route(require('./routes/apfloraPut.js'))
   server.route(require('./routes/apfloraPutMultiple.js'))
   server.route(require('./routes/beobPut.js'))
-
-  server.route({
-    method: 'POST',
-    path: '/insert/apflora/tabelle={tabelle}/feld={feld}/wert={wert}/user={user}',
-    handler: queryTabelleInsertApflora
-  })
-
-  server.route({
-    method: 'POST',
-    path: '/insertMultiple/apflora/tabelle={tabelle}/felder={felder}',
-    handler: queryTabelleInsertMultipleApflora
-  })
-
-  server.route({
-    method: 'POST',
-    path: '/tpopmassnInsertKopie/tpopId={tpopId}/tpopMassnId={tpopMassnId}/user={user}',
-    handler: queryTpopmassnInsertKopie
-  })
+  server.route(require('./routes/apfloraPost.js'))
+  server.route(require('./routes/apfloraPostMultiple.js'))
+  server.route(require('./routes/tpopmassnPostKopie.js'))
 
   server.route({
     method: 'POST',
