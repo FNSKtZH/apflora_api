@@ -4,26 +4,17 @@
 
 'use strict'
 
+const Hapi = require('hapi')
+const Inert = require('inert')
 // wird nur in Entwicklung genutzt
+// in new Hapi.Server() einsetzen
 const serverOptionsDevelopment = {
   debug: {
     log: ['error'],
     request: ['error']
   }
 }
-const Hapi = require('hapi')
-const Inert = require('inert')
 const server = new Hapi.Server(serverOptionsDevelopment)
-const mysql = require('mysql')
-const config = require('./configuration.js')
-const connectionApflora = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'apflora'
-})
-
-connectionApflora.connect()
 
 server.register(Inert, function () {
   server.connection(require('./dbConnection.js'))
