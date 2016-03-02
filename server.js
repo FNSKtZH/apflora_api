@@ -22,9 +22,6 @@ const connectionApflora = mysql.createConnection({
   password: config.db.passWord,
   database: 'apflora'
 })
-const queryQkPopOhnePopmassnber = require('./queries/qkPopOhnePopmassnber.js')
-const queryQkTpopOhneTpopber = require('./queries/qkTpopOhneTpopber.js')
-const queryQkTpopOhneMassnber = require('./queries/qkTpopOhneMassnber.js')
 const queryLrDelarze = require('./queries/lrDelarze.js')
 const queryTpopMassnTypen = require('./queries/tpopMassnTypen.js')
 const queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit.js')
@@ -110,28 +107,11 @@ server.register(Inert, function () {
   server.route(require('./routes/artlisteGet.js'))
   server.route(require('./routes/aplisteGet.js'))
   server.route(require('./routes/qkViewGet.js'))
-  server.route(require('./routes/qkPopOhnePopber.js'))
-
-  server.route({
-    method: 'GET',
-    path: '/qkPopOhnePopmassnber/{apId}/{berichtjahr}',
-    handler: queryQkPopOhnePopmassnber
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/qkTpopOhneTpopber/{apId}/{berichtjahr}',
-    handler: queryQkTpopOhneTpopber
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/qkTpopOhneMassnber/{apId}/{berichtjahr}',
-    handler: queryQkTpopOhneMassnber
-  })
-
+  server.route(require('./routes/qkPopOhnePopberGet.js'))
+  server.route(require('./routes/qkPopOhnePopmassnberGet.js'))
+  server.route(require('./routes/qkTpopOhneTpopberGet.js'))
+  server.route(require('./routes/qkTpopOhneMassnberGet.js'))
   server.route(require('./routes/anmeldungGet.js'))
-
   server.route(require('./routes/adressenGet.js'))
 
   server.route({
