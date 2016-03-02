@@ -66,14 +66,7 @@ const getKmlForTpop = require('./src/getKmlForTpop.js')
 connectionApflora.connect()
 
 server.register(Inert, function () {
-  server.connection({
-    host: '0.0.0.0',
-    port: 4001,
-    routes: {
-      cors: true
-    }
-  })
-
+  server.connection(require('./dbConnection.js'))
   server.route(require('./routes/anyGet.js'))
   server.route(require('./routes/srcGet.js'))
   server.route(require('./routes/styleImagesGet.js'))
