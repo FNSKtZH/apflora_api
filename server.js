@@ -22,10 +22,6 @@ const connectionApflora = mysql.createConnection({
   password: config.db.passWord,
   database: 'apflora'
 })
-const queryGemeinden = require('./queries/gemeinden.js')
-const queryArtliste = require('./queries/artliste.js')
-const queryQkView = require('./queries/qkView.js')
-const queryQkPopOhnePopber = require('./queries/qkPopOhnePopber.js')
 const queryQkPopOhnePopmassnber = require('./queries/qkPopOhnePopmassnber.js')
 const queryQkTpopOhneTpopber = require('./queries/qkTpopOhneTpopber.js')
 const queryQkTpopOhneMassnber = require('./queries/qkTpopOhneMassnber.js')
@@ -109,42 +105,12 @@ server.register(Inert, function () {
   server.route(require('./routes/styleGet.js'))
   server.route(require('./routes/kmlGet.js'))
   server.route(require('./routes/geojsonGet.js'))
-
-  server.route({
-    method: 'GET',
-    path: '/img/{param*}',
-    handler: {
-      directory: {
-        path: 'img'
-      }
-    }
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/gemeinden',
-    handler: queryGemeinden
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/artliste',
-    handler: queryArtliste
-  })
-
+  server.route(require('./routes/imgGet.js'))
+  server.route(require('./routes/gemeindenGet.js'))
+  server.route(require('./routes/artlisteGet.js'))
   server.route(require('./routes/aplisteGet.js'))
-
-  server.route({
-    method: 'GET',
-    path: '/qkView/{viewName}/{apId}/{berichtjahr?}',
-    handler: queryQkView
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/qkPopOhnePopber/{apId}/{berichtjahr}',
-    handler: queryQkPopOhnePopber
-  })
+  server.route(require('./routes/qkViewGet.js'))
+  server.route(require('./routes/qkPopOhnePopber.js'))
 
   server.route({
     method: 'GET',
