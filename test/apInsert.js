@@ -5,7 +5,7 @@
 const Code = require('code')
 const Hapi = require('hapi')
 const Lab = require('lab')
-const apInsertPost = require('../routes/apInsertPost.js')
+const apPost = require('../routes/apPost.js')
 const appPassFile = require('../appPass.json')
 
 // test shortcuts
@@ -19,7 +19,7 @@ const expect = Code.expect
 
 const server = new Hapi.Server({ debug: false })
 server.connection()
-server.route(apInsertPost)
+server.route(apPost)
 server.start()
 
 // test
