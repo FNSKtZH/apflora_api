@@ -4,7 +4,6 @@
 
 'use strict'
 
-const json2csv = require('json2csv')
 // wird nur in Entwicklung genutzt
 const serverOptionsDevelopment = {
   debug: {
@@ -25,17 +24,13 @@ const connectionApflora = mysql.createConnection({
 })
 const queryGemeinden = require('./queries/gemeinden.js')
 const queryArtliste = require('./queries/artliste.js')
-const aplisteGet = require('./routes/aplisteGet.js')
 const queryQkView = require('./queries/qkView.js')
 const queryQkPopOhnePopber = require('./queries/qkPopOhnePopber.js')
 const queryQkPopOhnePopmassnber = require('./queries/qkPopOhnePopmassnber.js')
 const queryQkTpopOhneTpopber = require('./queries/qkTpopOhneTpopber.js')
 const queryQkTpopOhneMassnber = require('./queries/qkTpopOhneMassnber.js')
-const adressenGet = require('./routes/adressenGet.js')
 const queryLrDelarze = require('./queries/lrDelarze.js')
 const queryTpopMassnTypen = require('./queries/tpopMassnTypen.js')
-const apGet = require('./routes/apGet.js')
-const apInsertPost = require('./routes/apInsertPost.js')
 const queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit.js')
 const queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst.js')
 const queryTabelleSelectApfloraNumber = require('./queries/tabelleSelectApfloraNumber.js')
@@ -53,8 +48,6 @@ const queryFeldkontrInsert = require('./queries/feldkontrInsert.js')
 const queryTabelleUpdateApflora = require('./queries/tabelleUpdateApflora.js')
 const queryTabelleUpdateMultipleApflora = require('./queries/tabelleUpdateMultipleApflora.js')
 const queryTabelleUpdateBeob = require('./queries/tabelleUpdateBeob.js')
-const apfloraDelete = require('./routes/apfloraDelete.js')
-const anmeldungGet = require('./routes/anmeldungGet.js')
 const treeQualitaetskontrollen = require('./queries/tree/qualitaetskontrollen.js')
 const treeAssozarten = require('./queries/tree/assozarten.js')
 const treeIdealbiotop = require('./queries/tree/idealbiotop.js')
@@ -65,12 +58,7 @@ const treeJBer = require('./queries/tree/jber.js')
 const treeErfkrit = require('./queries/tree/erfkrit.js')
 const treeApziel = require('./queries/tree/apziel.js')
 const treePop = require('./queries/tree/pop.js')
-const beobDistzutpopEvabGet = require('./routes/beobDistzutpopEvabGet.js')
-const beobNaechsteTpopGet = require('./routes/beobNaechsteTpopGet.js')
 const queryBeobDistzutpopInfospezies = require('./queries/beobDistzutpopInfospezies.js')
-const beobKarteGet = require('./routes/beobKarteGet.js')
-const beobZuordnenGet = require('./routes/beobZuordnenGet.js')
-const apKarteGet = require('./routes/apKarteGet.js')
 const queryPopKarte = require('./queries/popKarte.js')
 const queryPopKarteAlle = require('./queries/popKarteAlle.js')
 const queryPopChKarte = require('./queries/popChKarte.js')
@@ -79,12 +67,8 @@ const queryTPopKarte = require('./queries/tpopKarte.js')
 const queryTPopsKarte = require('./queries/tpopsKarte.js')
 const queryTPopKarteAlle = require('./queries/tpopKarteAlle.js')
 const exportView = require('./queries/exportView.js')
-const exportViewGetCsv = require('./routes/exportViewGetCsv.js')
-const exportViewGetCsvForAp = require('./routes/exportViewGetCsvForAp.js')
-const exportViewWhereIdInGet = require('./routes/exportViewWhereIdInGet.js')
 const getKmlForPop = require('./src/getKmlForPop.js')
 const getKmlForTpop = require('./src/getKmlForTpop.js')
-const aktualisiereArteigenschaftenGet = require('./routes/aktualisiereArteigenschaftenGet.js')
 
 connectionApflora.connect()
 
@@ -97,33 +81,9 @@ server.register(Inert, function () {
     }
   })
 
-  server.route({
-    method: 'GET',
-    path: '/{path*}',
-    handler (request, reply) {
-      reply.file('index.html')
-    }
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/src/{param*}',
-    handler: {
-      directory: {
-        path: 'src'
-      }
-    }
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/style/images/{param*}',
-    handler: {
-      directory: {
-        path: 'style/images'
-      }
-    }
-  })
+  server.route(require('./routes/anyGet.js'))
+  server.route(require('./routes/srcGet.js'))
+  server.route(require('./routes/styleImagesGet.js'))
 
   /* Versuch, funktioniert nicht*/
   server.route({
@@ -136,7 +96,8 @@ server.register(Inert, function () {
     }
   })
 
-  /*server.route({
+  /*
+  server.route({
       method: 'GET',
       path: '/etc/beziehungen.png',
       // vhost: ['api.apflora.ch', 'api.localhost'],
@@ -145,35 +106,9 @@ server.register(Inert, function () {
       }
   });*/
 
-  server.route({
-    method: 'GET',
-    path: '/style/{param*}',
-    handler: {
-      directory: {
-        path: 'style'
-      }
-    }
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/kml/{param*}',
-    handler: {
-      directory: {
-        path: 'kml'
-      }
-    }
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/geojson/{param*}',
-    handler: {
-      directory: {
-        path: 'geojson'
-      }
-    }
-  })
+  server.route(require('./routes/styleGet.js'))
+  server.route(require('./routes/kmlGet.js'))
+  server.route(require('./routes/geojsonGet.js'))
 
   server.route({
     method: 'GET',
@@ -197,7 +132,7 @@ server.register(Inert, function () {
     handler: queryArtliste
   })
 
-  server.route(aplisteGet)
+  server.route(require('./routes/aplisteGet.js'))
 
   server.route({
     method: 'GET',
@@ -229,9 +164,9 @@ server.register(Inert, function () {
     handler: queryQkTpopOhneMassnber
   })
 
-  server.route(anmeldungGet)
+  server.route(require('./routes/anmeldungGet.js'))
 
-  server.route(adressenGet)
+  server.route(require('./routes/adressenGet.js'))
 
   server.route({
     method: 'GET',
@@ -323,7 +258,7 @@ server.register(Inert, function () {
     handler: queryFeldkontrInsert
   })
 
-  server.route(apfloraDelete)
+  server.route(require('./routes/apfloraDelete.js'))
 
   server.route({
     method: 'GET',
@@ -337,9 +272,9 @@ server.register(Inert, function () {
     handler: queryTpopMassnTypen
   })
 
-  server.route(apGet)
+  server.route(require('./routes/apGet.js'))
 
-  server.route(apInsertPost)
+  server.route(require('./routes/apInsertPost.js'))
 
   server.route({
     method: 'GET',
@@ -397,7 +332,7 @@ server.register(Inert, function () {
 
   })
 
-  server.route(beobDistzutpopEvabGet)
+  server.route(require('./routes/beobDistzutpopEvabGet.js'))
 
   server.route({
     method: 'GET',
@@ -405,13 +340,10 @@ server.register(Inert, function () {
     handler: queryBeobDistzutpopInfospezies
   })
 
-  server.route(beobNaechsteTpopGet)
-
-  server.route(beobKarteGet)
-
-  server.route(beobZuordnenGet)
-
-  server.route(apKarteGet)
+  server.route(require('./routes/beobNaechsteTpopGet.js'))
+  server.route(require('./routes/beobKarteGet.js'))
+  server.route(require('./routes/beobZuordnenGet.js'))
+  server.route(require('./routes/apKarteGet.js'))
 
   server.route({
     method: 'GET',
@@ -472,11 +404,9 @@ server.register(Inert, function () {
     }
   })
 
-  server.route(exportViewGetCsv)
-
-  server.route(exportViewGetCsvForAp)
-
-  server.route(exportViewWhereIdInGet)
+  server.route(require('./routes/exportViewGetCsv.js'))
+  server.route(require('./routes/exportViewGetCsvForAp.js'))
+  server.route(require('./routes/exportViewWhereIdInGet.js'))
 
   server.route({
     method: 'GET',
@@ -509,7 +439,7 @@ server.register(Inert, function () {
     }
   })
 
-  server.route(aktualisiereArteigenschaftenGet)
+  server.route(require('./routes/aktualisiereArteigenschaftenGet.js'))
 })
 
 server.start(function (err) {

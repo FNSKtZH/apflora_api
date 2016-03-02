@@ -30,7 +30,7 @@ describe('/exportView', () => {
     server.inject('/exportView/csv/view=v_ap/filename=test', (res) => {
       expect(res.statusCode).to.equal(200)
       expect(res.headers['content-type']).to.equal('text/x-csv; charset=utf-8')
-      // or check number of rows
+      // how to check check number of rows?
       done()
     })
   })
@@ -38,7 +38,6 @@ describe('/exportView', () => {
     server.inject('/exportView/csv/view=v_ap/filename=test/206200', (res) => {
       expect(res.statusCode).to.equal(200)
       expect(res.headers['content-type']).to.equal('text/x-csv; charset=utf-8')
-      // or check number of rows
       done()
     })
   })
