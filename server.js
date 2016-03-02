@@ -22,8 +22,6 @@ const connectionApflora = mysql.createConnection({
   password: config.db.passWord,
   database: 'apflora'
 })
-const queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit.js')
-const queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst.js')
 const treeQualitaetskontrollen = require('./queries/tree/qualitaetskontrollen.js')
 const treeAssozarten = require('./queries/tree/assozarten.js')
 const treeIdealbiotop = require('./queries/tree/idealbiotop.js')
@@ -109,18 +107,8 @@ server.register(Inert, function () {
   server.route(require('./routes/tpopMassnTypenGet.js'))
   server.route(require('./routes/apGet.js'))
   server.route(require('./routes/apPost.js'))
-
-  server.route({
-    method: 'GET',
-    path: '/feldkontrZaehleinheit',
-    handler: queryFeldkontrZaehleinheit
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/idealbiotopUebereinst',
-    handler: queryIdealbiotopUebereinst
-  })
+  server.route(require('./routes/feldkontrZaehleinheitGet.js'))
+  server.route(require('./routes/idealbiotopUebereinstGet.js'))
 
   /**
    * Wenn mehrere DB-Aufrufe nötig sind, können sie parallel getätigt werden:
