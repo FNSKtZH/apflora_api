@@ -26,10 +26,6 @@ const queryLrDelarze = require('./queries/lrDelarze.js')
 const queryTpopMassnTypen = require('./queries/tpopMassnTypen.js')
 const queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit.js')
 const queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst.js')
-const queryTabelleSelectApfloraNumber = require('./queries/tabelleSelectApfloraNumber.js')
-const queryTabelleSelectApfloraString = require('./queries/tabelleSelectApfloraString.js')
-const queryTabelleSelectBeobNumber = require('./queries/tabelleSelectBeobNumber.js')
-const queryTabelleSelectBeobString = require('./queries/tabelleSelectBeobString.js')
 const queryTabelleInsertApflora = require('./queries/tabelleInsertApflora.js')
 const queryTabelleInsertMultipleApflora = require('./queries/tabelleInsertMultipleApflora.js')
 const queryTpopmassnInsertKopie = require('./queries/tpopmassnInsertKopie.js')
@@ -38,9 +34,6 @@ const queryTpopInsertKopie = require('./queries/tpopInsertKopie.js')
 const queryTpopKoordFuerProgramm = require('./queries/tpopKoordFuerProgramm.js')
 const queryPopInsertKopie = require('./queries/popInsertKopie.js')
 const queryFeldkontrInsert = require('./queries/feldkontrInsert.js')
-const queryTabelleUpdateApflora = require('./queries/tabelleUpdateApflora.js')
-const queryTabelleUpdateMultipleApflora = require('./queries/tabelleUpdateMultipleApflora.js')
-const queryTabelleUpdateBeob = require('./queries/tabelleUpdateBeob.js')
 const treeQualitaetskontrollen = require('./queries/tree/qualitaetskontrollen.js')
 const treeAssozarten = require('./queries/tree/assozarten.js')
 const treeIdealbiotop = require('./queries/tree/idealbiotop.js')
@@ -106,48 +99,13 @@ server.register(Inert, function () {
   server.route(require('./routes/qkTpopOhneMassnberGet.js'))
   server.route(require('./routes/anmeldungGet.js'))
   server.route(require('./routes/adressenGet.js'))
-
-  server.route({
-    method: 'GET',
-    path: '/apflora/tabelle={tabelle}/feld={feld}/wertNumber={wert}',
-    handler: queryTabelleSelectApfloraNumber
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/beob/tabelle={tabelle}/feld={feld}/wertNumber={wert}',
-    handler: queryTabelleSelectBeobNumber
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/apflora/tabelle={tabelle}/feld={feld}/wertString={wert}',
-    handler: queryTabelleSelectApfloraString
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/beob/tabelle={tabelle}/feld={feld}/wertString={wert}',
-    handler: queryTabelleSelectBeobString
-  })
-
-  server.route({
-    method: 'POST',
-    path: '/update/apflora/tabelle={tabelle}/tabelleIdFeld={tabelleIdFeld}/tabelleId={tabelleId}/feld={feld}/wert={wert?}/user={user}',
-    handler: queryTabelleUpdateApflora
-  })
-
-  server.route({
-    method: 'POST',
-    path: '/updateMultiple/apflora/tabelle={tabelle}/felder={felder}',
-    handler: queryTabelleUpdateMultipleApflora
-  })
-
-  server.route({
-    method: 'POST',
-    path: '/update/beob/tabelle={tabelle}/tabelleIdFeld={tabelleIdFeld}/tabelleId={tabelleId}/feld={feld}/wert={wert?}/user={user}',
-    handler: queryTabelleUpdateBeob
-  })
+  server.route(require('./routes/apfloraGetFromTableByNumber.js'))
+  server.route(require('./routes/beobGetFromTableByNumber.js'))
+  server.route(require('./routes/apfloraGetFromTableByString.js'))
+  server.route(require('./routes/beobGetFromTableByString.js'))
+  server.route(require('./routes/apfloraPut.js'))
+  server.route(require('./routes/apfloraPutMultiple.js'))
+  server.route(require('./routes/beobPut.js'))
 
   server.route({
     method: 'POST',
