@@ -26,10 +26,6 @@ const queryLrDelarze = require('./queries/lrDelarze.js')
 const queryTpopMassnTypen = require('./queries/tpopMassnTypen.js')
 const queryFeldkontrZaehleinheit = require('./queries/feldkontrZaehleinheit.js')
 const queryIdealbiotopUebereinst = require('./queries/idealbiotopUebereinst.js')
-const queryTpopkontrInsertKopie = require('./queries/tpopkontrInsertKopie.js')
-const queryTpopInsertKopie = require('./queries/tpopInsertKopie.js')
-const queryTpopKoordFuerProgramm = require('./queries/tpopKoordFuerProgramm.js')
-const queryPopInsertKopie = require('./queries/popInsertKopie.js')
 const queryFeldkontrInsert = require('./queries/feldkontrInsert.js')
 const treeQualitaetskontrollen = require('./queries/tree/qualitaetskontrollen.js')
 const treeAssozarten = require('./queries/tree/assozarten.js')
@@ -106,30 +102,10 @@ server.register(Inert, function () {
   server.route(require('./routes/apfloraPost.js'))
   server.route(require('./routes/apfloraPostMultiple.js'))
   server.route(require('./routes/tpopmassnPostKopie.js'))
-
-  server.route({
-    method: 'POST',
-    path: '/tpopkontrInsertKopie/tpopId={tpopId}/tpopKontrId={tpopKontrId}/user={user}',
-    handler: queryTpopkontrInsertKopie
-  })
-
-  server.route({
-    method: 'POST',
-    path: '/tpopInsertKopie/popId={popId}/tpopId={tpopId}/user={user}',
-    handler: queryTpopInsertKopie
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/tpopKoordFuerProgramm/apId={apId}',
-    handler: queryTpopKoordFuerProgramm
-  })
-
-  server.route({
-    method: 'POST',
-    path: '/popInsertKopie/apId={apId}/popId={popId}/user={user}',
-    handler: queryPopInsertKopie
-  })
+  server.route(require('./routes/tpopkontrPostKopie.js'))
+  server.route(require('./routes/tpopPostKopie.js'))
+  server.route(require('./routes/tpopKoordFuerProgrammGet.js'))
+  server.route(require('./routes/popPostKopie.js'))
 
   server.route({
     method: 'POST',
