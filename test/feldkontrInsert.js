@@ -23,10 +23,24 @@ server.start()
 
 // test
 
-describe('/adressen', () => {
-  it('should return more than 140 rows', (done) => {
-    server.inject('/adressen', (res) => {
-      expect(res.result.length).to.be.above(140)
+describe.skip('/insert/feldkontr', () => {
+  it('should insert a feldkontr for tpopId 72856123', (done) => {
+    server.inject({
+      method: 'post',
+      url: '/insert/feldkontr/tpopId=72856123/tpopKontrtyp=/user=test'
+    }, (res) => {
+      expect(res.statusCode).to.equal(200)
+      expect(res.result.rows.length).to.equal(1)
+      done()
+    })
+  })
+  it('should insert a freiwkontr for tpopId 72856123', (done) => {
+    server.inject({
+      method: 'post',
+      url: '/insert/feldkontr/tpopId=72856123/tpopKontrtyp=Freiwilligen-Erfolgskontrolle/user=test'
+    }, (res) => {
+      expect(res.statusCode).to.equal(200)
+      expect(res.result.rows.length).to.equal(1)
       done()
     })
   })

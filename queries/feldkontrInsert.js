@@ -29,9 +29,6 @@ module.exports = (request, callback) => {
       if (apfDb) done(apfDb)
       console.log('an error occured when trying to connect to db apflora')
     }
-    apfDb.query(sql, (error, result) => {
-      console.log('result', result)
-      callback(error, result)
-    })
+    apfDb.query(sql, (error, result) => callback(error, result))
   })
 }
