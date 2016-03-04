@@ -25,7 +25,7 @@ server.start()
 
 // test
 
-describe('/insert/feldkontr', () => {
+describe.skip('/insert/feldkontr', () => {
   it('should insert a feldkontr for tpopId 72856123', (done) => {
     const method = 'POST'
     const url = '/insert/feldkontr/tpopId=72856123/tpopKontrtyp=/user=test'

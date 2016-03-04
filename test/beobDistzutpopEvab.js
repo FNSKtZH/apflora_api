@@ -25,7 +25,9 @@ server.start()
 
 describe.skip('/beobDistzutpopEvab', () => {
   it('should return more than 100 rows for a sighting of Aceras anthropophorum', (done) => {
-    server.inject('/beobDistzutpopEvab/beobId=9CAD7177-BDD6-4E94-BC3B-F18CDE7EEA58', (res) => {
+    const method = 'GET'
+    const url = '/beobDistzutpopEvab/beobId=9CAD7177-BDD6-4E94-BC3B-F18CDE7EEA58'
+    server.inject({ method, url }, (res) => {
       expect(res.result.length).to.be.above(100)
       done()
     })

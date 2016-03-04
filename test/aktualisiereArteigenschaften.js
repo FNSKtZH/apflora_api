@@ -25,7 +25,7 @@ server.start()
 // takes about 33 seconds!
 // dont test every time because of duration
 
-describe('/aktualisiereArteigenschaften', { timeout: 100000 }, () => {
+describe.skip('/aktualisiereArteigenschaften', { timeout: 100000 }, () => {
   it('should update Arteigenschaften', (done) => {
     const method = 'GET'
     const url = '/aktualisiereArteigenschaften'

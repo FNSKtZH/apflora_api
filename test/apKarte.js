@@ -25,7 +25,9 @@ server.start()
 
 describe.skip('/apKarte', () => {
   it('should return more than 100 rows with ApArtId 900', (done) => {
-    server.inject('/apKarte/apId=900', (res) => {
+    const method = 'GET'
+    const url = '/apKarte/apId=900'
+    server.inject({ method, url }, (res) => {
       expect(res.result.length).to.be.above(100)
       expect(res.result[0].ApArtId).to.equal(900)
       done()

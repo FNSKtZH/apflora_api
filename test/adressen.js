@@ -25,8 +25,8 @@ server.start()
 
 describe('/adressen', () => {
   it('should return more than 140 rows', (done) => {
-    const url = '/adressen'
     const method = 'GET'
+    const url = '/adressen'
     server.inject({ method, url }, (res) => {
       expect(res.result.length).to.be.above(140)
       done()

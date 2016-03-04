@@ -25,7 +25,9 @@ server.start()
 
 describe.skip('/artliste', () => {
   it('should return more than 8000 rows for programmAp', (done) => {
-    server.inject('/artliste', (res) => {
+    const method = 'GET'
+    const url = '/artliste'
+    server.inject({ method, url }, (res) => {
       expect(res.result.length).to.be.above(8000)
       done()
     })

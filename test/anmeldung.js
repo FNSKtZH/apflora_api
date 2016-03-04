@@ -28,14 +28,18 @@ describe.skip('/anmeldung', () => {
   it('should accept known user', (done) => {
     const name = appPassFile.user
     const pwd = appPassFile.pass
-    server.inject(`/anmeldung/name=${name}/pwd=${pwd}`, (res) => {
+    const method = 'GET'
+    const url = `/anmeldung/name=${name}/pwd=${pwd}`
+    server.inject({ method, url }, (res) => {
       expect(res.statusCode).to.equal(200)
       expect(res.result.length).to.equal(1)
       done()
     })
   })
   it('should not accept unknown user', (done) => {
-    server.inject('/anmeldung/name=whoami/pwd=dontknow', (res) => {
+    const method = 'GET'
+    const url = '/anmeldung/name=whoami/pwd=dontknow'
+    server.inject({ method, url }, (res) => {
       expect(res.statusCode).to.equal(200)
       expect(res.result.length).to.equal(0)
       done()

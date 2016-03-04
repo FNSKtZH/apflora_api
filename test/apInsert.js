@@ -6,6 +6,7 @@ const Code = require('code')
 const Hapi = require('hapi')
 const Lab = require('lab')
 const apPost = require('../routes/apPost.js')
+const apfloraDelete = require('../routes/apfloraDelete.js')
 const appPassFile = require('../appPass.json')
 
 // test shortcuts
@@ -20,6 +21,7 @@ const expect = Code.expect
 const server = new Hapi.Server({ debug: false })
 server.connection()
 server.route(apPost)
+server.route(apfloraDelete)
 server.start()
 
 // test
@@ -27,12 +29,14 @@ server.start()
 describe.skip('/apInsert', () => {
   it('should insert in table ap 1 row with ApArtId 150', (done) => {
     const name = appPassFile.user
-    server.inject({
-      method: 'post',
-      url: `/apInsert/apId=150/user=${name}`
-    }, (res) => {
+    const method = 'POST'
+    const url = `/apInsert/apId=150/user=${name}`
+    server.inject({ method, url }, (res) => {
       expect(res.statusCode).to.equal(200)
-      done()
+      // remove row
+      const method = 'DELETE'
+      const url = '/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150'
+      server.inject({ method, url }, (res) => done())
     })
   })
 })

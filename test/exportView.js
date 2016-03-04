@@ -25,9 +25,11 @@ server.start()
 
 // test
 
-describe('/exportView', () => {
-  it.skip('should return text/x-csv for view v_ap', (done) => {
-    server.inject('/exportView/csv/view=v_ap/filename=test', (res) => {
+describe.skip('/exportView', () => {
+  it('should return text/x-csv for view v_ap', (done) => {
+    const method = 'GET'
+    const url = '/exportView/csv/view=v_ap/filename=test'
+    server.inject({ method, url }, (res) => {
       expect(res.statusCode).to.equal(200)
       expect(res.headers['content-type']).to.equal('text/x-csv; charset=utf-8')
       // how to check check number of rows?
@@ -35,7 +37,9 @@ describe('/exportView', () => {
     })
   })
   it('should return text/x-csv for view v_ap and ApArtId 206200', (done) => {
-    server.inject('/exportView/csv/view=v_ap/filename=test/206200', (res) => {
+    const method = 'GET'
+    const url = '/exportView/csv/view=v_ap/filename=test/206200'
+    server.inject({ method, url }, (res) => {
       expect(res.statusCode).to.equal(200)
       expect(res.headers['content-type']).to.equal('text/x-csv; charset=utf-8')
       done()
