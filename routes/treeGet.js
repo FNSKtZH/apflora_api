@@ -17,39 +17,40 @@ const treePop = require('../queries/tree/pop.js')
  * und im reply zu einem Objekt zusammengefasst werden
  */
 
-module.exports = {
-  method: 'GET',
-  path: '/tree/apId={apId}',
-  config: {
-    pre: [
-      [
-        { method: treeAssozarten, assign: 'assozarten' },
-        { method: treeIdealbiotop, assign: 'idealbiotop' },
-        { method: treeBeobNichtZuzuordnen, assign: 'beobNichtZuzuordnen' },
-        { method: treeBeobNichtBeurteilt, assign: 'beobNichtBeurteilt' },
-        { method: treeBer, assign: 'ber' },
-        { method: treeJBer, assign: 'jber' },
-        { method: treeErfkrit, assign: 'erfkrit' },
-        { method: treeApziel, assign: 'apziel' },
-        { method: treePop, assign: 'pop' },
-        { method: treeQualitaetskontrollen, assign: 'qualitaetskontrollen' }
-      ]
+module.exports = [
+  {
+    method: 'GET',
+    path: '/tree/apId={apId}',
+    config: {
+      pre: [
+        [
+          { method: treeAssozarten, assign: 'assozarten' },
+          { method: treeIdealbiotop, assign: 'idealbiotop' },
+          { method: treeBeobNichtZuzuordnen, assign: 'beobNichtZuzuordnen' },
+          { method: treeBeobNichtBeurteilt, assign: 'beobNichtBeurteilt' },
+          { method: treeBer, assign: 'ber' },
+          { method: treeJBer, assign: 'jber' },
+          { method: treeErfkrit, assign: 'erfkrit' },
+          { method: treeApziel, assign: 'apziel' },
+          { method: treePop, assign: 'pop' },
+          { method: treeQualitaetskontrollen, assign: 'qualitaetskontrollen' }
+        ]
 
-    ],
-    handler (request, reply) {
-      reply([
-        request.pre.qualitaetskontrollen,
-        request.pre.pop,
-        request.pre.apziel,
-        request.pre.erfkrit,
-        request.pre.jber,
-        request.pre.ber,
-        request.pre.beobNichtBeurteilt,
-        request.pre.beobNichtZuzuordnen,
-        request.pre.idealbiotop,
-        request.pre.assozarten
-      ])
+      ],
+      handler (request, reply) {
+        reply([
+          request.pre.qualitaetskontrollen,
+          request.pre.pop,
+          request.pre.apziel,
+          request.pre.erfkrit,
+          request.pre.jber,
+          request.pre.ber,
+          request.pre.beobNichtBeurteilt,
+          request.pre.beobNichtZuzuordnen,
+          request.pre.idealbiotop,
+          request.pre.assozarten
+        ])
+      }
     }
   }
-
-}
+]

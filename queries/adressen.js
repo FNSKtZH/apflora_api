@@ -1,17 +1,23 @@
 'use strict'
 
-const app = require('ampersand-app')
+const pg = require('pg')
+const config = require('../configuration')
+const connectionString = config.pg.connectionString
 
 module.exports = (request, callback) => {
-  console.log('apfDb from app', app.apfDb)
-  // get a pg client from the connection pool
-  const sql = `
-    SELECT
+  pg.connect(connectionString, (error, apfDb, done) => {
+    if (error) {
+      if (apfDb) done(apfDb)
+      console.log('an error occured when trying to connect to db apflora')
+    }
+    const sql = `
+      SELECT
       "AdrId" AS id,
       "AdrName"
     FROM
       apflora.adresse
     ORDER BY
       "AdrName"`
-  app.apfDb.query(sql, (error, result) => callback(error, result.rows))
+    apfDb.query(sql, (error, result) => callback(error, result.rows))
+  })
 }

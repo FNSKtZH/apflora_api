@@ -2,8 +2,10 @@
 
 const queryTpopMassnTypen = require('../queries/tpopMassnTypen.js')
 
-module.exports = {
-  method: 'GET',
-  path: '/tpopMassnTypen',
-  handler: queryTpopMassnTypen
-}
+module.exports = [
+  {
+    method: 'GET',
+    path: '/tpopMassnTypen',
+    handler: queryTpopMassnTypen
+  }
+]

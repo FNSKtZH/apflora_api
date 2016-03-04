@@ -2,8 +2,10 @@
 
 const queryQkTpopOhneTpopber = require('../queries/qkTpopOhneTpopber.js')
 
-module.exports = {
-  method: 'GET',
-  path: '/qkTpopOhneTpopber/{apId}/{berichtjahr}',
-  handler: queryQkTpopOhneTpopber
-}
+module.exports = [
+  {
+    method: 'GET',
+    path: '/qkTpopOhneTpopber/{apId}/{berichtjahr}',
+    handler: queryQkTpopOhneTpopber
+  }
+]

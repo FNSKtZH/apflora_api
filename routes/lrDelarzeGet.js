@@ -2,8 +2,10 @@
 
 const queryLrDelarze = require('../queries/lrDelarze.js')
 
-module.exports = {
-  method: 'GET',
-  path: '/lrDelarze',
-  handler: queryLrDelarze
-}
+module.exports = [
+  {
+    method: 'GET',
+    path: '/lrDelarze',
+    handler: queryLrDelarze
+  }
+]

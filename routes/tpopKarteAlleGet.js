@@ -2,8 +2,10 @@
 
 const queryTPopKarteAlle = require('../queries/tpopKarteAlle.js')
 
-module.exports = {
-  method: 'GET',
-  path: '/tpopKarteAlle/apId={apId}',
-  handler: queryTPopKarteAlle
-}
+module.exports = [
+  {
+    method: 'GET',
+    path: '/tpopKarteAlle/apId={apId}',
+    handler: queryTPopKarteAlle
+  }
+]

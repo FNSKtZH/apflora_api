@@ -2,8 +2,10 @@
 
 const queryApliste = require('../queries/apliste.js')
 
-module.exports = {
-  method: 'GET',
-  path: '/apliste/programm={programm}',
-  handler: queryApliste
-}
+module.exports = [
+  {
+    method: 'GET',
+    path: '/apliste/programm={programm}',
+    handler: queryApliste
+  }
+]
