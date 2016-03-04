@@ -8,6 +8,7 @@
     "async": "1.5.2",
     "dateformat": "1.0.12",
     "hapi": "13.0.0",
+    "hapi-node-postgres": "^3.0.1",
     "inert": "3.2.0",
     "json2csv": "3.2.0",
     "json2xls": "0.1.1",
@@ -32,7 +33,7 @@
     "predeploy": "gulp prod_clean_dist",
     "deploy": "gulp prod_copy",
     "postdeploy": "gulp prod_sftp",
-    "test": "lab",
+    "test": "node ./src/initializeDbClientPool.js && lab",
     "yolo": "npm run deploy"
   },
   "repository": {
