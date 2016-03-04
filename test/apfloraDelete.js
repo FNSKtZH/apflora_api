@@ -3,10 +3,7 @@
 // Load modules
 
 const Code = require('code')
-const Hapi = require('hapi')
 const Lab = require('lab')
-const apfloraDelete = require('../routes/apfloraDelete.js')
-const apPost = require('../routes/apPost.js')
 
 // test shortcuts
 
@@ -17,15 +14,11 @@ const expect = Code.expect
 
 // start server
 
-const server = new Hapi.Server({ debug: false })
-server.connection()
-server.route(apfloraDelete)
-server.route(apPost)
-server.start()
+const server = require('../server.js')
 
 // test
 
-describe.skip('/apflora (delete)', () => {
+describe('/apflora (delete)', () => {
   it('should delete from table ap the row with ApArtId 150', (done) => {
     const name = 'test'
     const method = 'POST'

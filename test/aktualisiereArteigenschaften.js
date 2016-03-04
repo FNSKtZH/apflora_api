@@ -3,9 +3,7 @@
 // Load modules
 
 const Code = require('code')
-const Hapi = require('hapi')
 const Lab = require('lab')
-const aktualisiereArteigenschaftenGet = require('../routes/aktualisiereArteigenschaftenGet.js')
 
 // test shortcuts
 
@@ -15,11 +13,7 @@ const it = lab.it
 const expect = Code.expect
 
 // start server
-
-const server = new Hapi.Server({ debug: false })
-server.connection()
-server.route(aktualisiereArteigenschaftenGet)
-server.start()
+const server = require('../server.js')
 
 // test
 // takes about 33 seconds!

@@ -3,9 +3,7 @@
 // Load modules
 
 const Code = require('code')
-const Hapi = require('hapi')
 const Lab = require('lab')
-const artlisteGet = require('../routes/artlisteGet.js')
 
 // test shortcuts
 
@@ -16,14 +14,11 @@ const expect = Code.expect
 
 // start server
 
-const server = new Hapi.Server({ debug: false })
-server.connection()
-server.route(artlisteGet)
-server.start()
+const server = require('../server.js')
 
 // test
 
-describe.skip('/artliste', () => {
+describe('/artliste', () => {
   it('should return more than 8000 rows for programmAp', (done) => {
     const method = 'GET'
     const url = '/artliste'

@@ -29,11 +29,11 @@
     "run-sequence": "1.1.5"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node startServer.js",
     "predeploy": "gulp prod_clean_dist",
     "deploy": "gulp prod_copy",
     "postdeploy": "gulp prod_sftp",
-    "test": "node ./src/initializeDbClientPool.js && lab",
+    "test": "lab",
     "yolo": "npm run deploy"
   },
   "repository": {

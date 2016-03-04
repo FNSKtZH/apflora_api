@@ -3,9 +3,7 @@
 // Load modules
 
 const Code = require('code')
-const Hapi = require('hapi')
 const Lab = require('lab')
-const apKarteGet = require('../routes/apKarteGet.js')
 
 // test shortcuts
 
@@ -16,14 +14,11 @@ const expect = Code.expect
 
 // start server
 
-const server = new Hapi.Server({ debug: false })
-server.connection()
-server.route(apKarteGet)
-server.start()
+const server = require('../server.js')
 
 // test
 
-describe.skip('/apKarte', () => {
+describe('/apKarte', () => {
   it('should return more than 100 rows with ApArtId 900', (done) => {
     const method = 'GET'
     const url = '/apKarte/apId=900'

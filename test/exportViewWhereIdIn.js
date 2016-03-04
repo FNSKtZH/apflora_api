@@ -3,9 +3,7 @@
 // Load modules
 
 const Code = require('code')
-const Hapi = require('hapi')
 const Lab = require('lab')
-const exportViewWhereIdInGet = require('../routes/exportViewWhereIdInGet.js')
 
 // test shortcuts
 
@@ -16,10 +14,7 @@ const expect = Code.expect
 
 // start server
 
-const server = new Hapi.Server({ debug: false })
-server.connection()
-server.route(exportViewWhereIdInGet)
-server.start()
+const server = require('../server.js')
 
 // test
 

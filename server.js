@@ -15,18 +15,18 @@ const serverOptionsDevelopment = {
   }
 }
 const server = new Hapi.Server(serverOptionsDevelopment)
-const routes = require('./routes')
+// non-Query routes hat to be separated because when testing directory handler produces an error
+const routes = require('./src/routes').concat(require('./src/nonQueryRoutes'))
+
+server.connection(require('./dbConnection.js'))
 
 server.register(Inert, (err) => {
   if (err) console.log('failed loading Inert plugin')
-  server.connection(require('./dbConnection.js'))
-  // add all the routes
-  server.route(routes)
-})
-
-server.start((err) => {
-  if (err) throw err
-  console.log('Server running at:', server.info.uri)
+  server.register(require('./pgPlugin.js'), (error) => {
+    if (error) console.log('failed loading pg plugin')
+    // add all the routes
+    server.route(routes)
+  })
 })
 
 module.exports = server

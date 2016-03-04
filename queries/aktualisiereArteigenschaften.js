@@ -6,9 +6,6 @@
 
 const request = require('request')
 const createInsertSqlFromObjectArray = require('./createInsertSqlFromObjectArray')
-const pg = require('pg')
-const config = require('../configuration')
-const connectionString = config.pg.connectionString
 
 module.exports = (req, reply) => {
   // neue Daten holen
@@ -20,37 +17,31 @@ module.exports = (req, reply) => {
     if (error) console.log(error)
     // console.log('get arteigenschaften response', response)
     if (response && response.statusCode === 200) {
-      pg.connect(connectionString, (error, apfDb, done) => {
-        if (error) {
-          if (apfDb) done(apfDb)
-          console.log('an error occured when trying to connect to db apflora')
+      // empty table
+      request.pg.client.query(
+        'TRUNCATE TABLE beob.adb_eigenschaften',
+        (err) => {
+          if (err) console.log(err)
+          const eigenschaftenString = createInsertSqlFromObjectArray(body)
+          const sqlBase = `
+            INSERT INTO
+              beob.adb_eigenschaften
+              ("GUID", "TaxonomieId", "Familie", "Artname", "NameDeutsch", "Status", "Artwert", "KefArt", "KefKontrolljahr")
+            VALUES `
+
+          // add new values
+          let sql = sqlBase + eigenschaftenString
+
+          request.pg.client.query(
+            sql,
+            (err) => {
+              if (err) throw err
+              reply('Arteigenschaften hinzugefügt')
+            // request.pg.client.end()
+            }
+          )
         }
-        // empty table
-        apfDb.query(
-          'TRUNCATE TABLE beob.adb_eigenschaften',
-          (err) => {
-            if (err) console.log(err)
-            const eigenschaftenString = createInsertSqlFromObjectArray(body)
-            const sqlBase = `
-              INSERT INTO
-                beob.adb_eigenschaften
-                ("GUID", "TaxonomieId", "Familie", "Artname", "NameDeutsch", "Status", "Artwert", "KefArt", "KefKontrolljahr")
-              VALUES `
-
-            // add new values
-            let sql = sqlBase + eigenschaftenString
-
-            apfDb.query(
-              sql,
-              (err) => {
-                if (err) throw err
-                reply('Arteigenschaften hinzugefügt')
-                apfDb.end()
-              }
-            )
-          }
-        )
-      })
+      )
     }
   })
 }

@@ -12,7 +12,6 @@ module.exports = (request, callback) => {
 
   // get a pg client from the connection pool
   pg.connect(connectionString, (error, apfDb, done) => {
-    console.log('apfDb from aplist', apfDb)
     if (error) {
       if (apfDb) done(apfDb)
       console.log('an error occured when trying to connect to db apflora')

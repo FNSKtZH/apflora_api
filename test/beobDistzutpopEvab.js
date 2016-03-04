@@ -3,9 +3,7 @@
 // Load modules
 
 const Code = require('code')
-const Hapi = require('hapi')
 const Lab = require('lab')
-const beobDistzutpopEvabGet = require('../routes/beobDistzutpopEvabGet.js')
 
 // test shortcuts
 
@@ -16,14 +14,11 @@ const expect = Code.expect
 
 // start server
 
-const server = new Hapi.Server({ debug: false })
-server.connection()
-server.route(beobDistzutpopEvabGet)
-server.start()
+const server = require('../server.js')
 
 // test
 
-describe.skip('/beobDistzutpopEvab', () => {
+describe('/beobDistzutpopEvab', () => {
   it('should return more than 100 rows for a sighting of Aceras anthropophorum', (done) => {
     const method = 'GET'
     const url = '/beobDistzutpopEvab/beobId=9CAD7177-BDD6-4E94-BC3B-F18CDE7EEA58'

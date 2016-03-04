@@ -3,9 +3,7 @@
 // Load modules
 
 const Code = require('code')
-const Hapi = require('hapi')
 const Lab = require('lab')
-const anmeldungGet = require('../routes/anmeldungGet.js')
 const appPassFile = require('../appPass.json')
 
 // test shortcuts
@@ -17,14 +15,11 @@ const expect = Code.expect
 
 // start server
 
-const server = new Hapi.Server({ debug: false })
-server.connection()
-server.route(anmeldungGet)
-server.start()
+const server = require('../server.js')
 
 // test
 
-describe.skip('/anmeldung', () => {
+describe('/anmeldung', () => {
   it('should accept known user', (done) => {
     const name = appPassFile.user
     const pwd = appPassFile.pass
