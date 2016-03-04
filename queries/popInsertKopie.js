@@ -2,6 +2,7 @@
 
 const pg = require('pg')
 const config = require('../configuration')
+const escapeStringForSql = require('./escapeStringForSql')
 const connectionString = config.pg.connectionString
 
 module.exports = (request, callback) => {
@@ -11,39 +12,43 @@ module.exports = (request, callback) => {
   const date = new Date().toISOString() // wann gespeichert wird
 
   // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
-  const sql = `
-    INSERT INTO pop (
-      PopNr,
-      PopName,
-      PopHerkunft,
-      PopHerkunftUnklar,
-      PopHerkunftUnklarBegruendung,
-      PopBekanntSeit,
-      PopXKoord,
-      PopYKoord,
-      PopGuid,
-      MutWann,
-      MutWer,
-      ApArtId
-      )
-    SELECT
-      pop.PopNr,
-      pop.PopName,
-      pop.PopHerkunft,
-      pop.PopHerkunftUnklar,
-      pop.PopHerkunftUnklarBegruendung,
-      pop.PopBekanntSeit,
-      pop.PopXKoord,
-      pop.PopYKoord,
-      pop.PopGuid,
-      "${date}",
-      "${user}",
-      ${apId}
-    FROM pop
-    WHERE pop.PopId = ${popId}`
-  connection.query(
-    sql,
-    // neue Id zurück liefern
-    (err, data) => callback(err, data.insertId)
-  )
+  // // get a pg client from the connection pool
+  pg.connect(connectionString, (error, apfDb, done) => {
+    if (error) {
+      if (apfDb) done(apfDb)
+      console.log('an error occured when trying to connect to db apflora')
+    }
+    const sql = `
+      INSERT INTO apflora.pop (
+        "PopNr",
+        "PopName",
+        "PopHerkunft",
+        "PopHerkunftUnklar",
+        "PopHerkunftUnklarBegruendung",
+        "PopBekanntSeit",
+        "PopXKoord",
+        "PopYKoord",
+        "PopGuid",
+        "MutWann",
+        "MutWer",
+        "ApArtId"
+        )
+      SELECT
+        "PopNr",
+        "PopName",
+        "PopHerkunft",
+        "PopHerkunftUnklar",
+        "PopHerkunftUnklarBegruendung",
+        "PopBekanntSeit",
+        "PopXKoord",
+        "PopYKoord",
+        "PopGuid",
+        "${date}",
+        "${user}",
+        ${apId}
+      FROM apflora.pop
+      WHERE "PopId" = ${popId}
+      RETURNING apflora.pop."PopId"`
+    apfDb.query(sql, (error, result) => callback(error, result.rows))
+  })
 }
