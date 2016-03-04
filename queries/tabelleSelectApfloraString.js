@@ -1,14 +1,8 @@
 'use strict'
 
-const mysql = require('mysql')
+const pg = require('pg')
 const config = require('../configuration')
-const escapeStringForSql = require('./escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'apflora'
-})
+const connectionString = config.pg.connectionString
 
 module.exports = (request, callback) => {
   const tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, aus der die Daten geholt werden sollen

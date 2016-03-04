@@ -1,14 +1,8 @@
 'use strict'
 
-const mysql = require('mysql')
+const pg = require('pg')
 const config = require('../configuration')
-const escapeStringForSql = require('./escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'apflora'
-})
+const connectionString = config.pg.connectionString
 
 module.exports = (request, callback) => {
   const apId = escapeStringForSql(request.params.apId)
