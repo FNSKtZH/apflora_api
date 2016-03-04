@@ -25,9 +25,11 @@ server.start()
 // takes about 33 seconds!
 // dont test every time because of duration
 
-describe.skip('/aktualisiereArteigenschaften', { timeout: 100000 }, () => {
+describe('/aktualisiereArteigenschaften', { timeout: 100000 }, () => {
   it('should update Arteigenschaften', (done) => {
-    server.inject('/aktualisiereArteigenschaften', (res) => {
+    const method = 'GET'
+    const url = '/aktualisiereArteigenschaften'
+    server.inject({ method, url }, (res) => {
       expect(res.result).to.equal('Arteigenschaften hinzugefügt')
       expect(res.statusCode).to.equal(200)
       done()
