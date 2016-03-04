@@ -23,7 +23,7 @@ server.start()
 
 // test
 
-describe.skip('/apliste', () => {
+describe('/apliste', () => {
   it('should return more than 50 rows for programmAp', (done) => {
     const method = 'GET'
     const url = '/apliste/programm=programmAp'
