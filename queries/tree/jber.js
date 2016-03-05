@@ -1,19 +1,11 @@
 'use strict'
 
-const mysql = require('mysql')
 const async = require('async')
-const config = require('../../configuration')
 const escapeStringForSql = require('../escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'apflora'
-})
 
 const buildChildForJBer = (JBerJahr, jberUebersichtListe) => {
   // zuerst den Datensatz extrahieren
-  const jberUebersicht = jberUebersichtListe.find(jberUebersicht => jberUebersicht.JbuJahr === JBerJahr)
+  const jberUebersicht = jberUebersichtListe.find((jberUebersicht) => jberUebersicht.JbuJahr === JBerJahr)
 
   if (jberUebersicht) {
     const object = {
@@ -29,7 +21,7 @@ const buildChildForJBer = (JBerJahr, jberUebersichtListe) => {
 }
 
 const buildChildrenForJBerOrdner = (results) => {
-  return results.jberListe.map(jber => {
+  return results.jberListe.map((jber) => {
     const beschriftung = jber.JBerJahr ? jber.JBerJahr.toString() : '(kein Jahr)'
     let object = {
       data: beschriftung,
@@ -49,15 +41,24 @@ module.exports = (request, reply) => {
   // query ber AND jberUebersicht first
   async.parallel({
     jberListe (callback) {
-      connection.query(
-        `SELECT JBerId, ApArtId, JBerJahr FROM apber where ApArtId = ${apId} ORDER BY JBerJahr`,
-        (err, jber) => callback(err, jber)
+      request.pg.client.query(
+        `SELECT
+          "JBerId",
+          "ApArtId",
+          "JBerJahr"
+        FROM
+          apflora.apber
+        WHERE
+          "ApArtId" = ${apId}
+        ORDER BY
+          "JBerJahr"`,
+        (err, jber) => callback(err, jber.rows)
       )
     },
     jberUebersichtListe (callback) {
-      connection.query(
-        'SELECT JbuJahr FROM apberuebersicht',
-        (err, jberUebersicht) => callback(err, jberUebersicht)
+      request.pg.client.query(
+        'SELECT "JbuJahr" FROM apflora.apberuebersicht',
+        (err, jberUebersicht) => callback(err, jberUebersicht.rows)
       )
     }
   }, (err, results) => {
