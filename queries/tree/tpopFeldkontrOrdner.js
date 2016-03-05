@@ -4,7 +4,7 @@ const erstelleTPopFeldKontr = require('./tpopFeldkontr')
 
 module.exports = (tpopFeldkontrListe, tpop) => {
   // Liste der Feldkontrollen dieser tpop erstellen
-  const feldkontrVonTpop = tpopFeldkontrListe.filter(tpopFeldkontr => tpopFeldkontr.TPopId === tpop.TPopId)
+  const feldkontrVonTpop = tpopFeldkontrListe.filter((tpopFeldkontr) => tpopFeldkontr.TPopId === tpop.TPopId)
 
   // tpopOrdnerFeldkontr aufbauen
   return {
@@ -13,6 +13,6 @@ module.exports = (tpopFeldkontrListe, tpop) => {
       id: `tpopOrdnerFeldkontr${tpop.TPopId}`,
       typ: 'tpopOrdnerFeldkontr'
     },
-    children: feldkontrVonTpop.map(feldkontr => erstelleTPopFeldKontr(feldkontr))
+    children: feldkontrVonTpop.map((feldkontr) => erstelleTPopFeldKontr(feldkontr))
   }
 }

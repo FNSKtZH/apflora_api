@@ -4,7 +4,7 @@ const erstelleTPopBeob = require('./tpopBeob')
 
 module.exports = (tpopBeobZugeordnetListe, tpop) => {
   // Liste der zugeordneten Beobachtungen dieser tpop erstellen
-  const tpopbeobVonTpop = tpopBeobZugeordnetListe.filter(tpopBeob => tpopBeob.TPopId === tpop.TPopId)
+  const tpopbeobVonTpop = tpopBeobZugeordnetListe.filter((tpopBeob) => tpopBeob.TPopId === tpop.TPopId)
 
   return {
     data: `Beobachtungen (${tpopbeobVonTpop.length})`,
@@ -12,6 +12,6 @@ module.exports = (tpopBeobZugeordnetListe, tpop) => {
       id: `tpopOrdnerBeobZugeordnet${tpop.TPopId}`,
       typ: 'tpopOrdnerBeobZugeordnet'
     },
-    children: tpopbeobVonTpop.map(tpopBeob => erstelleTPopBeob(tpopBeob))
+    children: tpopbeobVonTpop.map((tpopBeob) => erstelleTPopBeob(tpopBeob))
   }
 }

@@ -4,7 +4,7 @@ const erstellePopMassnBer = require('./popMassnBer')
 
 module.exports = (popMassnBerListe, pop) => {
   // Liste der MassnBer dieser pop erstellen
-  const massnberVonPop = popMassnBerListe.filter(popMassnBer => popMassnBer.PopId === pop.PopId)
+  const massnberVonPop = popMassnBerListe.filter((popMassnBer) => popMassnBer.PopId === pop.PopId)
 
   // tpopOrdnerTpopber aufbauen
   const popMassnberOrdner = {
@@ -13,7 +13,7 @@ module.exports = (popMassnBerListe, pop) => {
       id: pop.PopId,
       typ: 'popOrdnerMassnber'
     },
-    children: massnberVonPop.map(massnber => erstellePopMassnBer(massnber))
+    children: massnberVonPop.map((massnber) => erstellePopMassnBer(massnber))
   }
 
   return popMassnberOrdner
