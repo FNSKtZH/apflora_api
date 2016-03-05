@@ -52,7 +52,7 @@ module.exports = (request, callback) => {
         '&pop=',
         apflora.pop."PopId",
         '" target="_blank">',
-        IFNULL(CONCAT('Pop: ', apflora.pop."PopNr"), CONCAT('Pop: id=', apflora.pop."PopId")),
+        NULLIF(CONCAT('Pop: ', apflora.pop."PopNr"), CONCAT('Pop: id=', apflora.pop."PopId")),
         '</a>'
         ) AS link
     FROM
