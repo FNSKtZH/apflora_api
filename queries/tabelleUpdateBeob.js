@@ -5,16 +5,9 @@
 
 'use strict'
 
-const mysql = require('mysql')
 const _ = require('lodash')
 const config = require('../configuration')
 const escapeStringForSql = require('./escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'beob'
-})
 
 module.exports = (request, callback) => {
   const tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, in der die Daten gespeichert werden sollen
@@ -29,25 +22,29 @@ module.exports = (request, callback) => {
   const mutWerFeld = table.mutWerFeld // so heisst das Feld für MutWer
 
   let sql = `
-    UPDATE ${tabelle}
+    UPDATE
+      beob.${tabelle}
     SET
-      ${feld} = "${wert}",
-      ${mutWannFeld} = "${date}",
-      ${mutWerFeld} = "${user}"
-    WHERE ${tabelleIdFeld} = ${tabelleId}`
+      "${feld}" = '${wert}',
+      "${mutWannFeld}" = '${date}',
+      "${mutWerFeld}" = '${user}'
+    WHERE
+      "${tabelleIdFeld}" = ${tabelleId}`
   // Ist ein Feld neu leer, muss NULL übergeben werden. wert ist dann 'undefined'
   if (!wert) {
     sql = `
-      UPDATE ${tabelle}
+      UPDATE
+        beob.${tabelle}
       SET
-        ${feld} = NULL,
-        ${mutWannFeld} = "${date}",
-        ${mutWerFeld} = "${user}"
-      WHERE ${tabelleIdFeld} = ${tabelleId}`
+        "${feld}" = NULL,
+        "${mutWannFeld}" = '${date}',
+        "${mutWerFeld}" = '${user}'
+      WHERE
+        "${tabelleIdFeld}" = ${tabelleId}`
   }
 
-  connection.query(
+  request.pg.client.query(
     sql,
-    (err, data) => callback(err, data)
+    (err, data) => callback(err, data.rows)
   )
 }
