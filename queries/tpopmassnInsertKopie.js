@@ -1,15 +1,7 @@
 'use strict'
 
-const mysql = require('mysql')
 const async = require('async')
-const config = require('../configuration')
 const escapeStringForSql = require('./escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'apflora'
-})
 
 module.exports = (request, callback) => {
   const tpopId = escapeStringForSql(request.params.tpopId)
@@ -21,41 +13,52 @@ module.exports = (request, callback) => {
     [
       (callback) => {
         // allfällige temporäre Tabelle löschen
-        connection.query(
-          `DROP TABLE IF EXISTS tmp`,
+        request.pg.client.query(
+          'DROP TABLE IF EXISTS tmp',
           // nur allfällige Fehler weiterleiten
           (err) => callback(err, null)
         )
       },
       (callback) => {
         // temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
-        connection.query(`
-          CREATE TEMPORARY TABLE tmp
-          SELECT *
-          FROM tpopmassn
-          WHERE TPopMassnId = ${tpopMassnId}`,
+        request.pg.client.query(`
+          CREATE TEMPORARY TABLE
+            tmp
+          SELECT
+            *
+          FROM
+            apflora.tpopmassn
+          WHERE
+            "TPopMassnId" = ${tpopMassnId}`,
           // nur allfällige Fehler weiterleiten
           (err) => callback(err, null)
         )
       },
       (callback) => {
         // TPopId anpassen
-        connection.query(`
-          UPDATE tmp
+        request.pg.client.query(`
+          UPDATE
+            tmp
           SET
-            TPopMassnId = NULL,
-            TPopId = ${tpopId},
-            MutWann = "${date}",
-            MutWer = "${user}"`,
+            "TPopMassnId" = NULL,
+            "TPopId" = ${tpopId},
+            "MutWann" = '${date}',
+            "MutWer" = '${user}'`,
           // nur allfällige Fehler weiterleiten
           (err) => callback(err, null)
         )
       },
       (callback) => {
-        connection.query(`
-          INSERT INTO tpopmassn
-          SELECT * FROM tmp`,
-          (err, data) => callback(err, data.insertId)
+        request.pg.client.query(`
+          INSERT INTO
+            apflora.tpopmassn
+          SELECT
+            *
+          FROM
+            tmp
+          RETURNING
+            tpopmassn."TPopMassnId"`,
+          (err, data) => callback(err, data)
         )
       }
     ],
