@@ -18,7 +18,7 @@ const server = require('../server.js')
 
 // test
 
-describe.skip('/beobNaechsteTpop', () => {
+describe('/beobNaechsteTpop', () => {
   it('should return one TPop for ApId 206200 and a set of koordinates', (done) => {
     const method = 'GET'
     const url = '/beobNaechsteTpop/apId=206200/X=682226/Y=268513'

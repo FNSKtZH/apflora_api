@@ -18,7 +18,7 @@ const server = require('../server.js')
 
 // test
 
-describe.skip('/insert/feldkontr', () => {
+describe('/insert/feldkontr', () => {
   it('should insert a feldkontr for tpopId 72856123', (done) => {
     const method = 'POST'
     const url = '/insert/feldkontr/tpopId=72856123/tpopKontrtyp=/user=test'

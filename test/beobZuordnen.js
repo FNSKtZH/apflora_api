@@ -18,7 +18,7 @@ const server = require('../server.js')
 
 // test
 
-describe.skip('/beobZuordnen', () => {
+describe('/beobZuordnen', () => {
   it('should return more than 300 rows for ApId 206200', (done) => {
     const method = 'GET'
     const url = '/beobZuordnen/apId=206200'

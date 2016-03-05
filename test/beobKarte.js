@@ -18,7 +18,7 @@ const server = require('../server.js')
 
 // test
 
-describe.skip('/beobKarte', () => {
+describe('/beobKarte', () => {
   it('should return 1 row for beob_infospezies with NO_NOTE 214510', (done) => {
     const method = 'GET'
     const url = '/beobKarte/apId=/tpopId=/beobId=214510/nichtZuzuordnen='

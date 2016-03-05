@@ -18,7 +18,7 @@ const server = require('../server.js')
 
 // test
 
-describe.skip('/beobDistzutpopInfospezies', () => {
+describe('/beobDistzutpopInfospezies', () => {
   it('should return more than 100 rows for a sighting of Aceras anthropophorum', (done) => {
     const method = 'GET'
     const url = '/beobDistzutpopInfospezies/beobId=214510'

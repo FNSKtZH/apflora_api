@@ -18,7 +18,7 @@ const server = require('../server.js')
 
 // test
 
-describe.skip('/exportViewWhereIdIn', () => {
+describe('/exportViewWhereIdIn', () => {
   it('should return text/x-csv for view v_ap and ApId 900 and 206200', (done) => {
     const method = 'GET'
     const url = '/exportViewWhereIdIn/csv/view=v_ap/idName=ApArtId/idListe=900,206200/filename=test'
