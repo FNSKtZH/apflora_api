@@ -1,14 +1,6 @@
 'use strict'
 
-const mysql = require('mysql')
-const config = require('../../configuration')
 const escapeStringForSql = require('../escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'apflora'
-})
 
 const buildChildrenFromData = (data) => {
   return data.map((ber) => {

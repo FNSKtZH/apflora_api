@@ -29,10 +29,25 @@ const buildChildrenFromData = (data) => {
 module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
 
-  connection.query(
-    `SELECT ErfkritId, ApArtId, BeurteilTxt, ErfkritTxt, BeurteilOrd FROM erfkrit LEFT JOIN ap_erfkrit_werte ON ErfkritErreichungsgrad = BeurteilId where ApArtId = ${apId} ORDER BY BeurteilOrd`,
-    (err, data) => {
+  request.pg.client.query(
+    `SELECT
+      "ErfkritId",
+      "ApArtId",
+      "BeurteilTxt",
+      "ErfkritTxt",
+      "BeurteilOrd"
+    FROM
+      apflora.erfkrit
+      LEFT JOIN
+        apflora.ap_erfkrit_werte
+        ON apflora.erfkrit."ErfkritErreichungsgrad" = apflora.ap_erfkrit_werte."BeurteilId"
+    WHERE
+      "ApArtId" = ${apId}
+    ORDER BY
+      "BeurteilOrd"`,
+    (err, result) => {
       if (err) return reply(err)
+      const data = result.rows
       const node = {
         data: `AP-Erfolgskriterien (${data.length})`,
         attr: {
