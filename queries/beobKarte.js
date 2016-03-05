@@ -1,8 +1,5 @@
 'use strict'
 
-const pg = require('pg')
-const config = require('../configuration')
-const connectionString = config.pg.connectionString
 const escapeStringForSql = require('./escapeStringForSql')
 
 module.exports = (request, callback) => {
@@ -231,18 +228,11 @@ module.exports = (request, callback) => {
     }
   }
   // Daten abfragen
-  // get a pg client from the connection pool
-  pg.connect(connectionString, (error, apfDb, done) => {
+  request.pg.client.query(sql, (error, result) => {
     if (error) {
-      if (apfDb) done(apfDb)
-      console.log('an error occured when trying to connect to db apflora')
+      callback(error, null)
+    } else {
+      callback(null, result.rows)
     }
-    apfDb.query(sql, (error, result) => {
-      if (error) {
-        callback(error, null)
-      } else {
-        callback(null, result.rows)
-      }
-    })
   })
 }

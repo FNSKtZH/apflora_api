@@ -18,7 +18,7 @@ module.exports = (req, reply) => {
     // console.log('get arteigenschaften response', response)
     if (response && response.statusCode === 200) {
       // empty table
-      request.pg.client.query(
+      req.pg.client.query(
         'TRUNCATE TABLE beob.adb_eigenschaften',
         (err) => {
           if (err) console.log(err)
@@ -32,12 +32,12 @@ module.exports = (req, reply) => {
           // add new values
           let sql = sqlBase + eigenschaftenString
 
-          request.pg.client.query(
+          req.pg.client.query(
             sql,
             (err) => {
               if (err) throw err
               reply('Arteigenschaften hinzugefügt')
-            // request.pg.client.end()
+              req.pg.client.end()
             }
           )
         }

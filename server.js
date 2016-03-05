@@ -15,7 +15,8 @@ const serverOptionsDevelopment = {
   }
 }
 const server = new Hapi.Server(serverOptionsDevelopment)
-// non-Query routes hat to be separated because when testing directory handler produces an error
+// non-Query routes hat to be separated
+// because when testing directory handler produces an error
 const routes = require('./src/routes').concat(require('./src/nonQueryRoutes'))
 
 server.connection(require('./dbConnection.js'))
