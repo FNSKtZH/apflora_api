@@ -1,15 +1,7 @@
 'use strict'
 
-const mysql = require('mysql')
 const async = require('async')
-const config = require('../configuration')
 const escapeStringForSql = require('./escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'apflora'
-})
 
 module.exports = (request, callback) => {
   const tpopId = escapeStringForSql(request.params.tpopId)
@@ -21,41 +13,51 @@ module.exports = (request, callback) => {
     [
       (callback) => {
         // allfällige temporäre Tabelle löschen
-        connection.query(
-          `DROP TABLE IF EXISTS tmp`,
+        request.pg.client.query(
+          'DROP TABLE IF EXISTS tmp',
           // nur allfällige Fehler weiterleiten
           (err) => callback(err, null)
         )
       },
       (callback) => {
         // temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
-        connection.query(`
-          CREATE TEMPORARY TABLE tmp
-          SELECT *
-          FROM tpopkontr
-          WHERE TPopKontrId = ${tpopKontrId}`,
+        request.pg.client.query(`
+          CREATE TEMPORARY TABLE
+            tmp
+          SELECT
+            *
+          FROM
+            apflora.tpopkontr
+          WHERE
+            "TPopKontrId" = ${tpopKontrId}`,
           // nur allfällige Fehler weiterleiten
           (err) => callback(err, null)
         )
       },
       (callback) => {
         // TPopId anpassen
-        connection.query(`
+        request.pg.client.query(`
           UPDATE tmp
           SET
-            TPopKontrId = NULL,
-            TPopId = ${tpopId},
-            MutWann = "${date}",
-            MutWer = "${user}"`,
+            "TPopKontrId" = NULL,
+            "TPopId" = ${tpopId},
+            "MutWann" = '${date}',
+            "MutWer" = '${user}'`,
           // nur allfällige Fehler weiterleiten
           (err) => callback(err, null)
         )
       },
       (callback) => {
-        connection.query(`
-          INSERT INTO tpopkontr
-          SELECT * FROM tmp`,
-          (err, data) => callback(err, data.insertId)
+        request.pg.client.query(`
+          INSERT INTO
+            apflora.tpopkontr
+          SELECT
+            *
+          FROM
+            tmp
+          RETURNING
+            "TPopKontrId"`,
+          (err, data) => callback(err, data)
         )
       }
     ],
@@ -65,25 +67,28 @@ module.exports = (request, callback) => {
       if (err) { return callback(err, null) }
       // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
       const sql = `
-      INSERT INTO tpopkontrzaehl
+      INSERT INTO
+        apflora.tpopkontrzaehl
       (
-        Anzahl,
-        Zaehleinheit,
-        Methode,
-        MutWann,
-        MutWer,
-        TPopKontrId
+        "Anzahl",
+        "Zaehleinheit",
+        "Methode",
+        "MutWann",
+        "MutWer",
+        "TPopKontrId"
       )
       SELECT
-        tpopkontrzaehl.Anzahl,
-        tpopkontrzaehl.Zaehleinheit,
-        tpopkontrzaehl.Methode,
-        "${date}",
-        "${user}",
+        apflora.tpopkontrzaehl."Anzahl",
+        apflora.tpopkontrzaehl."Zaehleinheit",
+        apflora.tpopkontrzaehl."Methode",
+        '${date}',
+        '${user}',
         ${tpopkontridNeu}
-      FROM tpopkontrzaehl
-      WHERE tpopkontrzaehl.TPopKontrId = ${tpopKontrId}`
-      connection.query(
+      FROM
+        apflora.tpopkontrzaehl
+      WHERE
+        apflora.tpopkontrzaehl."TPopKontrId" = ${tpopKontrId}`
+      request.pg.client.query(
         sql,
         // neue tpopkontrId zurück liefern
         (err, data) => callback(null, tpopkontridNeu)

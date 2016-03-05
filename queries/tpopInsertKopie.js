@@ -27,7 +27,7 @@ module.exports = (request, callback) => {
           SELECT
             *
           FROM
-            tpop
+            apflora.tpop
           WHERE
             "TPopId" = ${tpopId}`,
           // nur allfällige Fehler weiterleiten
@@ -51,7 +51,7 @@ module.exports = (request, callback) => {
       (callback) => {
         request.pg.client.query(`
           INSERT INTO
-            tpop
+            apflora.tpop
           SELECT
             *
           FROM

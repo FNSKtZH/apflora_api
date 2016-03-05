@@ -10,19 +10,20 @@ module.exports = (request, callback) => {
 
   // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
   const sql = `
-    INSERT INTO apflora.pop (
-      "PopNr",
-      "PopName",
-      "PopHerkunft",
-      "PopHerkunftUnklar",
-      "PopHerkunftUnklarBegruendung",
-      "PopBekanntSeit",
-      "PopXKoord",
-      "PopYKoord",
-      "PopGuid",
-      "MutWann",
-      "MutWer",
-      "ApArtId"
+    INSERT INTO
+      apflora.pop (
+        "PopNr",
+        "PopName",
+        "PopHerkunft",
+        "PopHerkunftUnklar",
+        "PopHerkunftUnklarBegruendung",
+        "PopBekanntSeit",
+        "PopXKoord",
+        "PopYKoord",
+        "PopGuid",
+        "MutWann",
+        "MutWer",
+        "ApArtId"
       )
     SELECT
       "PopNr",
@@ -37,8 +38,11 @@ module.exports = (request, callback) => {
       "${date}",
       "${user}",
       ${apId}
-    FROM apflora.pop
-    WHERE "PopId" = ${popId}
-    RETURNING apflora.pop."PopId"`
+    FROM
+      apflora.pop
+    WHERE
+      "PopId" = ${popId}
+    RETURNING
+      apflora.pop."PopId"`
   request.pg.client.query(sql, (error, result) => callback(error, result.rows))
 }
