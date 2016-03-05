@@ -2,7 +2,7 @@
 
 'use strict'
 
-module.exports = popber => {
+module.exports = (popber) => {
   let node = {}
   if (popber) {
     const popberjahrText = popber.PopBerJahr || '(kein Jahr)'

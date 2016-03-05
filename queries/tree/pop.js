@@ -2,15 +2,7 @@
 
 const _ = require('lodash')
 const async = require('async')
-const mysql = require('mysql')
-const config = require('../../configuration')
 const escapeStringForSql = require('../escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'apflora'
-})
 const erstelleTpopOrdner = require('./tpopOrdner')
 const erstellePopMassnBerOrdner = require('./popMassnBerOrdner')
 const erstellePopBerOrdner = require('./popBerOrdner')
@@ -44,9 +36,21 @@ module.exports = (request, reply) => {
   // zuerst die popliste holen
   async.waterfall([
     (callback) => {
-      connection.query(
-        `SELECT PopNr, PopName, PopId, ApArtId FROM pop where ApArtId = ${apId} ORDER BY PopNr, PopName`,
-        (err, popListe) => {
+      request.pg.client.query(
+        `SELECT
+          "PopNr",
+          "PopName",
+          "PopId",
+          "ApArtId"
+        FROM
+          apflora.pop
+        WHERE
+          "ApArtId" = ${apId}
+        ORDER BY
+          "PopNr",
+          "PopName"`,
+        (err, result) => {
+          const popListe = result.rows
           const popIds = _.map(popListe, 'PopId')
           callback(err, popIds, popListe)
         }
@@ -54,9 +58,21 @@ module.exports = (request, reply) => {
     },
     (popIds, popListe, callback) => {
       if (popIds.length > 0) {
-        connection.query(
-          `SELECT TPopNr, TPopFlurname, TPopId, PopId FROM tpop where PopId in (${popIds.join()}) ORDER BY TPopNr, TPopFlurname`,
-          (err, tpopListe) => {
+        request.pg.client.query(
+          `SELECT
+            "TPopNr",
+            "TPopFlurname",
+            "TPopId",
+            "PopId"
+          FROM
+            apflora.tpop
+          WHERE
+            "PopId" IN (${popIds.join()})
+          ORDER BY
+            "TPopNr",
+            "TPopFlurname"`,
+          (err, result) => {
+            const tpopListe = result.rows
             const tpopIds = _.map(tpopListe, 'TPopId')
             callback(err, [popIds, tpopIds, popListe, tpopListe])
           }
@@ -75,51 +91,196 @@ module.exports = (request, reply) => {
       // jetzt parallel alle übrigen Daten aus dem pop-baum
       async.parallel({
         tpopMassnListe (callback) {
-          connection.query(
-            `SELECT TPopMassnId, TPopId, TPopMassnJahr, TPopMassnDatum, MassnTypTxt FROM tpopmassn LEFT JOIN tpopmassn_typ_werte ON TPopMassnTyp = MassnTypCode where TPopId in (${tpopIds.join()}) ORDER BY TPopMassnJahr, TPopMassnDatum, MassnTypTxt`,
-            (err, data) => callback(err, data)
+          request.pg.client.query(
+            `SELECT
+              "TPopMassnId",
+              "TPopId",
+              "TPopMassnJahr",
+              "TPopMassnDatum",
+              "MassnTypTxt"
+            FROM
+              apflora.tpopmassn
+              LEFT JOIN
+                apflora.tpopmassn_typ_werte
+                ON "TPopMassnTyp" = "MassnTypCode"
+            WHERE
+              "TPopId" IN (${tpopIds.join()})
+            ORDER BY
+              "TPopMassnJahr",
+              "TPopMassnDatum",
+              "MassnTypTxt"`,
+            (err, data) => callback(err, data.rows)
           )
         },
         tpopMassnBerListe (callback) {
-          connection.query(
-            `SELECT TPopMassnBerId, TPopId, TPopMassnBerJahr, BeurteilTxt FROM tpopmassnber LEFT JOIN tpopmassn_erfbeurt_werte ON TPopMassnBerErfolgsbeurteilung = BeurteilId where TPopId in (${tpopIds.join()}) ORDER BY TPopMassnBerJahr, BeurteilTxt`,
-            (err, data) => callback(err, data)
+          request.pg.client.query(
+            `SELECT
+              "TPopMassnBerId",
+              "TPopId",
+              "TPopMassnBerJahr",
+              "BeurteilTxt"
+            FROM
+              apflora.tpopmassnber
+              LEFT JOIN
+                apflora.tpopmassn_erfbeurt_werte
+                ON "TPopMassnBerErfolgsbeurteilung" = "BeurteilId"
+            WHERE
+              "TPopId" IN (${tpopIds.join()})
+            ORDER BY
+              "TPopMassnBerJahr",
+              "BeurteilTxt"`,
+            (err, data) => callback(err, data.rows)
           )
         },
         tpopFeldkontrListe (callback) {
-          connection.query(
-            `SELECT TPopKontrId, TPopId, TPopKontrJahr, TPopKontrTyp FROM tpopkontr where (TPopId in (${tpopIds.join()})) AND (TPopKontrTyp <> "Freiwilligen-Erfolgskontrolle" OR TPopKontrTyp IS NULL) ORDER BY TPopKontrJahr, TPopKontrTyp`,
-            (err, data) => callback(err, data)
+          request.pg.client.query(
+            `SELECT
+             "TPopKontrId",
+             "TPopId",
+             "TPopKontrJahr",
+             "TPopKontrTyp"
+            FROM
+              apflora.tpopkontr
+            WHERE
+             "TPopId" IN (${tpopIds.join()})
+              AND (
+               "TPopKontrTyp" <> 'Freiwilligen-Erfolgskontrolle'
+               OR "TPopKontrTyp" IS NULL
+              )
+            ORDER BY
+              "TPopKontrJahr",
+              "TPopKontrTyp"`,
+            (err, data) => callback(err, data.rows)
           )
         },
         tpopFreiwkontrListe (callback) {
-          connection.query(
-            `SELECT TPopKontrId, TPopId, TPopKontrJahr, TPopKontrTyp FROM tpopkontr where (TPopId in (${tpopIds.join()})) AND (TPopKontrTyp = "Freiwilligen-Erfolgskontrolle") ORDER BY TPopKontrJahr, TPopKontrTyp`,
-            (err, data) => callback(err, data)
+          request.pg.client.query(
+            `SELECT
+              "TPopKontrId",
+              "TPopId",
+              "TPopKontrJahr",
+              "TPopKontrTyp"
+            FROM
+              apflora.tpopkontr
+            WHERE
+              "TPopId" IN (${tpopIds.join()})
+              AND "TPopKontrTyp" = 'Freiwilligen-Erfolgskontrolle'
+            ORDER BY
+              "TPopKontrJahr",
+              "TPopKontrTyp"`,
+            (err, data) => callback(err, data.rows)
           )
         },
         tpopBerListe (callback) {
-          connection.query(
-            `SELECT TPopBerId, TPopId, TPopBerJahr, EntwicklungTxt, EntwicklungOrd FROM tpopber LEFT JOIN tpop_entwicklung_werte ON TPopBerEntwicklung = EntwicklungCode where TPopId in (${tpopIds.join()}) ORDER BY TPopBerJahr, EntwicklungOrd`,
-            (err, data) => callback(err, data)
+          request.pg.client.query(
+            `SELECT
+              "TPopBerId",
+              "TPopId",
+              "TPopBerJahr",
+              "EntwicklungTxt",
+              "EntwicklungOrd"
+            FROM
+              apflora.tpopber
+              LEFT JOIN
+                apflora.tpop_entwicklung_werte
+                ON "TPopBerEntwicklung" = "EntwicklungCode"
+            WHERE
+              "TPopId" IN (${tpopIds.join()})
+            ORDER BY
+              "TPopBerJahr",
+              "EntwicklungOrd"`,
+            (err, data) => callback(err, data.rows)
           )
         },
         tpopBeobZugeordnetListe (callback) {
-          connection.query(
-            `SELECT apflora.beobzuordnung.NO_NOTE, apflora.beobzuordnung.TPopId, apflora.beobzuordnung.beobNichtZuordnen, apflora.beobzuordnung.BeobBemerkungen, apflora.beobzuordnung.BeobMutWann, apflora.beobzuordnung.BeobMutWer, beob.beob_bereitgestellt.Datum, beob.beob_bereitgestellt.Autor, "evab" AS beobtyp FROM apflora.beobzuordnung INNER JOIN beob.beob_bereitgestellt ON apflora.beobzuordnung.NO_NOTE = beob.beob_bereitgestellt.NO_NOTE_PROJET WHERE apflora.beobzuordnung.TPopId in (${tpopIds.join()}) AND (apflora.beobzuordnung.beobNichtZuordnen = 0 OR apflora.beobzuordnung.beobNichtZuordnen IS NULL) UNION SELECT apflora.beobzuordnung.NO_NOTE, apflora.beobzuordnung.TPopId, apflora.beobzuordnung.beobNichtZuordnen, apflora.beobzuordnung.BeobBemerkungen, apflora.beobzuordnung.BeobMutWann, apflora.beobzuordnung.BeobMutWer, beob.beob_bereitgestellt.Datum, beob.beob_bereitgestellt.Autor, "infospezies" AS beobtyp FROM apflora.beobzuordnung INNER JOIN beob.beob_bereitgestellt ON CAST(apflora.beobzuordnung.NO_NOTE as CHAR(50)) = CAST(beob.beob_bereitgestellt.NO_NOTE as CHAR(50)) WHERE apflora.beobzuordnung.TPopId in (${tpopIds.join()}) AND (apflora.beobzuordnung.beobNichtZuordnen = 0 OR apflora.beobzuordnung.beobNichtZuordnen IS NULL) ORDER BY Datum`,
-            (err, data) => callback(err, data)
+          request.pg.client.query(
+            `SELECT
+              apflora.beobzuordnung."NO_NOTE",
+              apflora.beobzuordnung."TPopId",
+              apflora.beobzuordnung."BeobNichtZuordnen",
+              apflora.beobzuordnung."BeobBemerkungen",
+              apflora.beobzuordnung."BeobMutWann",
+              apflora.beobzuordnung."BeobMutWer",
+              beob.beob_bereitgestellt."Datum",
+              beob.beob_bereitgestellt."Autor",
+              'evab' AS "beobtyp"
+            FROM
+              apflora.beobzuordnung
+              INNER JOIN
+                beob.beob_bereitgestellt
+                ON apflora.beobzuordnung."NO_NOTE" = beob.beob_bereitgestellt."NO_NOTE_PROJET"
+            WHERE
+              apflora.beobzuordnung."TPopId" IN (${tpopIds.join()})
+              AND (
+                apflora.beobzuordnung."BeobNichtZuordnen" = 0
+                OR apflora.beobzuordnung."BeobNichtZuordnen" IS NULL
+              )
+            UNION SELECT
+              apflora.beobzuordnung."NO_NOTE",
+              apflora.beobzuordnung."TPopId",
+              apflora.beobzuordnung."BeobNichtZuordnen",
+              apflora.beobzuordnung."BeobBemerkungen",
+              apflora.beobzuordnung."BeobMutWann",
+              apflora.beobzuordnung."BeobMutWer",
+              beob.beob_bereitgestellt."Datum",
+              beob.beob_bereitgestellt."Autor",
+              'infospezies' AS "beobtyp"
+            FROM
+              apflora.beobzuordnung
+              INNER JOIN
+                beob.beob_bereitgestellt
+                ON CAST(apflora.beobzuordnung."NO_NOTE" as CHAR(50)) = CAST(beob.beob_bereitgestellt."NO_NOTE" as CHAR(50))
+            WHERE
+              apflora.beobzuordnung."TPopId" IN (${tpopIds.join()})
+              AND (
+                apflora.beobzuordnung."BeobNichtZuordnen" = 0
+                OR apflora.beobzuordnung."BeobNichtZuordnen" IS NULL
+              )
+            ORDER BY
+              "Datum"`,
+            (err, data) => callback(err, data.rows)
           )
         },
         popBerListe (callback) {
-          connection.query(
-            `SELECT PopBerId, PopId, PopBerJahr, EntwicklungTxt, EntwicklungOrd FROM popber LEFT JOIN pop_entwicklung_werte ON PopBerEntwicklung = EntwicklungId where PopId in (${popIds.join()}) ORDER BY PopBerJahr, EntwicklungOrd`,
-            (err, data) => callback(err, data)
+          request.pg.client.query(
+            `SELECT
+              "PopBerId",
+              "PopId",
+              "PopBerJahr",
+              "EntwicklungTxt",
+              "EntwicklungOrd"
+            FROM
+              apflora.popber
+              LEFT JOIN
+                apflora.pop_entwicklung_werte
+                ON "PopBerEntwicklung" = "EntwicklungId"
+            WHERE
+              "PopId" IN (${popIds.join()})
+            ORDER BY
+              "PopBerJahr",
+              "EntwicklungOrd"`,
+            (err, data) => callback(err, data.rows)
           )
         },
         popMassnBerListe (callback) {
-          connection.query(
-            `SELECT PopMassnBerId, PopId, PopMassnBerJahr, BeurteilTxt, BeurteilOrd FROM popmassnber LEFT JOIN tpopmassn_erfbeurt_werte ON PopMassnBerErfolgsbeurteilung = BeurteilId where PopId in (${popIds.join()}) ORDER BY PopMassnBerJahr, BeurteilOrd`,
-            (err, data) => callback(err, data)
+          request.pg.client.query(
+            `SELECT
+              "PopMassnBerId",
+              "PopId",
+              "PopMassnBerJahr",
+              "BeurteilTxt",
+              "BeurteilOrd"
+            FROM
+              apflora.popmassnber
+              LEFT JOIN
+                apflora.tpopmassn_erfbeurt_werte
+                ON "PopMassnBerErfolgsbeurteilung" = "BeurteilId"
+            WHERE
+              "PopId" IN (${popIds.join()})
+            ORDER BY
+              "PopMassnBerJahr",
+              "BeurteilOrd"`,
+            (err, data) => callback(err, data.rows)
           )
         }
       }, (err, results) => {
@@ -141,9 +302,9 @@ module.exports = (request, reply) => {
 
         // PopNr: Je nach Anzahl Stellen der maximalen PopNr bei denjenigen mit weniger Nullen
         // Nullen voranstellen, damit sie im tree auch als String richtig sortiert werden
-        const popNrMax = _.maxBy(popListe, pop => pop.PopNr).PopNr
+        const popNrMax = _.maxBy(popListe, (pop) => pop.PopNr).PopNr
 
-        popListe.forEach(pop => {
+        popListe.forEach((pop) => {
           let popNodeChildren = []
           let data
           let popSort
