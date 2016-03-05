@@ -4,7 +4,6 @@
   "description": "Aktionsplan Flora Kt. Zürich Backend",
   "main": "server.js",
   "dependencies": {
-    "ampersand-app": "^1.0.4",
     "async": "1.5.2",
     "dateformat": "1.0.12",
     "hapi": "13.0.0",
