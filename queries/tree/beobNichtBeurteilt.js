@@ -1,17 +1,9 @@
 'use strict'
 
-const mysql = require('mysql')
-const config = require('../../configuration')
 const escapeStringForSql = require('../escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'apflora'
-})
 
 const buildChildrenFromData = (data) => {
-  return data.map(beob => {
+  return data.map((beob) => {
     const datum = beob.Datum || '(kein Datum)'
     const autor = beob.Autor || '(kein Autor)'
     return {
@@ -28,22 +20,44 @@ const buildChildrenFromData = (data) => {
 
 module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
+  const sql = `
+  SELECT
+    beob.beob_bereitgestellt."NO_NOTE",
+    beob.beob_bereitgestellt."NO_NOTE_PROJET",
+    beob.beob_bereitgestellt."NO_ISFS",
+    beob.beob_bereitgestellt."Datum",
+    beob.beob_bereitgestellt."Autor"
+  FROM
+    (beob.beob_bereitgestellt
+    LEFT JOIN
+      apflora.beobzuordnung
+      ON to_char(beob.beob_bereitgestellt."NO_NOTE", 'FM99999999') = apflora.beobzuordnung."NO_NOTE")
+    LEFT JOIN
+      apflora.beobzuordnung AS "tblBeobZuordnung_1"
+      ON beob.beob_bereitgestellt."NO_NOTE_PROJET" = "tblBeobZuordnung_1"."NO_NOTE"
+  WHERE
+    beob.beob_bereitgestellt."NO_ISFS" = ${apId}
+    AND (
+      (beob.beob_bereitgestellt."NO_NOTE_PROJET" Is Not Null AND "tblBeobZuordnung_1"."NO_NOTE" Is Null)
+      OR (beob.beob_bereitgestellt."NO_NOTE" Is Not Null AND apflora.beobzuordnung."NO_NOTE" Is Null)
+    )
+  ORDER BY
+    beob.beob_bereitgestellt."Datum" DESC
+  LIMIT 100`
 
-  connection.query(
-    `SELECT beob.beob_bereitgestellt.NO_NOTE, beob.beob_bereitgestellt.NO_NOTE_PROJET, beob.beob_bereitgestellt.NO_ISFS, beob.beob_bereitgestellt.Datum, beob.beob_bereitgestellt.Autor FROM (beob.beob_bereitgestellt LEFT JOIN apflora.beobzuordnung ON beob.beob_bereitgestellt.NO_NOTE = apflora.beobzuordnung.NO_NOTE) LEFT JOIN apflora.beobzuordnung AS tblBeobZuordnung_1 ON beob.beob_bereitgestellt.NO_NOTE_PROJET = tblBeobZuordnung_1.NO_NOTE WHERE beob.beob_bereitgestellt.NO_ISFS = ${apId} AND ((beob.beob_bereitgestellt.NO_NOTE_PROJET Is Not Null AND tblBeobZuordnung_1.NO_NOTE Is Null) OR (beob.beob_bereitgestellt.NO_NOTE Is Not Null AND apflora.beobzuordnung.NO_NOTE Is Null)) ORDER BY beob.beob_bereitgestellt.Datum DESC LIMIT 100`,
-    (err, data) => {
-      if (err) return reply(err)
+  request.pg.client.query(sql, (err, result) => {
+    if (err) return reply(err)
+    const data = result.rows
 
-      const node = {
-        data: `nicht beurteilte Beobachtungen (${data.length < 100 ? '' : 'neuste '}${data.length})`,
-        attr: {
-          id: `apOrdnerBeobNichtBeurteilt${apId}`,
-          typ: 'apOrdnerBeobNichtBeurteilt'
-        },
-        children: buildChildrenFromData(data)
-      }
-
-      reply(null, node)
+    const node = {
+      data: `nicht beurteilte Beobachtungen (${data.length < 100 ? '' : 'neuste '}${data.length})`,
+      attr: {
+        id: `apOrdnerBeobNichtBeurteilt${apId}`,
+        typ: 'apOrdnerBeobNichtBeurteilt'
+      },
+      children: buildChildrenFromData(data)
     }
-  )
+
+    reply(null, node)
+  })
 }
