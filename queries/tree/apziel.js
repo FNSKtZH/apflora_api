@@ -1,16 +1,8 @@
 'use strict'
 
 const _ = require('lodash')
-const mysql = require('mysql')
 const async = require('async')
-const config = require('../../configuration')
 const escapeStringForSql = require('../escapeStringForSql')
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: config.db.userName,
-  password: config.db.passWord,
-  database: 'apflora'
-})
 
 module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
@@ -18,9 +10,20 @@ module.exports = (request, reply) => {
   // zuerst die Daten holen
   async.waterfall([
     (callback) => {
-      connection.query(
-        `SELECT ZielId, ZielTyp, ZielJahr, ZielBezeichnung FROM ziel WHERE ApArtId = ${apId} ORDER BY ZielTyp, ZielBezeichnung`,
-        (err, apzielListe) => callback(err, apzielListe)
+      request.pg.client.query(
+        `SELECT
+          "ZielId",
+          "ZielTyp",
+          "ZielJahr",
+          "ZielBezeichnung"
+        FROM
+          apflora.ziel
+        WHERE
+          "ApArtId" = ${apId}
+        ORDER BY
+          "ZielTyp",
+          "ZielBezeichnung"`,
+        (err, apzielListe) => callback(err, apzielListe.rows)
       )
     },
     (apzielListe, callback) => {
@@ -28,10 +31,21 @@ module.exports = (request, reply) => {
       if (apzielListe.length > 0) {
         // Liste aller ZielId erstellen
         const zielIds = _.map(apzielListe, 'ZielId')
-        connection.query(
-          `SELECT ZielBerId, ZielId, ZielBerJahr, ZielBerErreichung FROM zielber where ZielId in (${zielIds.join()}) ORDER BY ZielBerJahr, ZielBerErreichung`,
+        request.pg.client.query(
+          `SELECT
+            "ZielBerId",
+            "ZielId",
+            "ZielBerJahr",
+            "ZielBerErreichung"
+          FROM
+            apflora.zielber
+          WHERE
+            "ZielId" IN (${zielIds.join()})
+          ORDER BY
+            "ZielBerJahr",
+            "ZielBerErreichung"`,
           // das Ergebnis der vorigen Abfrage anfügen
-          (err, zielberListe) => callback(err, [apzielListe, zielberListe])
+          (err, zielberListe) => callback(err, [apzielListe, zielberListe.rows])
         )
       } else {
         callback(null, [apzielListe, []])
@@ -43,7 +57,9 @@ module.exports = (request, reply) => {
     const zielberListe = result[1] || []
 
     // in der apzielliste alls ZielJahr NULL mit '(kein Jahr)' ersetzen
-    apzielListe.forEach(apziel => apziel.ZielJahr = apziel.ZielJahr || '(kein Jahr)')
+    apzielListe.forEach((apziel) => {
+      apziel.ZielJahr = apziel.ZielJahr || '(kein Jahr)'
+    })
 
     let apzieljahre = _.union(_.map(apzielListe, 'ZielJahr'))
     apzieljahre.sort()
@@ -58,8 +74,8 @@ module.exports = (request, reply) => {
       children: apzieleOrdnerNodeChildren
     }
 
-    apzieljahre.forEach(zielJahr => {
-      const apziele = apzielListe.filter(apziel => apziel.ZielJahr === zielJahr)
+    apzieljahre.forEach((zielJahr) => {
+      const apziele = apzielListe.filter((apziel) => apziel.ZielJahr === zielJahr)
       // nodes für apziele aufbauen
       let apzieljahrNodeChildren = []
       let apzieljahrNode = {
@@ -74,7 +90,7 @@ module.exports = (request, reply) => {
       apzieleOrdnerNodeChildren.push(apzieljahrNode)
 
       apziele.forEach(function (apziel) {
-        const zielbere = zielberListe.filter(zielber => zielber.ZielId === apziel.ZielId)
+        const zielbere = zielberListe.filter((zielber) => zielber.ZielId === apziel.ZielId)
         // node für apziele aufbauen
         let apzielNodeChildren = []
         let apzielNode = {
@@ -99,7 +115,7 @@ module.exports = (request, reply) => {
         }
         apzielNodeChildren.push(apzielOrdnerNode)
 
-        zielbere.forEach(zielber => {
+        zielbere.forEach((zielber) => {
           let data = ''
           if (zielber.ZielBerJahr && zielber.ZielBerErreichung) {
             data = `${zielber.ZielBerJahr}: ${zielber.ZielBerErreichung}`
