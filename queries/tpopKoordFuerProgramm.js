@@ -1,27 +1,29 @@
 'use strict'
 
-const pg = require('pg')
-const config = require('../configuration')
-const connectionString = config.pg.connectionString
+const escapeStringForSql = require('./escapeStringForSql')
 
 module.exports = (request, callback) => {
   const apId = escapeStringForSql(request.params.apId)
   // Daten abfragen
-  connection.query(`
+  request.pg.client.query(`
     SELECT DISTINCT
-      pop.ApArtId,
-      pop.PopId,
-      pop.PopNr,
-      tpop.TPopId,
-      tpop.TPopNr,
-      tpop.TPopXKoord,
-      tpop.TPopYKoord,
-      tpop.TPopApBerichtRelevant
-    FROM pop
-      INNER JOIN tpop ON pop.PopId = tpop.PopId
-    WHERE tpop.TPopXKoord Is Not Null
-      AND tpop.TPopYKoord Is Not Null
-      AND pop.ApArtId = ${apId}`,
-    (err, data) => callback(err, data)
+      apflora.pop."ApArtId",
+      apflora.pop."PopId",
+      apflora.pop."PopNr",
+      apflora.tpop."TPopId",
+      apflora.tpop."TPopNr",
+      apflora.tpop."TPopXKoord",
+      apflora.tpop."TPopYKoord",
+      apflora.tpop."TPopApBerichtRelevant"
+    FROM
+      apflora.pop
+      INNER JOIN
+        apflora.tpop
+        ON apflora.pop."PopId" = apflora.tpop."PopId"
+    WHERE
+      apflora.tpop."TPopXKoord" Is Not Null
+      AND apflora.tpop."TPopYKoord" Is Not Null
+      AND apflora.pop."ApArtId" = ${apId}`,
+    (err, data) => callback(err, data.rows)
   )
 }
