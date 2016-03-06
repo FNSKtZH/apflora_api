@@ -35,8 +35,8 @@ module.exports = (request, callback) => {
       "PopXKoord",
       "PopYKoord",
       "PopGuid",
-      "${date}",
-      "${user}",
+      '${date}',
+      '${user}',
       ${apId}
     FROM
       apflora.pop
@@ -44,5 +44,5 @@ module.exports = (request, callback) => {
       "PopId" = ${popId}
     RETURNING
       apflora.pop."PopId"`
-  request.pg.client.query(sql, (error, result) => callback(error, result.rows))
+  request.pg.client.query(sql, (error, result) => callback(error, result))
 }
