@@ -25,11 +25,11 @@ module.exports = (request, callback) => {
   // sql beginnen
   const sql = `
     INSERT INTO
-      ${tabelle} ("${feldnamen}")
+      apflora.${tabelle} ("${feldnamen}")
     VALUES
-      ("${feldwerte}")
+      ('${feldwerte}')
     RETURNING
-      ${tabelle}."${tabelleIdFeld}"`
+      "${tabelleIdFeld}"`
 
   request.pg.client.query(
     sql,
