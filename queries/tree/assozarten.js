@@ -1,9 +1,10 @@
 'use strict'
 
+const _ = require('lodash')
 const escapeStringForSql = require('../escapeStringForSql')
 
 function buildChildrenFromData (data) {
-  return data.map((assArt) => {
+  return _.map(data, (assArt) => {
     return {
       data: assArt.Artname || '(keine Art gewählt)',
       attr: {
