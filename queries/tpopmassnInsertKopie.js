@@ -8,6 +8,7 @@ module.exports = (request, callback) => {
   const tpopMassnId = escapeStringForSql(request.params.tpopMassnId)
   const user = escapeStringForSql(request.params.user) // der Benutzername
   const date = new Date().toISOString() // wann gespeichert wird
+  let newTPopMassnId = null
 
   async.series(
     [
@@ -24,7 +25,7 @@ module.exports = (request, callback) => {
         request.pg.client.query(`
           CREATE TEMPORARY TABLE
             tmp
-          SELECT
+          AS SELECT
             *
           FROM
             apflora.tpopmassn
@@ -32,6 +33,16 @@ module.exports = (request, callback) => {
             "TPopMassnId" = ${tpopMassnId}`,
           // nur allfällige Fehler weiterleiten
           (err) => callback(err, null)
+        )
+      },
+      (callback) => {
+        // get new TPopMassnId
+        request.pg.client.query(`
+          select nextval('apflora."tpopmassn_TPopMassnId_seq"')`,
+          (err, result) => {
+            newTPopMassnId = parseInt(result.rows[0].nextval, 0)
+            callback(err, newTPopMassnId)
+          }
         )
       },
       (callback) => {
@@ -55,14 +66,12 @@ module.exports = (request, callback) => {
           SELECT
             *
           FROM
-            tmp
-          RETURNING
-            tpopmassn."TPopMassnId"`,
-          (err, data) => callback(err, data)
+            tmp`,
+          (err, data) => callback(err, null)
         )
       }
     ],
     // neue id zurück liefern
-    (err, results) => callback(err, results[3])
+    (err, results) => callback(err, results[2])
   )
 }

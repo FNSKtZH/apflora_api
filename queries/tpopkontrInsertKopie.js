@@ -8,6 +8,7 @@ module.exports = (request, callback) => {
   const tpopKontrId = escapeStringForSql(request.params.tpopKontrId)
   const user = escapeStringForSql(request.params.user) // der Benutzername
   const date = new Date().toISOString()                // wann gespeichert wird
+  let newTPopKontrId = null
 
   async.series(
     [
@@ -24,7 +25,7 @@ module.exports = (request, callback) => {
         request.pg.client.query(`
           CREATE TEMPORARY TABLE
             tmp
-          SELECT
+          AS SELECT
             *
           FROM
             apflora.tpopkontr
@@ -32,6 +33,16 @@ module.exports = (request, callback) => {
             "TPopKontrId" = ${tpopKontrId}`,
           // nur allfällige Fehler weiterleiten
           (err) => callback(err, null)
+        )
+      },
+      (callback) => {
+        // get new TPopKontrId
+        request.pg.client.query(`
+          select nextval('apflora."tpopkontr_TPopKontrId_seq"')`,
+          (err, result) => {
+            newTPopKontrId = parseInt(result.rows[0].nextval, 0)
+            callback(err, newTPopKontrId)
+          }
         )
       },
       (callback) => {
@@ -54,15 +65,13 @@ module.exports = (request, callback) => {
           SELECT
             *
           FROM
-            tmp
-          RETURNING
-            "TPopKontrId"`,
-          (err, data) => callback(err, data)
+            tmp`,
+          (err, data) => callback(err, null)
         )
       }
     ],
     (err, results) => {
-      const tpopkontridNeu = results[3]
+      const tpopkontridNeu = results[2]
 
       if (err) { return callback(err, null) }
       // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen

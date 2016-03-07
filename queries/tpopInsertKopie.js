@@ -39,7 +39,6 @@ module.exports = (request, callback) => {
         // get new TPopId
         request.pg.client.query(`
           select nextval('apflora."tpop_TPopId_seq"')`,
-          // nur allfällige Fehler weiterleiten
           (err, result) => {
             newTPopId = parseInt(result.rows[0].nextval, 0)
             callback(err, newTPopId)
@@ -67,10 +66,8 @@ module.exports = (request, callback) => {
           SELECT
             *
           FROM
-            tmp
-          RETURNING
-            tpop."TPopId"`,
-          (err, data) => callback(err, data)
+            tmp`,
+          (err, data) => callback(err, null)
         )
       }
     ],
