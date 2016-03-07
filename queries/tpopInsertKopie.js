@@ -8,6 +8,7 @@ module.exports = (request, callback) => {
   const popId = escapeStringForSql(request.params.popId)
   const user = escapeStringForSql(request.params.user) // der Benutzername
   const date = new Date().toISOString() // wann gespeichert wird
+  let newTPopId = null
 
   async.series(
     [
@@ -24,7 +25,7 @@ module.exports = (request, callback) => {
         request.pg.client.query(`
           CREATE TEMPORARY TABLE
             tmp
-          SELECT
+          AS SELECT
             *
           FROM
             apflora.tpop
@@ -35,12 +36,23 @@ module.exports = (request, callback) => {
         )
       },
       (callback) => {
+        // get new TPopId
+        request.pg.client.query(`
+          select nextval('apflora."tpop_TPopId_seq"')`,
+          // nur allfällige Fehler weiterleiten
+          (err, result) => {
+            newTPopId = parseInt(result.rows[0].nextval, 0)
+            callback(err, newTPopId)
+          }
+        )
+      },
+      (callback) => {
         // TPopId anpassen
         request.pg.client.query(`
           UPDATE
             tmp
           SET
-            "TPopId" = NULL,
+            "TPopId" = ${newTPopId},
             "PopId" = ${popId},
             "MutWann" = '${date}',
             "MutWer" = '${user}'`,
@@ -63,6 +75,6 @@ module.exports = (request, callback) => {
       }
     ],
     // neue id zurück liefern
-    (err, results) => callback(err, results[3])
+    (err, results) => callback(err, results[2])
   )
 }

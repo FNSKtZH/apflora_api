@@ -20,7 +20,7 @@ describe('/popKarte', () => {
     const url = '/popKarte/popId=5430'
     server.inject({ method, url }, (res) => {
       expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.be.equal(1)
+      expect(res.result.length).to.be.at.least(1)
       done()
     })
   })
