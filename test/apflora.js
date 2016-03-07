@@ -57,4 +57,13 @@ describe('/apflora', () => {
       done()
     })
   })
+  it('should get more than 90 rows of Pops with PopName "Eglisau, Chüehalden"', (done) => {
+    const method = 'GET'
+    const url = '/apflora/tabelle=pop/feld=PopName/wertString=Eglisau, Chüehalden'
+    server.inject({ method, url }, (res) => {
+      expect(res.statusCode).to.equal(200)
+      expect(res.result.length).to.be.above(90)
+      done()
+    })
+  })
 })
