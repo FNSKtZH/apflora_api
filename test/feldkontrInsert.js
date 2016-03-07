@@ -24,10 +24,10 @@ describe('/insert/feldkontr', () => {
     const url = '/insert/feldkontr/tpopId=72856123/tpopKontrtyp=/user=test'
     server.inject({ method, url }, (res) => {
       expect(res.statusCode).to.equal(200)
-      expect(res.result.rows.length).to.equal(1)
+      expect(res.result).to.be.at.least(0)
       // remove inserted row
       const method = 'DELETE'
-      const url = `/apflora/tabelle=tpopkontr/tabelleIdFeld=TPopKontrId/tabelleId=${res.result.rows[0].TPopKontrId}`
+      const url = `/apflora/tabelle=tpopkontr/tabelleIdFeld=TPopKontrId/tabelleId=${res.result}`
       server.inject({ method, url }, (res) => done())
     })
   })
@@ -36,10 +36,10 @@ describe('/insert/feldkontr', () => {
     const url = '/insert/feldkontr/tpopId=72856123/tpopKontrtyp=Freiwilligen-Erfolgskontrolle/user=test'
     server.inject({ method, url }, (res) => {
       expect(res.statusCode).to.equal(200)
-      expect(res.result.rows.length).to.equal(1)
+      expect(res.result).to.be.at.least(0)
       // remove inserted row
       const method = 'DELETE'
-      const url = `/apflora/tabelle=tpopkontr/tabelleIdFeld=TPopKontrId/tabelleId=${res.result.rows[0].TPopKontrId}`
+      const url = `/apflora/tabelle=tpopkontr/tabelleIdFeld=TPopKontrId/tabelleId=${res.result}`
       server.inject({ method, url }, (res) => done())
     })
   })

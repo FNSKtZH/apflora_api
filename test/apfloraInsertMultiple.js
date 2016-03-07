@@ -29,7 +29,7 @@ describe('/insertMultiple/apflora', () => {
     const method = 'POST'
     const url = `/insertMultiple/apflora/tabelle=pop/felder=${felder}`
     server.inject({ method, url }, (res) => {
-      const popId = res.result.rows[0].PopId
+      const popId = res.result
       expect(res.statusCode).to.equal(200)
       expect(popId).to.be.above(0)
       // remove inserted row

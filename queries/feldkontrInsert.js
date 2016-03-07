@@ -27,5 +27,5 @@ module.exports = (request, callback) => {
       RETURNING
         tpopkontr."TPopKontrId"`
   }
-  request.pg.client.query(sql, (error, result) => callback(error, result))
+  request.pg.client.query(sql, (error, result) => callback(error, result.rows[0].TPopKontrId))
 }

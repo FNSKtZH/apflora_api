@@ -33,6 +33,6 @@ module.exports = (request, callback) => {
 
   request.pg.client.query(
     sql,
-    (err, data) => callback(err, data)
+    (err, data) => callback(err, data.rows[0][tabelleIdFeld])
   )
 }
