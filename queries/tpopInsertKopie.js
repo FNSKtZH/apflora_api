@@ -2,6 +2,7 @@
 
 const async = require('async')
 const escapeStringForSql = require('./escapeStringForSql')
+const newGuid = require('../src/newGuid.js')
 
 module.exports = (request, callback) => {
   const tpopId = escapeStringForSql(request.params.tpopId)
@@ -53,6 +54,7 @@ module.exports = (request, callback) => {
           SET
             "TPopId" = ${newTPopId},
             "PopId" = ${popId},
+            "TPopGuid" = '${newGuid()}',
             "MutWann" = '${date}',
             "MutWer" = '${user}'`,
           // nur allfällige Fehler weiterleiten
