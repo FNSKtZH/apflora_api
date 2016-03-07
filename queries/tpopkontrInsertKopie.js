@@ -50,7 +50,7 @@ module.exports = (request, callback) => {
         request.pg.client.query(`
           UPDATE tmp
           SET
-            "TPopKontrId" = NULL,
+            "TPopKontrId" = ${newTPopKontrId},
             "TPopId" = ${tpopId},
             "MutWann" = '${date}',
             "MutWer" = '${user}'`,

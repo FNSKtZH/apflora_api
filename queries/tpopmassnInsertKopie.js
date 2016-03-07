@@ -51,7 +51,7 @@ module.exports = (request, callback) => {
           UPDATE
             tmp
           SET
-            "TPopMassnId" = NULL,
+            "TPopMassnId" = ${newTPopMassnId},
             "TPopId" = ${tpopId},
             "MutWann" = '${date}',
             "MutWer" = '${user}'`,
