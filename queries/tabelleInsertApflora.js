@@ -16,9 +16,9 @@ module.exports = (request, callback) => {
   const tabelleIdFeld = configTable.tabelleIdFeld
   const sql = `
     INSERT INTO
-      ${tabelle} (${feld}, ${nameMutwannFeld}, ${nameMutWerFeld})
+      apflora.${tabelle} ("${feld}", "${nameMutwannFeld}", "${nameMutWerFeld}")
     VALUES
-      ("${wert}", "${date}", "${user}")
+      ('${wert}', '${date}', '${user}')
     RETURNING ${tabelle}."${tabelleIdFeld}"`
 
   request.pg.client.query(
