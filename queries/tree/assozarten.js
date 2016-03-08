@@ -39,7 +39,7 @@ module.exports = (request, reply) => {
           id: 'apOrdnerAssozarten' + apId,
           typ: 'apOrdnerAssozarten'
         },
-        children: buildChildrenFromData(data)
+        children: buildChildrenFromData(data.rows)
       }
       reply(null, response)
     }

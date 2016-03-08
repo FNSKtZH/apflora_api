@@ -19,7 +19,7 @@ module.exports = (request, callback) => {
       apflora.${tabelle} ("${feld}", "${nameMutwannFeld}", "${nameMutWerFeld}")
     VALUES
       ('${wert}', '${date}', '${user}')
-    RETURNING ${tabelle}."${tabelleIdFeld}"`
+    RETURNING "${tabelleIdFeld}"`
 
   request.pg.client.query(
     sql,
