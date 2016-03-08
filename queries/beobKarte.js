@@ -11,48 +11,52 @@ module.exports = (request, callback) => {
 
   if (beobId) {
     // beobid wurde übergeben > auf eine Beobachtung filtern
-    sql = `
-    SELECT
-      to_char(beob_infospezies."NO_NOTE", 'FM9999999') AS "NO_NOTE",
-      beob_infospezies."NO_ISFS",
-      beob_infospezies."FNS_XGIS" AS "X",
-      beob_infospezies."FNS_YGIS" AS "Y",
-      to_char(beob_infospezies."A_NOTE", 'FM9999999') AS "A_NOTE",
-      beob_bereitgestellt."Datum" AS "Datum",
-      beob_bereitgestellt."Autor",
-      beob_infospezies."PROJET",
-      beob_infospezies."DESC_LOCALITE"
-    FROM
-      beob.beob_infospezies
-      INNER JOIN
-        beob.beob_bereitgestellt
-        ON beob_infospezies."NO_NOTE" = beob_bereitgestellt."NO_NOTE"
-    WHERE
-      beob_infospezies."FNS_XGIS" > 0
-      AND beob_infospezies."FNS_YGIS" > 0
-      AND beob_infospezies."NO_NOTE" = '${beobId}'
-    UNION SELECT
-      beob_evab."NO_NOTE_PROJET" AS "NO_NOTE",
-      beob_evab."NO_ISFS",
-      beob_evab."COORDONNEE_FED_E" AS "X",
-      beob_evab."COORDONNEE_FED_N" AS "Y",
-      beob_evab."A_NOTE",
-      beob_bereitgestellt."Datum" AS "Datum",
-      beob_bereitgestellt."Autor",
-      beob_evab."Projekt_ZH" AS "PROJET",
-      beob_evab."DESC_LOCALITE_" AS "DESC_LOCALITE"
-    FROM
-      beob.beob_bereitgestellt
-      INNER JOIN
-        beob.beob_evab
-        ON beob_bereitgestellt."NO_NOTE_PROJET" = beob_evab."NO_NOTE_PROJET"
-    WHERE
-      beob_evab."COORDONNEE_FED_E" > 0
-      AND beob_evab."COORDONNEE_FED_N" > 0
-      AND beob_evab."NO_NOTE_PROJET" = '${beobId}'
-    ORDER BY
-      "Datum" DESC
-    LIMIT 100`
+    if (typeof beobId === 'number') {
+      sql = `
+        SELECT
+        to_char(beob_infospezies."NO_NOTE", 'FM9999999') AS "NO_NOTE",
+        beob_infospezies."NO_ISFS",
+        beob_infospezies."FNS_XGIS" AS "X",
+        beob_infospezies."FNS_YGIS" AS "Y",
+        to_char(beob_infospezies."A_NOTE", 'FM9999999') AS "A_NOTE",
+        beob_bereitgestellt."Datum" AS "Datum",
+        beob_bereitgestellt."Autor",
+        beob_infospezies."PROJET",
+        beob_infospezies."DESC_LOCALITE"
+      FROM
+        beob.beob_infospezies
+        INNER JOIN
+          beob.beob_bereitgestellt
+          ON beob_infospezies."NO_NOTE" = beob_bereitgestellt."NO_NOTE"
+      WHERE
+        beob_infospezies."FNS_XGIS" > 0
+        AND beob_infospezies."FNS_YGIS" > 0
+        AND beob_infospezies."NO_NOTE" = ${beobId}`
+    } else {
+      sql = `
+        SELECT
+          beob_evab."NO_NOTE_PROJET" AS "NO_NOTE",
+          beob_evab."NO_ISFS",
+          beob_evab."COORDONNEE_FED_E" AS "X",
+          beob_evab."COORDONNEE_FED_N" AS "Y",
+          beob_evab."A_NOTE",
+          beob_bereitgestellt."Datum" AS "Datum",
+          beob_bereitgestellt."Autor",
+          beob_evab."Projekt_ZH" AS "PROJET",
+          beob_evab."DESC_LOCALITE_" AS "DESC_LOCALITE"
+        FROM
+          beob.beob_bereitgestellt
+          INNER JOIN
+            beob.beob_evab
+            ON beob_bereitgestellt."NO_NOTE_PROJET" = beob_evab."NO_NOTE_PROJET"
+        WHERE
+          beob_evab."COORDONNEE_FED_E" > 0
+          AND beob_evab."COORDONNEE_FED_N" > 0
+          AND beob_evab."NO_NOTE_PROJET" = '${beobId}'
+        ORDER BY
+          "Datum" DESC
+        LIMIT 100`
+    }
   } else if (tpopId) {
     // tpopId wurde übergeben > auf tpop filtern
     sql = `
