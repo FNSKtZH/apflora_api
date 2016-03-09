@@ -30,10 +30,11 @@ COMMENT ON COLUMN apflora.adresse."AdrEmail" IS 'Email';
 COMMENT ON COLUMN apflora.adresse."freiwErfko" IS '-1 = freiwillige(r) Kontrolleur(in)';
 COMMENT ON COLUMN apflora.adresse."MutWann" IS 'Wann wurde der Datensatz zuletzt geändert?';
 COMMENT ON COLUMN apflora.adresse."MutWer" IS 'Von wem wurde der Datensatz zuletzt geändert?';
+SELECT setval(pg_get_serial_sequence('apflora.adresse', 'AdrId'), coalesce(max("AdrId"), 0) + 1, false) FROM apflora.adresse;
 
 DROP TABLE IF EXISTS apflora.ap;
 CREATE TABLE apflora.ap (
-  "ApArtId" SERIAL PRIMARY KEY,
+  "ApArtId" integer PRIMARY KEY,
   "ApStatus" integer DEFAULT NULL,
   "ApJahr" smallint DEFAULT NULL,
   "ApUmsetzung" integer DEFAULT NULL,
@@ -142,6 +143,7 @@ CREATE INDEX ON apflora.apber USING btree ("ApArtId");
 CREATE INDEX ON apflora.apber USING btree ("JBerBeurteilung");
 CREATE INDEX ON apflora.apber USING btree ("JBerBearb");
 CREATE INDEX ON apflora.apber USING btree ("JBerJahr");
+SELECT setval(pg_get_serial_sequence('apflora.apber', 'JBerId'), coalesce(max("JBerId"), 0) + 1, false) FROM apflora.apber;
 
 DROP TABLE IF EXISTS apflora.apberuebersicht;
 CREATE TABLE apflora.apberuebersicht (
@@ -159,7 +161,7 @@ DROP TABLE IF EXISTS apflora.assozart;
 CREATE TABLE apflora.assozart (
   "AaId" SERIAL PRIMARY KEY,
   "AaApArtId" integer DEFAULT NULL,
-  "AaSisfNr" integer NOT NULL,
+  "AaSisfNr" integer DEFAULT NULL,
   "AaBem" text,
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
@@ -171,6 +173,7 @@ COMMENT ON COLUMN apflora.assozart."AaBem" IS 'Bemerkungen zur Assoziation';
 COMMENT ON COLUMN apflora.assozart."MutWann" IS 'Wann wurde der Datensatz zuletzt geändert?';
 COMMENT ON COLUMN apflora.assozart."MutWer" IS 'Wer hat den Datensatz zuletzt geändert?';
 CREATE INDEX ON apflora.assozart USING btree ("AaApArtId");
+SELECT setval(pg_get_serial_sequence('apflora.assozart', 'AaId'), coalesce(max("AaId"), 0) + 1, false) FROM apflora.assozart;
 
 DROP TABLE IF EXISTS apflora.beobzuordnung;
 CREATE TABLE apflora.beobzuordnung (
@@ -211,6 +214,7 @@ COMMENT ON COLUMN apflora.ber."BerURL" IS 'Link zum Bericht';
 COMMENT ON COLUMN apflora.ber."MutWann" IS 'Wann wurde der Datensatz zuletzt geändert?';
 COMMENT ON COLUMN apflora.ber."MutWer" IS 'Von wem wurde der Datensatz zuletzt geändert?';
 CREATE INDEX ON apflora.ber USING btree ("ApArtId");
+SELECT setval(pg_get_serial_sequence('apflora.ber', 'BerId'), coalesce(max("BerId"), 0) + 1, false) FROM apflora.ber;
 
 DROP TABLE IF EXISTS apflora.erfkrit;
 CREATE TABLE apflora.erfkrit (
@@ -229,6 +233,7 @@ COMMENT ON COLUMN apflora.erfkrit."MutWann" IS 'Wann wurde der Datensatz zuletzt
 COMMENT ON COLUMN apflora.erfkrit."MutWer" IS 'Von wem wurde der Datensatz zuletzt geändert?';
 CREATE INDEX ON apflora.erfkrit USING btree ("ApArtId");
 CREATE INDEX ON apflora.erfkrit USING btree ("ErfkritErreichungsgrad");
+SELECT setval(pg_get_serial_sequence('apflora.erfkrit', 'ErfkritId'), coalesce(max("ErfkritId"), 0) + 1, false) FROM apflora.erfkrit;
 
 DROP TABLE IF EXISTS apflora.gemeinde;
 CREATE TABLE apflora.gemeinde (
@@ -299,6 +304,7 @@ CREATE TABLE apflora.pop (
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
+SELECT setval(pg_get_serial_sequence('apflora.pop', 'PopId'), coalesce(max("PopId"), 0) + 1, false) FROM apflora.pop;
 COMMENT ON COLUMN apflora.pop."PopId" IS 'Primärschlüssel der Tabelle "pop"';
 COMMENT ON COLUMN apflora.pop."ApArtId" IS 'Zugehöriger Aktionsplan. Fremdschlüssel aus der Tabelle "ap"';
 COMMENT ON COLUMN apflora.pop."PopNr" IS 'Nummer der Population';
@@ -359,6 +365,7 @@ CREATE TABLE apflora.popber (
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
+SELECT setval(pg_get_serial_sequence('apflora.popber', 'PopBerId'), coalesce(max("PopBerId"), 0) + 1, false) FROM apflora.popber;
 COMMENT ON COLUMN apflora.popber."PopBerId" IS 'Primärschlüssel der Tabelle "popber"';
 COMMENT ON COLUMN apflora.popber."PopId" IS 'Zugehörige Population. Fremdschlüssel aus der Tabelle "pop"';
 COMMENT ON COLUMN apflora.popber."PopBerJahr" IS 'Für welches Jahr gilt der Bericht?';
@@ -380,6 +387,7 @@ CREATE TABLE apflora.popmassnber (
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
+SELECT setval(pg_get_serial_sequence('apflora.popmassnber', 'PopMassnBerId'), coalesce(max("PopMassnBerId"), 0) + 1, false) FROM apflora.popmassnber;
 COMMENT ON COLUMN apflora.popmassnber."PopMassnBerId" IS 'Primärschlüssel der Tabelle "popmassnber"';
 COMMENT ON COLUMN apflora.popmassnber."PopId" IS 'Zugehörige Population. Fremdschlüssel aus der Tabelle "pop"';
 COMMENT ON COLUMN apflora.popmassnber."PopMassnBerJahr" IS 'Für welches Jahr gilt der Bericht?';
@@ -422,6 +430,7 @@ CREATE TABLE apflora.tpop (
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
+SELECT setval(pg_get_serial_sequence('apflora.tpop', 'TPopId'), coalesce(max("TPopId"), 0) + 1, false) FROM apflora.tpop;
 COMMENT ON COLUMN apflora.tpop."TPopId" IS 'Primärschlüssel der Tabelle "tpop"';
 COMMENT ON COLUMN apflora.tpop."PopId" IS 'Zugehörige Population. Fremdschlüssel aus der Tabelle "pop"';
 COMMENT ON COLUMN apflora.tpop."TPopNr" IS 'Nummer der Teilpopulation';
@@ -491,6 +500,7 @@ CREATE TABLE apflora.tpopber (
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
+SELECT setval(pg_get_serial_sequence('apflora.tpopber', 'TPopBerId'), coalesce(max("TPopBerId"), 0) + 1, false) FROM apflora.tpopber;
 COMMENT ON COLUMN apflora.tpopber."TPopBerId" IS 'Primärschlüssel der Tabelle "tpopber"';
 COMMENT ON COLUMN apflora.tpopber."TPopId" IS 'Zugehörige Teilpopulation. Fremdschlüssel der Tabelle "tpop"';
 COMMENT ON COLUMN apflora.tpopber."TPopBerJahr" IS 'Für welches Jahr gilt der Bericht?';
@@ -552,6 +562,7 @@ CREATE TABLE apflora.tpopkontr (
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
+SELECT setval(pg_get_serial_sequence('apflora.tpopkontr', 'TPopKontrId'), coalesce(max("TPopKontrId"), 0) + 1, false) FROM apflora.tpopkontr;
 COMMENT ON COLUMN apflora.tpopkontr."TPopKontrId" IS 'Primärschlüssel der Tabelle "tpopkontr"';
 COMMENT ON COLUMN apflora.tpopkontr."TPopId" IS 'Zugehörige Teilpopulation. Fremdschlüssel aus der Tabelle "tpop"';
 COMMENT ON COLUMN apflora.tpopkontr."TPopKontrTyp" IS 'Typ der Kontrolle. Auswahl aus Tabelle "tpopkontr_typ_werte"';
@@ -640,6 +651,7 @@ CREATE TABLE apflora.tpopkontrzaehl (
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
+SELECT setval(pg_get_serial_sequence('apflora.tpopkontrzaehl', 'TPopKontrZaehlId'), coalesce(max("TPopKontrZaehlId"), 0) + 1, false) FROM apflora.tpopkontrzaehl;
 COMMENT ON COLUMN apflora.tpopkontrzaehl."Anzahl" IS 'Anzahl Zaehleinheiten';
 COMMENT ON COLUMN apflora.tpopkontrzaehl."Zaehleinheit" IS 'Verwendete Zaehleinheit. Auswahl aus Tabelle "tpopkontrzaehl_einheit_werte"';
 COMMENT ON COLUMN apflora.tpopkontrzaehl."Methode" IS 'Verwendete Methodik. Auswahl aus Tabelle "tpopkontrzaehl_methode_werte"';
@@ -698,6 +710,7 @@ CREATE TABLE apflora.tpopmassn (
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
+SELECT setval(pg_get_serial_sequence('apflora.tpopmassn', 'TPopMassnId'), coalesce(max("TPopMassnId"), 0) + 1, false) FROM apflora.tpopmassn;
 COMMENT ON COLUMN apflora.tpopmassn."TPopMassnId" IS 'Primärschlüssel der Tabelle "tpopmassn"';
 COMMENT ON COLUMN apflora.tpopmassn."TPopId" IS 'Zugehörige Teilpopulation. Fremdschlüssel aus der Tabelle "tpop"';
 COMMENT ON COLUMN apflora.tpopmassn."TPopMassnTyp" IS 'Typ der Massnahme. Auswahl aus Tabelle "tpopmassn_typ_werte"';
@@ -761,6 +774,7 @@ CREATE TABLE apflora.tpopmassnber (
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
+SELECT setval(pg_get_serial_sequence('apflora.tpopmassnber', 'TPopMassnBerId'), coalesce(max("TPopMassnBerId"), 0) + 1, false) FROM apflora.tpopmassnber;
 COMMENT ON COLUMN apflora.tpopmassnber."TPopMassnBerId" IS 'Primärschlüssel der Tabelle "tpopmassnber"';
 COMMENT ON COLUMN apflora.tpopmassnber."TPopId" IS 'Zugehörige Teilpopulation. Fremdschlüssel aus Tabelle "tpop"';
 COMMENT ON COLUMN apflora.tpopmassnber."TPopMassnBerJahr" IS 'Jahr, für den der Bericht gilt';
@@ -779,6 +793,7 @@ CREATE TABLE apflora.user (
   "Passwort" text NOT NULL,
   "NurLesen" smallint DEFAULT '-1'
 );
+SELECT setval(pg_get_serial_sequence('apflora."user"', 'UserId'), coalesce(max("UserId"), 0) + 1, false) FROM apflora."user";
 COMMENT ON COLUMN apflora."user"."UserId" IS 'Primärschlüssel der Tabelle "user"';
 COMMENT ON COLUMN apflora."user"."UserName" IS 'Username';
 COMMENT ON COLUMN apflora."user"."Passwort" IS 'Passwort';
@@ -794,6 +809,7 @@ CREATE TABLE apflora.ziel (
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
+SELECT setval(pg_get_serial_sequence('apflora.ziel', 'ZielId'), coalesce(max("ZielId"), 0) + 1, false) FROM apflora.ziel;
 COMMENT ON COLUMN apflora.ziel."ZielId" IS 'Primärschlüssel der Tabelle "ziel"';
 COMMENT ON COLUMN apflora.ziel."ApArtId" IS 'Zugehöriger Aktionsplan. Fremdschluessel aus der Tabelle "ap"';
 COMMENT ON COLUMN apflora.ziel."ZielTyp" IS 'Typ des Ziels. Z.B. Zwischenziel, Gesamtziel. Auswahl aus Tabelle "ziel_typ_werte"';
@@ -826,6 +842,7 @@ CREATE TABLE apflora.zielber (
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
+SELECT setval(pg_get_serial_sequence('apflora.zielber', 'ZielBerId'), coalesce(max("ZielBerId"), 0) + 1, false) FROM apflora.zielber;
 COMMENT ON COLUMN apflora.zielber."ZielBerId" IS 'Primärschlüssel der Tabelle "zielber"';
 COMMENT ON COLUMN apflora.zielber."ZielId" IS 'Zugehöriges Ziel. Fremdschlüssel aus der Tabelle "ziel"';
 COMMENT ON COLUMN apflora.zielber."ZielBerJahr" IS 'Für welches Jahr gilt der Bericht?';

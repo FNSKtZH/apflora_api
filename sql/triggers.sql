@@ -9,7 +9,7 @@ CREATE FUNCTION tpop_max_one_massnber_per_year() RETURNS trigger AS $tpop_max_on
     -- check if a tpopmassnber already exists for this year
     IF 
       (
-        NEW."TPopMassnBerJahr" IS NOT NULL
+        NEW."TPopMassnBerJahr" > 0
         AND NEW."TPopMassnBerJahr" IN
           (
             SELECT
@@ -38,7 +38,7 @@ CREATE FUNCTION pop_max_one_massnber_per_year() RETURNS trigger AS $pop_max_one_
   BEGIN
     IF
       (
-        NEW."PopMassnBerJahr" IS NOT NULL
+        NEW."PopMassnBerJahr" > 0
         AND NEW."PopMassnBerJahr" IN
           (
             SELECT
@@ -68,7 +68,7 @@ CREATE FUNCTION pop_max_one_popber_per_year() RETURNS trigger AS $pop_max_one_po
   BEGIN
     IF
       (
-        NEW."PopBerJahr" IS NOT NULL
+        NEW."PopBerJahr" > 0
         AND NEW."PopBerJahr" IN
           (
             SELECT
@@ -99,7 +99,7 @@ CREATE FUNCTION tpop_max_one_tpopber_per_year() RETURNS trigger AS $tpop_max_one
     -- check if a tpopber already exists for this year
     IF
       (
-        NEW."TPopBerJahr" IS NOT NULL
+        NEW."TPopBerJahr" > 0
         AND NEW."TPopBerJahr" IN
         (
           SELECT
