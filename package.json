@@ -27,7 +27,7 @@
     "run-sequence": "1.1.5"
   },
   "scripts": {
-    "start": "node startServer.js",
+    "start": "lab && node startServer.js",
     "predeploy": "gulp prod_clean_dist",
     "deploy": "gulp prod_copy",
     "postdeploy": "gulp prod_sftp",
