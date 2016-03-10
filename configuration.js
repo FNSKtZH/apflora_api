@@ -5,13 +5,10 @@
 'use strict'
 
 var config = {}
-var dbPassfile = require('./dbPass.json')
 var pgPassfile = require('./pgDbPass.json')
 
 config.db = {}
 config.pg = {}
-config.db.userName = dbPassfile.user
-config.db.passWord = dbPassfile.pass
 config.pg.userName = pgPassfile.user
 config.pg.passWord = pgPassfile.pass
 config.pg.connectionString = `postgres://${pgPassfile.user}:${pgPassfile.pass}@localhost/apflora`
