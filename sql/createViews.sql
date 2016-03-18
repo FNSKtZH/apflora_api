@@ -4441,11 +4441,16 @@ WHERE
   apflora.ap."ApArtId" > 150
   AND apflora.tpop."TPopXKoord" IS NOT NULL
   AND apflora.tpop."TPopYKoord" IS NOT NULL
-  AND apflora.tpopkontr."TPopKontrTyp" IN ('Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
+  AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
   AND apflora.tpop."TPopHerkunft" <> 201
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
-  AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
-  AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5;
+  AND (
+    (
+      apflora.tpop."TPopBekanntSeit" IS NOT NULL
+      AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
+    )
+    OR apflora.tpop."TPopHerkunft" IN (100, 101)
+  );
 
 DROP VIEW IF EXISTS views.v_exportevab_ort CASCADE;
 CREATE OR REPLACE VIEW views.v_exportevab_ort AS
@@ -4477,7 +4482,25 @@ SELECT
   apflora.tpop."TPopYKoord" AS "Y",
   substring(apflora.tpop."TPopGemeinde" from 1 for 25) AS "NOM_COMMUNE",
   substring(apflora.tpop."TPopFlurname" from 1 for 255) AS "DESC_LOCALITE",
-  max(apflora.tpopkontr."TPopKontrLebUmg") AS "ENV"
+  max(apflora.tpopkontr."TPopKontrLebUmg") AS "ENV",
+  CASE
+    WHEN apflora.tpop."TPopHerkunft" IS NOT NULL
+    THEN
+      concat(
+        'Status: ',
+        "tpopHerkunft"."HerkunftTxt",
+        CASE
+          WHEN apflora.tpop."TPopBekanntSeit" IS NOT NULL
+          THEN
+            concat(
+              '; Bekannt seit: ',
+              apflora.tpop."TPopBekanntSeit"
+            )
+          ELSE ''
+        END
+      )
+    ELSE ''
+  END AS "Bemerkungen"
 FROM
   apflora.ap
   INNER JOIN
@@ -4502,16 +4525,24 @@ WHERE
   apflora.ap."ApArtId" > 150
   AND apflora.tpop."TPopXKoord" IS NOT NULL
   AND apflora.tpop."TPopYKoord" IS NOT NULL
-  AND apflora.tpopkontr."TPopKontrTyp" IN ('Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
+  AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
   AND apflora.tpop."TPopHerkunft" <> 201
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
-  AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
-  AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
+  AND (
+    (
+      apflora.tpop."TPopBekanntSeit" IS NOT NULL
+      AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
+    )
+    OR apflora.tpop."TPopHerkunft" IN (100, 101)
+  )
 GROUP BY
   apflora.pop."PopGuid",
   apflora.tpop."TPopGuid",
   apflora.tpop."TPopNr",
+  apflora.tpop."TPopBekanntSeit",
   apflora.tpop."TPopFlurname",
+  apflora.tpop."TPopHerkunft",
+  "tpopHerkunft"."HerkunftTxt",
   apflora.tpop."TPopHoehe",
   apflora.tpop."TPopXKoord",
   apflora.tpop."TPopYKoord",
@@ -4575,11 +4606,16 @@ WHERE
   apflora.ap."ApArtId" > 150
   AND apflora.tpop."TPopXKoord" IS NOT NULL
   AND apflora.tpop."TPopYKoord" IS NOT NULL
-  AND apflora.tpopkontr."TPopKontrTyp" IN ('Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
+  AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
   AND apflora.tpop."TPopHerkunft" <> 201
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
-  AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
-  AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
+  AND (
+    (
+      apflora.tpop."TPopBekanntSeit" IS NOT NULL
+      AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
+    )
+    OR apflora.tpop."TPopHerkunft" IN (100, 101)
+  )
 GROUP BY
   apflora.ap."ApGuid",
   apflora.pop."PopGuid",
@@ -4648,11 +4684,16 @@ WHERE
   apflora.ap."ApArtId" > 150
   AND apflora.tpop."TPopXKoord" IS NOT NULL
   AND apflora.tpop."TPopYKoord" IS NOT NULL
-  AND apflora.tpopkontr."TPopKontrTyp" IN ('Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
+  AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
   AND apflora.tpop."TPopHerkunft" <> 201
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
-  AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
-  AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
+  AND (
+    (
+      apflora.tpop."TPopBekanntSeit" IS NOT NULL
+      AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
+    )
+    OR apflora.tpop."TPopHerkunft" IN (100, 101)
+  )
 GROUP BY
   beob.adb_eigenschaften."Artname",
   apflora.ap."ApGuid",

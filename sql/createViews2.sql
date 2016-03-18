@@ -2189,10 +2189,56 @@ SELECT
   apflora.ap."ApArtId" AS fkArt,
   18 AS fkArtgruppe,
   1 AS fkAA1,
-  "tpopHerkunft"."ZdsfHerkunft" AS "fkAAINTRODUIT",
+  /*
+  Status in EvAB (offizielle Ansiedlung / inoffiziell): Abfrage muss kontrollieren, ob Ansiedlung besteht:
+  - Ansiedlung besteht:
+    6 (Offizielle Wiederansiedlung/Populationsverstärkung (Herkunft bekannt))
+  - Status < 200 (= ursprünglich) und keine Ansiedlung:
+    4 (Natürliches Vorkommen (indigene Arten) oder eingebürgertes Vorkommen (Neophyten))
+  - Status >= 200(= angesiedelt) und keine Ansiedlung und Status unklar:
+    3 (Herkunft unklar, Verdacht auf Ansiedlung/Ansalbung,Einsaat/Anpflanzung oder sonstwie anthropogen unterstütztes Auftreten)
+  - Status  >= 200 (= angesiedelt) und keine Ansiedlung und Status klar:
+    5 (Inoffizielle Ansiedlung (offensichtlich gepflanzt/angesalbt oder eingesät, Herkunft unbekannt))
+  */
+   CASE
+    WHEN EXISTS(
+      SELECT
+        apflora.tpopmassn."TPopId"
+      FROM
+        apflora.tpopmassn
+      WHERE
+        apflora.tpopmassn."TPopId" = apflora.tpopkontr."TPopId"
+        AND apflora.tpopmassn."TPopMassnTyp" BETWEEN 1 AND 3
+        AND apflora.tpopmassn."TPopMassnJahr" < apflora.tpopkontr."TPopKontrJahr"
+    ) THEN 6
+    WHEN apflora.tpop."TPopHerkunft" < 200 THEN 4
+    WHEN apflora.tpop."TPopHerkunftUnklar" = 1 THEN 3
+    ELSE 5
+  END AS "fkAAINTRODUIT",
+  /*
+  Präsenz:
+  - wenn 0 gezählt wurden und der Bericht aus demselben Jahr erloschen meldet:
+    2 (erloschen/zerstört)
+  - wenn 0 gezählt wurden und der Bericht aus demselben Jahr nicht erloschen meldet:
+    3 (nicht festgestellt/gesehen (ohne Angabe der Wahrscheinlichkeit))
+  - sonst
+    1 (vorhanden)
+  */
   CASE
-    WHEN views.v_tpopkontr_maxanzahl."Anzahl" = 0
-    THEN 2
+    WHEN (
+      views.v_tpopkontr_maxanzahl."Anzahl" = 0
+      AND EXISTS (
+        SELECT
+          "TPopId"
+        FROM
+          apflora.tpopber
+        WHERE
+          apflora.tpopber."TPopId" = apflora.tpopkontr."TPopId"
+          AND apflora.tpopber."TPopBerEntwicklung" = 8
+          AND apflora.tpopber."TPopBerJahr" = apflora.tpopkontr."TPopKontrJahr"
+      )
+    ) THEN 2
+    WHEN views.v_tpopkontr_maxanzahl."Anzahl" = 0 THEN 3
     ELSE 1
   END AS "fkAAPRESENCE",
   apflora.tpopkontr."TPopKontrGefaehrdung" AS "MENACES",
@@ -2223,10 +2269,7 @@ FROM
   INNER JOIN
     (apflora.pop
     INNER JOIN
-      ((apflora.tpop
-      LEFT JOIN
-        apflora.pop_status_werte AS "tpopHerkunft"
-        ON apflora.tpop."TPopHerkunft" = "tpopHerkunft"."HerkunftId")
+      (apflora.tpop
       INNER JOIN
         (((apflora.tpopkontr
         LEFT JOIN
@@ -2251,17 +2294,25 @@ WHERE
   apflora.ap."ApArtId" > 150
   AND apflora.tpop."TPopXKoord" IS NOT NULL
   AND apflora.tpop."TPopYKoord" IS NOT NULL
-  AND apflora.tpopkontr."TPopKontrTyp" IN ('Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
+  AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
   AND apflora.tpop."TPopHerkunft" <> 201
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
   AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
-  AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
+  AND (
+    (
+      apflora.tpop."TPopBekanntSeit" IS NOT NULL
+      AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
+    )
+    OR apflora.tpop."TPopHerkunft" IN (100, 101)
+  )
 GROUP BY
   apflora.tpopkontr."ZeitGuid",
+  apflora.tpopkontr."TPopId",
   apflora.tpopkontr."TPopKontrGuid",
+  apflora.tpopkontr."TPopKontrJahr",
   apflora.adresse."EvabIdPerson",
   apflora.ap."ApArtId",
-  "tpopHerkunft"."ZdsfHerkunft",
+  "fkAAINTRODUIT",
   views.v_tpopkontr_maxanzahl."Anzahl",
   apflora.tpopkontr."TPopKontrGefaehrdung",
   apflora.tpopkontr."TPopKontrVitalitaet",

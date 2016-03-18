@@ -345,13 +345,9 @@ CREATE TABLE apflora.pop_status_werte (
   "HerkunftTxt" varchar(60) DEFAULT NULL,
   "HerkunftOrd" smallint DEFAULT NULL,
   "MutWann" date DEFAULT NULL,
-  "MutWer" varchar(20) DEFAULT NULL,
-  "ZdsfVorhanden" smallint DEFAULT NULL,
-  "ZdsfHerkunft" smallint DEFAULT NULL
+  "MutWer" varchar(20) DEFAULT NULL
 );
 COMMENT ON COLUMN apflora.pop_status_werte."HerkunftTxt" IS 'Beschreibung der Herkunft';
-COMMENT ON COLUMN apflora.pop_status_werte."ZdsfVorhanden" IS 'Wird benötigt für den Export nach EvAB';
-COMMENT ON COLUMN apflora.pop_status_werte."ZdsfHerkunft" IS 'Wird benötigt für den Export nach EvAB';
 COMMENT ON COLUMN apflora.pop_status_werte."MutWann" IS 'Wann wurde der Datensatz zuletzt geändert?';
 COMMENT ON COLUMN apflora.pop_status_werte."MutWer" IS 'Von wem wurde der Datensatz zuletzt geändert?';
 
