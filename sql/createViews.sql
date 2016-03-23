@@ -4809,21 +4809,29 @@ SELECT
     )
     from 1 for 225
   ) AS "Inhalte",
-  (
-    2.6779094
-    + (4.728982 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
-    + (0.791484 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-    + (0.1306 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-    - (0.0436 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
-  ) * 100 / 36 AS "Laengengrad",
-  (
-    16.9023892
-    + (3.238272 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-    - (0.270978 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
-    - (0.002528 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-    - (0.0447 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-    - (0.014 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-  ) * 100 / 36 AS "Breitengrad",
+  round(
+    (
+      (
+        2.6779094
+        + (4.728982 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
+        + (0.791484 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+        + (0.1306 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+        - (0.0436 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
+      ) * 100 / 36
+    )::numeric, 10
+  ) AS "Laengengrad",
+  round(
+    (
+      (
+        16.9023892
+        + (3.238272 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+        - (0.270978 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
+        - (0.002528 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+        - (0.0447 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+        - (0.014 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+      ) * 100 / 36
+    )::numeric, 10
+  ) AS "Breitengrad",
   concat(
     'http://apflora.ch/index.html?ap=',
     apflora.ap."ApArtId",
@@ -4878,21 +4886,29 @@ SELECT
       apflora.tpop."TPopFlurname")
     from 1 for 225
   ) AS "Inhalte",
-  (
-    2.6779094
-    + (4.728982 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
-    + (0.791484 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-    + (0.1306 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-    - (0.0436 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
-  ) * 100 / 36 AS "Laengengrad",
-  (
-    16.9023892
-    + (3.238272 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-    - (0.270978 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
-    - (0.002528 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-    - (0.0447 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-    - (0.014 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
-  ) * 100 / 36 AS "Breitengrad",
+  round(
+    (
+      (
+        2.6779094
+        + (4.728982 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
+        + (0.791484 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+        + (0.1306 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+        - (0.0436 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
+       ) * 100 / 36
+    )::numeric, 10
+  ) AS "Laengengrad",
+  round(
+    (
+      (
+        16.9023892
+        + (3.238272 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+        - (0.270978 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000))
+        - (0.002528 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+        - (0.0447 * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopXKoord" - 600000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+        - (0.014 * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000) * ((apflora.tpop."TPopYKoord" - 200000)::numeric / 1000000))
+       ) * 100 / 36
+    )::numeric, 10
+  ) AS "Breitengrad",
   concat(
     'http://www.apflora.ch/index.html?ap=',
     apflora.ap."ApArtId",
@@ -4931,21 +4947,29 @@ SELECT
     concat('Population: ', apflora.pop."PopNr", ' ', apflora.pop."PopName")
     from 1 for 225
   ) AS "Inhalte",
-  (
-    2.6779094
-    + (4.728982 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
-    + (0.791484 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-    + (0.1306 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-    - (0.0436 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
-  ) * 100 / 36 AS "Laengengrad",
-  (
-    16.9023892
-    + (3.238272 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-    - (0.270978 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
-    - (0.002528 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-    - (0.0447 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-    - (0.014 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-  ) * 100 / 36 AS "Breitengrad",
+  round(
+    (
+      (
+        2.6779094
+        + (4.728982 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
+        + (0.791484 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+        + (0.1306 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+        - (0.0436 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
+      ) * 100 / 36
+    )::numeric, 10
+  ) AS "Laengengrad",
+  round(
+    (
+      (
+        16.9023892
+        + (3.238272 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+        - (0.270978 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
+        - (0.002528 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+        - (0.0447 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+        - (0.014 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+      ) * 100 / 36
+    )::numeric, 10
+  ) AS "Breitengrad",
   concat(
     'http://www.apflora.ch/index.html?ap=',
     apflora.ap."ApArtId",
@@ -4982,21 +5006,29 @@ SELECT
     concat('Population: ', apflora.pop."PopNr", ' ', apflora.pop."PopName")
     from 1 for 225
   ) AS "Inhalte",
-  (
-    2.6779094
-    + (4.728982 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
-    + (0.791484 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-    + (0.1306 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-    - (0.0436 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
-  ) * 100 / 36 AS "Laengengrad",
-  (
-    16.9023892
-    + (3.238272 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-    - (0.270978 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
-    - (0.002528 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-    - (0.0447 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-    - (0.014 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
-    ) * 100 / 36 AS "Breitengrad",
+  round(
+    (
+      (
+        2.6779094
+        + (4.728982 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
+        + (0.791484 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+        + (0.1306 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+        - (0.0436 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
+      ) * 100 / 36
+    )::numeric, 10
+  ) AS "Laengengrad",
+  round(
+    (
+      (
+        16.9023892
+        + (3.238272 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+        - (0.270978 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000))
+        - (0.002528 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+        - (0.0447 * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopXKoord" - 600000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+        - (0.014 * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000) * ((apflora.pop."PopYKoord" - 200000)::numeric / 1000000))
+      ) * 100 / 36
+    )::numeric, 10
+  ) AS "Breitengrad",
   concat(
     'http://www.apflora.ch/index.html?ap=',
     apflora.ap."ApArtId",
