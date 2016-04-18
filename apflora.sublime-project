@@ -5,6 +5,9 @@
 			"folder_exclude_patterns": [
 				"*"
 			],
+			"file_exclude_patterns": [
+				"coverage.html"
+			],
 			"follow_symlinks": true,
 			"path": "/"
 		},

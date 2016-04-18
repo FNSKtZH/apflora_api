@@ -20,7 +20,7 @@ module.exports = (request, callback) => {
 
   // Feldnamen und -werte extrahieren
   const feldnamen = Object.keys(felder).join('","')
-  const feldwerte = _.values(felder).join("','")
+  const feldwerte = _.values(felder).join("','").replace("''", null)
 
   // sql beginnen
   const sql = `
