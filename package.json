@@ -11,10 +11,10 @@
     "inert": "4.0.0",
     "json2csv": "3.4.2",
     "json2xls": "0.1.1",
-    "lodash": "4.12.0",
+    "lodash": "4.13.1",
     "pg": "4.5.5",
     "request": "2.72.0",
-    "standard": "7.1.0",
+    "standard": "7.1.1",
     "underscore": "1.8.3"
   },
   "devDependencies": {
@@ -22,9 +22,9 @@
     "del": "2.2.0",
     "gulp": "3.9.1",
     "gulp-sftp": "0.1.5",
-    "lab": "10.6.1",
+    "lab": "10.7.1",
     "require-dir": "0.3.0",
-    "run-sequence": "1.2.0"
+    "run-sequence": "1.2.1"
   },
   "scripts": {
     "start": "lab && node startServer.js",
