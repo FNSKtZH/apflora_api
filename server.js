@@ -20,7 +20,7 @@ const server = new Hapi.Server()
 
 server.connection(dbConnection)
 
-// non-Query routes hat to be separated
+// non-Query routes had to be separated
 // because when testing directory handler produces an error
 const routes = require('./src/routes').concat(require('./src/nonQueryRoutes'))
 
