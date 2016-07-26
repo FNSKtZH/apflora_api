@@ -2192,13 +2192,14 @@ SELECT
   /*
   Status in EvAB (offizielle Ansiedlung / inoffiziell): Abfrage muss kontrollieren, ob Ansiedlung besteht:
   - Ansiedlung besteht:
-    6 (Offizielle Wiederansiedlung/Populationsverstärkung (Herkunft bekannt))
+    6 (R) (Offizielle Wiederansiedlung/Populationsverstärkung (Herkunft bekannt))
   - Status < 200 (= ursprünglich) und keine Ansiedlung:
-    4 (Natürliches Vorkommen (indigene Arten) oder eingebürgertes Vorkommen (Neophyten))
+    4 (N) (Natürliches Vorkommen (indigene Arten) oder eingebürgertes Vorkommen (Neophyten))
   - Status >= 200(= angesiedelt) und keine Ansiedlung und Status unklar:
-    3 (Herkunft unklar, Verdacht auf Ansiedlung/Ansalbung,Einsaat/Anpflanzung oder sonstwie anthropogen unterstütztes Auftreten)
+    3 (I) (Herkunft unklar, Verdacht auf Ansiedlung/Ansalbung,Einsaat/Anpflanzung oder sonstwie anthropogen unterstütztes Auftreten)
+    Ideal wäre: Neues Feld Herkunft uklar, Anwesenheit unklar. Hier nur Herkunft berücksichtigen
   - Status  >= 200 (= angesiedelt) und keine Ansiedlung und Status klar:
-    5 (Inoffizielle Ansiedlung (offensichtlich gepflanzt/angesalbt oder eingesät, Herkunft unbekannt))
+    5 (O) (Inoffizielle Ansiedlung (offensichtlich gepflanzt/angesalbt oder eingesät, Herkunft unbekannt))
   */
    CASE
     WHEN EXISTS(
