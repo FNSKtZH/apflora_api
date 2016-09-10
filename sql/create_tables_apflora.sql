@@ -35,6 +35,7 @@ SELECT setval(pg_get_serial_sequence('apflora.adresse', 'AdrId'), coalesce(max("
 DROP TABLE IF EXISTS apflora.ap;
 CREATE TABLE apflora.ap (
   "ApArtId" integer PRIMARY KEY,
+  "ProjId" integer DEFAULT NULL,
   "ApStatus" integer DEFAULT NULL,
   "ApJahr" smallint DEFAULT NULL,
   "ApUmsetzung" integer DEFAULT NULL,
@@ -55,6 +56,28 @@ COMMENT ON COLUMN apflora.ap."MutWer" IS 'Von wem wurde der Datensatz zuletzt ge
 CREATE INDEX ON apflora.ap USING btree ("ApStatus");
 CREATE INDEX ON apflora.ap USING btree ("ApUmsetzung");
 CREATE INDEX ON apflora.ap USING btree ("ApBearb");
+CREATE INDEX ON apflora.ap USING btree ("ProjId");
+
+ALTER TABLE apflora.ap
+  ADD COLUMN "ProjId" integer Default Null;
+CREATE INDEX ON apflora.ap USING btree ("ProjId");
+
+UPDATE apflora.ap
+SET "ProjId" = '1'
+WHERE "ProjId" IS NULL;
+
+
+DROP TABLE IF EXISTS apflora.userprojekt;
+CREATE TABLE apflora.userprojekt (
+  "UserId" integer,
+  "ProjId" integer
+);
+CREATE INDEX ON apflora.userprojekt USING btree ("UserId", "ProjId");
+
+INSERT INTO apflora.userprojekt ("UserId", "ProjId")
+SELECT "UserId", '1'
+FROM apflora.user;
+
 
 DROP TABLE IF EXISTS apflora.ap_bearbstand_werte;
 CREATE TABLE apflora.ap_bearbstand_werte (
@@ -206,6 +229,13 @@ UPDATE apflora.beobzuordnung
 SET "QuelleId" = 2
 WHERE length("NO_NOTE") < 10;
 
+DROP TABLE IF EXISTS apflora.projekt;
+CREATE TABLE apflora.projekt (
+  "ProjId" SERIAL PRIMARY KEY,
+  "ProjName" varchar(150) DEFAULT NULL
+);
+CREATE INDEX ON apflora.projekt USING btree ("ProjName");
+INSERT INTO apflora.projekt VALUES (1, 'AP Flora Kt. ZH');
 
 DROP TABLE IF EXISTS apflora.ber;
 CREATE TABLE apflora.ber (
