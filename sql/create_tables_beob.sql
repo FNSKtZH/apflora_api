@@ -47,6 +47,15 @@ CREATE INDEX ON beob.beob_bereitgestellt USING btree ("NO_NOTE_PROJET");
 CREATE INDEX ON beob.beob_bereitgestellt USING btree ("NO_ISFS");
 CREATE INDEX ON beob.beob_bereitgestellt USING btree ("Datum");
 
+DROP TABLE IF EXISTS beob.beob_quelle;
+CREATE TABLE beob.beob_quelle
+(
+   "id" integer PRIMARY KEY,
+   "name" varchar(255) DEFAULT NULL
+);
+INSERT INTO beob.beob_quelle VALUES (1, 'evab');
+INSERT INTO beob.beob_quelle VALUES (2, 'infospezies');
+
 DROP TABLE IF EXISTS beob.beob_evab;
 CREATE TABLE beob.beob_evab (
   "Projekt_ZH" varchar(255) DEFAULT NULL,
@@ -261,6 +270,7 @@ CREATE TABLE beob.beob_infospezies (
 );
 CREATE INDEX ON beob.beob_infospezies USING btree ("ID");
 CREATE INDEX ON beob.beob_infospezies USING btree ("NO_ISFS");
+CREATE INDEX ON beob.beob_infospezies USING btree ("NO_NOTE");
 
 DROP TABLE IF EXISTS beob.evab_tbl_personen;
 CREATE TABLE beob.evab_tbl_personen (
