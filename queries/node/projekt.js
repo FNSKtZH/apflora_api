@@ -36,9 +36,10 @@ module.exports = (request, callback) => {
           type: 'dataset',
           name: projekt.ProjName,
           expanded: id && id === projekt.ProjId,
-          nrOfUnloadedChildren:
+          nrOfUnloadedChildren: 'todo',
         }))
         callback(error, nodes)
+      })
     },
     anzApListe (callback) {
       const sql = `
@@ -65,8 +66,6 @@ module.exports = (request, callback) => {
 
     const projektListe = results.projektListe || []
     const anzApListe = results.anzApListe || []
-
-  })
 
   })
 }
