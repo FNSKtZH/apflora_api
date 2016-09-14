@@ -13,8 +13,8 @@ module.exports = [
     method: 'GET',
     // The version with levels leads to error, see:
     // https://github.com/hapijs/hapi/issues/3348
-    // path: '/node/{table}/{id}/{folder}/{levels}',
-    path: '/node/{table}/{id}/{folder}',
+    path: '/node/{table}/{id}/{folder}/{levels}',
+    // path: '/node/{table}/{id}/{folder}',
     handler: projekt,
   }
 ]
