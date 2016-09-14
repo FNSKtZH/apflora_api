@@ -51,6 +51,7 @@ module.exports = (request, callback) => {
         name: projekt.ProjName,
         expanded: id && id === projekt.ProjId ? true : false,  // eslint-disable-line no-unneeded-ternary
         nrOfUnloadedChildren: 'todo',
+        parentId: 'root',
       }))
       return nodes
     })
