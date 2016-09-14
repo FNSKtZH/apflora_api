@@ -46,18 +46,18 @@ ORDER BY
 DROP VIEW IF EXISTS views.v_massn_jahre CASCADE;
 CREATE OR REPLACE VIEW views.v_massn_jahre AS
 SELECT
-  apflora.tpopmassn."TPopMassnJahr" 
+  apflora.tpopmassn."TPopMassnJahr"
 FROM
-  apflora.tpopmassn 
+  apflora.tpopmassn
 GROUP BY
-  apflora.tpopmassn."TPopMassnJahr" 
+  apflora.tpopmassn."TPopMassnJahr"
 HAVING
   apflora.tpopmassn."TPopMassnJahr" BETWEEN 1900 AND 2100
 ORDER BY
   apflora.tpopmassn."TPopMassnJahr";
 
 DROP VIEW IF EXISTS views.v_ap_anzmassnprojahr0 CASCADE;
-CREATE OR REPLACE VIEW views.v_ap_anzmassnprojahr0 AS 
+CREATE OR REPLACE VIEW views.v_ap_anzmassnprojahr0 AS
 SELECT
   apflora.ap."ApArtId",
   apflora.tpopmassn."TPopMassnJahr",
@@ -106,7 +106,7 @@ GROUP BY
 
 -- wird von v_apber_injahr benutzt. Dieses Wiederum in Access:
 DROP VIEW IF EXISTS views.v_erstemassnproap CASCADE;
-CREATE OR REPLACE VIEW views.v_erstemassnproap AS 
+CREATE OR REPLACE VIEW views.v_erstemassnproap AS
 SELECT
   apflora.ap."ApArtId",
   min(apflora.tpopmassn."TPopMassnJahr") AS "MinvonTPopMassnJahr"
@@ -322,7 +322,7 @@ SELECT
   apflora.tpopmassn."TPopMassnAnsiedForm" AS "MassnFormDerAnsiedlung",
   apflora.tpopmassn."TPopMassnAnsiedPflanzanordnung" AS "MassnPflanzanordnung",
   apflora.tpopmassn."TPopMassnMarkierung" AS "MassnMarkierung",
-   apflora.tpopmassn."TPopMassnAnsiedAnzTriebe" AS "MassnAnzTriebe",
+  apflora.tpopmassn."TPopMassnAnsiedAnzTriebe" AS "MassnAnzTriebe",
   apflora.tpopmassn."TPopMassnAnsiedAnzPfl" AS "MassnPflanzen",
   apflora.tpopmassn."TPopMassnAnzPflanzstellen" AS "MassnAnzPflanzstellen",
   apflora.tpopmassn."TPopMassnAnsiedWirtspfl" AS "MassnWirtspflanze",
@@ -758,7 +758,7 @@ FROM
     ON apflora.pop."PopHerkunft" = pop_status_werte."HerkunftId"
 WHERE
   apflora.pop."PopXKoord" IS NULL
-  OR apflora.pop."PopYKoord" IS NULL 
+  OR apflora.pop."PopYKoord" IS NULL
 ORDER BY
   beob.adb_eigenschaften."Artname",
   apflora.pop."PopNr";
@@ -1187,7 +1187,7 @@ ORDER BY
 
 -- im Gebrauch durch exportPopVonApOhneStatus.php:
 DROP VIEW IF EXISTS views.v_pop_vonapohnestatus CASCADE;
-CREATE OR REPLACE VIEW views.v_pop_vonapohnestatus AS 
+CREATE OR REPLACE VIEW views.v_pop_vonapohnestatus AS
 SELECT
   beob.adb_eigenschaften."Artname" AS "Art",
   apflora.ap."ApStatus" AS "Bearbeitungsstand AP",
@@ -1210,7 +1210,7 @@ ORDER BY
   apflora.pop."PopNr";
 
 DROP VIEW IF EXISTS views.v_apber_zielber CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_zielber AS 
+CREATE OR REPLACE VIEW views.v_apber_zielber AS
 SELECT
   apflora.zielber.*
 FROM
@@ -1278,7 +1278,7 @@ ORDER BY
   apflora.apber."JBerDatum";
 
 DROP VIEW IF EXISTS views.v_apber_artd CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_artd AS 
+CREATE OR REPLACE VIEW views.v_apber_artd AS
 SELECT
   apflora.ap.*,
   beob.adb_eigenschaften."Artname" AS "Art",
@@ -1317,7 +1317,7 @@ FROM
     ON apflora.ap."ApArtId" = apflora.apber."ApArtId";
 
 DROP VIEW IF EXISTS views.v_pop_massnseitbeginnap CASCADE;
-CREATE OR REPLACE VIEW views.v_pop_massnseitbeginnap AS 
+CREATE OR REPLACE VIEW views.v_pop_massnseitbeginnap AS
 SELECT
   apflora.tpopmassn."TPopId"
 FROM
@@ -1337,7 +1337,7 @@ GROUP BY
   apflora.tpopmassn."TPopId";
 
 DROP VIEW IF EXISTS views.v_apber CASCADE;
-CREATE OR REPLACE VIEW views.v_apber AS 
+CREATE OR REPLACE VIEW views.v_apber AS
 SELECT
   apflora.ap."ApArtId" AS "ApArtId",
   apflora.apber."JBerId" AS "JBerId",
@@ -1354,7 +1354,7 @@ SELECT
   apflora.apber."JBerBTxt" AS "JBerBTxt",
   apflora.apber."JBerCTxt" AS "JBerCTxt",
   apflora.apber."JBerDTxt" AS "JBerDTxt",
-  apflora.apber."JBerDatum" AS "JBerDatum",apflora.adresse."AdrName" AS "JBerBearb" 
+  apflora.apber."JBerDatum" AS "JBerDatum",apflora.adresse."AdrName" AS "JBerBearb"
 FROM
   apflora.ap
   INNER JOIN
@@ -1373,7 +1373,7 @@ ORDER BY
   beob.adb_eigenschaften."Artname";
 
 DROP VIEW IF EXISTS views.v_tpop_letztermassnber0 CASCADE;
-CREATE OR REPLACE VIEW views.v_tpop_letztermassnber0 AS 
+CREATE OR REPLACE VIEW views.v_tpop_letztermassnber0 AS
 SELECT
   apflora.pop."ApArtId",
   apflora.tpop."TPopId",
@@ -1420,7 +1420,7 @@ WHERE
   AND apflora.pop."PopHerkunft" <> 300;
 
 DROP VIEW IF EXISTS views.v_pop_letztermassnber0 CASCADE;
-CREATE OR REPLACE VIEW views.v_pop_letztermassnber0 AS 
+CREATE OR REPLACE VIEW views.v_pop_letztermassnber0 AS
 SELECT
   apflora.pop."ApArtId",
   apflora.pop."PopId",
@@ -1503,7 +1503,7 @@ GROUP BY
   apflora.tpopber."TPopId";
 
 DROP VIEW IF EXISTS views.v_tpop_mitapaberohnestatus CASCADE;
-CREATE OR REPLACE VIEW views.v_tpop_mitapaberohnestatus AS 
+CREATE OR REPLACE VIEW views.v_tpop_mitapaberohnestatus AS
 SELECT
   beob.adb_eigenschaften."Artname" AS "Art",
   apflora.ap_bearbstand_werte."DomainTxt" AS "Bearbeitungsstand AP",
@@ -1538,7 +1538,7 @@ ORDER BY
   apflora.pop."PopNr";
 
 DROP VIEW IF EXISTS views.v_tpop_ohnebekanntseit CASCADE;
-CREATE OR REPLACE VIEW views.v_tpop_ohnebekanntseit AS 
+CREATE OR REPLACE VIEW views.v_tpop_ohnebekanntseit AS
 SELECT
   beob.adb_eigenschaften."Artname" AS "Art",
   apflora.ap_bearbstand_werte."DomainTxt" AS "ApStatus_",
@@ -1574,7 +1574,7 @@ ORDER BY
   apflora.tpop."TPopFlurname";
 
 DROP VIEW IF EXISTS views.v_tpop_ohnekoord CASCADE;
-CREATE OR REPLACE VIEW views.v_tpop_ohnekoord AS 
+CREATE OR REPLACE VIEW views.v_tpop_ohnekoord AS
 SELECT
   beob.adb_eigenschaften."Artname" AS "Art",
   apflora.ap_bearbstand_werte."DomainTxt" AS "ApStatus_",
@@ -1615,7 +1615,7 @@ ORDER BY
   apflora.tpop."TPopFlurname";
 
 DROP VIEW IF EXISTS views.v_tpopber_letzterber CASCADE;
-CREATE OR REPLACE VIEW views.v_tpopber_letzterber AS 
+CREATE OR REPLACE VIEW views.v_tpopber_letzterber AS
 SELECT
   apflora.tpopber."TPopId",
   max(apflora.tpopber."TPopBerJahr") AS "MaxvonTPopBerJahr"
@@ -1625,7 +1625,7 @@ GROUP BY
   apflora.tpopber."TPopId";
 
 DROP VIEW IF EXISTS views.v_ap_ausw CASCADE;
-CREATE OR REPLACE VIEW views.v_ap_ausw AS 
+CREATE OR REPLACE VIEW views.v_ap_ausw AS
 SELECT
   apflora.ap."ApArtId",
   beob.adb_eigenschaften."Artname" AS "Art",
@@ -1655,7 +1655,7 @@ ORDER BY
   beob.adb_eigenschaften."Artname";
 
 DROP VIEW IF EXISTS views.v_ap CASCADE;
-CREATE OR REPLACE VIEW views.v_ap AS 
+CREATE OR REPLACE VIEW views.v_ap AS
 SELECT
   apflora.ap."ApArtId",
   beob.adb_eigenschaften."Artname" AS "AP Art",
@@ -1683,7 +1683,7 @@ ORDER BY
   beob.adb_eigenschaften."Artname";
 
 DROP VIEW IF EXISTS views.v_idealbiotop CASCADE;
-CREATE OR REPLACE VIEW views.v_idealbiotop AS 
+CREATE OR REPLACE VIEW views.v_idealbiotop AS
 SELECT
   apflora.ap."ApArtId" AS "AP ApArtId",
   beob.adb_eigenschaften."Artname" AS "AP Art",
@@ -1736,7 +1736,7 @@ ORDER BY
   apflora.idealbiotop."IbErstelldatum";
 
 DROP VIEW IF EXISTS views.v_idealbiotop_verwaist CASCADE;
-CREATE OR REPLACE VIEW views.v_idealbiotop_verwaist AS 
+CREATE OR REPLACE VIEW views.v_idealbiotop_verwaist AS
 SELECT
   apflora.ap."ApArtId" AS "AP ApArtId",
   apflora.idealbiotop."IbApArtId" AS "Ib ApArtId",
@@ -1926,7 +1926,7 @@ ORDER BY
   beob.adb_eigenschaften."Artname";
 
 DROP VIEW IF EXISTS views.v_ap_ohnepop CASCADE;
-CREATE OR REPLACE VIEW views.v_ap_ohnepop AS 
+CREATE OR REPLACE VIEW views.v_ap_ohnepop AS
 SELECT
   apflora.ap."ApArtId",
   beob.adb_eigenschaften."Artname" AS "Art",
@@ -2090,7 +2090,7 @@ GROUP BY
   apflora.tpopmassn."TPopMassnJahr";
 
 DROP VIEW IF EXISTS views.v_auswapbearbmassninjahr0 CASCADE;
-CREATE OR REPLACE VIEW views.v_auswapbearbmassninjahr0 AS 
+CREATE OR REPLACE VIEW views.v_auswapbearbmassninjahr0 AS
 SELECT
   apflora.adresse."AdrName",
   beob.adb_eigenschaften."Artname" AS "Art",
@@ -2148,7 +2148,7 @@ ORDER BY
   apflora.tpop."TPopFlurname";
 
 DROP VIEW IF EXISTS views.v_ap_mitmassninjahr0 CASCADE;
-CREATE OR REPLACE VIEW views.v_ap_mitmassninjahr0 AS 
+CREATE OR REPLACE VIEW views.v_ap_mitmassninjahr0 AS
 SELECT
   beob.adb_eigenschaften."Artname" AS "Art",
   apflora.pop."PopNr",
@@ -2278,7 +2278,7 @@ ORDER BY
   apflora.tpopmassnber."TPopMassnBerJahr";
 
 DROP VIEW IF EXISTS views.v_tpopmassn_0 CASCADE;
-CREATE OR REPLACE VIEW views.v_tpopmassn_0 AS 
+CREATE OR REPLACE VIEW views.v_tpopmassn_0 AS
 SELECT
   apflora.ap."ApArtId",
   beob.adb_eigenschaften."Artname" AS "Art",
@@ -2339,7 +2339,7 @@ ORDER BY
   tpopmassn_typ_werte."MassnTypTxt";
 
 DROP VIEW IF EXISTS views.v_tpopmassn_fueraktap0 CASCADE;
-CREATE OR REPLACE VIEW views.v_tpopmassn_fueraktap0 AS 
+CREATE OR REPLACE VIEW views.v_tpopmassn_fueraktap0 AS
 SELECT
   apflora.ap."ApArtId",
   beob.adb_eigenschaften."Artname" AS "Art",
@@ -2508,7 +2508,7 @@ FROM
     apflora.tpopkontrzaehl_methode_werte
     ON apflora.tpopkontrzaehl."Methode" = apflora.tpopkontrzaehl_methode_werte."BeurteilCode"
 WHERE
-  apflora.tpopkontr."TPopKontrTyp" NOT IN ('Ziel', 'Zwischenziel') 
+  apflora.tpopkontr."TPopKontrTyp" NOT IN ('Ziel', 'Zwischenziel')
 ORDER BY
   apflora.tpop."TPopGemeinde",
   apflora.tpop."TPopFlurname",
@@ -2519,7 +2519,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrTyp";
 
 DROP VIEW IF EXISTS views.v_apber_b1rpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_b1rpop AS 
+CREATE OR REPLACE VIEW views.v_apber_b1rpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.pop."PopId"
@@ -2542,7 +2542,7 @@ GROUP BY
   apflora.pop."PopId";
 
 DROP VIEW IF EXISTS views.v_apber_b1rtpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_b1rtpop AS 
+CREATE OR REPLACE VIEW views.v_apber_b1rtpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.tpopber."TPopId"
@@ -2566,7 +2566,7 @@ GROUP BY
   apflora.tpopber."TPopId";
 
 DROP VIEW IF EXISTS views.v_apber_c1rtpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_c1rtpop AS 
+CREATE OR REPLACE VIEW views.v_apber_c1rtpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.tpop."TPopId"
@@ -2589,7 +2589,7 @@ GROUP BY
   apflora.tpop."TPopId";
 
 DROP VIEW IF EXISTS views.v_apber_a3lpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_a3lpop AS 
+CREATE OR REPLACE VIEW views.v_apber_a3lpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.pop."PopId"
@@ -2635,7 +2635,7 @@ GROUP BY
   apflora.pop."PopId";
 
 DROP VIEW IF EXISTS views.v_apber_a5lpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_a5lpop AS 
+CREATE OR REPLACE VIEW views.v_apber_a5lpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.pop."PopId"
@@ -2652,7 +2652,7 @@ GROUP BY
   apflora.pop."PopId";
 
 DROP VIEW IF EXISTS views.v_apber_a10lpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_a10lpop AS 
+CREATE OR REPLACE VIEW views.v_apber_a10lpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.pop."PopId"
@@ -2698,7 +2698,7 @@ GROUP BY
   apflora.pop."PopId";
 
 DROP VIEW IF EXISTS views.v_apber_a9lpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_a9lpop AS 
+CREATE OR REPLACE VIEW views.v_apber_a9lpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.pop."PopId"
@@ -2739,7 +2739,7 @@ GROUP BY
   apflora.tpop."TPopId";
 
 DROP VIEW IF EXISTS views.v_apber_a2ltpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_a2ltpop AS 
+CREATE OR REPLACE VIEW views.v_apber_a2ltpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.tpop."TPopId"
@@ -2783,7 +2783,7 @@ GROUP BY
   apflora.tpop."TPopId";
 
 DROP VIEW IF EXISTS views.v_apber_a4ltpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_a4ltpop AS 
+CREATE OR REPLACE VIEW views.v_apber_a4ltpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.tpop."TPopId"
@@ -2838,7 +2838,7 @@ GROUP BY
   apflora.tpop."TPopId";
 
 DROP VIEW IF EXISTS views.v_apber_a8ltpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_a8ltpop AS 
+CREATE OR REPLACE VIEW views.v_apber_a8ltpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.tpop."TPopId"
@@ -2891,7 +2891,7 @@ GROUP BY
   apflora.tpop."TPopId";
 
 DROP VIEW IF EXISTS views.v_apber_b1lpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_b1lpop AS 
+CREATE OR REPLACE VIEW views.v_apber_b1lpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.pop."PopId"
@@ -2938,7 +2938,7 @@ GROUP BY
   apflora.pop."PopId";
 
 DROP VIEW IF EXISTS views.v_apber_b3lpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_b3lpop AS 
+CREATE OR REPLACE VIEW views.v_apber_b3lpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.pop."PopId"
@@ -2986,7 +2986,7 @@ GROUP BY
   apflora.pop."PopId";
 
 DROP VIEW IF EXISTS views.v_apber_b5lpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_b5lpop AS 
+CREATE OR REPLACE VIEW views.v_apber_b5lpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.pop."PopId"
@@ -3034,7 +3034,7 @@ GROUP BY
   apflora.pop."PopId";
 
 DROP VIEW IF EXISTS views.v_apber_b7lpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_b7lpop AS 
+CREATE OR REPLACE VIEW views.v_apber_b7lpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.pop."PopId"
@@ -3075,7 +3075,7 @@ GROUP BY
   apflora.tpop."TPopId";
 
 DROP VIEW IF EXISTS views.v_apber_b2ltpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_b2ltpop AS 
+CREATE OR REPLACE VIEW views.v_apber_b2ltpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.tpop."TPopId"
@@ -3125,7 +3125,7 @@ GROUP BY
   apflora.tpop."TPopId";
 
 DROP VIEW IF EXISTS views.v_apber_b4ltpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_b4ltpop AS 
+CREATE OR REPLACE VIEW views.v_apber_b4ltpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.tpop."TPopId"
@@ -3175,7 +3175,7 @@ GROUP BY
   apflora.tpop."TPopId";
 
 DROP VIEW IF EXISTS views.v_apber_b6ltpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_b6ltpop AS 
+CREATE OR REPLACE VIEW views.v_apber_b6ltpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.tpop."TPopId"
@@ -3218,7 +3218,7 @@ GROUP BY
   apflora.tpop."TPopId";
 
 DROP VIEW IF EXISTS views.v_apber_c1lpop CASCADE;
-CREATE OR REPLACE VIEW views.v_apber_c1lpop AS 
+CREATE OR REPLACE VIEW views.v_apber_c1lpop AS
 SELECT
   apflora.pop."ApArtId",
   apflora.pop."PopId"
@@ -3265,7 +3265,7 @@ GROUP BY
   apflora.tpop."TPopId";
 
 DROP VIEW IF EXISTS views.v_auswanzprotpopangezartbestjahr0 CASCADE;
-CREATE OR REPLACE VIEW views.v_auswanzprotpopangezartbestjahr0 AS 
+CREATE OR REPLACE VIEW views.v_auswanzprotpopangezartbestjahr0 AS
 SELECT
   apflora.ap."ApArtId",
   apflora.pop."PopId",
@@ -3379,9 +3379,9 @@ FROM
   LEFT JOIN
     apflora.pop_entwicklung_werte
     ON apflora.popber."PopBerEntwicklung" = pop_entwicklung_werte."EntwicklungId";
- 
+
 DROP VIEW IF EXISTS views.v_ziel CASCADE;
-CREATE OR REPLACE VIEW views.v_ziel AS 
+CREATE OR REPLACE VIEW views.v_ziel AS
 SELECT
   apflora.ap."ApArtId" AS "AP Id",
   beob.adb_eigenschaften."Artname" AS "AP Art",
@@ -3423,7 +3423,7 @@ ORDER BY
   apflora.ziel."ZielTyp";
 
 DROP VIEW IF EXISTS views.v_ziel_verwaist CASCADE;
-CREATE OR REPLACE VIEW views.v_ziel_verwaist AS 
+CREATE OR REPLACE VIEW views.v_ziel_verwaist AS
 SELECT
   apflora.ap."ApArtId" AS "AP Id",
   apflora.ziel."ZielId" AS "Ziel Id",
@@ -4101,7 +4101,7 @@ SELECT
   apflora.beobzuordnung."BeobNichtZuordnen",
   apflora.beobzuordnung."BeobBemerkungen",
   apflora.beobzuordnung."BeobMutWann",
-  apflora.beobzuordnung."BeobMutWer" 
+  apflora.beobzuordnung."BeobMutWer"
 FROM
   ((beob.beob_infospezies
   INNER JOIN
@@ -4156,7 +4156,7 @@ UNION SELECT
   apflora.beobzuordnung."BeobNichtZuordnen",
   apflora.beobzuordnung."BeobBemerkungen",
   apflora.beobzuordnung."BeobMutWann",
-  apflora.beobzuordnung."BeobMutWer" 
+  apflora.beobzuordnung."BeobMutWer"
 FROM
   ((beob.beob_bereitgestellt
   INNER JOIN
@@ -4173,7 +4173,7 @@ FROM
     ON beob.beob_evab."NO_NOTE_PROJET" = apflora.beobzuordnung."NO_NOTE")
   INNER JOIN
     beob.adb_eigenschaften
-    ON beob.beob_evab."NO_ISFS" = beob.adb_eigenschaften."TaxonomieId" 
+    ON beob.beob_evab."NO_ISFS" = beob.adb_eigenschaften."TaxonomieId"
 WHERE
   beob.beob_evab."NO_ISFS" > 150
 ORDER BY
@@ -4221,7 +4221,7 @@ SELECT
   apflora.beobzuordnung."BeobNichtZuordnen",
   apflora.beobzuordnung."BeobBemerkungen",
   apflora.beobzuordnung."BeobMutWann",
-  apflora.beobzuordnung."BeobMutWer" 
+  apflora.beobzuordnung."BeobMutWer"
 FROM
   ((((beob.beob_infospezies
   INNER JOIN
@@ -5304,7 +5304,7 @@ DROP VIEW IF EXISTS views.v_tpop_kontrjahrundberjahrundmassnjahr CASCADE;
 CREATE OR REPLACE VIEW views.v_tpop_kontrjahrundberjahrundmassnjahr AS
 SELECT
   apflora.tpop."TPopId",
-  apflora.tpopber."TPopBerJahr" AS "Jahr" 
+  apflora.tpopber."TPopBerJahr" AS "Jahr"
 FROM
   apflora.tpop
   INNER JOIN apflora.tpopber ON apflora.tpop."TPopId" = apflora.tpopber."TPopId"
@@ -5766,7 +5766,7 @@ ORDER BY
   apflora.pop."PopNr";
 
 DROP VIEW IF EXISTS views.v_qk_tpop_ohnenr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_ohnenr AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_ohnenr AS
 SELECT
   apflora.ap."ApArtId",
   'Teilpopulation ohne Nr.:' AS "hw",
@@ -5804,7 +5804,7 @@ ORDER BY
   apflora.tpop."TPopNr";
 
 DROP VIEW IF EXISTS views.v_qk_tpop_ohneflurname CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_ohneflurname AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_ohneflurname AS
 SELECT
   apflora.ap."ApArtId",
   'Teilpopulation ohne Flurname:' AS "hw",
@@ -5842,7 +5842,7 @@ ORDER BY
   apflora.tpop."TPopNr";
 
 DROP VIEW IF EXISTS views.v_qk_tpop_ohnestatus CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_ohnestatus AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_ohnestatus AS
 SELECT
   apflora.ap."ApArtId",
   'Teilpopulation ohne Status:' AS "hw",
@@ -5880,7 +5880,7 @@ ORDER BY
   apflora.tpop."TPopNr";
 
 DROP VIEW IF EXISTS views.v_qk_tpop_ohnebekanntseit CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_ohnebekanntseit AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_ohnebekanntseit AS
 SELECT
   apflora.ap."ApArtId",
   'Teilpopulation ohne "bekannt seit":' AS "hw",
@@ -5918,7 +5918,7 @@ ORDER BY
   apflora.tpop."TPopNr";
 
 DROP VIEW IF EXISTS views.v_qk_tpop_ohneapberrelevant CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_ohneapberrelevant AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_ohneapberrelevant AS
 SELECT
   apflora.ap."ApArtId",
   'Teilpopulation ohne "Fuer AP-Bericht relevant":' AS "hw",
@@ -5956,7 +5956,7 @@ ORDER BY
   apflora.tpop."TPopNr";
 
 DROP VIEW IF EXISTS views.v_qk_tpop_statuspotentiellfuerapberrelevant CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_statuspotentiellfuerapberrelevant AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_statuspotentiellfuerapberrelevant AS
 SELECT
   apflora.ap."ApArtId",
   'Teilpopulation mit Status "potenzieller Wuchs-/Ansiedlungsort" und "Fuer AP-Bericht relevant?" = ja:' AS "hw",
@@ -5995,7 +5995,7 @@ ORDER BY
   apflora.tpop."TPopNr";
 
 DROP VIEW IF EXISTS views.v_qk_tpop_mitstatusunklarohnebegruendung CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatusunklarohnebegruendung AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatusunklarohnebegruendung AS
 SELECT
   apflora.ap."ApArtId",
   'Teilpopulation mit "Status unklar", ohne Begruendung:' AS "hw",
@@ -6034,7 +6034,7 @@ ORDER BY
   apflora.tpop."TPopNr";
 
 DROP VIEW IF EXISTS views.v_qk_tpop_ohnekoordinaten CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_ohnekoordinaten AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_ohnekoordinaten AS
 SELECT
   apflora.ap."ApArtId",
   'Teilpopulation: Mindestens eine Koordinate fehlt:' AS "hw",
@@ -6073,7 +6073,7 @@ ORDER BY
   apflora.tpop."TPopNr";
 
 DROP VIEW IF EXISTS views.v_qk_massn_ohnejahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_massn_ohnejahr AS 
+CREATE OR REPLACE VIEW views.v_qk_massn_ohnejahr AS
 SELECT
   apflora.ap."ApArtId",
   'Massnahme ohne Jahr:' AS "hw",
@@ -6118,7 +6118,7 @@ ORDER BY
   apflora.tpopmassn."TPopMassnId";
 
 DROP VIEW IF EXISTS views.v_qk_massn_ohnetyp CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_massn_ohnetyp AS 
+CREATE OR REPLACE VIEW views.v_qk_massn_ohnetyp AS
 SELECT
   apflora.ap."ApArtId",
   'Massnahmen ohne Typ:' AS "hw",
@@ -6169,7 +6169,7 @@ ORDER BY
   apflora.tpopmassn."TPopMassnId";
 
 DROP VIEW IF EXISTS views.v_qk_massnber_ohnejahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_massnber_ohnejahr AS 
+CREATE OR REPLACE VIEW views.v_qk_massnber_ohnejahr AS
 SELECT
   apflora.ap."ApArtId",
   'Massnahmen-Bericht ohne Jahr:' AS "hw",
@@ -6218,7 +6218,7 @@ ORDER BY
   apflora.tpopmassnber."TPopMassnBerId";
 
 DROP VIEW IF EXISTS views.v_qk_massnber_ohneerfbeurt CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_massnber_ohneerfbeurt AS 
+CREATE OR REPLACE VIEW views.v_qk_massnber_ohneerfbeurt AS
 SELECT
   apflora.ap."ApArtId",
   'Massnahmen-Bericht ohne Entwicklung:' AS "hw",
@@ -6269,7 +6269,7 @@ ORDER BY
   apflora.tpopmassnber."TPopMassnBerId";
 
 DROP VIEW IF EXISTS views.v_qk_feldkontr_ohnejahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_feldkontr_ohnejahr AS 
+CREATE OR REPLACE VIEW views.v_qk_feldkontr_ohnejahr AS
 SELECT
   apflora.ap."ApArtId",
   'Feldkontrolle ohne Jahr:' AS "hw",
@@ -6318,7 +6318,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrId";
 
 DROP VIEW IF EXISTS views.v_qk_freiwkontr_ohnejahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_freiwkontr_ohnejahr AS 
+CREATE OR REPLACE VIEW views.v_qk_freiwkontr_ohnejahr AS
 SELECT
   apflora.ap."ApArtId",
   'Freiwilligen-Kontrolle ohne Jahr:' AS "hw",
@@ -6367,7 +6367,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrId";
 
 DROP VIEW IF EXISTS views.v_qk_feldkontr_ohnetyp CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_feldkontr_ohnetyp AS 
+CREATE OR REPLACE VIEW views.v_qk_feldkontr_ohnetyp AS
 SELECT
   apflora.ap."ApArtId",
   'Feldkontrolle ohne Typ:' AS "hw",
@@ -6421,7 +6421,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrId";
 
 DROP VIEW IF EXISTS views.v_qk_feldkontr_ohnezaehlung CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_feldkontr_ohnezaehlung AS 
+CREATE OR REPLACE VIEW views.v_qk_feldkontr_ohnezaehlung AS
 SELECT
   apflora.ap."ApArtId",
   'Feldkontrolle ohne Zaehlung:' AS "hw",
@@ -6475,7 +6475,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrId";
 
 DROP VIEW IF EXISTS views.v_qk_freiwkontr_ohnezaehlung CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_freiwkontr_ohnezaehlung AS 
+CREATE OR REPLACE VIEW views.v_qk_freiwkontr_ohnezaehlung AS
 SELECT
   apflora.ap."ApArtId",
   'Freiwilligen-Kontrolle ohne Zaehlung:' AS "hw",
@@ -6529,7 +6529,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrId";
 
 DROP VIEW IF EXISTS views.v_qk_feldkontrzaehlung_ohneeinheit CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_feldkontrzaehlung_ohneeinheit AS 
+CREATE OR REPLACE VIEW views.v_qk_feldkontrzaehlung_ohneeinheit AS
 SELECT
   apflora.ap."ApArtId",
   'Zaehlung ohne Zaehleinheit (Feldkontrolle):' AS "hw",
@@ -6583,7 +6583,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrId";
 
 DROP VIEW IF EXISTS views.v_qk_freiwkontrzaehlung_ohneeinheit CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_freiwkontrzaehlung_ohneeinheit AS 
+CREATE OR REPLACE VIEW views.v_qk_freiwkontrzaehlung_ohneeinheit AS
 SELECT
   apflora.ap."ApArtId",
   'Zaehlung ohne Zaehleinheit (Freiwilligen-Kontrolle):' AS "hw",
@@ -6637,7 +6637,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrId";
 
 DROP VIEW IF EXISTS views.v_qk_feldkontrzaehlung_ohnemethode CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_feldkontrzaehlung_ohnemethode AS 
+CREATE OR REPLACE VIEW views.v_qk_feldkontrzaehlung_ohnemethode AS
 SELECT
   apflora.ap."ApArtId",
   'Zaehlung ohne Methode (Feldkontrolle):' AS "hw",
@@ -6691,7 +6691,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrId";
 
 DROP VIEW IF EXISTS views.v_qk_freiwkontrzaehlung_ohnemethode CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_freiwkontrzaehlung_ohnemethode AS 
+CREATE OR REPLACE VIEW views.v_qk_freiwkontrzaehlung_ohnemethode AS
 SELECT
   apflora.ap."ApArtId",
   'Zaehlung ohne Methode (Freiwilligen-Kontrolle):' AS "hw",
@@ -6745,7 +6745,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrId";
 
 DROP VIEW IF EXISTS views.v_qk_feldkontrzaehlung_ohneanzahl CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_feldkontrzaehlung_ohneanzahl AS 
+CREATE OR REPLACE VIEW views.v_qk_feldkontrzaehlung_ohneanzahl AS
 SELECT
   apflora.ap."ApArtId",
   'Zaehlung ohne Anzahl (Feldkontrolle):' AS "hw",
@@ -6799,7 +6799,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrId";
 
 DROP VIEW IF EXISTS views.v_qk_freiwkontrzaehlung_ohneanzahl CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_freiwkontrzaehlung_ohneanzahl AS 
+CREATE OR REPLACE VIEW views.v_qk_freiwkontrzaehlung_ohneanzahl AS
 SELECT
   apflora.ap."ApArtId",
   'Zaehlung ohne Anzahl (Freiwilligen-Kontrolle):' AS "hw",
@@ -6853,7 +6853,7 @@ ORDER BY
   apflora.tpopkontr."TPopKontrId";
 
 DROP VIEW IF EXISTS views.v_qk_tpopber_ohnejahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpopber_ohnejahr AS 
+CREATE OR REPLACE VIEW views.v_qk_tpopber_ohnejahr AS
 SELECT
   apflora.ap."ApArtId",
   'Teilpopulations-Bericht ohne Jahr:' AS "hw",
@@ -6902,7 +6902,7 @@ ORDER BY
   apflora.tpopber."TPopBerId";
 
 DROP VIEW IF EXISTS views.v_qk_tpopber_ohneentwicklung CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpopber_ohneentwicklung AS 
+CREATE OR REPLACE VIEW views.v_qk_tpopber_ohneentwicklung AS
 SELECT
   apflora.ap."ApArtId",
   'Teilpopulations-Bericht ohne Entwicklung:' AS "hw",
@@ -6953,7 +6953,7 @@ ORDER BY
   apflora.tpopber."TPopBerId";
 
 DROP VIEW IF EXISTS views.v_qk_popber_ohneentwicklung CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_popber_ohneentwicklung AS 
+CREATE OR REPLACE VIEW views.v_qk_popber_ohneentwicklung AS
 SELECT
   apflora.ap."ApArtId",
   'Populations-Bericht ohne Entwicklung:' AS "hw",
@@ -6994,7 +6994,7 @@ ORDER BY
   apflora.popber."PopBerId";
 
 DROP VIEW IF EXISTS views.v_qk_popber_ohnejahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_popber_ohnejahr AS 
+CREATE OR REPLACE VIEW views.v_qk_popber_ohnejahr AS
 SELECT
   apflora.ap."ApArtId",
   'Populations-Bericht ohne Jahr:' AS "hw",
@@ -7033,7 +7033,7 @@ ORDER BY
   apflora.popber."PopBerId";
 
 DROP VIEW IF EXISTS views.v_qk_popmassnber_ohnejahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_popmassnber_ohnejahr AS 
+CREATE OR REPLACE VIEW views.v_qk_popmassnber_ohnejahr AS
 SELECT
   apflora.ap."ApArtId",
   'Populations-Massnahmen-Bericht ohne Jahr:' AS "hw",
@@ -7072,7 +7072,7 @@ ORDER BY
   apflora.popmassnber."PopMassnBerId";
 
 DROP VIEW IF EXISTS views.v_qk_popmassnber_ohneentwicklung CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_popmassnber_ohneentwicklung AS 
+CREATE OR REPLACE VIEW views.v_qk_popmassnber_ohneentwicklung AS
 SELECT
   apflora.ap."ApArtId",
   'Populations-Massnahmen-Bericht ohne Entwicklung:' AS "hw",
@@ -7113,7 +7113,7 @@ ORDER BY
   apflora.popmassnber."PopMassnBerId";
 
 DROP VIEW IF EXISTS views.v_qk_zielber_ohneentwicklung CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_zielber_ohneentwicklung AS 
+CREATE OR REPLACE VIEW views.v_qk_zielber_ohneentwicklung AS
 SELECT
   apflora.ap."ApArtId",
   'Ziel-Bericht ohne Entwicklung:' AS "hw",
@@ -7155,7 +7155,7 @@ ORDER BY
   apflora.zielber."ZielBerId";
 
 DROP VIEW IF EXISTS views.v_qk_zielber_ohnejahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_zielber_ohnejahr AS 
+CREATE OR REPLACE VIEW views.v_qk_zielber_ohnejahr AS
 SELECT
   apflora.ap."ApArtId",
   'Ziel-Bericht ohne Jahr:' AS "hw",
@@ -7195,7 +7195,7 @@ ORDER BY
   apflora.zielber."ZielBerId";
 
 DROP VIEW IF EXISTS views.v_qk_ziel_ohnejahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_ziel_ohnejahr AS 
+CREATE OR REPLACE VIEW views.v_qk_ziel_ohnejahr AS
 SELECT
   apflora.ap."ApArtId",
   'Ziel ohne Jahr:' AS "hw",
@@ -7224,7 +7224,7 @@ ORDER BY
   apflora.ziel."ZielId";
 
 DROP VIEW IF EXISTS views.v_qk_ziel_ohnetyp CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_ziel_ohnetyp AS 
+CREATE OR REPLACE VIEW views.v_qk_ziel_ohnetyp AS
 SELECT
   apflora.ap."ApArtId",
   'Ziel ohne Typ:' AS "hw",
@@ -7253,7 +7253,7 @@ ORDER BY
   apflora.ziel."ZielId";
 
 DROP VIEW IF EXISTS views.v_qk_ziel_ohneziel CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_ziel_ohneziel AS 
+CREATE OR REPLACE VIEW views.v_qk_ziel_ohneziel AS
 SELECT
   apflora.ap."ApArtId",
   'Ziel ohne Ziel:' AS "hw",
@@ -7282,7 +7282,7 @@ ORDER BY
   apflora.ziel."ZielId";
 
 DROP VIEW IF EXISTS views.v_qk_erfkrit_ohnebeurteilung CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_erfkrit_ohnebeurteilung AS 
+CREATE OR REPLACE VIEW views.v_qk_erfkrit_ohnebeurteilung AS
 SELECT
   apflora.ap."ApArtId",
   'Erfolgskriterium ohne Beurteilung:' AS "hw",
@@ -7307,7 +7307,7 @@ ORDER BY
   apflora.erfkrit."ErfkritId";
 
 DROP VIEW IF EXISTS views.v_qk_erfkrit_ohnekriterien CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_erfkrit_ohnekriterien AS 
+CREATE OR REPLACE VIEW views.v_qk_erfkrit_ohnekriterien AS
 SELECT
   apflora.ap."ApArtId",
   'Erfolgskriterium ohne Kriterien:' AS "hw",
@@ -7332,7 +7332,7 @@ ORDER BY
   apflora.erfkrit."ErfkritId";
 
 DROP VIEW IF EXISTS views.v_qk_apber_ohnejahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_apber_ohnejahr AS 
+CREATE OR REPLACE VIEW views.v_qk_apber_ohnejahr AS
 SELECT
   apflora.ap."ApArtId",
   'AP-Bericht ohne Jahr:' AS "hw",
@@ -7361,7 +7361,7 @@ ORDER BY
   apflora.apber."JBerId";
 
 DROP VIEW IF EXISTS views.v_qk_apber_ohnevergleichvorjahrgesamtziel CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_apber_ohnevergleichvorjahrgesamtziel AS 
+CREATE OR REPLACE VIEW views.v_qk_apber_ohnevergleichvorjahrgesamtziel AS
 SELECT
   apflora.ap."ApArtId",
   'AP-Bericht ohne Vergleich Vorjahr - Gesamtziel:' AS "hw",
@@ -7392,7 +7392,7 @@ ORDER BY
   apflora.apber."JBerId";
 
 DROP VIEW IF EXISTS views.v_qk_apber_ohnebeurteilung CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_apber_ohnebeurteilung AS 
+CREATE OR REPLACE VIEW views.v_qk_apber_ohnebeurteilung AS
 SELECT
   apflora.ap."ApArtId",
   'AP-Bericht ohne Vergleich Vorjahr - Gesamtziel:' AS "hw",
@@ -7423,7 +7423,7 @@ ORDER BY
   apflora.apber."JBerId";
 
 DROP VIEW IF EXISTS views.v_qk_assozart_ohneart CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_assozart_ohneart AS 
+CREATE OR REPLACE VIEW views.v_qk_assozart_ohneart AS
 SELECT
   apflora.ap."ApArtId",
   'Assoziierte Art ohne Art:' AS "hw",
@@ -7449,7 +7449,7 @@ ORDER BY
   apflora.assozart."AaId";
 
 DROP VIEW IF EXISTS views.v_qk_pop_koordentsprechenkeinertpop CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_pop_koordentsprechenkeinertpop AS 
+CREATE OR REPLACE VIEW views.v_qk_pop_koordentsprechenkeinertpop AS
 SELECT DISTINCT
   apflora.pop."ApArtId",
   'Population: Koordinaten entsprechen keiner Teilpopulation:' AS "hw",
@@ -7497,7 +7497,7 @@ ORDER BY
   );
 
 DROP VIEW IF EXISTS views.v_qk_pop_statusansaatversuchmitaktuellentpop CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_pop_statusansaatversuchmitaktuellentpop AS 
+CREATE OR REPLACE VIEW views.v_qk_pop_statusansaatversuchmitaktuellentpop AS
 SELECT DISTINCT
   apflora.pop."ApArtId",
   'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine Teilpopulation mit Status "urspruenglich, aktuell":' AS "hw",
@@ -7541,7 +7541,7 @@ ORDER BY
   );
 
 DROP VIEW IF EXISTS views.v_qk_pop_statusansaatversuchmittpopursprerloschen CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_pop_statusansaatversuchmittpopursprerloschen AS 
+CREATE OR REPLACE VIEW views.v_qk_pop_statusansaatversuchmittpopursprerloschen AS
 SELECT DISTINCT
   apflora.pop."ApArtId",
   'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine Teilpopulation mit Status "urspruenglich, erloschen":' AS "hw",
@@ -7585,7 +7585,7 @@ ORDER BY
   );
 
 DROP VIEW IF EXISTS views.v_qk_pop_statuserloschenmittpopaktuell CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_pop_statuserloschenmittpopaktuell AS 
+CREATE OR REPLACE VIEW views.v_qk_pop_statuserloschenmittpopaktuell AS
 SELECT DISTINCT
   apflora.pop."ApArtId",
   'Population: Status ist "erloschen" (urspruenglich oder angesiedelt), es gibt aber eine Teilpopulation mit Status "aktuell" (urspruenglich oder angesiedelt):' AS "hw",
@@ -7629,7 +7629,7 @@ ORDER BY
   );
 
 DROP VIEW IF EXISTS views.v_qk_pop_statuserloschenmittpopansaatversuch CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_pop_statuserloschenmittpopansaatversuch AS 
+CREATE OR REPLACE VIEW views.v_qk_pop_statuserloschenmittpopansaatversuch AS
 SELECT DISTINCT
   apflora.pop."ApArtId",
   'Population: Status ist "erloschen" (urspruenglich oder angesiedelt), es gibt aber eine Teilpopulation mit Status "angesiedelt, Ansaatversuch":' AS "hw",
@@ -7673,7 +7673,7 @@ ORDER BY
   );
 
 DROP VIEW IF EXISTS views.v_qk_pop_statusangesiedeltmittpopurspruenglich CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_pop_statusangesiedeltmittpopurspruenglich AS 
+CREATE OR REPLACE VIEW views.v_qk_pop_statusangesiedeltmittpopurspruenglich AS
 SELECT DISTINCT
   apflora.pop."ApArtId",
   'Population: Status ist "angesiedelt", es gibt aber eine Teilpopulation mit Status "urspruenglich":' AS "hw",
@@ -7717,7 +7717,7 @@ ORDER BY
   );
 
 DROP VIEW IF EXISTS views.v_qk_pop_statuspotwuchsortmittpopanders CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_pop_statuspotwuchsortmittpopanders AS 
+CREATE OR REPLACE VIEW views.v_qk_pop_statuspotwuchsortmittpopanders AS
 SELECT DISTINCT
   apflora.pop."ApArtId",
   'Population: Status ist "potenzieller Wuchs-/Ansiedlungsort", es gibt aber eine Teilpopulation mit Status "angesiedelt" oder "urspruenglich":' AS "hw",
@@ -7761,7 +7761,7 @@ ORDER BY
   );
 
 DROP VIEW IF EXISTS views.v_qk_tpop_mitstatusansaatversuchundzaehlungmitanzahl CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatusansaatversuchundzaehlungmitanzahl AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatusansaatversuchundzaehlungmitanzahl AS
 SELECT DISTINCT
   apflora.pop."ApArtId",
   apflora.pop."PopId",
@@ -7835,7 +7835,7 @@ ORDER BY
   );
 
 DROP VIEW IF EXISTS views.v_qk_tpop_mitstatuspotentiellundzaehlungmitanzahl CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatuspotentiellundzaehlungmitanzahl AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatuspotentiellundzaehlungmitanzahl AS
 SELECT DISTINCT
   apflora.pop."ApArtId",
   apflora.pop."PopId",
@@ -7902,7 +7902,7 @@ ORDER BY
   );
 
 DROP VIEW IF EXISTS views.v_qk_tpop_mitstatuspotentiellundmassnansiedlung CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatuspotentiellundmassnansiedlung AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatuspotentiellundmassnansiedlung AS
 SELECT DISTINCT
   apflora.pop."ApArtId",
   apflora.pop."PopId",
@@ -7965,7 +7965,7 @@ ORDER BY
   );
 
 DROP VIEW IF EXISTS views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr AS
 SELECT
   apflora.tpopber."TPopId",
   max(apflora.tpopber."TPopBerJahr") AS "MaxTPopBerJahr"
@@ -7975,7 +7975,7 @@ GROUP BY
   apflora.tpopber."TPopId";
 
 DROP VIEW IF EXISTS views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr CASCADE;
-CREATE OR REPLACE VIEW views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr AS 
+CREATE OR REPLACE VIEW views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr AS
 SELECT
   apflora.beobzuordnung."TPopId",
   max(
