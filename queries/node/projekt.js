@@ -7,17 +7,8 @@ const rootNode = require('../../src/rootNode')
 // TODO: get real user
 
 module.exports = (request, callback) => {
-  const table = encodeURIComponent(request.params.table)
   const id = encodeURIComponent(request.params.id)
-  const folder = encodeURIComponent(request.params.folder)
-  const levels = encodeURIComponent(request.params.levels)
   const user = 23
-
-  console.log('queries/node/projekt.js: hello')
-  console.log('table:', table)
-  console.log('id:', id)
-  console.log('folder:', folder)
-  console.log('levels:', levels)
 
   parallel({
     projektListe(cb) {
