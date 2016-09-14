@@ -38,7 +38,7 @@ module.exports = (request, callback) => {
   const id = encodeURIComponent(request.params.id)
   const user = 23
 
-  const getProjektListe = app.db.many(sqlProjListe, user)
+  const getProjektNodes = app.db.many(sqlProjListe, user)
     .then((projects) => {
       const nodes = projects.map(projekt => ({
         nodeId: `projekt/${projekt.ProjId}`,
@@ -54,21 +54,21 @@ module.exports = (request, callback) => {
       throw error
     })
   const getAnzApListe = app.db.many(sqlAnzApListe)
-    .then(apListe =>
-      apListe || []
+    .then(anzApListe =>
+      anzApListe || []
     )
     .catch((error) => {
       throw error
     })
 
-  Promise.all([getProjektListe, getAnzApListe])
-    .then(([projektListe, anzApListe]) => {
-      projektListe.forEach((node) => {
+  Promise.all([getProjektNodes, getAnzApListe])
+    .then(([projektNodes, anzApListe]) => {
+      projektNodes.forEach((node) => {
         const nrOfChildrenRow = anzApListe.find(el => el.ProjId === node.datasetId)
         const nrOfChildren = nrOfChildrenRow.anzAp || 0
         node.nrOfUnloadedChildren = nrOfChildren
       })
-      projektListe.unshift(rootNode)
-      callback(null, projektListe)
+      projektNodes.unshift(rootNode)
+      callback(null, projektNodes)
     })
 }
