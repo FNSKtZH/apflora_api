@@ -11,21 +11,10 @@ const projekt = require('../../queries/node/projekt.js')
 module.exports = [
   {
     method: 'GET',
-    // path: '/node/:table/:id/:folder/:levels',
-    path: '/node',
-    config: {
-      pre: [
-        [
-          { method: projekt, assign: 'projekt' },
-        ]
-
-      ],
-      handler (request, reply) {
-        console.log('hello')
-        reply([
-          request.pre.projekt,
-        ])
-      }
-    }
+    // The version with levels leads to error, see:
+    // https://github.com/hapijs/hapi/issues/3348
+    // path: '/node/{table}/{id}/{folder}/{levels}',
+    path: '/node/{table}/{id}/{folder}',
+    handler: projekt,
   }
 ]
