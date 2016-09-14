@@ -6,6 +6,9 @@
 
 const Hapi = require('hapi')
 const Inert = require('inert')
+const app = require('ampersand-app')
+const config = require('./configuration.js')
+const pgp = require('pg-promise')()
 const dbConnection = require('./dbConnection.js')
 const pgPlugin = require('./pgPlugin.js')
 // wird nur in Entwicklung genutzt
@@ -31,6 +34,13 @@ server.register(Inert, (err) => {
     // add all the routes
     server.route(routes)
   })
+
+  app.extend({
+    init() {
+      this.db = pgp(config.pgp.connectionString)
+    }
+  })
+  app.init()
 })
 
 module.exports = server

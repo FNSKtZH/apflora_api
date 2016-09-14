@@ -4,14 +4,16 @@
 
 'use strict'
 
-var config = {}
-var pgPassfile = require('./pgDbPass.json')
+const config = {}
+const pgPassfile = require('./pgDbPass.json')
 
 config.db = {}
 config.pg = {}
+config.pgp = {}
 config.pg.userName = pgPassfile.user
 config.pg.passWord = pgPassfile.pass
 config.pg.connectionString = `postgres://${pgPassfile.user}:${pgPassfile.pass}@localhost/apflora`
+config.pgp.connectionString = `postgres://${pgPassfile.user}:${pgPassfile.pass}@localhost:5432/apflora`
 
 // für alle Formulare auflisten:
 // Formularname, Name der entsprechenden Tabelle in der DB, Name der ID dieser Tabelle
