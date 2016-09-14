@@ -1,5 +1,4 @@
 'use strict'
-/* eslint-disable no-console */
 
 const app = require('ampersand-app')
 const rootNode = require('../../src/rootNode')
@@ -35,9 +34,13 @@ const sqlAnzApListe = `
 // TODO: get real user
 
 module.exports = (request, callback) => {
-  const id = encodeURIComponent(request.params.id)
-  const levels = encodeURIComponent(request.params.levels)
+  let id = encodeURIComponent(request.query.id)
+  const levels = encodeURIComponent(request.query.levels)
   const user = 23
+
+  if (id) {
+    id = parseInt(id, 0)
+  }
 
   const getProjektNodes = app.db.many(sqlProjListe, user)
     .then((projects) => {
@@ -46,7 +49,7 @@ module.exports = (request, callback) => {
         datasetId: projekt.ProjId,
         type: 'dataset',
         name: projekt.ProjName,
-        expanded: id && id === projekt.ProjId,
+        expanded: id && id === projekt.ProjId ? true : false,  // eslint-disable-line no-unneeded-ternary
         nrOfUnloadedChildren: 'todo',
       }))
       return nodes
