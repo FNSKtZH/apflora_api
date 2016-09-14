@@ -19,7 +19,7 @@ const server = require('../server.js')
 const method = 'GET'
 
 describe('/node', () => {
-  it('should return more than 0 rows for table = "projekt"', (done) => {
+  it('should return more than 0 rows for "?table=projekt"', (done) => {
     const url = '/node?table=projekt'
     server.inject({ method, url }, (res) => {
       expect(res.result.length).to.be.above(0)
@@ -33,6 +33,15 @@ describe('/node', () => {
       expect(res.result.length).to.be.above(0)
       const resultForId1 = res.result.find(r => r.datasetId === 1)
       expect(resultForId1.expanded).to.equal(true)
+      done()
+    })
+  })
+  it('should return root node for "?table=projekt&levels=all"', (done) => {
+    const url = '/node?table=projekt&levels=all'
+    server.inject({ method, url }, (res) => {
+      expect(res.result.length).to.be.above(1)
+      const resultForRoot = res.result.find(r => r.nodeId === 'root')
+      expect(resultForRoot).to.exist()
       done()
     })
   })
