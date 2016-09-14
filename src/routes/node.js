@@ -1,6 +1,6 @@
 'use strict'
 
-const projekt = require('../../queries/node/projekt.js')
+const node = require('../../queries/node/node.js')
 
 /**
  * Wenn mehrere DB-Aufrufe nötig sind, können sie parallel getätigt werden:
@@ -12,6 +12,6 @@ module.exports = [
   {
     method: 'GET',
     path: '/node/{table}/{id}/{folder}/{levels}',
-    handler: projekt,
+    handler: node,
   }
 ]
