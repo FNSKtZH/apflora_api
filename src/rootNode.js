@@ -2,8 +2,8 @@
 
 'use strict'
 
-module.exports = () => ({
+module.exports = {
   nodeId: 'root',
   type: 'root',
   name: 'root',
-})
+}
