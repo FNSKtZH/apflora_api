@@ -36,6 +36,7 @@ const sqlAnzApListe = `
 
 module.exports = (request, callback) => {
   const id = encodeURIComponent(request.params.id)
+  const levels = encodeURIComponent(request.params.levels)
   const user = 23
 
   const getProjektNodes = app.db.many(sqlProjListe, user)
@@ -68,7 +69,9 @@ module.exports = (request, callback) => {
         const nrOfChildren = nrOfChildrenRow.anzAp || 0
         node.nrOfUnloadedChildren = nrOfChildren
       })
-      projektNodes.unshift(rootNode)
+      if (levels === 'all') {
+        projektNodes.unshift(rootNode)
+      }
       callback(null, projektNodes)
     })
 }
