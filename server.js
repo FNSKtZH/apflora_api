@@ -16,7 +16,7 @@ const serverOptionsDevelopment = {
     request: ['error']
   }
 }
-const server = new Hapi.Server()
+const server = new Hapi.Server(serverOptionsDevelopment)
 
 server.connection(dbConnection)
 

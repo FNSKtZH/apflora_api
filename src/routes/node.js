@@ -11,7 +11,8 @@ const projekt = require('../../queries/node/projekt.js')
 module.exports = [
   {
     method: 'GET',
-    path: '/node/:table/:id/:folder/:levels',
+    // path: '/node/:table/:id/:folder/:levels',
+    path: '/node',
     config: {
       pre: [
         [
@@ -20,6 +21,7 @@ module.exports = [
 
       ],
       handler (request, reply) {
+        console.log('hello')
         reply([
           request.pre.projekt,
         ])
