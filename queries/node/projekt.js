@@ -1,4 +1,5 @@
 'use strict'
+/* eslint-disable no-console */
 
 const parallel = require('async/parallel')
 const rootNode = require('../../src/rootNode')
@@ -6,17 +7,23 @@ const rootNode = require('../../src/rootNode')
 // TODO: get real user
 
 module.exports = (request, callback) => {
-  const { table, id } = request.params
+  const table = encodeURIComponent(request.params.table)
+  const id = encodeURIComponent(request.params.id)
+  const folder = encodeURIComponent(request.params.folder)
+  const levels = encodeURIComponent(request.params.levels)
   const user = 23
 
-  console.log('hello from handler')
-  console.log('parallel:', parallel)
+  console.log('queries/node/projekt.js: hello')
+  console.log('table:', table)
+  console.log('id:', id)
+  console.log('folder:', folder)
+  console.log('levels:', levels)
 
   parallel({
-    projektListe (callback) {
+    projektListe(cb) {
       const sql = `
         SELECT
-          "ProjId" AS id,
+          "ProjId",
           "ProjName"
         FROM
           apflora.projekt
@@ -32,11 +39,8 @@ module.exports = (request, callback) => {
         ORDER BY
           "ProjName"
         `
-      console.log('sql:', sql)
       request.pg.client.query(sql, (error, result) => {
-        console.log('result.rows:', result.rows)
-        // prepare data
-        const nodes = result.rows.map((projekt) => ({
+        const nodes = result.rows.map(projekt => ({
           nodeId: `projekt/${projekt.ProjId}`,
           datasetId: projekt.ProjId,
           type: 'dataset',
@@ -44,38 +48,37 @@ module.exports = (request, callback) => {
           expanded: id && id === projekt.ProjId,
           nrOfUnloadedChildren: 'todo',
         }))
-        callback(error, nodes)
+        cb(error, nodes)
       })
     },
-    anzApListe (callback) {
+    anzApListe(cb) {
       const sql = `
         SELECT
           "ProjId",
-          COUNT("ApArtId") AS "anzAp"
+          COUNT("ApArtId")::int AS "anzAp"
         FROM
           apflora.ap
         GROUP BY
           "ProjId"
         `
+      request.pg.client.query(sql, (error, result) =>
+        cb(error, result.rows)
+      )
     },
   }, (err, results) => {
-    if (err) return reply(err)
+    if (err) return callback(err, null)
 
     const projektListe = results.projektListe || []
     const anzApListe = results.anzApListe
 
-    console.log('projektListe:', projektListe)
-    console.log('anzApListe:', anzApListe)
-
     projektListe.forEach((node) => {
-      const nrOfChildrenRow = anzApListe.find((el) => el.ProjId === node.nodeId)
+      const nrOfChildrenRow = anzApListe.find(el => el.ProjId === node.datasetId)
       const nrOfChildren = nrOfChildrenRow.anzAp || 0
       node.nrOfUnloadedChildren = nrOfChildren
     })
 
-    projektListe.push(rootNode)
+    projektListe.unshift(rootNode)
 
-    callback(error, projektListe)
-
+    callback(null, projektListe)
   })
 }
