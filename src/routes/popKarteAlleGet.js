@@ -1,11 +1,11 @@
 'use strict'
 
-const queryPopKarteAlle = require('../../queries/popKarteAlle.js')
+const queryPopKarteAlle = require(`../../queries/popKarteAlle.js`)
 
 module.exports = [
   {
-    method: 'GET',
-    path: '/popKarteAlle/apId={apId}',
+    method: `GET`,
+    path: `/popKarteAlle/apId={apId}`,
     handler: queryPopKarteAlle
   }
 ]
