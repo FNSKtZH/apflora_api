@@ -2,63 +2,63 @@
 
 module.exports = [
   {
-    method: 'GET',
-    path: '/{path*}',
+    method: `GET`,
+    path: `/{path*}`,
     handler(request, reply) {
-      reply.file('index.html')
+      reply.file(`index.html`)
     }
   },
   {
-    method: 'GET',
-    path: '/geojson/{param*}',
+    method: `GET`,
+    path: `/geojson/{param*}`,
     handler: {
       directory: {
-        path: 'geojson'
+        path: `geojson`
       }
     }
   },
   {
-    method: 'GET',
-    path: '/img/{param*}',
+    method: `GET`,
+    path: `/img/{param*}`,
     handler: {
       directory: {
-        path: 'img'
+        path: `img`
       }
     }
   },
   {
-    method: 'GET',
-    path: '/kml/{param*}',
+    method: `GET`,
+    path: `/kml/{param*}`,
     handler: {
       directory: {
-        path: 'kml'
+        path: `kml`
       }
     }
   },
   {
-    method: 'GET',
-    path: '/src/{param*}',
+    method: `GET`,
+    path: `/src/{param*}`,
     handler: {
       directory: {
-        path: 'src'
+        path: `src`
       }
     }
   },
   {
-    method: 'GET',
-    path: '/style/{param*}',
+    method: `GET`,
+    path: `/style/{param*}`,
     handler: {
       directory: {
-        path: 'style'
+        path: `style`
       }
     }
   },
   {
-    method: 'GET',
-    path: '/style/images/{param*}',
+    method: `GET`,
+    path: `/style/images/{param*}`,
     handler: {
       directory: {
-        path: 'style/images'
+        path: `style/images`
       }
     }
   }
