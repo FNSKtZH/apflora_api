@@ -34,7 +34,7 @@
     "run-sequence": "1.2.2"
   },
   "scripts": {
-    "start": "lab && node startServer.js",
+    "start": "eslint src && lab && node startServer.js",
     "startWithoutTests": "node startServer.js",
     "predeploy": "gulp prod_clean_dist",
     "deploy": "gulp prod_copy",

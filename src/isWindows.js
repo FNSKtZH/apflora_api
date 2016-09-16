@@ -4,6 +4,5 @@
 
 'use strict'
 
-module.exports = function () {
-  return /^win/.test(process.platform)
-}
+module.exports = () =>
+  /^win/.test(process.platform)
