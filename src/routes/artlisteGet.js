@@ -1,11 +1,11 @@
 'use strict'
 
-const queryArtliste = require('../../queries/artliste.js')
+const queryArtliste = require(`../../queries/artliste.js`)
 
 module.exports = [
   {
-    method: 'GET',
-    path: '/artliste',
+    method: `GET`,
+    path: `/artliste`,
     handler: queryArtliste
   }
 ]
