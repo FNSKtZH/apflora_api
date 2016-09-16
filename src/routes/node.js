@@ -1,6 +1,6 @@
 'use strict'
 
-const node = require('../../queries/node/node.js')
+const node = require(`../../queries/node/node.js`)
 
 /**
  * queries:
@@ -13,8 +13,8 @@ const node = require('../../queries/node/node.js')
 
 module.exports = [
   {
-    method: 'GET',
-    path: '/node',
+    method: `GET`,
+    path: `/node`,
     handler: node,
   }
 ]
