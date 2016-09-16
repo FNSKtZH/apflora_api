@@ -6,10 +6,10 @@
 
 'use strict'
 
-const removeKmlNogoStrings = require('./removeKmlNogoStrings')
-const getHeaderForKml = require('./getHeaderForKml')
-const getFooterForKml = require('./getFooterForKml')
-const getTimestamp = require('./getTimestamp')
+const removeKmlNogoStrings = require(`./removeKmlNogoStrings`)
+const getHeaderForKml = require(`./getHeaderForKml`)
+const getFooterForKml = require(`./getFooterForKml`)
+const getTimestamp = require(`./getTimestamp`)
 
 module.exports = (pops) => {
   const filename = `Populationen_${getTimestamp()}`
@@ -21,7 +21,7 @@ module.exports = (pops) => {
 
   // Zeilen schreiben
   pops.forEach((pop, index) => {
-    let zeile = ''
+    let zeile = ``
     // neue Art: Folder abschliessen und neuen beginnen
 
     if (index > 0 && pops[index - 1].Art !== pop.Art) {

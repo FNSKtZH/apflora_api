@@ -34,12 +34,12 @@
     "run-sequence": "1.2.2"
   },
   "scripts": {
-    "start": "eslint src --fix && lab && node startServer.js",
+    "start": "npm test && node startServer.js",
     "startWithoutTests": "node startServer.js",
     "predeploy": "gulp prod_clean_dist",
     "deploy": "gulp prod_copy",
     "postdeploy": "gulp prod_sftp",
-    "test": "lab",
+    "test": "eslint src --fix && lab",
     "yolo": "npm run deploy"
   },
   "repository": {
