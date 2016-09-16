@@ -9,8 +9,8 @@ const path = require('path')
 const basename = path.basename(__filename)
 
 const arrayOfRouteArrays = fs.readdirSync(__dirname)
-  .filter((file) => (file.indexOf('.') !== 0) && (file !== basename))
-  .map((file) => require(path.join(__dirname, file)))
+  .filter(file => (file.indexOf('.') !== 0) && (file !== basename))
+  .map(file => require(path.join(__dirname, file)))
 
 let routes = []
 arrayOfRouteArrays.forEach((routeArray) => {

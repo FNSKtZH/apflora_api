@@ -8,7 +8,7 @@ module.exports = [
   {
     method: 'GET',
     path: '/exportViewWhereIdIn/csv/view={view}/idName={idName}/idListe={idListe}/filename={filename}',
-    handler (request, reply) {
+    handler(request, reply) {
       const filename = escapeStringForSql(request.params.filename)
       exportViewWhereIdIn(request, (err, data) => {
         if (err) return reply(err)

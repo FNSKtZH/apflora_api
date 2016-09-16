@@ -37,7 +37,7 @@ module.exports = [
         ]
 
       ],
-      handler (request, reply) {
+      handler(request, reply) {
         reply([
           request.pre.qualitaetskontrollen,
           request.pre.pop,

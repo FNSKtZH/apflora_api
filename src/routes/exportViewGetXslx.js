@@ -7,7 +7,7 @@ module.exports = [
     method: 'GET',
     path: '/exportView/xslx/view={view}',
     // handler: exportView
-    handler (request, reply) {
+    handler(request, reply) {
       exportView(request, (err, data) => {
         if (err) return reply(err)
         reply(data)

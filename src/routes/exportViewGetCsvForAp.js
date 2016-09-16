@@ -8,7 +8,7 @@ module.exports = [
   {
     method: 'GET',
     path: '/exportView/csv/view={view}/filename={filename}/{apId}',
-    handler (request, reply) {
+    handler(request, reply) {
       const filename = escapeStringForSql(request.params.filename)
       exportView(request, (err, data) => {
         const fields = Object.keys(data[0])

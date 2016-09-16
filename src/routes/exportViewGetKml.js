@@ -8,7 +8,7 @@ module.exports = [
   {
     method: 'GET',
     path: '/exportView/kml/view={view}/filename={filename}',
-    handler (request, reply) {
+    handler(request, reply) {
       const filename = request.params.filename
       const view = request.params.view
       let kml

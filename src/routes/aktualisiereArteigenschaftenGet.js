@@ -6,7 +6,7 @@ module.exports = [
   {
     method: 'GET',
     path: '/aktualisiereArteigenschaften',
-    handler (request, reply) {
+    handler(request, reply) {
       aktualisiereArteigenschaften(request, reply)
     }
   }
