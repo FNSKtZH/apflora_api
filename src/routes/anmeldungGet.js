@@ -1,11 +1,11 @@
 'use strict'
 
-const queryAnmeldung = require('../../queries/anmeldung.js')
+const queryAnmeldung = require(`../../queries/anmeldung.js`)
 
 module.exports = [
   {
-    method: 'GET',
-    path: '/anmeldung/name={name}/pwd={pwd}',
+    method: `GET`,
+    path: `/anmeldung/name={name}/pwd={pwd}`,
     handler: queryAnmeldung
   }
 ]
