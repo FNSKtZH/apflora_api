@@ -1,11 +1,11 @@
 'use strict'
 
-const queryBeobKarte = require('../../queries/beobKarte.js')
+const queryBeobKarte = require(`../../queries/beobKarte.js`)
 
 module.exports = [
   {
-    method: 'GET',
-    path: '/beobKarte/apId={apId?}/tpopId={tpopId?}/beobId={beobId?}/nichtZuzuordnen={nichtZuzuordnen?}',
+    method: `GET`,
+    path: `/beobKarte/apId={apId?}/tpopId={tpopId?}/beobId={beobId?}/nichtZuzuordnen={nichtZuzuordnen?}`,
     handler: queryBeobKarte
   }
 ]
