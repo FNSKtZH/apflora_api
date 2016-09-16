@@ -3,7 +3,7 @@
 'use strict'
 
 module.exports = {
-  nodeId: 'root',
-  type: 'root',
-  name: 'root',
+  nodeId: `root`,
+  type: `root`,
+  name: `root`,
 }

@@ -6,9 +6,14 @@
 
 'use strict'
 
-module.exports = function (string) {
-  if (string && typeof string === 'string') {
-    return string.replace(/&/g, 'und').replace(/>>>/g, ' ').replace(/<<</g, ' ').replace(/"/g, '').replace(/'/g, '')
+module.exports = (string) => {
+  if (string && typeof string === `string`) {  // eslint-disable-line valid-typeof
+    return string
+      .replace(/&/g, `und`)
+      .replace(/>>>/g, ` `)
+      .replace(/<<</g, ` `)
+      .replace(/"/g, ``)
+      .replace(/'/g, ``)
   }
   return string
 }
