@@ -1,5 +1,7 @@
 'use strict'
 
+const app = require('ampersand-app')
+
 /*
  * need to test this with postgresql
  */

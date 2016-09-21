@@ -1,5 +1,7 @@
 'use strict'
 
+const app = require('ampersand-app')
+
 const escapeStringForSql = require('./escapeStringForSql')
 
 module.exports = (request, callback) => {

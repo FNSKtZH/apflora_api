@@ -1,5 +1,7 @@
 'use strict'
 
+const app = require('ampersand-app')
+
 module.exports = (request, callback) => {
   // Artname muss 'label' heissen, sonst funktioniert jquery ui autocomplete nicht
   const sql = `

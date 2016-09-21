@@ -1,5 +1,7 @@
 'use strict'
 
+const app = require('ampersand-app')
+
 /*
  * need to test this again - not tested since converted to postgresql
  */
@@ -18,10 +20,11 @@ module.exports = (req, reply) => {
     // console.log('get arteigenschaften response', response)
     if (response && response.statusCode === 200) {
       // empty table
-      req.pg.client.query(
-        'TRUNCATE TABLE beob.adb_eigenschaften',
-        (err) => {
-          if (err) console.log(err)
+      app.db.none('TRUNCATE TABLE beob.adb_eigenschaften')
+        .catch((err) =>
+          console.log(err)
+        )
+        .then(() => {
           const eigenschaftenString = createInsertSqlFromObjectArray(body)
           const sqlBase = `
             INSERT INTO
@@ -40,8 +43,7 @@ module.exports = (req, reply) => {
               req.pg.client.end()
             }
           )
-        }
-      )
+        })
     }
   })
 }
