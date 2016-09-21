@@ -1,11 +1,11 @@
 'use strict'
 
-const escapeStringForSql = require(`./escapeStringForSql`)
+const app = require(`ampersand-app`)
 
 module.exports = (request, callback) => {
-  const apId = escapeStringForSql(request.params.apId)
-  const X = escapeStringForSql(request.params.X)
-  const Y = escapeStringForSql(request.params.Y)
+  const apId = encodeURIComponent(request.params.apId)
+  const X = encodeURIComponent(request.params.X)
+  const Y = encodeURIComponent(request.params.Y)
   const sql = `
     SELECT
       apflora.pop."PopNr",
@@ -27,5 +27,8 @@ module.exports = (request, callback) => {
     ORDER BY
       "DistZuTPop"
     LIMIT 1`
-  request.pg.client.query(sql, (error, result) => callback(error, result.rows))
+
+  app.db.any(sql)
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))
 }
