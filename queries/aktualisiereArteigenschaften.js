@@ -9,7 +9,7 @@ const app = require(`ampersand-app`)
 const request = require(`request`)
 const createInsertSqlFromObjectArray = require(`./createInsertSqlFromObjectArray`)
 
-module.exports = (req, reply) => {
+module.exports = (req, callback) => {
   // neue Daten holen
   request({
     method: `GET`,
@@ -30,12 +30,8 @@ module.exports = (req, reply) => {
         const sql = sqlBase + eigenschaftenString
         return yield app.db.none(sql)
       })
-        .then(() =>
-          reply(`Arteigenschaften hinzugefügt`)
-        )
-        .catch((err) => {
-          throw err
-        })
+        .then(() => callback(null, `Arteigenschaften hinzugefügt`))
+        .catch(err => callback(err, null))
     }
   })
 }

@@ -12,10 +12,6 @@ const sql = `
     "AdrName"`
 
 module.exports = (request, callback) =>
-  app.db.many(sql)
-    .then(adressen =>
-      callback(null, adressen)
-    )
-    .catch(error =>
-      callback(error, null)
-    )
+  app.db.any(sql)
+    .then(adressen => callback(null, adressen))
+    .catch(error => callback(error, null))
