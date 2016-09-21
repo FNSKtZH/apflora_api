@@ -39,7 +39,8 @@
     "predeploy": "gulp prod_clean_dist",
     "deploy": "gulp prod_copy",
     "postdeploy": "gulp prod_sftp",
-    "test": "eslint src --fix && lab",
+    "test": "npm run lint && lab",
+    "lint": "eslint src queries test --fix ",
     "yolo": "npm run deploy"
   },
   "repository": {
