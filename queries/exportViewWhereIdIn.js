@@ -1,5 +1,6 @@
 'use strict'
 
+const app = require(`ampersand-app`)
 const escapeStringForSql = require(`./escapeStringForSql`)
 
 module.exports = (request, callback) => {
@@ -14,15 +15,15 @@ module.exports = (request, callback) => {
     WHERE
       "${idName}" IN (${idListe})`
 
-  request.pg.client.query(sql, (err, result) => {
-    if (err) callback(err, null)
-    const data = result.rows
-    // null-werte eliminieren
-    data.forEach((object) => {
-      Object.keys(object).forEach((key) => {
-        if (object[key] === null) object[key] = ``
+  app.db.any(sql)
+    .then((rows) => {
+      // null-werte eliminieren
+      rows.forEach((object) => {
+        Object.keys(object).forEach((key) => {
+          if (object[key] === null) object[key] = ``
+        })
       })
+      callback(null, rows)
     })
-    callback(err, data)
-  })
+    .catch(error => callback(error, null))
 }
