@@ -6,14 +6,14 @@ module.exports = (massnber) => {
   let node = {}
 
   if (massnber) {
-    const massnberText = massnber.PopMassnBerJahr || '(kein Jahr)'
-    const beurteilText = massnber.BeurteilTxt || '(nicht beurteilt)'
+    const massnberText = massnber.PopMassnBerJahr || `(kein Jahr)`
+    const beurteilText = massnber.BeurteilTxt || `(nicht beurteilt)`
     const nodeText = `${massnberText}: ${beurteilText}`
     // node aufbauen
     const data = nodeText
     const attr = {
       id: massnber.PopMassnBerId,
-      typ: 'popmassnber'
+      typ: `popmassnber`
     }
     node = { data, attr }
   }

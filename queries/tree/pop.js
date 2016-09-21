@@ -1,11 +1,11 @@
 'use strict'
 
-const _ = require('lodash')
-const async = require('async')
-const escapeStringForSql = require('../escapeStringForSql')
-const erstelleTpopOrdner = require('./tpopOrdner')
-const erstellePopMassnBerOrdner = require('./popMassnBerOrdner')
-const erstellePopBerOrdner = require('./popBerOrdner')
+const _ = require(`lodash`)
+const async = require(`async`)
+const escapeStringForSql = require(`../escapeStringForSql`)
+const erstelleTpopOrdner = require(`./tpopOrdner`)
+const erstellePopMassnBerOrdner = require(`./popMassnBerOrdner`)
+const erstellePopBerOrdner = require(`./popBerOrdner`)
 
 // erhält die höchste PopNr der Liste und die aktuelle
 // stellt der aktuellen PopNr soviele Nullen voran, dass
@@ -51,7 +51,7 @@ module.exports = (request, reply) => {
           "PopName"`,
         (err, result) => {
           const popListe = result.rows
-          const popIds = _.map(popListe, 'PopId')
+          const popIds = _.map(popListe, `PopId`)
           callback(err, popIds, popListe)
         }
       )
@@ -73,7 +73,7 @@ module.exports = (request, reply) => {
             "TPopFlurname"`,
           (err, result) => {
             const tpopListe = result.rows
-            const tpopIds = _.map(tpopListe, 'TPopId')
+            const tpopIds = _.map(tpopListe, `TPopId`)
             callback(err, [popIds, tpopIds, popListe, tpopListe])
           }
         )
@@ -84,13 +84,13 @@ module.exports = (request, reply) => {
   ], (err, result) => {
     const popIds = result[0]
     const tpopIds = result[1]
-    let popListe = result[2]
-    let tpopListe = result[3]
+    const popListe = result[2]
+    const tpopListe = result[3]
 
     if (tpopIds.length > 0) {
       // jetzt parallel alle übrigen Daten aus dem pop-baum
       async.parallel({
-        tpopMassnListe (callback) {
+        tpopMassnListe(callback) {
           request.pg.client.query(
             `SELECT
               "TPopMassnId",
@@ -112,7 +112,7 @@ module.exports = (request, reply) => {
             (err, data) => callback(err, data.rows)
           )
         },
-        tpopMassnBerListe (callback) {
+        tpopMassnBerListe(callback) {
           request.pg.client.query(
             `SELECT
               "TPopMassnBerId",
@@ -132,7 +132,7 @@ module.exports = (request, reply) => {
             (err, data) => callback(err, data.rows)
           )
         },
-        tpopFeldkontrListe (callback) {
+        tpopFeldkontrListe(callback) {
           request.pg.client.query(
             `SELECT
              "TPopKontrId",
@@ -153,7 +153,7 @@ module.exports = (request, reply) => {
             (err, data) => callback(err, data.rows)
           )
         },
-        tpopFreiwkontrListe (callback) {
+        tpopFreiwkontrListe(callback) {
           request.pg.client.query(
             `SELECT
               "TPopKontrId",
@@ -171,7 +171,7 @@ module.exports = (request, reply) => {
             (err, data) => callback(err, data.rows)
           )
         },
-        tpopBerListe (callback) {
+        tpopBerListe(callback) {
           request.pg.client.query(
             `SELECT
               "TPopBerId",
@@ -192,7 +192,7 @@ module.exports = (request, reply) => {
             (err, data) => callback(err, data.rows)
           )
         },
-        tpopBeobZugeordnetListe (callback) {
+        tpopBeobZugeordnetListe(callback) {
           request.pg.client.query(
             `SELECT
               apflora.beobzuordnung."NO_NOTE",
@@ -241,7 +241,7 @@ module.exports = (request, reply) => {
             (err, data) => callback(err, data.rows)
           )
         },
-        popBerListe (callback) {
+        popBerListe(callback) {
           request.pg.client.query(
             `SELECT
               "PopBerId",
@@ -262,7 +262,7 @@ module.exports = (request, reply) => {
             (err, data) => callback(err, data.rows)
           )
         },
-        popMassnBerListe (callback) {
+        popMassnBerListe(callback) {
           request.pg.client.query(
             `SELECT
               "PopMassnBerId",
@@ -290,22 +290,22 @@ module.exports = (request, reply) => {
         const popMassnBerListe = results.popMassnBerListe || []
 
         // node für apOrdnerPop aufbauen
-        let popOrdnerNodeChildren = []
+        const popOrdnerNodeChildren = []
         const popOrdnerNode = {
-          data: 'Populationen (' + popListe.length + ')',
+          data: `Populationen (` + popListe.length + `)`,
           attr: {
-            id: 'apOrdnerPop' + apId,
-            typ: 'apOrdnerPop'
+            id: `apOrdnerPop` + apId,
+            typ: `apOrdnerPop`
           },
           children: popOrdnerNodeChildren
         }
 
         // PopNr: Je nach Anzahl Stellen der maximalen PopNr bei denjenigen mit weniger Nullen
         // Nullen voranstellen, damit sie im tree auch als String richtig sortiert werden
-        const popNrMax = _.maxBy(popListe, (pop) => pop.PopNr).PopNr
+        const popNrMax = _.maxBy(popListe, pop => pop.PopNr).PopNr
 
         popListe.forEach((pop) => {
-          let popNodeChildren = []
+          const popNodeChildren = []
           let data
           let popSort
 
@@ -313,25 +313,25 @@ module.exports = (request, reply) => {
 
           // nodes für pop aufbauen
           if (pop.PopName && pop.PopNr) {
-            data = pop.PopNr + ': ' + pop.PopName
+            data = pop.PopNr + `: ` + pop.PopName
             popSort = pop.PopNr
           } else if (pop.PopNr) {
-            data = pop.PopNr + ': (kein Name)'
+            data = pop.PopNr + `: (kein Name)`
             popSort = pop.PopNr
           } else if (pop.PopName) {
-            data = '(keine Nr): ' + pop.PopName
+            data = `(keine Nr): ` + pop.PopName
             // pop ohne Nummern zuunterst sortieren
             popSort = 1000
           } else {
-            data = '(keine Nr, kein Name)'
+            data = `(keine Nr, kein Name)`
             popSort = 1000
           }
 
           const popNode = {
-            data: data,
+            data,
             attr: {
               id: pop.PopId,
-              typ: 'pop',
+              typ: `pop`,
               sort: popSort
             },
             // popNode.children ist ein Array, der enthält: popOrdnerTpop, popOrdnerPopber, popOrdnerMassnber
@@ -357,10 +357,10 @@ module.exports = (request, reply) => {
     } else {
       // node für apOrdnerPop aufbauen
       const popOrdnerNode = {
-        data: 'Populationen (0)',
+        data: `Populationen (0)`,
         attr: {
-          id: 'apOrdnerPop' + apId,
-          typ: 'apOrdnerPop'
+          id: `apOrdnerPop` + apId,
+          typ: `apOrdnerPop`
         },
         children: []
       }

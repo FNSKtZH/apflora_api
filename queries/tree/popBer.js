@@ -5,8 +5,8 @@
 module.exports = (popber) => {
   let node = {}
   if (popber) {
-    const popberjahrText = popber.PopBerJahr || '(kein Jahr)'
-    const entwicklungText = popber.EntwicklungTxt || '(nicht beurteilt)'
+    const popberjahrText = popber.PopBerJahr || `(kein Jahr)`
+    const entwicklungText = popber.EntwicklungTxt || `(nicht beurteilt)`
     const nodeText = `${popberjahrText}: ${entwicklungText}`
 
     // node aufbauen
@@ -14,7 +14,7 @@ module.exports = (popber) => {
       data: nodeText,
       attr: {
         id: popber.PopBerId,
-        typ: 'popber'
+        typ: `popber`
       }
     }
   }
