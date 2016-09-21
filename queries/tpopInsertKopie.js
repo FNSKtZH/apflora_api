@@ -1,8 +1,8 @@
 'use strict'
 
-const async = require('async')
-const escapeStringForSql = require('./escapeStringForSql')
-const newGuid = require('../src/newGuid.js')
+const async = require(`async`)
+const escapeStringForSql = require(`./escapeStringForSql`)
+const newGuid = require(`../src/newGuid.js`)
 
 module.exports = (request, callback) => {
   const tpopId = escapeStringForSql(request.params.tpopId)
@@ -16,9 +16,9 @@ module.exports = (request, callback) => {
       (callback) => {
         // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
         request.pg.client.query(
-          'DROP TABLE IF EXISTS tmp',
+          `DROP TABLE IF EXISTS tmp`,
           // nur allfällige Fehler weiterleiten
-          (err) => callback(err, null)
+          err => callback(err, null)
         )
       },
       (callback) => {
@@ -33,7 +33,7 @@ module.exports = (request, callback) => {
           WHERE
             "TPopId" = ${tpopId}`,
           // nur allfällige Fehler weiterleiten
-          (err) => callback(err, null)
+          err => callback(err, null)
         )
       },
       (callback) => {
@@ -58,7 +58,7 @@ module.exports = (request, callback) => {
             "MutWann" = '${date}',
             "MutWer" = '${user}'`,
           // nur allfällige Fehler weiterleiten
-          (err) => callback(err, null)
+          err => callback(err, null)
         )
       },
       (callback) => {
