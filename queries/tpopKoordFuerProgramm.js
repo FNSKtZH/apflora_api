@@ -1,11 +1,12 @@
 'use strict'
 
+const app = require(`ampersand-app`)
 const escapeStringForSql = require(`./escapeStringForSql`)
 
 module.exports = (request, callback) => {
   const apId = escapeStringForSql(request.params.apId)
-  // Daten abfragen
-  request.pg.client.query(`
+
+  const sql = `
     SELECT DISTINCT
       apflora.pop."ApArtId",
       apflora.pop."PopId",
@@ -23,7 +24,9 @@ module.exports = (request, callback) => {
     WHERE
       apflora.tpop."TPopXKoord" Is Not Null
       AND apflora.tpop."TPopYKoord" Is Not Null
-      AND apflora.pop."ApArtId" = ${apId}`,
-    (err, data) => callback(err, data.rows)
-  )
+      AND apflora.pop."ApArtId" = ${apId}`
+
+  app.db.any(sql)
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))
 }
