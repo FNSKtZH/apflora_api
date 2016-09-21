@@ -1,15 +1,15 @@
 'use strict'
 
-const _ = require('lodash')
-const escapeStringForSql = require('../escapeStringForSql')
+const _ = require(`lodash`)
+const escapeStringForSql = require(`../escapeStringForSql`)
 
-function buildChildrenFromData (data) {
+function buildChildrenFromData(data) {
   return _.map(data, (assArt) => {
     return {
-      data: assArt.Artname || '(keine Art gewählt)',
+      data: assArt.Artname || `(keine Art gewählt)`,
       attr: {
         id: assArt.AaId,
-        typ: 'assozarten'
+        typ: `assozarten`
       }
     }
   })
@@ -34,10 +34,10 @@ module.exports = (request, reply) => {
     (err, data) => {
       if (err) return reply(err)
       const response = {
-        data: 'assoziierte Arten (' + data.rows.length + ')',
+        data: `assoziierte Arten (` + data.rows.length + `)`,
         attr: {
-          id: 'apOrdnerAssozarten' + apId,
-          typ: 'apOrdnerAssozarten'
+          id: `apOrdnerAssozarten` + apId,
+          typ: `apOrdnerAssozarten`
         },
         children: buildChildrenFromData(data.rows)
       }
