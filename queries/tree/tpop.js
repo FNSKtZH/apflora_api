@@ -1,38 +1,38 @@
 'use strict'
 
-const erstelleTpopMassnOrdner = require('./tpopMassnOrdner')
-const erstelleTpopMassnBerOrdner = require('./tpopMassnBerOrdner')
-const erstelleTpopFeldkontrOrdner = require('./tpopFeldkontrOrdner')
-const erstelleTpopFreiwkontrOrdner = require('./tpopFreiwkontrOrdner')
-const erstelleTpopBerOrdner = require('./tpopBerOrdner')
-const erstelleTpopBeobOrdner = require('./tpopBeobOrdner')
+const erstelleTpopMassnOrdner = require(`./tpopMassnOrdner`)
+const erstelleTpopMassnBerOrdner = require(`./tpopMassnBerOrdner`)
+const erstelleTpopFeldkontrOrdner = require(`./tpopFeldkontrOrdner`)
+const erstelleTpopFreiwkontrOrdner = require(`./tpopFreiwkontrOrdner`)
+const erstelleTpopBerOrdner = require(`./tpopBerOrdner`)
+const erstelleTpopBeobOrdner = require(`./tpopBeobOrdner`)
 
 module.exports = (results, tpop) => {
   let tpopNodeText
   let tpopSort
-  let tpopNodeChildren = []
+  const tpopNodeChildren = []
 
   // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden
   if (tpop.TPopNr && tpop.TPopFlurname) {
-    tpopNodeText = tpop.TPopNr + ': ' + tpop.TPopFlurname
+    tpopNodeText = tpop.TPopNr + `: ` + tpop.TPopFlurname
     tpopSort = tpop.TPopNr
   } else if (tpop.PopBerJahr) {
-    tpopNodeText = tpop.TPopNr + ': (kein Flurname)'
+    tpopNodeText = tpop.TPopNr + `: (kein Flurname)`
     tpopSort = tpop.TPopNr
   } else if (tpop.TPopFlurname) {
-    tpopNodeText = '(keine Nr): ' + tpop.TPopFlurname
+    tpopNodeText = `(keine Nr): ` + tpop.TPopFlurname
     tpopSort = 1000
   } else {
-    tpopNodeText = '(keine Nr): (kein Flurname)'
+    tpopNodeText = `(keine Nr): (kein Flurname)`
     tpopSort = 1000
   }
 
   // node aufbauen
-  let tpopNode = {
+  const tpopNode = {
     data: tpopNodeText,
     attr: {
       id: tpop.TPopId,
-      typ: 'tpop',
+      typ: `tpop`,
       sort: tpopSort
     },
     children: tpopNodeChildren

@@ -13,7 +13,7 @@ module.exports = (tpopber) => {
     } else if (tpopber.EntwicklungTxt) {
       nodeText = `(kein Jahr): ${tpopber.EntwicklungTxt}`
     } else {
-      nodeText = '(kein Jahr): (keine Beurteilung)'
+      nodeText = `(kein Jahr): (keine Beurteilung)`
     }
 
     // node aufbauen
@@ -21,7 +21,7 @@ module.exports = (tpopber) => {
       data: nodeText,
       attr: {
         id: tpopber.TPopBerId,
-        typ: 'tpopber'
+        typ: `tpopber`
       }
     }
   }
