@@ -2,12 +2,10 @@
 
 const app = require(`ampersand-app`)
 
-const escapeStringForSql = require(`./escapeStringForSql`)
-
 module.exports = (request, callback) => {
   // Artname muss 'label' heissen, sonst funktioniert jquery ui autocomplete nicht
   let sql
-  const programm = escapeStringForSql(request.params.programm)
+  const programm = encodeURIComponent(request.params.programm)
   // url setzen
   switch (programm) {
     case `programmAp`:

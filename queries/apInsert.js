@@ -7,7 +7,7 @@ module.exports = (request, callback) => {
   const user = encodeURIComponent(request.params.user)
   const date = new Date().toISOString()
 
-  app.db.task(function* (t) {
+  app.db.task(function* manageData() {
     // neuen AP einfügen
     yield app.db.none(`
       INSERT INTO
@@ -41,7 +41,7 @@ module.exports = (request, callback) => {
     // keine Fehler melden, wenn bloss der Artwert nicht geholt wurde
     return
   })
-    .then(row =>
+    .then(() =>
       callback(null, apId)
     )
     .catch(error =>
