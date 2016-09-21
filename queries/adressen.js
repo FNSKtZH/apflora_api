@@ -1,6 +1,6 @@
 'use strict'
 
-const app = require('ampersand-app')
+const app = require(`ampersand-app`)
 
 const sql = `
   SELECT
@@ -13,9 +13,9 @@ const sql = `
 
 module.exports = (request, callback) =>
   app.db.many(sql)
-    .then((adressen) =>
+    .then(adressen =>
       callback(null, adressen)
     )
-    .catch((error) =>
+    .catch(error =>
       callback(error, null)
     )

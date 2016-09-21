@@ -1,8 +1,8 @@
 'use strict'
 
 // load modules
-const Code = require('code')
-const Lab = require('lab')
+const Code = require(`code`)
+const Lab = require(`lab`)
 
 // shortcuts
 const lab = exports.lab = Lab.script()
@@ -11,13 +11,13 @@ const it = lab.it
 const expect = Code.expect
 
 // get server
-const server = require('../server.js')
+const server = require(`../server.js`)
 
 // test
-describe('/tree', () => {
-  it('should get more than 1 row for popId = 5495', (done) => {
-    const method = 'GET'
-    const url = '/tree/apId=900'
+describe(`/tree`, () => {
+  it(`should get more than 1 row for popId = 5495`, (done) => {
+    const method = `GET`
+    const url = `/tree/apId=900`
     server.inject({ method, url }, (res) => {
       expect(res.statusCode).to.equal(200)
       done()

@@ -1,6 +1,6 @@
 'use strict'
 
-const escapeStringForSql = require('./escapeStringForSql')
+const escapeStringForSql = require(`./escapeStringForSql`)
 
 module.exports = (request, callback) => {
   const beobId = escapeStringForSql(request.params.beobId)

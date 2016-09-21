@@ -2,8 +2,8 @@
 
 // Load modules
 
-const Code = require('code')
-const Lab = require('lab')
+const Code = require(`code`)
+const Lab = require(`lab`)
 
 // test shortcuts
 
@@ -14,14 +14,14 @@ const expect = Code.expect
 
 // start server
 
-const server = require('../server.js')
+const server = require(`../server.js`)
 
 // test
 
-describe('/lrDelarze', () => {
-  it('should get more than 250 rows', (done) => {
-    const method = 'GET'
-    const url = '/lrDelarze'
+describe(`/lrDelarze`, () => {
+  it(`should get more than 250 rows`, (done) => {
+    const method = `GET`
+    const url = `/lrDelarze`
     server.inject({ method, url }, (res) => {
       expect(res.statusCode).to.equal(200)
       expect(res.result.length).to.be.above(250)

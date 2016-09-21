@@ -1,6 +1,6 @@
 'use strict'
 
-const escapeStringForSql = require('./escapeStringForSql')
+const escapeStringForSql = require(`./escapeStringForSql`)
 
 module.exports = (request, callback) => {
   const view = escapeStringForSql(request.params.view) // Name des Views, aus dem die Daten geholt werden sollen
@@ -13,7 +13,7 @@ module.exports = (request, callback) => {
     const data = result.rows
     data.forEach((object) => {
       Object.keys(object).forEach((key) => {
-        if (object[key] === null) object[key] = ''
+        if (object[key] === null) object[key] = ``
       })
     })
     callback(error, data)

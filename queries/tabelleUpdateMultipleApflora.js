@@ -5,9 +5,9 @@
 
 'use strict'
 
-const _ = require('lodash')
-const config = require('../configuration')
-const escapeStringForSql = require('./escapeStringForSql')
+const _ = require(`lodash`)
+const config = require(`../configuration`)
+const escapeStringForSql = require(`./escapeStringForSql`)
 
 module.exports = (request, callback) => {
   const tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, in der die Daten gespeichert werden sollen
@@ -15,8 +15,8 @@ module.exports = (request, callback) => {
   const date = new Date().toISOString() // wann gespeichert wird
   let sql
   const configTable = _.find(config.tables, { tabelleInDb: tabelle }) // die table in der Konfiguration, welche die Informationen dieser Tabelle enthält
-  const nameMutwannFeld = configTable.mutWannFeld || 'MutWann' // so heisst das MutWann-Feld in dieser Tabelle
-  const nameMutWerFeld = configTable.mutWerFeld || 'MutWer' // so heisst das MutWer-Feld in dieser Tabelle
+  const nameMutwannFeld = configTable.mutWannFeld || `MutWann` // so heisst das MutWann-Feld in dieser Tabelle
+  const nameMutWerFeld = configTable.mutWerFeld || `MutWer` // so heisst das MutWer-Feld in dieser Tabelle
   const tabelleIdFeld = configTable.tabelleIdFeld // so heisst das Schlüsselfeld dieser Tabelle
 
   felder = JSON.parse(felder)
@@ -40,8 +40,8 @@ module.exports = (request, callback) => {
   _.forEach(felder, (feldwert, feldname) => {
     if (feldwert || feldwert === 0) {
       // in Zeichenfeldern Anführungszeichen eliminieren!
-      if (typeof feldwert === 'string') {
-        feldwert = feldwert.replace('"', '')
+      if (typeof feldwert === `string`) {
+        feldwert = feldwert.replace(`"`, ``)
       }
       sql += `, "${feldname}" = '${feldwert}'`
     } else {

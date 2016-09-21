@@ -1,13 +1,13 @@
 'use strict'
 
-const app = require('ampersand-app')
+const app = require(`ampersand-app`)
 
 module.exports = (request, callback) => {
   const apId = encodeURIComponent(request.params.apId)
   const user = encodeURIComponent(request.params.user)
   const date = new Date().toISOString()
 
-  app.db.task(function*(t) {
+  app.db.task(function* (t) {
     // neuen AP einfügen
     yield app.db.none(`
       INSERT INTO
@@ -41,10 +41,10 @@ module.exports = (request, callback) => {
     // keine Fehler melden, wenn bloss der Artwert nicht geholt wurde
     return
   })
-    .then((row) =>
+    .then(row =>
       callback(null, apId)
     )
-    .catch((error) =>
+    .catch(error =>
       callback(error, null)
     )
 }

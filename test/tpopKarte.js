@@ -1,8 +1,8 @@
 'use strict'
 
 // load modules
-const Code = require('code')
-const Lab = require('lab')
+const Code = require(`code`)
+const Lab = require(`lab`)
 
 // shortcuts
 const lab = exports.lab = Lab.script()
@@ -11,13 +11,13 @@ const it = lab.it
 const expect = Code.expect
 
 // get server
-const server = require('../server.js')
+const server = require(`../server.js`)
 
 // test
-describe('/tpopKarte', () => {
-  it('should get 0 or one rows for TPopId = 13542', (done) => {
-    const method = 'GET'
-    const url = '/tpopKarte/tpopId=13542'
+describe(`/tpopKarte`, () => {
+  it(`should get 0 or one rows for TPopId = 13542`, (done) => {
+    const method = `GET`
+    const url = `/tpopKarte/tpopId=13542`
     server.inject({ method, url }, (res) => {
       expect(res.statusCode).to.equal(200)
       expect(res.result.length).to.be.at.least(0)

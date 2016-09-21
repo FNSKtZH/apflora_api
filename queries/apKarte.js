@@ -1,11 +1,9 @@
 'use strict'
 
-const app = require('ampersand-app')
-
-const escapeStringForSql = require('./escapeStringForSql')
+const app = require(`ampersand-app`)
 
 module.exports = (request, callback) => {
-  const apId = escapeStringForSql(request.params.apId)
+  const apId = encodeURIComponent(request.params.apId)
   const sql = `
     SELECT
       apflora.ap."ApArtId",

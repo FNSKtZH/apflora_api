@@ -1,6 +1,6 @@
 'use strict'
 
-const app = require('ampersand-app')
+const app = require(`ampersand-app`)
 
 module.exports = (request, callback) => {
   const apId = encodeURIComponent(request.params.apId)
@@ -24,10 +24,10 @@ module.exports = (request, callback) => {
       apflora.ap."ApArtId" = $1`
 
   app.db.many(sql, apId)
-    .then((rows) =>
+    .then(rows =>
       callback(null, rows)
     )
-    .catch((error) =>
+    .catch(error =>
       callback(error, null)
     )
 }

@@ -2,8 +2,8 @@
 
 // Load modules
 
-const Code = require('code')
-const Lab = require('lab')
+const Code = require(`code`)
+const Lab = require(`lab`)
 
 // test shortcuts
 
@@ -14,14 +14,14 @@ const expect = Code.expect
 
 // start server
 
-const server = require('../server.js')
+const server = require(`../server.js`)
 
 // test
 
-describe('/beobZuordnen', () => {
-  it('should return more than 300 rows for ApId 206200', (done) => {
-    const method = 'GET'
-    const url = '/beobZuordnen/apId=206200'
+describe(`/beobZuordnen`, () => {
+  it(`should return more than 300 rows for ApId 206200`, (done) => {
+    const method = `GET`
+    const url = `/beobZuordnen/apId=206200`
     server.inject({ method, url }, (res) => {
       expect(res.result.length).to.be.above(300)
       done()

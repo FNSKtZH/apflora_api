@@ -1,8 +1,8 @@
 'use strict'
 
-const app = require('ampersand-app')
+const app = require(`ampersand-app`)
 
-const escapeStringForSql = require('./escapeStringForSql')
+const escapeStringForSql = require(`./escapeStringForSql`)
 
 module.exports = (request, callback) => {
   // Artname muss 'label' heissen, sonst funktioniert jquery ui autocomplete nicht
@@ -10,7 +10,7 @@ module.exports = (request, callback) => {
   const programm = escapeStringForSql(request.params.programm)
   // url setzen
   switch (programm) {
-    case 'programmAp':
+    case `programmAp`:
       sql = `
         SELECT
           beob.adb_eigenschaften."Artname" AS label,
@@ -25,7 +25,7 @@ module.exports = (request, callback) => {
         ORDER BY
           label`
       break
-    case 'programmNeu':
+    case `programmNeu`:
       sql = `
         SELECT
           CASE

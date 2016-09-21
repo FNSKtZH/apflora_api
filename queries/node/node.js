@@ -1,6 +1,6 @@
 'use strict'
 
-const projekt = require('./projekt.js')
+const projekt = require(`./projekt.js`)
 
 // TODO: get real user
 

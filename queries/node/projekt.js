@@ -1,7 +1,7 @@
 'use strict'
 
-const app = require('ampersand-app')
-const rootNode = require('../../src/rootNode')
+const app = require(`ampersand-app`)
+const rootNode = require(`../../src/rootNode`)
 
 const sqlProjListe = `
   SELECT
@@ -47,11 +47,11 @@ module.exports = (request, callback) => {
       const nodes = projects.map(projekt => ({
         nodeId: `projekt/${projekt.ProjId}`,
         datasetId: projekt.ProjId,
-        type: 'dataset',
+        type: `dataset`,
         name: projekt.ProjName,
         expanded: id && id === projekt.ProjId ? true : false,  // eslint-disable-line no-unneeded-ternary
-        nrOfUnloadedChildren: 'todo',
-        parentId: 'root',
+        nrOfUnloadedChildren: `todo`,
+        parentId: `root`,
       }))
       return nodes
     })
@@ -73,7 +73,7 @@ module.exports = (request, callback) => {
         const nrOfChildren = nrOfChildrenRow.anzAp || 0
         node.nrOfUnloadedChildren = nrOfChildren
       })
-      if (levels === 'all') {
+      if (levels === `all`) {
         projektNodes.unshift(rootNode)
       }
       callback(null, projektNodes)

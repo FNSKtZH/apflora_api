@@ -1,6 +1,6 @@
 'use strict'
 
-const escapeStringForSql = require('./escapeStringForSql')
+const escapeStringForSql = require(`./escapeStringForSql`)
 
 module.exports = (request, callback) => {
   const tpopId = escapeStringForSql(request.params.tpopId) // die id
@@ -17,7 +17,7 @@ module.exports = (request, callback) => {
       tpopkontr."TPopKontrId"`
 
   // sql schreiben
-  if (tpopKontrtyp === 'tpopfreiwkontr') {
+  if (tpopKontrtyp === `tpopfreiwkontr`) {
     sql = `
       INSERT INTO
         apflora.tpopkontr

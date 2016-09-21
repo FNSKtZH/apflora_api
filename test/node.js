@@ -2,8 +2,8 @@
 
 // Load modules
 
-const Code = require('code')
-const Lab = require('lab')
+const Code = require(`code`)
+const Lab = require(`lab`)
 
 // test shortcuts
 
@@ -13,22 +13,22 @@ const it = lab.it
 const expect = Code.expect
 
 // start server
-const server = require('../server.js')
+const server = require(`../server.js`)
 
 // test
-const method = 'GET'
+const method = `GET`
 
-describe('/node', () => {
-  it('should return more than 0 rows for "?table=projekt"', (done) => {
-    const url = '/node?table=projekt'
+describe(`/node`, () => {
+  it(`should return more than 0 rows for "?table=projekt"`, (done) => {
+    const url = `/node?table=projekt`
     server.inject({ method, url }, (res) => {
       expect(res.result.length).to.be.above(0)
       expect(res.result[0].expanded).to.equal(false)
       done()
     })
   })
-  it('When "?table=projekt&id=1", id 1 should be expanded', (done) => {
-    const url = '/node?table=projekt&id=1'
+  it(`When "?table=projekt&id=1", id 1 should be expanded`, (done) => {
+    const url = `/node?table=projekt&id=1`
     server.inject({ method, url }, (res) => {
       expect(res.result.length).to.be.above(0)
       const resultForId1 = res.result.find(r => r.datasetId === 1)
@@ -36,11 +36,11 @@ describe('/node', () => {
       done()
     })
   })
-  it('should return root node for "?table=projekt&levels=all"', (done) => {
-    const url = '/node?table=projekt&levels=all'
+  it(`should return root node for "?table=projekt&levels=all"`, (done) => {
+    const url = `/node?table=projekt&levels=all`
     server.inject({ method, url }, (res) => {
       expect(res.result.length).to.be.above(1)
-      const resultForRoot = res.result.find(r => r.nodeId === 'root')
+      const resultForRoot = res.result.find(r => r.nodeId === `root`)
       expect(resultForRoot).to.exist()
       done()
     })

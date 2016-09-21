@@ -1,6 +1,6 @@
 'use strict'
 
-const app = require('ampersand-app')
+const app = require(`ampersand-app`)
 
 module.exports = (request, callback) => {
   const userName = encodeURIComponent(request.params.name)
@@ -15,10 +15,10 @@ module.exports = (request, callback) => {
       AND "Passwort" = $2`
 
   app.db.any(sql, [userName, password])
-    .then((rows) =>
+    .then(rows =>
       callback(null, rows)
     )
-    .catch((error) =>
+    .catch(error =>
       callback(error, null)
     )
 }
