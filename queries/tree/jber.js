@@ -1,18 +1,18 @@
 'use strict'
 
-const async = require('async')
-const escapeStringForSql = require('../escapeStringForSql')
+const async = require(`async`)
+const escapeStringForSql = require(`../escapeStringForSql`)
 
 const buildChildForJBer = (JBerJahr, jberUebersichtListe) => {
   // zuerst den Datensatz extrahieren
-  const jberUebersicht = jberUebersichtListe.find((jberUebersicht) => jberUebersicht.JbuJahr === JBerJahr)
+  const jberUebersicht = jberUebersichtListe.find(jberUebersicht => jberUebersicht.JbuJahr === JBerJahr)
 
   if (jberUebersicht) {
     const object = {
-      data: 'Übersicht zu allen Arten',
+      data: `Übersicht zu allen Arten`,
       attr: {
         id: jberUebersicht.JbuJahr,
-        typ: 'jberUebersicht'
+        typ: `jberUebersicht`
       }
     }
     return [object]
@@ -22,12 +22,12 @@ const buildChildForJBer = (JBerJahr, jberUebersichtListe) => {
 
 const buildChildrenForJBerOrdner = (results) => {
   return results.jberListe.map((jber) => {
-    const beschriftung = jber.JBerJahr ? jber.JBerJahr.toString() : '(kein Jahr)'
-    let object = {
+    const beschriftung = jber.JBerJahr ? jber.JBerJahr.toString() : `(kein Jahr)`
+    const object = {
       data: beschriftung,
       attr: {
         id: jber.JBerId,
-        typ: 'jber'
+        typ: `jber`
       }
     }
     if (jber.JBerJahr) object.children = buildChildForJBer(jber.JBerJahr, results.jberUebersichtListe)
@@ -40,7 +40,7 @@ module.exports = (request, reply) => {
 
   // query ber AND jberUebersicht first
   async.parallel({
-    jberListe (callback) {
+    jberListe(callback) {
       request.pg.client.query(
         `SELECT
           "JBerId",
@@ -55,9 +55,9 @@ module.exports = (request, reply) => {
         (err, jber) => callback(err, jber.rows)
       )
     },
-    jberUebersichtListe (callback) {
+    jberUebersichtListe(callback) {
       request.pg.client.query(
-        'SELECT "JbuJahr" FROM apflora.apberuebersicht',
+        `SELECT "JbuJahr" FROM apflora.apberuebersicht`,
         (err, jberUebersicht) => callback(err, jberUebersicht.rows)
       )
     }
@@ -68,7 +68,7 @@ module.exports = (request, reply) => {
       data: `AP-Berichte (${jberListe.length})`,
       attr: {
         id: `apOrdnerJber${apId}`,
-        typ: 'apOrdnerJber'
+        typ: `apOrdnerJber`
       },
       children: buildChildrenForJBerOrdner(results)
     }

@@ -1,15 +1,15 @@
 'use strict'
 
-const escapeStringForSql = require('../escapeStringForSql')
+const escapeStringForSql = require(`../escapeStringForSql`)
 
 module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
 
   const node = {
-    data: 'Idealbiotop',
+    data: `Idealbiotop`,
     attr: {
       id: `idealbiotop${apId}`,
-      typ: 'idealbiotop'
+      typ: `idealbiotop`
     }
   }
 

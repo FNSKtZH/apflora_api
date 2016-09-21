@@ -1,18 +1,18 @@
 'use strict'
 
-const escapeStringForSql = require('../escapeStringForSql')
+const escapeStringForSql = require(`../escapeStringForSql`)
 
 const buildChildrenFromData = (data) => {
   return data.map((erfkrit) => {
-    const beurteilText = erfkrit.BeurteilTxt || '(keine Beurteilung)'
-    const erfkritText = erfkrit.ErfkritTxt || '(kein Kriterium)'
+    const beurteilText = erfkrit.BeurteilTxt || `(keine Beurteilung)`
+    const erfkritText = erfkrit.ErfkritTxt || `(kein Kriterium)`
     const beschriftung = `${beurteilText}: ${erfkritText}`
 
     return {
       data: beschriftung,
       attr: {
         id: erfkrit.ErfkritId,
-        typ: 'erfkrit'
+        typ: `erfkrit`
       }
     }
   })
@@ -44,7 +44,7 @@ module.exports = (request, reply) => {
         data: `AP-Erfolgskriterien (${data.length})`,
         attr: {
           id: `apOrdnerErfkrit${apId}`,
-          typ: 'apOrdnerErfkrit'
+          typ: `apOrdnerErfkrit`
         },
         children: buildChildrenFromData(data)
       }

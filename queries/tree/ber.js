@@ -1,18 +1,18 @@
 'use strict'
 
-const escapeStringForSql = require('../escapeStringForSql')
+const escapeStringForSql = require(`../escapeStringForSql`)
 
 const buildChildrenFromData = (data) => {
   return data.map((ber) => {
-    const berjahrText = ber.BerJahr || '(kein Jahr)'
-    const bertitelText = ber.BerTitel || '(kein Titel)'
+    const berjahrText = ber.BerJahr || `(kein Jahr)`
+    const bertitelText = ber.BerTitel || `(kein Titel)`
     const beschriftung = `${berjahrText}: ${bertitelText}`
 
     return {
       data: beschriftung,
       attr: {
         id: ber.BerId,
-        typ: 'ber'
+        typ: `ber`
       }
     }
   })
@@ -42,7 +42,7 @@ module.exports = (request, reply) => {
         data: `Berichte (${data.length})`,
         attr: {
           id: `apOrdnerBer${apId}`,
-          typ: 'apOrdnerBer'
+          typ: `apOrdnerBer`
         },
         children: buildChildrenFromData(data)
       }

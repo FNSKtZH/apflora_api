@@ -1,18 +1,18 @@
 'use strict'
 
-const escapeStringForSql = require('../escapeStringForSql')
+const escapeStringForSql = require(`../escapeStringForSql`)
 
-function buildChildrenFromData (data) {
+function buildChildrenFromData(data) {
   return data.map((beob) => {
-    const datum = beob.Datum || '(kein Datum)'
-    const autor = beob.Autor || '(kein Autor)'
+    const datum = beob.Datum || `(kein Datum)`
+    const autor = beob.Autor || `(kein Autor)`
 
     return {
       data: `${datum}: ${autor}`,
       attr: {
         // beob voransetzen, damit die ID im ganzen Baum eindeutig ist
         id: `beob${beob.NO_NOTE}`,
-        typ: 'beobNichtZuzuordnen',
+        typ: `beobNichtZuzuordnen`,
         beobtyp: beob.beobtyp
       }
     }
@@ -69,10 +69,10 @@ module.exports = (request, reply) => {
     if (err) return reply(err)
     const data = result.rows
     const node = {
-      data: `nicht zuzuordnende Beobachtungen (${data.length < 100 ? '' : 'neuste '}${data.length})`,
+      data: `nicht zuzuordnende Beobachtungen (${data.length < 100 ? `` : `neuste `}${data.length})`,
       attr: {
-        id: 'apOrdnerBeobNichtZuzuordnen' + apId,
-        typ: 'apOrdnerBeobNichtZuzuordnen'
+        id: `apOrdnerBeobNichtZuzuordnen` + apId,
+        typ: `apOrdnerBeobNichtZuzuordnen`
       },
       children: buildChildrenFromData(data)
     }
