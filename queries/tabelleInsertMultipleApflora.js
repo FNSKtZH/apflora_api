@@ -5,6 +5,7 @@
 
 'use strict'
 
+const app = require(`ampersand-app`)
 const _ = require(`lodash`)
 const config = require(`../configuration`)
 const escapeStringForSql = require(`./escapeStringForSql`)
@@ -31,8 +32,7 @@ module.exports = (request, callback) => {
     RETURNING
       "${tabelleIdFeld}"`
 
-  request.pg.client.query(
-    sql,
-    (err, data) => callback(err, data.rows[0][tabelleIdFeld])
-  )
+  app.db.one(sql)
+    .then(row => callback(null, row[tabelleIdFeld]))
+    .catch(error => callback(error, null))
 }

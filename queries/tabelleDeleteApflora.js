@@ -1,5 +1,6 @@
 'use strict'
 
+const app = require(`ampersand-app`)
 const escapeStringForSql = require(`./escapeStringForSql`)
 
 module.exports = (request, callback) => {
@@ -12,8 +13,7 @@ module.exports = (request, callback) => {
     WHERE
       "${tabelleIdFeld}" = '${tabelleId}'`
 
-  request.pg.client.query(sql, (error, result) => {
-    if (error) callback(error, null)
-    callback(error, result.rows)
-  })
+  app.db.any(sql)
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))
 }

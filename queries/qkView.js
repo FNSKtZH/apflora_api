@@ -1,5 +1,6 @@
 'use strict'
 
+const app = require(`ampersand-app`)
 const escapeStringForSql = require(`./escapeStringForSql`)
 
 module.exports = (request, callback) => {
@@ -28,9 +29,7 @@ module.exports = (request, callback) => {
         "ApArtId" = ${apId}`
   }
 
-  // Daten abfragen
-  request.pg.client.query(
-    sql,
-    (err, data) => callback(err, data.rows)
-  )
+  app.db.any(sql)
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))
 }
