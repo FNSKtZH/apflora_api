@@ -1,6 +1,6 @@
 'use strict'
 
-const async = require(`async`)
+const app = require(`ampersand-app`)
 const escapeStringForSql = require(`./escapeStringForSql`)
 const newGuid = require(`../src/newGuid.js`)
 
@@ -11,99 +11,66 @@ module.exports = (request, callback) => {
   const date = new Date().toISOString()                // wann gespeichert wird
   let newTPopKontrId = null
 
-  async.series(
-    [
-      (callback) => {
-        // allfällige temporäre Tabelle löschen
-        request.pg.client.query(
-          `DROP TABLE IF EXISTS tmp`,
-          // nur allfällige Fehler weiterleiten
-          err => callback(err, null)
-        )
-      },
-      (callback) => {
-        // temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
-        request.pg.client.query(`
-          CREATE TEMPORARY TABLE
-            tmp
-          AS SELECT
-            *
-          FROM
-            apflora.tpopkontr
-          WHERE
-            "TPopKontrId" = ${tpopKontrId}`,
-          // nur allfällige Fehler weiterleiten
-          err => callback(err, null)
-        )
-      },
-      (callback) => {
-        // get new TPopKontrId
-        request.pg.client.query(`
-          select nextval('apflora."tpopkontr_TPopKontrId_seq"')`,
-          (err, result) => {
-            newTPopKontrId = parseInt(result.rows[0].nextval, 0)
-            callback(err, newTPopKontrId)
-          }
-        )
-      },
-      (callback) => {
-        // TPopId anpassen
-        request.pg.client.query(`
-          UPDATE tmp
-          SET
-            "TPopKontrId" = ${newTPopKontrId},
-            "TPopId" = ${tpopId},
-            "TPopKontrGuid" = '${newGuid()}',
-            "MutWann" = '${date}',
-            "MutWer" = '${user}'`,
-          // nur allfällige Fehler weiterleiten
-          err => callback(err, null)
-        )
-      },
-      (callback) => {
-        request.pg.client.query(`
-          INSERT INTO
-            apflora.tpopkontr
-          SELECT
-            *
-          FROM
-            tmp`,
-          (err, data) => callback(err, null)
-        )
-      }
-    ],
-    (err, results) => {
-      const tpopkontridNeu = results[2]
-
-      if (err) { return callback(err, null) }
-      // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
-      const sql = `
+  app.db.tx(function* manageData() {
+    // allfällige temporäre Tabelle löschen
+    yield app.db.none(`DROP TABLE IF EXISTS tmp`)
+    // temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
+    yield app.db.none(`
+      CREATE TEMPORARY TABLE
+        tmp
+      AS SELECT
+        *
+      FROM
+        apflora.tpopkontr
+      WHERE
+        "TPopKontrId" = ${tpopKontrId}`
+    )
+    // get new TPopKontrId
+    const nextvalRow = yield app.db.one(`select nextval('apflora."tpopkontr_TPopKontrId_seq"')`)
+    newTPopKontrId = parseInt(nextvalRow.nextval, 0)
+    // TPopId anpassen
+    yield app.db.none(`
+      UPDATE tmp
+      SET
+        "TPopKontrId" = ${newTPopKontrId},
+        "TPopId" = ${tpopId},
+        "TPopKontrGuid" = '${newGuid()}',
+        "MutWann" = '${date}',
+        "MutWer" = '${user}'`
+    )
+    yield app.db.none(`
+      INSERT INTO
+        apflora.tpopkontr
+      SELECT
+        *
+      FROM
+        tmp`
+    )
+    // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
+    return yield app.db.none(`
       INSERT INTO
         apflora.tpopkontrzaehl
-      (
-        "Anzahl",
-        "Zaehleinheit",
-        "Methode",
-        "MutWann",
-        "MutWer",
-        "TPopKontrId"
-      )
+        (
+          "Anzahl",
+          "Zaehleinheit",
+          "Methode",
+          "MutWann",
+          "MutWer",
+          "TPopKontrId"
+        )
       SELECT
         apflora.tpopkontrzaehl."Anzahl",
         apflora.tpopkontrzaehl."Zaehleinheit",
         apflora.tpopkontrzaehl."Methode",
         '${date}',
         '${user}',
-        ${tpopkontridNeu}
+        ${newTPopKontrId}
       FROM
         apflora.tpopkontrzaehl
       WHERE
         apflora.tpopkontrzaehl."TPopKontrId" = ${tpopKontrId}`
-      request.pg.client.query(
-        sql,
-        // neue tpopkontrId zurück liefern
-        (err, data) => callback(null, tpopkontridNeu)
-      )
-    }
-  )
+    )
+  })
+    .then(() => callback(null, newTPopKontrId))
+    .catch(error => callback(error, null))
 }

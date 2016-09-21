@@ -1,6 +1,6 @@
 'use strict'
 
-const async = require(`async`)
+const app = require(`ampersand-app`)
 const escapeStringForSql = require(`./escapeStringForSql`)
 const newGuid = require(`../src/newGuid.js`)
 
@@ -11,69 +11,41 @@ module.exports = (request, callback) => {
   const date = new Date().toISOString() // wann gespeichert wird
   let newTPopId = null
 
-  async.series(
-    [
-      (callback) => {
-        // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
-        request.pg.client.query(
-          `DROP TABLE IF EXISTS tmp`,
-          // nur allfällige Fehler weiterleiten
-          err => callback(err, null)
-        )
-      },
-      (callback) => {
-        // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
-        request.pg.client.query(`
-          CREATE TEMPORARY TABLE
-            tmp
-          AS SELECT
-            *
-          FROM
-            apflora.tpop
-          WHERE
-            "TPopId" = ${tpopId}`,
-          // nur allfällige Fehler weiterleiten
-          err => callback(err, null)
-        )
-      },
-      (callback) => {
-        // get new TPopId
-        request.pg.client.query(`
-          select nextval('apflora."tpop_TPopId_seq"')`,
-          (err, result) => {
-            newTPopId = parseInt(result.rows[0].nextval, 0)
-            callback(err, newTPopId)
-          }
-        )
-      },
-      (callback) => {
-        // TPopId anpassen
-        request.pg.client.query(`
-          UPDATE
-            tmp
-          SET
-            "TPopId" = ${newTPopId},
-            "PopId" = ${popId},
-            "TPopGuid" = '${newGuid()}',
-            "MutWann" = '${date}',
-            "MutWer" = '${user}'`,
-          // nur allfällige Fehler weiterleiten
-          err => callback(err, null)
-        )
-      },
-      (callback) => {
-        request.pg.client.query(`
-          INSERT INTO
-            apflora.tpop
-          SELECT
-            *
-          FROM
-            tmp`,
-          (err, data) => callback(err, null)
-        )
-      }
-    ],
-    // neue id zurück liefern
-    (err, results) => callback(err, results[2])
-  )
+  app.db.task(function* manageData() {
+    // Temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
+    yield app.db.none(`DROP TABLE IF EXISTS tmp`)
+    yield app.db.none(`
+      CREATE TEMPORARY TABLE
+        tmp
+      AS SELECT
+        *
+      FROM
+        apflora.tpop
+      WHERE
+        "TPopId" = ${tpopId}`
+    )
+    // get new TPopId
+    const nextvalRow = yield app.db.one(`select nextval('apflora."tpop_TPopId_seq"')`)
+    newTPopId = parseInt(nextvalRow.nextval, 0)
+    // TPopId anpassen
+    yield app.db.none(`
+      UPDATE
+        tmp
+      SET
+        "TPopId" = ${newTPopId},
+        "PopId" = ${popId},
+        "TPopGuid" = '${newGuid()}',
+        "MutWann" = '${date}',
+        "MutWer" = '${user}'`
+    )
+    return yield app.db.none(`
+      INSERT INTO
+        apflora.tpop
+      SELECT
+        *
+      FROM
+        tmp`)
+  })
+    .then(() => callback(null, newTPopId))
+    .catch(error => callback(error, null))
 }
