@@ -53,5 +53,12 @@ module.exports = (request, callback) => {
           label`
       break
   }
-  request.pg.client.query(sql, (error, result) => callback(error, result.rows))
+
+  app.db.any(sql)
+    .then(rows =>
+      callback(null, rows)
+    )
+    .catch(error =>
+      callback(error, null)
+    )
 }
