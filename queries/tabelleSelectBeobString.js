@@ -1,5 +1,6 @@
 'use strict'
 
+const app = require(`ampersand-app`)
 const escapeStringForSql = require(`./escapeStringForSql`)
 
 module.exports = (request, callback) => {
@@ -7,13 +8,15 @@ module.exports = (request, callback) => {
   const feld = escapeStringForSql(request.params.feld) // das ist der Name des Feldes, das verglichen wird
   const wert = escapeStringForSql(request.params.wert) // der Wert im Feld, das verglichen wird
 
-  request.pg.client.query(`
+  const sql = `
     SELECT
       *
     FROM
       beob.${tabelle}
     WHERE
-      "${feld}" = '${wert}'`,
-    (err, data) => callback(err, data.rows)
-  )
+      "${feld}" = '${wert}'`
+
+  app.db.any(sql)
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))
 }

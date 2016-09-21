@@ -5,6 +5,7 @@
 
 'use strict'
 
+const app = require(`ampersand-app`)
 const _ = require(`lodash`)
 const config = require(`../configuration`)
 const escapeStringForSql = require(`./escapeStringForSql`)
@@ -37,10 +38,11 @@ module.exports = (request, callback) => {
       "${nameMutWerFeld}" = '${felder.user}'`
 
   // jetzt für jedes key/value-Paar des Objekts set-Anweisungen generieren
-  _.forEach(felder, (feldwert, feldname) => {
+  _.forEach(felder, (wert, feldname) => {
+    let feldwert = wert
     if (feldwert || feldwert === 0) {
       // in Zeichenfeldern Anführungszeichen eliminieren!
-      if (typeof feldwert === `string`) {
+      if (typeof feldwert === `string`) {  // eslint-disable-line valid-typeof
         feldwert = feldwert.replace(`"`, ``)
       }
       sql += `, "${feldname}" = '${feldwert}'`
@@ -52,8 +54,7 @@ module.exports = (request, callback) => {
 
   sql += ` WHERE "${tabelleIdFeld}" = ${id}`
 
-  request.pg.client.query(
-    sql,
-    (err, data) => callback(err, data.rows)
-  )
+  app.db.any(sql)
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))
 }
