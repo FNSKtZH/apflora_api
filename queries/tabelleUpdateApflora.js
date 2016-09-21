@@ -5,9 +5,9 @@
 
 'use strict'
 
-const _ = require('lodash')
-const config = require('../configuration')
-const escapeStringForSql = require('./escapeStringForSql')
+const _ = require(`lodash`)
+const config = require(`../configuration`)
+const escapeStringForSql = require(`./escapeStringForSql`)
 
 module.exports = (request, callback) => {
   const tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, in der die Daten gespeichert werden sollen
