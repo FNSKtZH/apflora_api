@@ -19,7 +19,17 @@ module.exports = {
     "semi": [2, "never"],
     "quotes": ["error", "backtick"],
     "strict": 0,
-    "max-len": ["error", 120, 2, {"ignoreUrls": true}],
+    "max-len": [
+      "error",
+      120,
+      2,
+      {
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreTrailingComments": true
+      }
+    ],
     "no-param-reassign": ["error", { "props": false }]
   }
 }
