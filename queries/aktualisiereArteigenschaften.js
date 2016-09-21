@@ -18,7 +18,7 @@ module.exports = (req, reply) => {
   }, (error, response, body) => {
     if (error) console.log(error)
     if (response && response.statusCode === 200) {
-      app.db.task(function*(t) {
+      app.db.tx(function*(t) {
         yield app.db.none('TRUNCATE TABLE beob.adb_eigenschaften')
         const eigenschaftenString = createInsertSqlFromObjectArray(body)
         const sqlBase = `
