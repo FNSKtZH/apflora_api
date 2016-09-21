@@ -2,9 +2,8 @@
 
 const app = require('ampersand-app')
 
-module.exports = (request, callback) => {
-  const sql = `
-    SELECT
+const sql = `
+  SELECT
     "AdrId" AS id,
     "AdrName"
   FROM
@@ -12,6 +11,7 @@ module.exports = (request, callback) => {
   ORDER BY
     "AdrName"`
 
+module.exports = (request, callback) =>
   app.db.many(sql)
     .then((adressen) =>
       callback(null, adressen)
@@ -19,4 +19,3 @@ module.exports = (request, callback) => {
     .catch((error) =>
       callback(error, null)
     )
-}

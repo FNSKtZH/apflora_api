@@ -2,10 +2,8 @@
 
 const app = require('ampersand-app')
 
-const escapeStringForSql = require('./escapeStringForSql')
-
 module.exports = (request, callback) => {
-  const apId = escapeStringForSql(request.params.apId)
+  const apId = encodeURIComponent(request.params.apId)
   const sql = `
     SELECT
       apflora.ap."ApArtId",
@@ -23,6 +21,13 @@ module.exports = (request, callback) => {
         beob.adb_eigenschaften
         ON apflora.ap."ApArtId" = beob.adb_eigenschaften."TaxonomieId"
     WHERE
-      apflora.ap."ApArtId" = ${apId}`
-  request.pg.client.query(sql, (error, result) => callback(error, result.rows))
+      apflora.ap."ApArtId" = $1`
+
+  app.db.many(sql, apId)
+    .then((rows) =>
+      callback(null, rows)
+    )
+    .catch((error) =>
+      callback(error, null)
+    )
 }
