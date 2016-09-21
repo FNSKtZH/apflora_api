@@ -18,9 +18,5 @@ const sql = `
 
 module.exports = (request, callback) =>
   app.db.any(sql)
-    .then(rows =>
-      callback(null, rows)
-    )
-    .catch(error =>
-      callback(error, null)
-    )
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))

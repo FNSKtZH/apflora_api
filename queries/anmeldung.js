@@ -15,10 +15,6 @@ module.exports = (request, callback) => {
       AND "Passwort" = $2`
 
   app.db.any(sql, [userName, password])
-    .then(rows =>
-      callback(null, rows)
-    )
-    .catch(error =>
-      callback(error, null)
-    )
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))
 }

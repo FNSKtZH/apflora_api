@@ -24,10 +24,6 @@ module.exports = (request, callback) => {
       apflora.ap."ApArtId" = $1`
 
   app.db.many(sql, apId)
-    .then(rows =>
-      callback(null, rows)
-    )
-    .catch(error =>
-      callback(error, null)
-    )
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))
 }

@@ -47,10 +47,6 @@ const sql = `
 module.exports = (request, callback) => {
   const apId = encodeURIComponent(request.params.apId)
   app.db.any(sql, apId)
-    .then(rows =>
-      callback(null, rows)
-    )
-    .catch(error =>
-      callback(error, null)
-    )
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))
 }
