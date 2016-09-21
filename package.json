@@ -34,12 +34,13 @@
     "run-sequence": "1.2.2"
   },
   "scripts": {
-    "start": "npm test && node startServer.js",
+    "start": "npm run lint && npm test && node startServer.js",
+    "startWithoutLinting": "npm test && node startServer.js",
     "startWithoutTests": "node startServer.js",
     "predeploy": "gulp prod_clean_dist",
     "deploy": "gulp prod_copy",
     "postdeploy": "gulp prod_sftp",
-    "test": "npm run lint && lab",
+    "test": "lab",
     "lint": "eslint src queries test --fix ",
     "yolo": "npm run deploy"
   },
