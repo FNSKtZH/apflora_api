@@ -1,11 +1,11 @@
 'use strict'
 
+// reporting too long lines with option "ignoreTemplateLiterals": true is a bug in eslint
+// a pull request was accepted but no new release yet built
+// so disable max-len temporarily
+/* eslint-disable max-len */
+
 const app = require(`ampersand-app`)
-
-/*
- * need to test this again - not tested since converted to postgresql
- */
-
 const request = require(`request`)
 const createInsertSqlFromObjectArray = require(`./createInsertSqlFromObjectArray`)
 
@@ -16,9 +16,9 @@ module.exports = (req, reply) => {
     uri: `http://arteigenschaften.ch/artendb/_design/artendb/_list/export_apflora/flora?include_docs=true`,
     json: true
   }, (error, response, body) => {
-    if (error) console.log(error)
+    if (error) throw error
     if (response && response.statusCode === 200) {
-      app.db.tx(function* (t) {
+      app.db.tx(function* manageData() {
         yield app.db.none(`TRUNCATE TABLE beob.adb_eigenschaften`)
         const eigenschaftenString = createInsertSqlFromObjectArray(body)
         const sqlBase = `
