@@ -1,5 +1,7 @@
 'use strict'
 
+/* eslint-disable valid-typeof */
+
 const _ = require(`lodash`)
 const escapeStringForSql = require(`./escapeStringForSql`)
 
