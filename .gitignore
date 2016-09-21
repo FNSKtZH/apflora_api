@@ -83,7 +83,7 @@ node_modules/
 ssl/
 dist/
 .idea/
-npm-debug.log
+npm-debug
 dbPass.json
 appPass.json
 sftpPass.json
