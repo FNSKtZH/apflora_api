@@ -6,7 +6,6 @@ const escapeStringForSql = require(`./escapeStringForSql`)
 module.exports = (request, callback) => {
   const apId = escapeStringForSql(request.params.apId)
 
-  // Daten abfragen
   const sql = `
     SELECT
       apflora.ap."ApArtId",
@@ -37,6 +36,9 @@ module.exports = (request, callback) => {
     WHERE
       apflora.pop."PopXKoord" Is Not Null
       AND apflora.pop."PopYKoord" Is Not Null
-      AND apflora.ap."ApArtId" = ${apId}`
-  request.pg.client.query(sql, (error, result) => callback(error, result.rows))
+      AND apflora.ap."ApArtId" = $1`
+
+  app.db.any(sql, apId)
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))
 }
