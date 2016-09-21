@@ -9,40 +9,41 @@ module.exports = (request, callback) => {
 
   app.db.task(function*(t) {
     // neuen AP einfügen
-    const sqlInsert = `
+    yield app.db.none(`
       INSERT INTO
         apflora.ap ("ApArtId", "MutWann", "MutWer")
       VALUES
         (${apId}, '${date}', '${user}')
       ON CONFLICT DO NOTHING`
-    yield app.db.none(sqlInsert)
+    )
 
     // Artwert holen
-    const sqlGet = `
+    const artwertRow = yield app.db.oneOrNone(`
       SELECT
         "Artwert"
       FROM
         beob.adb_eigenschaften
       WHERE
         "TaxonomieId" = ${apId}`
-    return yield app.db.oneOrNone(sqlGet)
+    )
+
+    if (artwertRow && artwertRow.Artwert) {
+      // Artwert setzen
+      yield app.db.none(`
+        UPDATE
+          apflora.ap
+        SET
+          "ApArtwert" = '${artwertRow.Artwert}'
+        WHERE
+          "ApArtId" = ${apId}`
+      )
+    }
+    // keine Fehler melden, wenn bloss der Artwert nicht geholt wurde
+    return
   })
-    .then((row) => {
-      // keine Fehler melden, wenn bloss der Artwert nicht geholt wurde
-      if (row && row.Artwert) {
-        request.pg.client.query(`
-          UPDATE
-            apflora.ap
-          SET
-            "ApArtwert" = '${row.Artwert}'
-          WHERE
-            "ApArtId" = ${apId}`,
-          (err, data) => callback(err, apId)
-        )
-      } else {
-        callback(null, apId)
-      }
-    })
+    .then((row) =>
+      callback(null, apId)
+    )
     .catch((error) =>
       callback(error, null)
     )
