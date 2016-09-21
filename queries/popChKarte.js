@@ -35,6 +35,9 @@ module.exports = (request, callback) => {
     WHERE
       apflora.pop."PopXKoord" Is Not Null
       AND apflora.pop."PopYKoord" Is Not Null
-      AND apflora.pop."PopId" = ${popId}`
-  request.pg.client.query(sql, (error, result) => callback(error, result.rows))
+      AND apflora.pop."PopId" = $1`
+
+  app.db.any(sql, popId)
+    .then(rows => callback(null, rows))
+    .catch(error => callback(error, null))
 }
