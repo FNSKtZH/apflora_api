@@ -17,32 +17,24 @@ module.exports = (req, reply) => {
     json: true
   }, (error, response, body) => {
     if (error) console.log(error)
-    // console.log('get arteigenschaften response', response)
     if (response && response.statusCode === 200) {
-      // empty table
-      app.db.none('TRUNCATE TABLE beob.adb_eigenschaften')
-        .catch((err) =>
-          console.log(err)
+      app.db.task(function*(t) {
+        yield app.db.none('TRUNCATE TABLE beob.adb_eigenschaften')
+        const eigenschaftenString = createInsertSqlFromObjectArray(body)
+        const sqlBase = `
+          INSERT INTO
+            beob.adb_eigenschaften
+            ("GUID", "TaxonomieId", "Familie", "Artname", "NameDeutsch", "Status", "Artwert", "KefArt", "KefKontrolljahr")
+          VALUES `
+        // add new values
+        let sql = sqlBase + eigenschaftenString
+        return yield app.db.none(sql)
+      })
+        .then(() =>
+          reply('Arteigenschaften hinzugefügt')
         )
-        .then(() => {
-          const eigenschaftenString = createInsertSqlFromObjectArray(body)
-          const sqlBase = `
-            INSERT INTO
-              beob.adb_eigenschaften
-              ("GUID", "TaxonomieId", "Familie", "Artname", "NameDeutsch", "Status", "Artwert", "KefArt", "KefKontrolljahr")
-            VALUES `
-
-          // add new values
-          let sql = sqlBase + eigenschaftenString
-
-          req.pg.client.query(
-            sql,
-            (err) => {
-              if (err) throw err
-              reply('Arteigenschaften hinzugefügt')
-              req.pg.client.end()
-            }
-          )
+        .catch((err) => {
+          throw err
         })
     }
   })

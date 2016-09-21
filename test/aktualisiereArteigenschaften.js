@@ -19,7 +19,7 @@ const server = require('../server.js')
 // takes about 33 seconds!
 // dont test every time because of duration
 
-describe.skip('/aktualisiereArteigenschaften', { timeout: 100000 }, () => {
+describe('/aktualisiereArteigenschaften', { timeout: 100000 }, () => {
   it('should update Arteigenschaften', (done) => {
     const method = 'GET'
     const url = '/aktualisiereArteigenschaften'
