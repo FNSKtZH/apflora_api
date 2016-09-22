@@ -10,7 +10,7 @@ module.exports = (tpopMassnListe, tpop) => {
   return {
     data: `Massnahmen (${massnVonTpop.length})`,
     attr: {
-      id: `tpopOrdnerMassn` + tpop.TPopId,
+      id: `tpopOrdnerMassn${tpop.TPopId}`,
       typ: `tpopOrdnerMassn`
     },
     children: massnVonTpop.map(massn => erstelleTpopMassn(massn))

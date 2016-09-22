@@ -10,7 +10,7 @@ module.exports = (tpopFreiwkontrListe, tpop) => {
   return {
     data: `Freiwilligen-Kontrollen (${freiwkontrVonTpop.length})`,
     attr: {
-      id: `tpopOrdnerFreiwkontr` + tpop.TPopId,
+      id: `tpopOrdnerFreiwkontr${tpop.TPopId}`,
       typ: `tpopOrdnerFreiwkontr`
     },
     children: freiwkontrVonTpop.map(freiwkontr => erstelleTPopFreiwKontr(freiwkontr))
