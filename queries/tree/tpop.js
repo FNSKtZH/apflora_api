@@ -14,13 +14,13 @@ module.exports = (results, tpop) => {
 
   // Baum-node sinnvoll beschreiben, auch wenn leere Werte vorhanden
   if (tpop.TPopNr && tpop.TPopFlurname) {
-    tpopNodeText = tpop.TPopNr + `: ` + tpop.TPopFlurname
+    tpopNodeText = `${tpop.TPopNr}: ${tpop.TPopFlurname}`
     tpopSort = tpop.TPopNr
   } else if (tpop.PopBerJahr) {
-    tpopNodeText = tpop.TPopNr + `: (kein Flurname)`
+    tpopNodeText = `${tpop.TPopNr}: (kein Flurname)`
     tpopSort = tpop.TPopNr
   } else if (tpop.TPopFlurname) {
-    tpopNodeText = `(keine Nr): ` + tpop.TPopFlurname
+    tpopNodeText = `(keine Nr): ${tpop.TPopFlurname}`
     tpopSort = 1000
   } else {
     tpopNodeText = `(keine Nr): (kein Flurname)`

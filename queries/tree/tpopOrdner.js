@@ -2,9 +2,9 @@
 
 const erstelleTpop = require(`./tpop`)
 
-module.exports = (results, tpopListe, pop) => {
+module.exports = (results, pop) => {
   // Liste der tpop dieser pop erstellen
-  const tpopVonPop = tpopListe.filter(tpop => tpop.PopId === pop.PopId)
+  const tpopVonPop = results.tpopListe.filter(tpop => tpop.PopId === pop.PopId)
 
   // tpopOrdnerTpop aufbauen
   return {
