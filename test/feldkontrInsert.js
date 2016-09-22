@@ -20,27 +20,35 @@ const server = require(`../server.js`)
 
 describe(`/insert/feldkontr`, () => {
   it(`should insert a feldkontr for tpopId 72856123`, (done) => {
-    const method = `POST`
-    const url = `/insert/feldkontr/tpopId=72856123/tpopKontrtyp=/user=test`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result).to.be.at.least(0)
-      // remove inserted row
-      const method = `DELETE`
-      const url = `/apflora/tabelle=tpopkontr/tabelleIdFeld=TPopKontrId/tabelleId=${res.result}`
-      server.inject({ method, url }, res => done())
-    })
+    server.inject(
+      {
+        method: `POST`,
+        url: `/insert/feldkontr/tpopId=72856123/tpopKontrtyp=/user=test`,
+      },
+      (res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result).to.be.at.least(0)
+        // remove inserted row
+        const method = `DELETE`
+        const url = `/apflora/tabelle=tpopkontr/tabelleIdFeld=TPopKontrId/tabelleId=${res.result}`
+        server.inject({ method, url }, () => done())
+      }
+    )
   })
   it(`should insert a freiwkontr for tpopId 72856123`, (done) => {
-    const method = `POST`
-    const url = `/insert/feldkontr/tpopId=72856123/tpopKontrtyp=Freiwilligen-Erfolgskontrolle/user=test`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result).to.be.at.least(0)
-      // remove inserted row
-      const method = `DELETE`
-      const url = `/apflora/tabelle=tpopkontr/tabelleIdFeld=TPopKontrId/tabelleId=${res.result}`
-      server.inject({ method, url }, res => done())
-    })
+    server.inject(
+      {
+        method: `POST`,
+        url: `/insert/feldkontr/tpopId=72856123/tpopKontrtyp=Freiwilligen-Erfolgskontrolle/user=test`,
+      },
+      (res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result).to.be.at.least(0)
+        // remove inserted row
+        const method = `DELETE`
+        const url = `/apflora/tabelle=tpopkontr/tabelleIdFeld=TPopKontrId/tabelleId=${res.result}`
+        server.inject({ method, url }, () => done())
+      }
+    )
   })
 })
