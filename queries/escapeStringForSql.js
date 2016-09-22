@@ -1,9 +1,9 @@
 'use strict'
 
 module.exports = (str) => {
-  if (str && typeof str === `string`) {
-    return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, (char) => {
-      switch (char) {
+  if (str && typeof str === `string`) { // eslint-disable-line valid-typeof
+    return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, (char) => {  // eslint-disable-line no-useless-escape
+      switch (char) {  // eslint-disable-line default-case
         case `\0`:
           return `\\0`
         case `\x08`:

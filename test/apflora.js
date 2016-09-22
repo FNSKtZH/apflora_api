@@ -17,28 +17,36 @@ const server = require(`../server.js`)
 describe(`/apflora`, () => {
   const user = `test`
   it(`should delete from table ap the row with ApArtId 150`, (done) => {
-    const method = `POST`
-    const url = `/apInsert/apId=150/user=${user}`
-    server.inject({ method, url }, (res) => {
-      const method = `DELETE`
-      const url = `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
-      server.inject({ method, url }, (res) => {
-        expect(res.statusCode).to.equal(200)
-        done()
-      })
-    })
+    server.inject(
+      {
+        method: `POST`,
+        url: `/apInsert/apId=150/user=${user}`
+      },
+      () => {
+        const method = `DELETE`
+        const url = `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
+        server.inject({ method, url }, (res) => {
+          expect(res.statusCode).to.equal(200)
+          done()
+        })
+      }
+    )
   })
   it(`should insert table ap the row with ApArtId 150`, (done) => {
-    const method = `POST`
-    const url = `/insert/apflora/tabelle=ap/feld=ApArtId/wert=150/user=${user}`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result).to.be.at.least(0)
-      // remove this row again
-      const method = `DELETE`
-      const url = `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
-      server.inject({ method, url }, res => done())
-    })
+    server.inject(
+      {
+        method: `POST`,
+        url: `/insert/apflora/tabelle=ap/feld=ApArtId/wert=150/user=${user}`
+      },
+      (res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result).to.be.at.least(0)
+        // remove this row again
+        const method = `DELETE`
+        const url = `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
+        server.inject({ method, url }, () => done())
+      }
+    )
   })
   it(`should update Name of Pop with Id -871888542`, (done) => {
     const method = `PUT`
