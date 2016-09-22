@@ -2,8 +2,9 @@
 
 const escapeStringForSql = require(`../escapeStringForSql`)
 
-function buildChildrenFromData(data) {
-  return data.map((beob) => {
+const app = require(`ampersand-app`)
+const buildChildrenFromData = data =>
+  data.map((beob) => {
     const datum = beob.Datum || `(kein Datum)`
     const autor = beob.Autor || `(kein Autor)`
 
@@ -17,7 +18,6 @@ function buildChildrenFromData(data) {
       }
     }
   })
-}
 
 module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
@@ -65,18 +65,17 @@ module.exports = (request, reply) => {
     LIMIT
       100`
 
-  request.pg.client.query(sql, (err, result) => {
-    if (err) return reply(err)
-    const data = result.rows
-    const node = {
-      data: `nicht zuzuordnende Beobachtungen (${data.length < 100 ? `` : `neuste `}${data.length})`,
-      attr: {
-        id: `apOrdnerBeobNichtZuzuordnen` + apId,
-        typ: `apOrdnerBeobNichtZuzuordnen`
-      },
-      children: buildChildrenFromData(data)
-    }
-
-    reply(null, node)
-  })
+  app.db.any(sql)
+    .then((rows) => {
+      const node = {
+        data: `nicht zuzuordnende Beobachtungen (${rows.length < 100 ? `` : `neuste `}${rows.length})`,
+        attr: {
+          id: `apOrdnerBeobNichtZuzuordnen${apId}`,
+          typ: `apOrdnerBeobNichtZuzuordnen`
+        },
+        children: buildChildrenFromData(rows)
+      }
+      reply(null, node)
+    })
+    .catch(error => reply(error, null))
 }
