@@ -16,16 +16,20 @@ const server = require(`../server.js`)
 // test
 describe(`/tpopmassnInsertKopie`, () => {
   it(`should insert 1 row for tpopId = 2146453453 and tpopMassnId = 5446`, (done) => {
-    const method = `POST`
-    const url = `/tpopmassnInsertKopie/tpopId=2146453453/tpopMassnId=5446/user=test`
-    server.inject({ method, url }, (res) => {
-      const tpopMassnId = res.result
-      expect(res.statusCode).to.equal(200)
-      expect(tpopMassnId).to.be.above(0)
-      // remove inserted row
-      const method = `DELETE`
-      const url = `/apflora/tabelle=tpopmassn/tabelleIdFeld=TPopMassnId/tabelleId=${tpopMassnId}`
-      server.inject({ method, url }, res => done())
-    })
+    server.inject(
+      {
+        method: `POST`,
+        url: `/tpopmassnInsertKopie/tpopId=2146453453/tpopMassnId=5446/user=test`,
+      },
+      (res) => {
+        const tpopMassnId = res.result
+        expect(res.statusCode).to.equal(200)
+        expect(tpopMassnId).to.be.above(0)
+        // remove inserted row
+        const method = `DELETE`
+        const url = `/apflora/tabelle=tpopmassn/tabelleIdFeld=TPopMassnId/tabelleId=${tpopMassnId}`
+        server.inject({ method, url }, () => done())
+      }
+    )
   })
 })
