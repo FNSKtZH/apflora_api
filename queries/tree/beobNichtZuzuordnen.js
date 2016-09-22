@@ -1,8 +1,8 @@
 'use strict'
 
+const app = require(`ampersand-app`)
 const escapeStringForSql = require(`../escapeStringForSql`)
 
-const app = require(`ampersand-app`)
 const buildChildrenFromData = data =>
   data.map((beob) => {
     const datum = beob.Datum || `(kein Datum)`

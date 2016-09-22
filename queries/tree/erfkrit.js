@@ -1,9 +1,10 @@
 'use strict'
 
+const app = require(`ampersand-app`)
 const escapeStringForSql = require(`../escapeStringForSql`)
 
-const buildChildrenFromData = (data) => {
-  return data.map((erfkrit) => {
+const buildChildrenFromData = data =>
+  data.map((erfkrit) => {
     const beurteilText = erfkrit.BeurteilTxt || `(keine Beurteilung)`
     const erfkritText = erfkrit.ErfkritTxt || `(kein Kriterium)`
     const beschriftung = `${beurteilText}: ${erfkritText}`
@@ -16,13 +17,11 @@ const buildChildrenFromData = (data) => {
       }
     }
   })
-}
 
 module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
-
-  request.pg.client.query(
-    `SELECT
+  app.db.any(`
+    SELECT
       "ErfkritId",
       "ApArtId",
       "BeurteilTxt",
@@ -36,20 +35,18 @@ module.exports = (request, reply) => {
     WHERE
       "ApArtId" = ${apId}
     ORDER BY
-      "BeurteilOrd"`,
-    (err, result) => {
-      if (err) return reply(err)
-      const data = result.rows
+      "BeurteilOrd"`
+  )
+    .then((rows) => {
       const node = {
-        data: `AP-Erfolgskriterien (${data.length})`,
+        data: `AP-Erfolgskriterien (${rows.length})`,
         attr: {
           id: `apOrdnerErfkrit${apId}`,
           typ: `apOrdnerErfkrit`
         },
-        children: buildChildrenFromData(data)
+        children: buildChildrenFromData(rows)
       }
-
       reply(null, node)
-    }
-  )
+    })
+    .catch(error => reply(error, null))
 }

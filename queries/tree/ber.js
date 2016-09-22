@@ -1,9 +1,10 @@
 'use strict'
 
+const app = require(`ampersand-app`)
 const escapeStringForSql = require(`../escapeStringForSql`)
 
-const buildChildrenFromData = (data) => {
-  return data.map((ber) => {
+const buildChildrenFromData = data =>
+  data.map((ber) => {
     const berjahrText = ber.BerJahr || `(kein Jahr)`
     const bertitelText = ber.BerTitel || `(kein Titel)`
     const beschriftung = `${berjahrText}: ${bertitelText}`
@@ -16,13 +17,11 @@ const buildChildrenFromData = (data) => {
       }
     }
   })
-}
 
 module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
-
-  request.pg.client.query(
-    `SELECT
+  app.db.any(`
+    SELECT
       "BerId",
       "ApArtId",
       "BerJahr",
@@ -33,21 +32,18 @@ module.exports = (request, reply) => {
       "ApArtId" = ${apId}
     ORDER BY
       "BerJahr" DESC,
-      "BerTitel"`,
-    (err, result) => {
-      if (err) return reply(err)
-      const data = result.rows
-
+      "BerTitel"`
+  )
+    .then((rows) => {
       const node = {
-        data: `Berichte (${data.length})`,
+        data: `Berichte (${rows.length})`,
         attr: {
           id: `apOrdnerBer${apId}`,
           typ: `apOrdnerBer`
         },
-        children: buildChildrenFromData(data)
+        children: buildChildrenFromData(rows)
       }
-
       reply(null, node)
-    }
-  )
+    })
+    .catch(error => reply(error, null))
 }
