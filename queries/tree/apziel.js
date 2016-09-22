@@ -9,7 +9,7 @@ module.exports = (request, reply) => {
   let zieleListe = null
   let zielberListe = null
 
-  app.db.task(function* getDate() {
+  app.db.task(function* getZiele() {
     // Ziele holen
     zieleListe = yield app.db.any(`
       SELECT
