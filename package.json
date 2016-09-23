@@ -8,12 +8,10 @@
     "async": "2.0.1",
     "dateformat": "1.0.12",
     "hapi": "15.0.3",
-    "hapi-node-postgres": "4.0.1",
     "inert": "4.0.2",
     "json2csv": "3.7.0",
     "json2xls": "0.1.2",
     "lodash": "4.16.1",
-    "pg": "6.1.0",
     "pg-promise": "5.3.3",
     "request": "2.75.0",
     "underscore": "1.8.3"

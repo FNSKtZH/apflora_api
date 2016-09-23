@@ -10,7 +10,6 @@ const app = require('ampersand-app')
 const config = require('./configuration.js')
 const pgp = require('pg-promise')()
 const dbConnection = require('./dbConnection.js')
-const pgPlugin = require('./pgPlugin.js')
 // wird nur in Entwicklung genutzt
 // in new Hapi.Server() einsetzen
 const serverOptionsDevelopment = {
@@ -29,11 +28,9 @@ const routes = require('./src/routes').concat(require('./src/nonQueryRoutes'))
 
 server.register(Inert, (err) => {
   if (err) console.log('failed loading Inert plugin')
-  server.register(pgPlugin, (error) => {
-    if (error) console.log('failed loading pg plugin')
-    // add all the routes
-    server.route(routes)
-  })
+
+  // add all the routes
+  server.route(routes)
 
   app.extend({
     init() {
