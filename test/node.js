@@ -36,13 +36,4 @@ describe(`/node`, () => {
       done()
     })
   })
-  it(`should return root node for "?table=projekt&levels=all"`, (done) => {
-    const url = `/node?table=projekt&levels=all`
-    server.inject({ method, url }, (res) => {
-      expect(res.result.length).to.be.above(1)
-      const resultForRoot = res.result.find(r => r.nodeId === `root`)
-      expect(resultForRoot).to.exist()
-      done()
-    })
-  })
 })
