@@ -33,14 +33,18 @@ module.exports = (request, callback) => {
       `,
       user
     )
-    const nodes = projects.map(projekt => ({
-      nodeId: `projekt/${projekt.ProjId}`,
-      datasetId: projekt.ProjId,
-      type: `dataset`,
-      name: projekt.ProjName,
-      expanded: id && id === projekt.ProjId ? true : false,  // eslint-disable-line no-unneeded-ternary
-      children: [],
-    }))
+    const nodes = projects.map((projekt) => {
+      const idActive = !!id && id === projekt.ProjId
+      const oneProject = projects.length === 1
+      return {
+        nodeId: `projekt/${projekt.ProjId}`,
+        datasetId: projekt.ProjId,
+        type: `dataset`,
+        name: projekt.ProjName,
+        expanded: idActive || oneProject,
+        children: [],
+      }
+    })
     const apListe = yield app.db.many(`
       SELECT
         apflora.ap."ProjId",
@@ -64,7 +68,7 @@ module.exports = (request, callback) => {
         type: `dataset`,
         name: ap.Artname,
         expanded: false,
-        parentId: node.datasetId,
+        children: [],
       }))
       node.children = children
     })

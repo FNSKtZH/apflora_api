@@ -23,7 +23,6 @@ describe(`/node`, () => {
     const url = `/node?table=projekt`
     server.inject({ method, url }, (res) => {
       expect(res.result.length).to.be.above(0)
-      expect(res.result[0].expanded).to.equal(false)
       done()
     })
   })
