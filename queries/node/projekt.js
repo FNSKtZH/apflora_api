@@ -1,83 +1,75 @@
 'use strict'
 
 const app = require(`ampersand-app`)
-const rootNode = require(`../../src/rootNode`)
-
-const sqlProjListe = `
-  SELECT
-    "ProjId",
-    "ProjName"
-  FROM
-    apflora.projekt
-  WHERE
-    "ProjId" IN (
-      SELECT
-        "ProjId"
-      FROM
-        apflora.userprojekt
-      WHERE
-        "UserId" = $1
-    )
-  ORDER BY
-    "ProjName"
-  `
-const sqlAnzApListe = `
-  SELECT
-    "ProjId",
-    COUNT("ApArtId")::int AS "anzAp"
-  FROM
-    apflora.ap
-  GROUP BY
-    "ProjId"
-  `
 
 // TODO: get real user
 
 module.exports = (request, callback) => {
   let id = encodeURIComponent(request.query.id)
-  const levels = encodeURIComponent(request.query.levels)
   const user = 23
 
   if (id) {
     id = parseInt(id, 0)
   }
 
-  const getProjektNodes = app.db.many(sqlProjListe, user)
-    .then((projects) => {
-      const nodes = projects.map(projekt => ({
-        nodeId: `projekt/${projekt.ProjId}`,
-        datasetId: projekt.ProjId,
-        type: `dataset`,
-        name: projekt.ProjName,
-        expanded: id && id === projekt.ProjId ? true : false,  // eslint-disable-line no-unneeded-ternary
-        nrOfUnloadedChildren: `todo`,
-        parentId: `root`,
-      }))
-      return nodes
-    })
-    .catch((error) => {
-      throw error
-    })
-  const getAnzApListe = app.db.many(sqlAnzApListe)
-    .then(anzApListe =>
-      anzApListe || []
+  app.db.task(function* getData() {
+    const projects = yield app.db.many(`
+      SELECT
+        "ProjId",
+        "ProjName"
+      FROM
+        apflora.projekt
+      WHERE
+        "ProjId" IN (
+          SELECT
+            "ProjId"
+          FROM
+            apflora.userprojekt
+          WHERE
+            "UserId" = $1
+        )
+      ORDER BY
+        "ProjName"
+      `,
+      user
     )
-    .catch((error) => {
-      throw error
+    const nodes = projects.map(projekt => ({
+      nodeId: `projekt/${projekt.ProjId}`,
+      datasetId: projekt.ProjId,
+      type: `dataset`,
+      name: projekt.ProjName,
+      expanded: id && id === projekt.ProjId ? true : false,  // eslint-disable-line no-unneeded-ternary
+      children: [],
+    }))
+    const apListe = yield app.db.many(`
+      SELECT
+        apflora.ap."ProjId",
+        apflora.ap."ApArtId",
+        beob.adb_eigenschaften."Artname"
+      FROM
+        apflora.ap
+        INNER JOIN beob.adb_eigenschaften
+        ON apflora.ap."ApArtId" = beob.adb_eigenschaften."TaxonomieId"
+      ORDER BY
+        apflora.ap."ProjId",
+        beob.adb_eigenschaften."Artname"
+      `
+    )
+    nodes.forEach((node) => {
+      const childrenAps = apListe.filter(el => el.ProjId === node.datasetId)
+      // build nodes for ap
+      const children = childrenAps.map(ap => ({
+        nodeId: `ap/${ap.ApArtId}`,
+        datasetId: ap.ApArtId,
+        type: `dataset`,
+        name: ap.Artname,
+        expanded: false,
+        parentId: node.datasetId,
+      }))
+      node.children = children
     })
-
-  Promise.all([getProjektNodes, getAnzApListe])
-    .then(([projektNodes, anzApListe]) => {
-      projektNodes.forEach((node) => {
-        const nrOfChildrenRow = anzApListe.find(el => el.ProjId === node.datasetId)
-        const nrOfChildren = nrOfChildrenRow.anzAp || 0
-        node.nrOfUnloadedChildren = nrOfChildren
-      })
-      if (levels === `all`) {
-        const projektNodesIds = projektNodes.map(node => node.nodeId)
-        rootNode.children = projektNodesIds
-        projektNodes.unshift(rootNode)
-      }
-      callback(null, projektNodes)
-    })
+    return nodes
+  })
+    .then(nodes => callback(null, nodes))
+    .catch(error => callback(error, null))
 }
