@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "babel-eslint": "6.1.2",
-    "code": "3.0.2",
+    "code": "4.0.0",
     "del": "2.2.2",
     "eslint": "3.5.0",
     "eslint-config-airbnb": "11.1.0",
