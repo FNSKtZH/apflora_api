@@ -8,6 +8,8 @@ const node = require(`../../queries/node/node.js`)
  * - id
  * - folder
  * - levels
+ * example:
+ * /node?table=projekt&id=1&levels=all
  * TODO: validate with joi
  */
 

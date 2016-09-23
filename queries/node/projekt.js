@@ -74,6 +74,8 @@ module.exports = (request, callback) => {
         node.nrOfUnloadedChildren = nrOfChildren
       })
       if (levels === `all`) {
+        const projektNodesIds = projektNodes.map(node => node.nodeId)
+        rootNode.children = projektNodesIds
         projektNodes.unshift(rootNode)
       }
       callback(null, projektNodes)
