@@ -68,7 +68,7 @@ module.exports = (request, callback) => {
         type: `dataset`,
         name: ap.Artname,
         expanded: false,
-        children: [],
+        children: [0],
       }))
       node.children = children
     })
