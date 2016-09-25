@@ -30,7 +30,7 @@ describe(`/node`, () => {
     const url = `/node?table=projekt&id=1`
     server.inject({ method, url }, (res) => {
       expect(res.result.length).to.be.above(0)
-      const resultForId1 = res.result.find(r => r.datasetId === 1)
+      const resultForId1 = res.result.find(r => r.id === 1)
       expect(resultForId1.expanded).to.equal(true)
       done()
     })
