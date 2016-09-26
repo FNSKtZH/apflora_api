@@ -42,7 +42,6 @@ module.exports = (request, callback) => {
         table: `projekt`,
         id: projekt.ProjId,
         name: projekt.ProjName,
-        sort: projekt.ProjName,
         expanded: idActive || oneProject,
         children: [],
       }
@@ -70,7 +69,6 @@ module.exports = (request, callback) => {
         table: `ap`,
         id: ap.ApArtId,
         name: ap.Artname,
-        sort: ap.Artname,
         expanded: false,
         children: [0],
       }))

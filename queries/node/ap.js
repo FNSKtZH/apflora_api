@@ -1,10 +1,10 @@
 'use strict'
 
 const app = require(`ampersand-app`)
+const _ = require(`underscore`)
 const ergaenzePopNrUmFuehrendeNullen = require(`../../src/ergaenzePopNrUmFuehrendeNullen`)
 
 module.exports = (request, callback) => {
-  const table = encodeURIComponent(request.query.table)
   let id = encodeURIComponent(request.query.id)
 
   if (id) {
@@ -30,13 +30,8 @@ module.exports = (request, callback) => {
     // PopNr: Je nach Anzahl Stellen der maximalen PopNr bei denjenigen mit weniger Nullen
     // Nullen voranstellen, damit sie im tree auch als String richtig sortiert werden
     const popNrMax = _.maxBy(popListe, pop => pop.PopNr).PopNr
-
     popListe.forEach((pop) => {
-      let name
-      let sort
-
       pop.PopNr = ergaenzePopNrUmFuehrendeNullen(popNrMax, pop.PopNr)
-
       // nodes für pop aufbauen
       if (pop.PopName && pop.PopNr) {
         pop.name = `${pop.PopNr}: ${pop.PopName}`
@@ -53,14 +48,12 @@ module.exports = (request, callback) => {
         pop.sort = 1000
       }
     })
-
-    const popChildren = popListe.map(pop => ({
+    const popFolderChildren = popListe.map(pop => ({
       nodeId: `pop/${pop.PopId}`,
       type: `dataset`,
       table: `pop`,
       id: pop.PopId,
       name: pop.name,
-      sort: pop.sort,
       expanded: false,
       children: [0],
     }))
@@ -68,82 +61,114 @@ module.exports = (request, callback) => {
     // build apziel
     const zielListe = yield app.db.any(`
       SELECT
-        "ApArtId",
-        "ZielId",
-        "ZielTyp",
-        "ZielJahr",
-        "ZielBezeichnung"
+        apflora.ziel."ApArtId",
+        apflora.ziel."ZielId",
+        apflora.ziel_typ_werte."ZieltypTxt",
+        apflora.ziel."ZielJahr",
+        apflora.ziel."ZielBezeichnung"
       FROM
         apflora.ziel
+        LEFT JOIN apflora.ziel_typ_werte
+        ON apflora.ziel."ZielTyp" = apflora.ziel_typ_werte."ZieltypId"
       WHERE
         "ApArtId" = ${id}
       ORDER BY
-        "ZielTyp",
+        apflora.ziel."ZielJahr" DESC,
         "ZielBezeichnung"`
     )
-    const zielListePerYear = _.chain(zielListe)
-      .groupBy('ZielJahr')
-      .map((value, key) => ({
-        ZielJahr: key,
-        anzZiele: _.map(value).length
-      }))
-      .value()
-
-    const zielChildren = zielListePerYear.map(el => ({
-      nodeId: `ziel/${ziel.ApArtId}`,
+    const zielFolderChildren = zielListe.map(ziel => ({
+      nodeId: `ziel/${ziel.ZielId}`,
       type: `folder`,
       table: `ziel`,
-      id: ziel.PopId,
-      name: ziel.name,
-      sort: ziel.ZielJahr || 999999,
+      id: ziel.ZielId,
+      name: `${ziel.ZielJahr ? `${ziel.ZielJahr}` : `(kein Jahr)`}: ${ziel.ZielBezeichnung} (${ziel.ZieltypTxt})`,
       expanded: false,
       children: [0],
     }))
 
-    const zielPerYearChildren = zielListe.map(ziel => ({
-      nodeId: `ziel/${ziel.PopId}`,
-      type: `dataset`,
-      table: `ziel`,
-      id: ziel.PopId,
-      name: ziel.name,
-      sort: ziel.ZielJahr || 999999,
+    // build erfkrit
+    const erfkritListe = yield app.db.any(`
+      SELECT
+        "ErfkritId",
+        "ApArtId",
+        "BeurteilTxt",
+        "ErfkritTxt",
+        "BeurteilOrd"
+      FROM
+        apflora.erfkrit
+        LEFT JOIN
+          apflora.ap_erfkrit_werte
+          ON apflora.erfkrit."ErfkritErreichungsgrad" = apflora.ap_erfkrit_werte."BeurteilId"
+      WHERE
+        "ApArtId" = ${id}
+      ORDER BY
+        "BeurteilOrd"`
+    )
+    const erfkritFolderChildren = erfkritListe.map(erfkrit => ({
+      nodeId: `erfkrit/${erfkrit.ErfkritId}`,
+      type: `folder`,
+      table: `erfkrit`,
+      id: erfkrit.ErfkritId,
+      name: `${erfkrit.BeurteilTxt ? `${erfkrit.BeurteilTxt}` : `(nicht beurteilt)`}: ${erfkrit.ErfkritTxt ? `${erfkrit.ErfkritTxt}` : `(keine Kriterien erfasst)`}`,
       expanded: false,
       children: [0],
     }))
+
+    const berListe = yield app.db.any(`
+      SELECT
+        "BerId",
+        "ApArtId",
+        "BerJahr",
+        "BerTitel"
+      FROM
+        apflora.ber
+      WHERE
+        "ApArtId" = ${id}
+      ORDER BY
+        "BerJahr" DESC,
+        "BerTitel"`
+    )
 
     return [
+      // qk folder
       {
-        nodeId: `pop/${pop.PopId}/qk`,
-        type: 'folder',
-        table: 'pop',
-        id: pop.PopId,
-        name: 'Qualitätskontrollen',
-        sort: 0,
+        nodeId: `ap/${id}/qk`,
+        type: `folder`,
+        table: `ap`,
+        id,
+        name: `Qualitätskontrollen`,
         expanded: false,
         children: [],
       },
+      // pop folder
       {
-        nodeId: `pop/${pop.PopId}/pop`,
-        type: 'folder',
-        table: 'pop',
-        id: pop.PopId,
+        nodeId: `ap/${id}/pop`,
+        type: `folder`,
+        table: `ap`,
+        id,
         name: `Populationen (${popListe.length})`,
-        sort: 1,
         expanded: false,
-        children: popChildren,
+        children: popFolderChildren,
       },
       {
-        nodeId: `pop/${pop.PopId}/ziel`,
-        type: 'folder',
-        table: 'pop',
-        id: pop.PopId,
+        nodeId: `ap/${id}/ziel`,
+        type: `folder`,
+        table: `ap`,
+        id,
         name: `AP-Ziele (${zielListe.length})`,
-        sort: 2,
         expanded: false,
-        children: zielChildren,
+        children: zielFolderChildren,
       },
-
-    [
+      {
+        nodeId: `ap/${id}/erfkrit`,
+        type: `folder`,
+        table: `erfkrit`,
+        id,
+        name: `AP-Erfolgskriterien (${erfkritListe.length})`,
+        expanded: false,
+        children: erfkritFolderChildren,
+      },
+    ]
   })
     .then(nodes => callback(null, nodes))
     .catch(error => callback(error, null))

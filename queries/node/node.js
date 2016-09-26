@@ -1,7 +1,7 @@
 'use strict'
 
 const projekt = require(`./projekt`)
-const ap = require('./ap')
+const ap = require(`./ap`)
 
 module.exports = (request, callback) => {
   const table = encodeURIComponent(request.query.table)
