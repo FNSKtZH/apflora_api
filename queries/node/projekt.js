@@ -69,7 +69,7 @@ module.exports = (request, callback) => {
         id: ap.ApArtId,
         name: ap.Artname,
         expanded: false,
-        children: [0],
+        children: ['lade Daten...'],
         path: [`projekt/${ap.ProjId}`, `ap/${ap.ApArtId}`]
       }))
       node.children = children
