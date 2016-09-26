@@ -38,7 +38,6 @@ module.exports = (request, callback) => {
       const oneProject = projects.length === 1
       return {
         nodeId: `projekt/${projekt.ProjId}`,
-        type: `dataset`,
         table: `projekt`,
         id: projekt.ProjId,
         name: projekt.ProjName,
@@ -66,7 +65,6 @@ module.exports = (request, callback) => {
       // build nodes for ap
       const children = childrenAps.map(ap => ({
         nodeId: `ap/${ap.ApArtId}`,
-        type: `dataset`,
         table: `ap`,
         id: ap.ApArtId,
         name: ap.Artname,

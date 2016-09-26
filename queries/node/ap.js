@@ -54,7 +54,6 @@ module.exports = (request, callback) => {
     })
     const popFolderChildren = popListe.map(pop => ({
       nodeId: `pop/${pop.PopId}`,
-      type: `dataset`,
       table: `pop`,
       id: pop.PopId,
       name: pop.name,
@@ -88,7 +87,6 @@ module.exports = (request, callback) => {
     )
     const zielFolderChildren = zielListe.map(ziel => ({
       nodeId: `ziel/${ziel.ZielId}`,
-      type: `dataset`,
       table: `ziel`,
       id: ziel.ZielId,
       name: `${ziel.ZielJahr ? `${ziel.ZielJahr}` : `(kein Jahr)`}: ${ziel.ZielBezeichnung} (${ziel.ZieltypTxt})`,
@@ -121,7 +119,6 @@ module.exports = (request, callback) => {
     )
     const erfkritFolderChildren = erfkritListe.map(erfkrit => ({
       nodeId: `erfkrit/${erfkrit.ErfkritId}`,
-      type: `dataset`,
       table: `erfkrit`,
       id: erfkrit.ErfkritId,
       name: `${erfkrit.BeurteilTxt ? `${erfkrit.BeurteilTxt}` : `(nicht beurteilt)`}: ${erfkrit.ErfkritTxt ? `${erfkrit.ErfkritTxt}` : `(keine Kriterien erfasst)`}`,
@@ -149,7 +146,6 @@ module.exports = (request, callback) => {
     )
     const apberFolderChildren = apberListe.map(apber => ({
       nodeId: `apber/${apber.JBerId}`,
-      type: `dataset`,
       table: `apber`,
       id: apber.JBerId,
       name: apber.JBerJahr ? apber.JBerJahr : `(kein Jahr)`,
@@ -179,7 +175,6 @@ module.exports = (request, callback) => {
     )
     const berFolderChildren = berListe.map(ber => ({
       nodeId: `ber/${ber.BerId}`,
-      type: `dataset`,
       table: `ber`,
       id: ber.BerId,
       name: `${ber.BerJahr ? `${ber.BerJahr}` : `(kein Jahr)`}: ${ber.BerTitel ? `${ber.BerTitel}` : `(kein Titel)`}`,
@@ -214,7 +209,6 @@ module.exports = (request, callback) => {
     )
     const beobNichtBeurteiltFolderChildren = beobNichtBeurteiltListe.map(beob => ({
       nodeId: `beobNichtBeurteilt/${beob.BeobId}`,
-      type: `dataset`,
       table: `beob_bereitgestellt`,
       id: beob.BeobId,
       name: `${beob.Datum ? `${beob.Datum}` : `(kein Datum)`}: ${beob.Autor ? `${beob.Autor}` : `(kein Autor)`} (${beob.Quelle})`,
@@ -258,7 +252,6 @@ module.exports = (request, callback) => {
     )
     const beobNichtZuzuordnenFolderChildren = beobNichtZuzuordnenListe.map(beob => ({
       nodeId: `beobNichtZuzuordnen/${beob.NO_NOTE}`,
-      type: `dataset`,
       table: `beobzuordnung`,
       id: beob.NO_NOTE,
       name: `${beob.Datum ? `${beob.Datum}` : `(kein Datum)`}: ${beob.Autor ? `${beob.Autor}` : `(kein Autor)`} (${beob.Quelle})`,
@@ -289,7 +282,6 @@ module.exports = (request, callback) => {
     )
     const assozartenFolderChildren = assozartenListe.map(assozart => ({
       nodeId: `assozarten/${assozart.AaId}`,
-      type: `dataset`,
       table: `assozart`,
       id: assozart.AaId,
       name: assozart.Artname,
@@ -302,7 +294,7 @@ module.exports = (request, callback) => {
       // qk folder
       {
         nodeId: `ap/${id}/qk`,
-        type: `folder`,
+        folder: `qk`,
         table: `ap`,
         id,
         name: `Qualitätskontrollen`,
@@ -312,7 +304,7 @@ module.exports = (request, callback) => {
       // pop folder
       {
         nodeId: `ap/${id}/pop`,
-        type: `folder`,
+        folder: `pop`,
         table: `ap`,
         id,
         name: `Populationen (${popListe.length})`,
@@ -322,7 +314,7 @@ module.exports = (request, callback) => {
       // ziel folder
       {
         nodeId: `ap/${id}/ziel`,
-        type: `folder`,
+        folder: `ziel`,
         table: `ap`,
         id,
         name: `AP-Ziele (${zielListe.length})`,
@@ -332,7 +324,7 @@ module.exports = (request, callback) => {
       // erfkrit folder
       {
         nodeId: `ap/${id}/erfkrit`,
-        type: `folder`,
+        folder: `erfkrit`,
         table: `ap`,
         id,
         name: `AP-Erfolgskriterien (${erfkritListe.length})`,
@@ -342,7 +334,7 @@ module.exports = (request, callback) => {
       // apber folder
       {
         nodeId: `ap/${id}/apber`,
-        type: `folder`,
+        folder: `apber`,
         table: `ap`,
         id,
         name: `AP-Berichte (${apberListe.length})`,
@@ -352,7 +344,7 @@ module.exports = (request, callback) => {
       // ber folder
       {
         nodeId: `ap/${id}/ber`,
-        type: `folder`,
+        folder: `ber`,
         table: `ap`,
         id,
         name: `Berichte (${berListe.length})`,
@@ -362,7 +354,7 @@ module.exports = (request, callback) => {
       // beobNichtBeurteilt folder
       {
         nodeId: `ap/${id}/beobNichtBeurteilt`,
-        type: `folder`,
+        folder: `beobNichtBeurteilt`,
         table: `ap`,
         id,
         name: `nicht beurteilte Beobachtungen (${beobNichtBeurteiltListe.length < 100 ? `` : `neuste `}${beobNichtBeurteiltListe.length})`,
@@ -372,7 +364,7 @@ module.exports = (request, callback) => {
       // beobNichtZuzuordnen folder
       {
         nodeId: `ap/${id}/beobNichtZuzuordnen`,
-        type: `folder`,
+        folder: `beobNichtZuzuordnen`,
         table: `ap`,
         id,
         name: `nicht zuzuordnende Beobachtungen (${beobNichtZuzuordnenListe.length < 100 ? `` : `neuste `}${beobNichtZuzuordnenListe.length})`,
@@ -382,7 +374,6 @@ module.exports = (request, callback) => {
       // idealbiotop
       {
         nodeId: `idealbiotop/${id}`,
-        type: `dataset`,
         table: `idealbiotop`,
         id,
         name: `Idealbiotop`,
@@ -392,7 +383,7 @@ module.exports = (request, callback) => {
       // assozarten folder
       {
         nodeId: `ap/${id}/assozarten`,
-        type: `folder`,
+        folder: `assozarten`,
         table: `ap`,
         id,
         name: `assoziierte Arten (${assozartenListe.length})`,
