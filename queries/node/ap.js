@@ -81,7 +81,7 @@ module.exports = (request, callback) => {
           apflora.ziel_typ_werte
           ON apflora.ziel."ZielTyp" = apflora.ziel_typ_werte."ZieltypId"
       WHERE
-        "ApArtId" = ${id}
+        apflora.ap."ApArtId" = ${id}
       ORDER BY
         apflora.ziel."ZielJahr" DESC,
         "ZielBezeichnung"`
@@ -115,7 +115,7 @@ module.exports = (request, callback) => {
           apflora.ap_erfkrit_werte
           ON apflora.erfkrit."ErfkritErreichungsgrad" = apflora.ap_erfkrit_werte."BeurteilId"
       WHERE
-        "ApArtId" = ${id}
+        apflora.ap."ApArtId" = ${id}
       ORDER BY
         "BeurteilOrd"`
     )
@@ -143,7 +143,7 @@ module.exports = (request, callback) => {
           apflora.ap
           ON apflora.erfkrit."ApArtId" = apflora.ap."ApArtId"
       WHERE
-        "ApArtId" = ${id}
+        apflora.ap."ApArtId" = ${id}
       ORDER BY
         "JBerJahr"`
     )
@@ -172,7 +172,7 @@ module.exports = (request, callback) => {
           apflora.ap
           ON apflora.ber."ApArtId" = apflora.ap."ApArtId"
       WHERE
-        "ApArtId" = ${id}
+        apflora.ap."ApArtId" = ${id}
       ORDER BY
         "BerJahr" DESC,
         "BerTitel"`
