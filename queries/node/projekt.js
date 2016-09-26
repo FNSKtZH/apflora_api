@@ -44,6 +44,7 @@ module.exports = (request, callback) => {
         name: projekt.ProjName,
         expanded: idActive || oneProject,
         children: [],
+        path: [`projekt/${projekt.ProjId}`],
       }
     })
     const apListe = yield app.db.many(`
@@ -71,6 +72,7 @@ module.exports = (request, callback) => {
         name: ap.Artname,
         expanded: false,
         children: [0],
+        path: [`projekt/${ap.ProjId}`, `ap/${ap.ApArtId}`]
       }))
       node.children = children
     })

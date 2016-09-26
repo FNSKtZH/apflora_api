@@ -18,11 +18,15 @@ module.exports = (request, callback) => {
         "PopNr",
         "PopName",
         "PopId",
-        "ApArtId"
+        apflora.ap."ApArtId",
+        apflora.ap."ProjId"
       FROM
         apflora.pop
+        INNER JOIN
+          apflora.ap
+          ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
       WHERE
-        "ApArtId" = ${id}
+        apflora.ap."ApArtId" = ${id}
       ORDER BY
         "PopNr",
         "PopName"`
@@ -56,6 +60,7 @@ module.exports = (request, callback) => {
       name: pop.name,
       expanded: false,
       children: [0],
+      path: [`projekt/${pop.ProjId}`, `ap/${pop.ApArtId}`, `pop/${pop.PopId}`],
     }))
 
     // build apziel
@@ -65,11 +70,16 @@ module.exports = (request, callback) => {
         apflora.ziel."ZielId",
         apflora.ziel_typ_werte."ZieltypTxt",
         apflora.ziel."ZielJahr",
-        apflora.ziel."ZielBezeichnung"
+        apflora.ziel."ZielBezeichnung",
+        apflora.ap."ProjId"
       FROM
         apflora.ziel
-        LEFT JOIN apflora.ziel_typ_werte
-        ON apflora.ziel."ZielTyp" = apflora.ziel_typ_werte."ZieltypId"
+        INNER JOIN
+          apflora.ap
+          ON apflora.ziel."ApArtId" = apflora.ap."ApArtId"
+        LEFT JOIN
+          apflora.ziel_typ_werte
+          ON apflora.ziel."ZielTyp" = apflora.ziel_typ_werte."ZieltypId"
       WHERE
         "ApArtId" = ${id}
       ORDER BY
@@ -84,18 +94,23 @@ module.exports = (request, callback) => {
       name: `${ziel.ZielJahr ? `${ziel.ZielJahr}` : `(kein Jahr)`}: ${ziel.ZielBezeichnung} (${ziel.ZieltypTxt})`,
       expanded: false,
       children: [0],
+      path: [`projekt/${ziel.ProjId}`, `ap/${ziel.ApArtId}`, `ziel/${ziel.ZielId}`],
     }))
 
     // build erfkrit
     const erfkritListe = yield app.db.any(`
       SELECT
         "ErfkritId",
-        "ApArtId",
+        apflora.ap."ApArtId",
         "BeurteilTxt",
         "ErfkritTxt",
-        "BeurteilOrd"
+        "BeurteilOrd",
+        apflora.ap."ProjId"
       FROM
         apflora.erfkrit
+        INNER JOIN
+          apflora.ap
+          ON apflora.erfkrit."ApArtId" = apflora.ap."ApArtId"
         LEFT JOIN
           apflora.ap_erfkrit_werte
           ON apflora.erfkrit."ErfkritErreichungsgrad" = apflora.ap_erfkrit_werte."BeurteilId"
@@ -112,16 +127,21 @@ module.exports = (request, callback) => {
       name: `${erfkrit.BeurteilTxt ? `${erfkrit.BeurteilTxt}` : `(nicht beurteilt)`}: ${erfkrit.ErfkritTxt ? `${erfkrit.ErfkritTxt}` : `(keine Kriterien erfasst)`}`,
       expanded: false,
       children: [0],
+      path: [`projekt/${erfkrit.ProjId}`, `ap/${erfkrit.ApArtId}`, `erfkrit/${erfkrit.ErfkritId}`],
     }))
 
     // build apber
     const apberListe = yield yield app.db.any(`
       SELECT
         "JBerId",
-        "ApArtId",
-        "JBerJahr"
+        apflora.ap."ApArtId",
+        "JBerJahr",
+        apflora.ap."ProjId"
       FROM
         apflora.apber
+        INNER JOIN
+          apflora.ap
+          ON apflora.erfkrit."ApArtId" = apflora.ap."ApArtId"
       WHERE
         "ApArtId" = ${id}
       ORDER BY
@@ -135,17 +155,22 @@ module.exports = (request, callback) => {
       name: apber.JBerJahr ? apber.JBerJahr : `(kein Jahr)`,
       expanded: false,
       children: [0],
+      path: [`projekt/${apber.ProjId}`, `ap/${apber.ApArtId}`, `apber/${apber.JBerId}`],
     }))
 
     // build ber
     const berListe = yield app.db.any(`
       SELECT
         "BerId",
-        "ApArtId",
+        apflora.ap."ApArtId",
         "BerJahr",
-        "BerTitel"
+        "BerTitel",
+        apflora.ap."ProjId"
       FROM
         apflora.ber
+        INNER JOIN
+          apflora.ap
+          ON apflora.ber."ApArtId" = apflora.ap."ApArtId"
       WHERE
         "ApArtId" = ${id}
       ORDER BY
@@ -160,6 +185,7 @@ module.exports = (request, callback) => {
       name: `${ber.BerJahr ? `${ber.BerJahr}` : `(kein Jahr)`}: ${ber.BerTitel ? `${ber.BerTitel}` : `(kein Titel)`}`,
       expanded: false,
       children: [0],
+      path: [`projekt/${ber.ProjId}`, `ap/${ber.ApArtId}`, `ber/${ber.BerId}`],
     }))
 
     // build beobNichtBeurteilt
@@ -169,11 +195,17 @@ module.exports = (request, callback) => {
         beob.beob_bereitgestellt."QuelleId",
         beob.beob_bereitgestellt."Datum",
         beob.beob_bereitgestellt."Autor",
-        beob.beob_quelle.name AS "Quelle"
+        beob.beob_quelle.name AS "Quelle",
+        apflora.ap."ProjId",
+        beob.beob_bereitgestellt."NO_ISFS"
       FROM
         beob.beob_bereitgestellt
-        LEFT JOIN beob.beob_quelle
-        ON beob.beob_quelle.id = beob.beob_bereitgestellt."QuelleId"
+        INNER JOIN
+          apflora.ap
+          ON beob.beob_bereitgestellt."NO_ISFS" = apflora.ap."ApArtId"
+        LEFT JOIN
+          beob.beob_quelle
+          ON beob.beob_quelle.id = beob.beob_bereitgestellt."QuelleId"
       WHERE
         beob.beob_bereitgestellt."NO_ISFS" = ${id}
       ORDER BY
@@ -188,6 +220,7 @@ module.exports = (request, callback) => {
       name: `${beob.Datum ? `${beob.Datum}` : `(kein Datum)`}: ${beob.Autor ? `${beob.Autor}` : `(kein Autor)`} (${beob.Quelle})`,
       expanded: false,
       children: [0],
+      path: [`projekt/${beob.ProjId}`, `ap/${beob.NO_ISFS}`, `beobNichtBeurteilt/${beob.BeobId}`],
     }))
 
     // build beobNichtZuzuordnen
@@ -201,12 +234,16 @@ module.exports = (request, callback) => {
         apflora.beobzuordnung."BeobMutWer",
         beob.beob_bereitgestellt."Datum",
         beob.beob_bereitgestellt."Autor",
-        beob.beob_quelle.name AS "Quelle"
+        beob.beob_quelle.name AS "Quelle",
+        apflora.ap."ProjId"
       FROM
         apflora.beobzuordnung
         INNER JOIN
           beob.beob_bereitgestellt
           ON apflora.beobzuordnung."NO_NOTE" = beob.beob_bereitgestellt."BeobId"
+          INNER JOIN
+            apflora.ap
+            ON beob.beob_bereitgestellt."NO_ISFS" = apflora.ap."ApArtId"
           LEFT JOIN
             beob.beob_quelle
             ON beob.beob_quelle.id = beob.beob_bereitgestellt."QuelleId"
@@ -227,15 +264,21 @@ module.exports = (request, callback) => {
       name: `${beob.Datum ? `${beob.Datum}` : `(kein Datum)`}: ${beob.Autor ? `${beob.Autor}` : `(kein Autor)`} (${beob.Quelle})`,
       expanded: false,
       children: [0],
+      path: [`projekt/${beob.ProjId}`, `ap/${beob.NO_ISFS}`, `beobNichtZuzuordnen/${beob.NO_NOTE}`],
     }))
 
     // build assozarten
     const assozartenListe = yield app.db.any(`
       SELECT
         apflora.assozart."AaId",
-        beob.adb_eigenschaften."Artname"
+        beob.adb_eigenschaften."Artname",
+        apflora.ap."ProjId",
+        apflora.ap."ApArtId"
       FROM
         apflora.assozart
+        INNER JOIN
+          apflora.ap
+          ON apflora.assozart."AaApArtId" = apflora.ap."ApArtId"
         LEFT JOIN
           beob.adb_eigenschaften
           ON apflora.assozart."AaSisfNr" = beob.adb_eigenschaften."TaxonomieId"
@@ -252,6 +295,7 @@ module.exports = (request, callback) => {
       name: assozart.Artname,
       expanded: false,
       children: [0],
+      path: [`projekt/${assozart.ProjId}`, `ap/${assozart.ApArtId}`, `assozarten/${assozart.AaId}`],
     }))
 
     return [
