@@ -61,7 +61,7 @@ module.exports = (request, callback) => {
       `
     )
     nodes.forEach((node) => {
-      const childrenAps = apListe.filter(el => el.ProjId === node.datasetId)
+      const childrenAps = apListe.filter(el => el.ProjId === node.id)
       // build nodes for ap
       const children = childrenAps.map(ap => ({
         nodeId: `ap/${ap.ApArtId}`,
