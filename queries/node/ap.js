@@ -29,7 +29,7 @@ module.exports = (request, callback) => {
     )
     // PopNr: Je nach Anzahl Stellen der maximalen PopNr bei denjenigen mit weniger Nullen
     // Nullen voranstellen, damit sie im tree auch als String richtig sortiert werden
-    const popNrMax = _.maxBy(popListe, pop => pop.PopNr).PopNr
+    const popNrMax = _.max(popListe, pop => pop.PopNr).PopNr
     popListe.forEach((pop) => {
       pop.PopNr = ergaenzePopNrUmFuehrendeNullen(popNrMax, pop.PopNr)
       // nodes für pop aufbauen
