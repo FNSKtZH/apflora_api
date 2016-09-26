@@ -141,7 +141,7 @@ module.exports = (request, callback) => {
         apflora.apber
         INNER JOIN
           apflora.ap
-          ON apflora.erfkrit."ApArtId" = apflora.ap."ApArtId"
+          ON apflora.apber."ApArtId" = apflora.ap."ApArtId"
       WHERE
         apflora.ap."ApArtId" = ${id}
       ORDER BY
