@@ -279,7 +279,7 @@ SELECT
   apflora.tpopmassn."TPopId" AS "tpopid",
   apflora.tpopmassn."TPopMassnTyp" AS "tpopmassntyp",
   apflora.tpopmassn."TPopMassnJahr" AS "massnjahr",
-  apflora.tpopmassn."TPopMassnDatum" AS "massndatum",
+  apflora.tpopmassn."TPopMassnDatum"::timestamp AS "massndatum",
   apflora.tpopmassn."TPopMassnBearb" AS "tpopmassnbearb",
   apflora.tpopmassn."TPopMassnTxt" AS "massnmassnahme",
   apflora.tpopmassn."TPopMassnPlan" AS "massnplanvorhanden",
@@ -295,7 +295,7 @@ SELECT
   apflora.tpopmassn."TPopMassnAnsiedHerkunftPop" AS "massnherkunftspopulation",
   apflora.tpopmassn."TPopMassnAnsiedDatSamm" AS "massnsammeldatum",
   apflora.tpopmassn."TPopMassnBemTxt" AS "tpopmassnbemtxt",
-  apflora.tpopmassn."MutWann" AS "massnmutwann",
+  apflora.tpopmassn."MutWann"::timestamp AS "massnmutwann",
   apflora.tpopmassn."MutWer" AS "massnmutwer"
 FROM
   apflora.tpopmassn;
@@ -341,7 +341,7 @@ SELECT
   apflora.tpop."TPopBewirtschaftung" AS "tpopbewirtschaftung",
   CAST(apflora.tpopmassn."TPopMassnGuid" AS varchar(50)) AS "massnguid",
   apflora.tpopmassn."TPopMassnJahr" AS "massnjahr",
-  apflora.tpopmassn."TPopMassnDatum" AS "massndatum",
+  apflora.tpopmassn."TPopMassnDatum"::timestamp AS "massndatum",
   tpopmassn_typ_werte."MassnTypTxt" AS "massntyp",
   apflora.tpopmassn."TPopMassnTxt" AS "massnmassnahme",
   apflora.adresse."AdrName" AS "massnbearbeiterin",
@@ -357,7 +357,7 @@ SELECT
   apflora.tpopmassn."TPopMassnAnsiedWirtspfl" AS "massnwirtspflanze",
   apflora.tpopmassn."TPopMassnAnsiedHerkunftPop" AS "massnherkunftspopulation",
   apflora.tpopmassn."TPopMassnAnsiedDatSamm" AS "massnsammeldatum",
-  apflora.tpopmassn."MutWann" AS "massnmutwann",
+  apflora.tpopmassn."MutWann"::timestamp AS "massnmutwann",
   apflora.tpopmassn."MutWer" AS "massnmutwer"
 FROM
   ((((((beob.adb_eigenschaften
@@ -806,7 +806,7 @@ SELECT
   apflora.pop."PopBekanntSeit" AS "popbekanntseit",
   apflora.pop."PopXKoord" AS "popxkoord",
   apflora.pop."PopYKoord" AS "popykoord",
-  apflora.pop."MutWann" AS "mutwann",
+  apflora.pop."MutWann"::timestamp AS "mutwann",
   apflora.pop."MutWer" AS "mutwer"
 FROM
   apflora.pop;
@@ -828,7 +828,7 @@ SELECT
   apflora.pop."PopHerkunftUnklarBegruendung" AS "popherkunftunklarbegruendung",
   apflora.pop."PopXKoord" AS "popxkoord",
   apflora.pop."PopYKoord" AS "popykoord",
-  apflora.pop."MutWann" AS "mutwann",
+  apflora.pop."MutWann"::timestamp AS "mutwann",
   apflora.pop."MutWer" AS "mutwer"
 FROM
   ((((beob.adb_eigenschaften
@@ -1191,7 +1191,7 @@ SELECT
   apflora.tpop."TPopBewirtschafterIn" AS "tpopbewirtschafterin",
   apflora.tpop."TPopBewirtschaftung" AS "tpopbewirtschaftung",
   apflora.tpop."TPopTxt" AS "tpoptxt",
-  apflora.tpop."MutWann" AS "mutwann",
+  apflora.tpop."MutWann"::timestamp AS "mutwann",
   apflora.tpop."MutWer" AS "mutwer"
 FROM
   apflora.tpop;
@@ -1234,7 +1234,7 @@ SELECT
   apflora.tpop."TPopNutzungszone" AS "tpopnutzungszone",
   apflora.tpop."TPopBewirtschafterIn" AS "tpopbewirtschafterin",
   apflora.tpop."TPopBewirtschaftung" AS "tpopbewirtschaftung",
-  apflora.tpop."MutWann" AS "mutwann",
+  apflora.tpop."MutWann"::timestamp AS "mutwann",
   apflora.tpop."MutWer" AS "mutwer"
 FROM
   (((((beob.adb_eigenschaften
@@ -3982,7 +3982,7 @@ SELECT
   CAST(apflora.tpopkontr."TPopKontrGuid" AS varchar(50)) AS tpopkontrguid,
   apflora.tpopkontr."TPopKontrTyp" AS tpopkontrtyp,
   apflora.tpopkontr."TPopKontrJahr" AS tpopkontrjahr,
-  apflora.tpopkontr."TPopKontrDatum" AS tpopkontrdatum,
+  apflora.tpopkontr."TPopKontrDatum"::timestamp AS tpopkontrdatum,
   apflora.tpopkontr."TPopKontrBearb" AS tpopkontrbearb,
   apflora.tpopkontr."TPopKontrJungpfl" AS tpopkontrjungpfl,
   apflora.tpopkontr."TPopKontrUeberleb" AS tpopkontrueberleb,
@@ -4019,7 +4019,7 @@ SELECT
   apflora.tpopkontr."TPopKontrVegHoeMit" AS tpopkontrveghoemit,
   apflora.tpopkontr."TPopKontrGefaehrdung" AS tpopkontrgefaehrdung,
   apflora.tpopkontr."TPopKontrTxt" AS tpopkontrtxt,
-  apflora.tpopkontr."MutWann" AS mutwann,
+  apflora.tpopkontr."MutWann"::timestamp AS mutwann,
   apflora.tpopkontr."MutWer" AS mutwer
 FROM
   apflora.tpopkontr;
@@ -4046,7 +4046,7 @@ SELECT
   apflora.tpop."TPopBekanntSeit" AS tpopbekanntseit,
   CAST(apflora.tpopkontr."TPopKontrGuid" AS varchar(50)) AS tpopkontrguid,
   apflora.tpopkontr."TPopKontrJahr" AS tpopkontrjahr,
-  apflora.tpopkontr."TPopKontrDatum" AS tpopkontrdatum,
+  apflora.tpopkontr."TPopKontrDatum"::timestamp AS tpopkontrdatum,
   apflora.tpopkontr_typ_werte."DomainTxt" AS tpopkontrtyp,
   apflora.adresse."AdrName" AS tpopkontrbearb,
   apflora.tpopkontr."TPopKontrUeberleb" AS tpopkontrueberleb,
@@ -4082,7 +4082,7 @@ SELECT
   apflora.tpopkontr."TPopKontrVegHoeMax" AS tpopkontrveghoemax,
   apflora.tpopkontr."TPopKontrVegHoeMit" AS tpopkontrveghoemit,
   apflora.tpopkontr."TPopKontrGefaehrdung" AS tpopkontrgefaehrdung,
-  apflora.tpopkontr."MutWann" AS mutwann,
+  apflora.tpopkontr."MutWann"::timestamp AS mutwann,
   apflora.tpopkontr."MutWer" AS mutwer
 FROM
   (((((beob.adb_eigenschaften
