@@ -13,7 +13,7 @@ const arrayOfRouteArrays = fs.readdirSync(__dirname)
     (file.indexOf(`.`) !== 0) && (file !== basename)
   )
   .map(file =>
-    require(path.join(__dirname, file)) // eslint-disable-line global-require
+    require(path.join(__dirname, file)) // eslint-disable-line global-require, import/no-dynamic-require
   )
 
 let routes = []
