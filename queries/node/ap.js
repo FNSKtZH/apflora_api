@@ -59,7 +59,7 @@ module.exports = (request, callback) => {
       name: pop.name,
       expanded: false,
       children: [0],
-      path: [`projekt/${pop.ProjId}`, `ap/${pop.ApArtId}`, `pop/${pop.PopId}`],
+      path: [{ table: `projekt`, id: pop.ProjId }, { table: `ap`, id: pop.ApArtId }, { table: `pop`, id: pop.PopId }],
     }))
 
     // build apziel
@@ -92,7 +92,7 @@ module.exports = (request, callback) => {
       name: `${ziel.ZielJahr ? `${ziel.ZielJahr}` : `(kein Jahr)`}: ${ziel.ZielBezeichnung} (${ziel.ZieltypTxt})`,
       expanded: false,
       children: [0],
-      path: [`projekt/${ziel.ProjId}`, `ap/${ziel.ApArtId}`, `ziel/${ziel.ZielId}`],
+      path: [{ table: `projekt`, id: ziel.ProjId }, { table: `ap`, id: ziel.ApArtId }, { table: `ziel`, id: ziel.ZielId }],
     }))
 
     // build erfkrit
@@ -124,7 +124,7 @@ module.exports = (request, callback) => {
       name: `${erfkrit.BeurteilTxt ? `${erfkrit.BeurteilTxt}` : `(nicht beurteilt)`}: ${erfkrit.ErfkritTxt ? `${erfkrit.ErfkritTxt}` : `(keine Kriterien erfasst)`}`,
       expanded: false,
       children: [0],
-      path: [`projekt/${erfkrit.ProjId}`, `ap/${erfkrit.ApArtId}`, `erfkrit/${erfkrit.ErfkritId}`],
+      path: [{ table: `projekt`, id: erfkrit.ProjId }, { table: `ap`, id: erfkrit.ApArtId }, { table: `erfkrit`, id: erfkrit.ErfkritId }],
     }))
 
     // build apber
@@ -151,7 +151,7 @@ module.exports = (request, callback) => {
       name: apber.JBerJahr ? apber.JBerJahr : `(kein Jahr)`,
       expanded: false,
       children: [0],
-      path: [`projekt/${apber.ProjId}`, `ap/${apber.ApArtId}`, `apber/${apber.JBerId}`],
+      path: [{ table: `projekt`, id: apber.ProjId }, { table: `ap`, id: apber.ApArtId }, { table: `apber`, id: apber.JBerId }],
     }))
 
     // build ber
@@ -180,7 +180,7 @@ module.exports = (request, callback) => {
       name: `${ber.BerJahr ? `${ber.BerJahr}` : `(kein Jahr)`}: ${ber.BerTitel ? `${ber.BerTitel}` : `(kein Titel)`}`,
       expanded: false,
       children: [0],
-      path: [`projekt/${ber.ProjId}`, `ap/${ber.ApArtId}`, `ber/${ber.BerId}`],
+      path: [{ table: `projekt`, id: ber.ProjId }, { table: `ap`, id: ber.ApArtId }, { table: `ber`, id: ber.BerId }],
     }))
 
     // build beobNichtBeurteilt
@@ -214,7 +214,7 @@ module.exports = (request, callback) => {
       name: `${beob.Datum ? `${beob.Datum}` : `(kein Datum)`}: ${beob.Autor ? `${beob.Autor}` : `(kein Autor)`} (${beob.Quelle})`,
       expanded: false,
       children: [0],
-      path: [`projekt/${beob.ProjId}`, `ap/${beob.NO_ISFS}`, `beobNichtBeurteilt/${beob.BeobId}`],
+      path: [{ table: `projekt`, id: beob.ProjId }, { table: `ap`, id: beob.NO_ISFS }, { table: `beobNichtBeurteilt`, id: beob.BeobId }],
     }))
 
     // build beobNichtZuzuordnen
@@ -257,7 +257,7 @@ module.exports = (request, callback) => {
       name: `${beob.Datum ? `${beob.Datum}` : `(kein Datum)`}: ${beob.Autor ? `${beob.Autor}` : `(kein Autor)`} (${beob.Quelle})`,
       expanded: false,
       children: [0],
-      path: [`projekt/${beob.ProjId}`, `ap/${beob.NO_ISFS}`, `beobNichtZuzuordnen/${beob.NO_NOTE}`],
+      path: [{ table: `projekt`, id: beob.ProjId }, { table: `ap`, id: beob.NO_ISFS }, { table: `beobNichtZuzuordnen`, id: beob.NO_NOTE }],
     }))
 
     // build assozarten
@@ -287,7 +287,7 @@ module.exports = (request, callback) => {
       name: assozart.Artname,
       expanded: false,
       children: [0],
-      path: [`projekt/${assozart.ProjId}`, `ap/${assozart.ApArtId}`, `assozarten/${assozart.AaId}`],
+      path: [{ table: `projekt`, id: assozart.ProjId }, { table: `ap`, id: assozart.ApArtId }, { table: `assozart`, id: assozart.AaId }],
     }))
 
     return [
