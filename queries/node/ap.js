@@ -58,7 +58,7 @@ module.exports = (request, callback) => {
       id: pop.PopId,
       name: pop.name,
       expanded: false,
-      children: [`lade Daten...`],
+      children: [0],
       path: [`projekt/${pop.ProjId}`, `ap/${pop.ApArtId}`, `pop/${pop.PopId}`],
     }))
 
@@ -91,7 +91,7 @@ module.exports = (request, callback) => {
       id: ziel.ZielId,
       name: `${ziel.ZielJahr ? `${ziel.ZielJahr}` : `(kein Jahr)`}: ${ziel.ZielBezeichnung} (${ziel.ZieltypTxt})`,
       expanded: false,
-      children: [`lade Daten...`],
+      children: [0],
       path: [`projekt/${ziel.ProjId}`, `ap/${ziel.ApArtId}`, `ziel/${ziel.ZielId}`],
     }))
 
@@ -123,7 +123,7 @@ module.exports = (request, callback) => {
       id: erfkrit.ErfkritId,
       name: `${erfkrit.BeurteilTxt ? `${erfkrit.BeurteilTxt}` : `(nicht beurteilt)`}: ${erfkrit.ErfkritTxt ? `${erfkrit.ErfkritTxt}` : `(keine Kriterien erfasst)`}`,
       expanded: false,
-      children: [`lade Daten...`],
+      children: [0],
       path: [`projekt/${erfkrit.ProjId}`, `ap/${erfkrit.ApArtId}`, `erfkrit/${erfkrit.ErfkritId}`],
     }))
 
@@ -150,7 +150,7 @@ module.exports = (request, callback) => {
       id: apber.JBerId,
       name: apber.JBerJahr ? apber.JBerJahr : `(kein Jahr)`,
       expanded: false,
-      children: [`lade Daten...`],
+      children: [0],
       path: [`projekt/${apber.ProjId}`, `ap/${apber.ApArtId}`, `apber/${apber.JBerId}`],
     }))
 
@@ -179,7 +179,7 @@ module.exports = (request, callback) => {
       id: ber.BerId,
       name: `${ber.BerJahr ? `${ber.BerJahr}` : `(kein Jahr)`}: ${ber.BerTitel ? `${ber.BerTitel}` : `(kein Titel)`}`,
       expanded: false,
-      children: [`lade Daten...`],
+      children: [0],
       path: [`projekt/${ber.ProjId}`, `ap/${ber.ApArtId}`, `ber/${ber.BerId}`],
     }))
 
@@ -213,7 +213,7 @@ module.exports = (request, callback) => {
       id: beob.BeobId,
       name: `${beob.Datum ? `${beob.Datum}` : `(kein Datum)`}: ${beob.Autor ? `${beob.Autor}` : `(kein Autor)`} (${beob.Quelle})`,
       expanded: false,
-      children: [`lade Daten...`],
+      children: [0],
       path: [`projekt/${beob.ProjId}`, `ap/${beob.NO_ISFS}`, `beobNichtBeurteilt/${beob.BeobId}`],
     }))
 
@@ -256,7 +256,7 @@ module.exports = (request, callback) => {
       id: beob.NO_NOTE,
       name: `${beob.Datum ? `${beob.Datum}` : `(kein Datum)`}: ${beob.Autor ? `${beob.Autor}` : `(kein Autor)`} (${beob.Quelle})`,
       expanded: false,
-      children: [`lade Daten...`],
+      children: [0],
       path: [`projekt/${beob.ProjId}`, `ap/${beob.NO_ISFS}`, `beobNichtZuzuordnen/${beob.NO_NOTE}`],
     }))
 
@@ -286,7 +286,7 @@ module.exports = (request, callback) => {
       id: assozart.AaId,
       name: assozart.Artname,
       expanded: false,
-      children: [`lade Daten...`],
+      children: [0],
       path: [`projekt/${assozart.ProjId}`, `ap/${assozart.ApArtId}`, `assozarten/${assozart.AaId}`],
     }))
 
