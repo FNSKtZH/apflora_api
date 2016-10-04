@@ -28,13 +28,15 @@
     "gulp": "3.9.1",
     "gulp-sftp": "0.1.5",
     "lab": "11.1.0",
+    "nodemon": "1.10.2",
     "require-dir": "0.3.0",
     "run-sequence": "1.2.2"
   },
   "scripts": {
+    "dev": "npm run lint && npm test && nodemon startServer.js",
+    "devWithoutLinting": "npm test && nodemon startServer.js",
+    "devWithoutTests": "nodemon startServer.js",
     "start": "npm run lint && npm test && node startServer.js",
-    "startWithoutLinting": "npm test && node startServer.js",
-    "startWithoutTests": "node startServer.js",
     "predeploy": "gulp prod_clean_dist",
     "deploy": "gulp prod_copy",
     "postdeploy": "gulp prod_sftp",
