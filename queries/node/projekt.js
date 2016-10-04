@@ -35,13 +35,13 @@ module.exports = (request, callback) => {
     )
     const nodes = projects.map((projekt) => {
       const idActive = !!id && id === projekt.ProjId
-      const oneProject = projects.length === 1
+      // const oneProject = projects.length === 1  // temporarily disabled
       return {
         nodeId: `projekt/${projekt.ProjId}`,
         table: `projekt`,
         id: projekt.ProjId,
         name: projekt.ProjName,
-        expanded: idActive || oneProject,
+        expanded: idActive, // || oneProject,  // temporarily disabled
         children: [],
         path: [{ table: `projekt`, id: projekt.ProjId }],
       }
