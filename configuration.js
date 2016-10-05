@@ -217,7 +217,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'projekt',
     initiiereFunktion: '',
-    treeTyp: 'projekt!',
+    treeTyp: 'projekt',
   },
 ]
 
