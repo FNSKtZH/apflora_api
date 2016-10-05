@@ -11,10 +11,6 @@ module.exports = (request, callback) => {
     id = parseInt(id, 0)
   }
 
-  const popId = id
-  let apArtId
-  let projId
-
   // build tpop
   app.db.task(function* getData() {
     let tpopListe = yield app.db.any(`
@@ -34,7 +30,7 @@ module.exports = (request, callback) => {
             apflora.ap
             ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
       WHERE
-        apflora.tpop."PopId" = ${popId}
+        apflora.tpop."PopId" = ${id}
       ORDER BY
         "TPopNr",
         "TPopFlurname"`
@@ -47,8 +43,6 @@ module.exports = (request, callback) => {
       tpop.TPopNr = ergaenzeNrUmFuehrendeNullen(tpopNrMax, tpop.TPopNr)
     })
     tpopListe = _.sortBy(tpopListe, `sort`)
-    apArtId = tpopListe[0].ApArtId
-    projId = tpopListe[0].ProjId
     const tpopFolderChildren = tpopListe.map(tpop => ({
       nodeId: `tpop/${tpop.TPopId}`,
       table: `tpop`,
@@ -96,7 +90,7 @@ module.exports = (request, callback) => {
       nodeId: `popber/${popber.PopBerId}`,
       table: `popber`,
       id: popber.PopBerId,
-      name: `${popber.ZielJahr ? `${popber.ZielJahr}` : `(kein Jahr)`}: ${popber.ZielBezeichnung} (${popber.ZieltypTxt})`,
+      name: `${popber.PopBerJahr ? `${popber.PopBerJahr}` : `(kein Jahr)`}: ${popber.EntwicklungTxt ? popber.EntwicklungTxt : `(nicht beurteilt)`}`,
       expanded: false,
       children: [0],
       path: [
@@ -108,33 +102,47 @@ module.exports = (request, callback) => {
       ],
     }))
 
-    // build erfkrit
+    // build popmassnber
     const popmassnberListe = yield app.db.any(`
       SELECT
         "PopMassnBerId",
-        "PopId",
+        apflora.popmassnber."PopId",
         "PopMassnBerJahr",
         "BeurteilTxt",
-        "BeurteilOrd"
+        "BeurteilOrd",
+        apflora.ap."ApArtId",
+        apflora.ap."ProjId"
       FROM
         apflora.popmassnber
         LEFT JOIN
           apflora.tpopmassn_erfbeurt_werte
           ON "PopMassnBerErfolgsbeurteilung" = "BeurteilId"
+        INNER JOIN
+          apflora.pop
+          ON apflora.popmassnber."PopId" = apflora.pop."PopId"
+          INNER JOIN
+            apflora.ap
+            ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
       WHERE
-        "PopId" = ${id}
+        apflora.popmassnber."PopId" = ${id}
       ORDER BY
         "PopMassnBerJahr",
         "BeurteilOrd"`
     )
-    const popmassnberFolderChildren = popmassnberListe.map(erfkrit => ({
-      nodeId: `erfkrit/${erfkrit.ErfkritId}`,
-      table: `erfkrit`,
-      id: erfkrit.ErfkritId,
-      name: `${erfkrit.BeurteilTxt ? `${erfkrit.BeurteilTxt}` : `(nicht beurteilt)`}: ${erfkrit.ErfkritTxt ? `${erfkrit.ErfkritTxt}` : `(keine Kriterien erfasst)`}`,
+    const popmassnberFolderChildren = popmassnberListe.map(pmb => ({
+      nodeId: `popmassnber/${pmb.ErfkritId}`,
+      table: `popmassnber`,
+      id: pmb.ErfkritId,
+      name: `${pmb.PopMassnBerJahr ? `${pmb.PopMassnBerJahr}` : `(kein Jahr)`}: ${pmb.BeurteilTxt ? `${pmb.BeurteilTxt}` : `(nicht beurteilt)`}`,
       expanded: false,
       children: [0],
-      path: [{ table: `projekt`, id: erfkrit.ProjId }, { table: `ap`, id: erfkrit.ApArtId }, { table: `erfkrit`, id: erfkrit.ErfkritId }],
+      path: [
+        { table: `projekt`, id: pmb.ProjId },
+        { table: `ap`, id: pmb.ApArtId },
+        { table: `pop`, id: pmb.PopId },
+        { table: `pop`, id: pmb.PopId, folder: `popmassnber` },
+        { table: `popmassnber`, id: pmb.PopMassnBerId }
+      ],
     }))
 
     return [
