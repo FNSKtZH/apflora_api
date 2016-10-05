@@ -32,9 +32,12 @@ module.exports = (request, callback) => {
         "PopNr",
         "PopName"`
     )
+    // get projId
+    // need it to build paths for folders
     if (popListe.length > 0) {
       projId = popListe[0].ProjId
     } else {
+      // need to fetch via ap if no pop exist yet
       const ap = yield app.db.oneOrNone(`
         SELECT
           "ProjId"

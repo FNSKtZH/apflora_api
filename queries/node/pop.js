@@ -6,6 +6,8 @@ const ergaenzeNrUmFuehrendeNullen = require(`../../src/ergaenzeNrUmFuehrendeNull
 
 module.exports = (request, callback) => {
   let id = encodeURIComponent(request.query.id)
+  let projId
+  let apArtId
 
   if (id) {
     id = parseInt(id, 0)
@@ -35,6 +37,28 @@ module.exports = (request, callback) => {
         "TPopNr",
         "TPopFlurname"`
     )
+    // get projId and apArtId
+    // need them to build paths for folders
+    if (tpopListe.length > 0) {
+      projId = tpopListe[0].ProjId
+      apArtId = tpopListe[0].ApArtId
+    } else {
+      // need to fetch via pop if no tpop exist yet
+      const ap = yield app.db.oneOrNone(`
+        SELECT
+          apflora.ap."ProjId"
+          apflora.ap."ApArtId"
+        FROM
+          apflora.ap
+          INNER JOIN
+            apflora.pop
+            ON apflora.pop."ApArtId" = apflora.ap."apArtId"
+        WHERE
+          "PopId" = ${id}
+      `)
+      projId = ap.ProjId
+      apArtId = ap.ApArtId
+    }
     // TPopNr: Je nach Anzahl Stellen der maximalen TPopNr bei denjenigen mit weniger Nullen
     // Nullen voranstellen, damit sie im tree auch als String richtig sortiert werden
     const tpopNrMax = _.max(tpopListe, tpop => tpop.TPopNr).TPopNr
@@ -149,9 +173,14 @@ module.exports = (request, callback) => {
         folder: `tpop`,
         table: `pop`,
         id,
-        name: `Teilpopulationen (${tpopListe.length})`,
+        name: `Teil-Populationen (${tpopListe.length})`,
         expanded: false,
         children: tpopFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id: apArtId },
+          { table: `pop`, id },
+        ],
       },
       // popber folder
       {
@@ -162,6 +191,11 @@ module.exports = (request, callback) => {
         name: `Kontroll-Berichte (${popberListe.length})`,
         expanded: false,
         children: popberFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id: apArtId },
+          { table: `pop`, id },
+        ],
       },
       // popmassnber folder
       {
@@ -172,6 +206,11 @@ module.exports = (request, callback) => {
         name: `Massnahmen-Berichte (${popmassnberListe.length})`,
         expanded: false,
         children: popmassnberFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id: apArtId },
+          { table: `pop`, id },
+        ],
       },
     ]
   })
