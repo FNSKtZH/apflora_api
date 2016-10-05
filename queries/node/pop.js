@@ -11,6 +11,10 @@ module.exports = (request, callback) => {
     id = parseInt(id, 0)
   }
 
+  const popId = id
+  let apArtId
+  let projId
+
   // build tpop
   app.db.task(function* getData() {
     let tpopListe = yield app.db.any(`
@@ -23,14 +27,14 @@ module.exports = (request, callback) => {
         apflora.ap."ProjId"
       FROM
         apflora.tpop
-          INNER JOIN
+        INNER JOIN
           apflora.pop
           ON apflora.tpop."PopId" = apflora.pop."PopId"
-            INNER JOIN
+          INNER JOIN
             apflora.ap
             ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
       WHERE
-        apflora.tpop."PopId" = ${id}
+        apflora.tpop."PopId" = ${popId}
       ORDER BY
         "TPopNr",
         "TPopFlurname"`
@@ -43,6 +47,8 @@ module.exports = (request, callback) => {
       tpop.TPopNr = ergaenzeNrUmFuehrendeNullen(tpopNrMax, tpop.TPopNr)
     })
     tpopListe = _.sortBy(tpopListe, `sort`)
+    apArtId = tpopListe[0].ApArtId
+    projId = tpopListe[0].ProjId
     const tpopFolderChildren = tpopListe.map(tpop => ({
       nodeId: `tpop/${tpop.TPopId}`,
       table: `tpop`,
@@ -59,62 +65,69 @@ module.exports = (request, callback) => {
       ],
     }))
 
-    // build apziel
-    const zielListe = yield app.db.any(`
+    // build popber
+    const popberListe = yield app.db.any(`
       SELECT
-        apflora.ziel."ApArtId",
-        apflora.ziel."ZielId",
-        apflora.ziel_typ_werte."ZieltypTxt",
-        apflora.ziel."ZielJahr",
-        apflora.ziel."ZielBezeichnung",
+        "PopBerId",
+        apflora.popber."PopId",
+        "PopBerJahr",
+        "EntwicklungTxt",
+        "EntwicklungOrd",
+        apflora.ap."ApArtId",
         apflora.ap."ProjId"
       FROM
-        apflora.ziel
-        INNER JOIN
-          apflora.ap
-          ON apflora.ziel."ApArtId" = apflora.ap."ApArtId"
+        apflora.popber
         LEFT JOIN
-          apflora.ziel_typ_werte
-          ON apflora.ziel."ZielTyp" = apflora.ziel_typ_werte."ZieltypId"
+          apflora.pop_entwicklung_werte
+          ON "PopBerEntwicklung" = "EntwicklungId"
+        INNER JOIN
+          apflora.pop
+          ON apflora.popber."PopId" = apflora.pop."PopId"
+          INNER JOIN
+            apflora.ap
+            ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
       WHERE
-        apflora.ap."ApArtId" = ${id}
+        apflora.popber."PopId" = ${id}
       ORDER BY
-        apflora.ziel."ZielJahr" DESC,
-        "ZielBezeichnung"`
+        "PopBerJahr",
+        "EntwicklungOrd"`
     )
-    const zielFolderChildren = zielListe.map(ziel => ({
-      nodeId: `ziel/${ziel.ZielId}`,
-      table: `ziel`,
-      id: ziel.ZielId,
-      name: `${ziel.ZielJahr ? `${ziel.ZielJahr}` : `(kein Jahr)`}: ${ziel.ZielBezeichnung} (${ziel.ZieltypTxt})`,
+    const popberFolderChildren = popberListe.map(popber => ({
+      nodeId: `popber/${popber.PopBerId}`,
+      table: `popber`,
+      id: popber.PopBerId,
+      name: `${popber.ZielJahr ? `${popber.ZielJahr}` : `(kein Jahr)`}: ${popber.ZielBezeichnung} (${popber.ZieltypTxt})`,
       expanded: false,
       children: [0],
-      path: [{ table: `projekt`, id: ziel.ProjId }, { table: `ap`, id: ziel.ApArtId }, { table: `ziel`, id: ziel.ZielId }],
+      path: [
+        { table: `projekt`, id: popber.ProjId },
+        { table: `ap`, id: popber.ApArtId },
+        { table: `pop`, id: popber.PopId },
+        { table: `pop`, id: popber.PopId, folder: `popber` },
+        { table: `popber`, id: popber.PopBerId }
+      ],
     }))
 
     // build erfkrit
-    const erfkritListe = yield app.db.any(`
+    const popmassnberListe = yield app.db.any(`
       SELECT
-        "ErfkritId",
-        apflora.ap."ApArtId",
+        "PopMassnBerId",
+        "PopId",
+        "PopMassnBerJahr",
         "BeurteilTxt",
-        "ErfkritTxt",
-        "BeurteilOrd",
-        apflora.ap."ProjId"
+        "BeurteilOrd"
       FROM
-        apflora.erfkrit
-        INNER JOIN
-          apflora.ap
-          ON apflora.erfkrit."ApArtId" = apflora.ap."ApArtId"
+        apflora.popmassnber
         LEFT JOIN
-          apflora.ap_erfkrit_werte
-          ON apflora.erfkrit."ErfkritErreichungsgrad" = apflora.ap_erfkrit_werte."BeurteilId"
+          apflora.tpopmassn_erfbeurt_werte
+          ON "PopMassnBerErfolgsbeurteilung" = "BeurteilId"
       WHERE
-        apflora.ap."ApArtId" = ${id}
+        "PopId" = ${id}
       ORDER BY
+        "PopMassnBerJahr",
         "BeurteilOrd"`
     )
-    const erfkritFolderChildren = erfkritListe.map(erfkrit => ({
+    const popmassnberFolderChildren = popmassnberListe.map(erfkrit => ({
       nodeId: `erfkrit/${erfkrit.ErfkritId}`,
       table: `erfkrit`,
       id: erfkrit.ErfkritId,
@@ -127,33 +140,33 @@ module.exports = (request, callback) => {
     return [
       // tpop folder
       {
-        nodeId: `ap/${id}/qk`,
-        folder: `qk`,
-        table: `ap`,
+        nodeId: `pop/${id}/tpop`,
+        folder: `tpop`,
+        table: `pop`,
         id,
-        name: `Qualitätskontrollen`,
+        name: `Teilpopulationen (${tpopListe.length})`,
         expanded: false,
-        children: [],
+        children: tpopFolderChildren,
       },
       // popber folder
       {
-        nodeId: `ap/${id}/pop`,
-        folder: `pop`,
-        table: `ap`,
+        nodeId: `pop/${id}/popber`,
+        folder: `popber`,
+        table: `pop`,
         id,
-        name: `Populationen (${popListe.length})`,
+        name: `Kontroll-Berichte (${popberListe.length})`,
         expanded: false,
-        children: popFolderChildren,
+        children: popberFolderChildren,
       },
       // popmassnber folder
       {
-        nodeId: `ap/${id}/ziel`,
-        folder: `ziel`,
-        table: `ap`,
+        nodeId: `pop/${id}/popmassnber`,
+        folder: `popmassnber`,
+        table: `pop`,
         id,
-        name: `AP-Ziele (${zielListe.length})`,
+        name: `Massnahmen-Berichte (${popmassnberListe.length})`,
         expanded: false,
-        children: zielFolderChildren,
+        children: popmassnberFolderChildren,
       },
     ]
   })
