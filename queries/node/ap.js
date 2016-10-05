@@ -6,6 +6,7 @@ const ergaenzeNrUmFuehrendeNullen = require(`../../src/ergaenzeNrUmFuehrendeNull
 
 module.exports = (request, callback) => {
   let id = encodeURIComponent(request.query.id)
+  let projId
 
   if (id) {
     id = parseInt(id, 0)
@@ -31,6 +32,19 @@ module.exports = (request, callback) => {
         "PopNr",
         "PopName"`
     )
+    if (popListe.length > 0) {
+      projId = popListe[0].ProjId
+    } else {
+      const ap = yield app.db.oneOrNone(`
+        SELECT
+          "ProjId"
+        FROM
+          apflora.ap
+        WHERE
+          "ApArtId" = ${id}
+      `)
+      projId = ap.ProjId
+    }
     // PopNr: Je nach Anzahl Stellen der maximalen PopNr bei denjenigen mit weniger Nullen
     // Nullen voranstellen, damit sie im tree auch als String richtig sortiert werden
     const popNrMax = _.max(popListe, pop => pop.PopNr).PopNr
@@ -46,7 +60,11 @@ module.exports = (request, callback) => {
       name: `${pop.PopNr ? pop.PopNr : `(keine Nr)`}/${pop.PopName ? pop.PopName : `(kein Name)`}`,
       expanded: false,
       children: [0],
-      path: [{ table: `projekt`, id: pop.ProjId }, { table: `ap`, id: pop.ApArtId }, { table: `pop`, id: pop.PopId }],
+      path: [
+        { table: `projekt`, id: pop.ProjId },
+        { table: `ap`, id: pop.ApArtId },
+        { table: `pop`, id: pop.PopId }
+      ],
     }))
 
     // build apziel
@@ -79,7 +97,11 @@ module.exports = (request, callback) => {
       name: `${ziel.ZielJahr ? `${ziel.ZielJahr}` : `(kein Jahr)`}: ${ziel.ZielBezeichnung} (${ziel.ZieltypTxt})`,
       expanded: false,
       children: [0],
-      path: [{ table: `projekt`, id: ziel.ProjId }, { table: `ap`, id: ziel.ApArtId }, { table: `ziel`, id: ziel.ZielId }],
+      path: [
+        { table: `projekt`, id: ziel.ProjId },
+        { table: `ap`, id: ziel.ApArtId },
+        { table: `ziel`, id: ziel.ZielId }
+      ],
     }))
 
     // build erfkrit
@@ -111,7 +133,11 @@ module.exports = (request, callback) => {
       name: `${erfkrit.BeurteilTxt ? `${erfkrit.BeurteilTxt}` : `(nicht beurteilt)`}: ${erfkrit.ErfkritTxt ? `${erfkrit.ErfkritTxt}` : `(keine Kriterien erfasst)`}`,
       expanded: false,
       children: [0],
-      path: [{ table: `projekt`, id: erfkrit.ProjId }, { table: `ap`, id: erfkrit.ApArtId }, { table: `erfkrit`, id: erfkrit.ErfkritId }],
+      path: [
+        { table: `projekt`, id: erfkrit.ProjId },
+        { table: `ap`, id: erfkrit.ApArtId },
+        { table: `erfkrit`, id: erfkrit.ErfkritId }
+      ],
     }))
 
     // build apber
@@ -138,7 +164,11 @@ module.exports = (request, callback) => {
       name: apber.JBerJahr ? apber.JBerJahr : `(kein Jahr)`,
       expanded: false,
       children: [0],
-      path: [{ table: `projekt`, id: apber.ProjId }, { table: `ap`, id: apber.ApArtId }, { table: `apber`, id: apber.JBerId }],
+      path: [
+        { table: `projekt`, id: apber.ProjId },
+        { table: `ap`, id: apber.ApArtId },
+        { table: `apber`, id: apber.JBerId }
+      ],
     }))
 
     // build ber
@@ -167,7 +197,11 @@ module.exports = (request, callback) => {
       name: `${ber.BerJahr ? `${ber.BerJahr}` : `(kein Jahr)`}: ${ber.BerTitel ? `${ber.BerTitel}` : `(kein Titel)`}`,
       expanded: false,
       children: [0],
-      path: [{ table: `projekt`, id: ber.ProjId }, { table: `ap`, id: ber.ApArtId }, { table: `ber`, id: ber.BerId }],
+      path: [
+        { table: `projekt`, id: ber.ProjId },
+        { table: `ap`, id: ber.ApArtId },
+        { table: `ber`, id: ber.BerId }
+      ],
     }))
 
     // build beobNichtBeurteilt
@@ -201,7 +235,11 @@ module.exports = (request, callback) => {
       name: `${beob.Datum ? `${beob.Datum}` : `(kein Datum)`}: ${beob.Autor ? `${beob.Autor}` : `(kein Autor)`} (${beob.Quelle})`,
       expanded: false,
       children: [0],
-      path: [{ table: `projekt`, id: beob.ProjId }, { table: `ap`, id: beob.NO_ISFS }, { table: `beobNichtBeurteilt`, id: beob.BeobId }],
+      path: [
+        { table: `projekt`, id: beob.ProjId },
+        { table: `ap`, id: beob.NO_ISFS },
+        { table: `beobNichtBeurteilt`, id: beob.BeobId }
+      ],
     }))
 
     // build beobNichtZuzuordnen
@@ -244,7 +282,11 @@ module.exports = (request, callback) => {
       name: `${beob.Datum ? `${beob.Datum}` : `(kein Datum)`}: ${beob.Autor ? `${beob.Autor}` : `(kein Autor)`} (${beob.Quelle})`,
       expanded: false,
       children: [0],
-      path: [{ table: `projekt`, id: beob.ProjId }, { table: `ap`, id: beob.NO_ISFS }, { table: `beobNichtZuzuordnen`, id: beob.NO_NOTE }],
+      path: [
+        { table: `projekt`, id: beob.ProjId },
+        { table: `ap`, id: beob.NO_ISFS },
+        { table: `beobNichtZuzuordnen`, id: beob.NO_NOTE }
+      ],
     }))
 
     // build assozarten
@@ -273,7 +315,11 @@ module.exports = (request, callback) => {
       id: assozart.AaId,
       name: assozart.Artname,
       expanded: false,
-      path: [{ table: `projekt`, id: assozart.ProjId }, { table: `ap`, id: assozart.ApArtId }, { table: `assozart`, id: assozart.AaId }],
+      path: [
+        { table: `projekt`, id: assozart.ProjId },
+        { table: `ap`, id: assozart.ApArtId },
+        { table: `assozart`, id: assozart.AaId }
+      ],
     }))
 
     return [
@@ -286,6 +332,10 @@ module.exports = (request, callback) => {
         name: `Qualitätskontrollen`,
         expanded: false,
         children: [],
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id },
+        ],
       },
       // pop folder
       {
@@ -296,6 +346,10 @@ module.exports = (request, callback) => {
         name: `Populationen (${popListe.length})`,
         expanded: false,
         children: popFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id },
+        ],
       },
       // ziel folder
       {
@@ -306,6 +360,10 @@ module.exports = (request, callback) => {
         name: `AP-Ziele (${zielListe.length})`,
         expanded: false,
         children: zielFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id },
+        ],
       },
       // erfkrit folder
       {
@@ -316,6 +374,10 @@ module.exports = (request, callback) => {
         name: `AP-Erfolgskriterien (${erfkritListe.length})`,
         expanded: false,
         children: erfkritFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id },
+        ],
       },
       // apber folder
       {
@@ -326,6 +388,10 @@ module.exports = (request, callback) => {
         name: `AP-Berichte (${apberListe.length})`,
         expanded: false,
         children: apberFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id },
+        ],
       },
       // ber folder
       {
@@ -336,6 +402,10 @@ module.exports = (request, callback) => {
         name: `Berichte (${berListe.length})`,
         expanded: false,
         children: berFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id },
+        ],
       },
       // beobNichtBeurteilt folder
       {
@@ -346,6 +416,10 @@ module.exports = (request, callback) => {
         name: `nicht beurteilte Beobachtungen (${beobNichtBeurteiltListe.length < 100 ? `` : `neuste `}${beobNichtBeurteiltListe.length})`,
         expanded: false,
         children: beobNichtBeurteiltFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id },
+        ],
       },
       // beobNichtZuzuordnen folder
       {
@@ -356,6 +430,10 @@ module.exports = (request, callback) => {
         name: `nicht zuzuordnende Beobachtungen (${beobNichtZuzuordnenListe.length < 100 ? `` : `neuste `}${beobNichtZuzuordnenListe.length})`,
         expanded: false,
         children: beobNichtZuzuordnenFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id },
+        ],
       },
       // idealbiotop
       {
@@ -365,6 +443,10 @@ module.exports = (request, callback) => {
         name: `Idealbiotop`,
         expanded: false,
         children: [],
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id },
+        ],
       },
       // assozarten folder
       {
@@ -375,6 +457,10 @@ module.exports = (request, callback) => {
         name: `assoziierte Arten (${assozartenListe.length})`,
         expanded: false,
         children: assozartenFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id },
+        ],
       },
     ]
   })

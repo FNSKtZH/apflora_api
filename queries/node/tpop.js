@@ -52,9 +52,7 @@ module.exports = (request, callback) => {
         { table: `projekt`, id: tpopmassn.ProjId },
         { table: `ap`, id: tpopmassn.ApArtId },
         { table: `pop`, id: tpopmassn.PopId },
-        { table: `pop`, id: tpopmassn.PopId, folder: `pop` },
         { table: `tpop`, id: tpopmassn.TPopId },
-        { table: `tpop`, id: tpopmassn.TPopId, folder: `tpop` },
         { table: `tpopmassn`, id: tpopmassn.TPopMassnId }
       ],
     }))
@@ -99,9 +97,7 @@ module.exports = (request, callback) => {
         { table: `projekt`, id: tpopmassnber.ProjId },
         { table: `ap`, id: tpopmassnber.ApArtId },
         { table: `pop`, id: tpopmassnber.PopId },
-        { table: `pop`, id: tpopmassnber.PopId, folder: `pop` },
         { table: `tpop`, id: tpopmassnber.TPopId },
-        { table: `tpop`, id: tpopmassnber.TPopId, folder: `tpop` },
         { table: `tpopmassnber`, id: tpopmassnber.TPopMassnId }
       ],
     }))
