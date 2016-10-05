@@ -71,7 +71,7 @@ module.exports = (request, callback) => {
       nodeId: `tpop/${tpop.TPopId}`,
       table: `tpop`,
       id: tpop.TPopId,
-      name: `${tpop.TPopNr ? tpop.TPopNr : `(keine Nr)`}/${tpop.TPopFlurname ? tpop.TPopFlurname : `(kein Flurname)`}`,
+      name: `${tpop.TPopNr ? tpop.TPopNr : `(keine Nr)`}: ${tpop.TPopFlurname ? tpop.TPopFlurname : `(kein Flurname)`}`,
       expanded: false,
       children: [0],
       path: [

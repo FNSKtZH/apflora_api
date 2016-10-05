@@ -60,7 +60,7 @@ module.exports = (request, callback) => {
       nodeId: `pop/${pop.PopId}`,
       table: `pop`,
       id: pop.PopId,
-      name: `${pop.PopNr ? pop.PopNr : `(keine Nr)`}/${pop.PopName ? pop.PopName : `(kein Name)`}`,
+      name: `${pop.PopNr ? pop.PopNr : `(keine Nr)`}: ${pop.PopName ? pop.PopName : `(kein Name)`}`,
       expanded: false,
       children: [0],
       path: [

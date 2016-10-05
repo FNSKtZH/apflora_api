@@ -49,7 +49,7 @@ module.exports = (request, callback) => {
       nodeId: `tpopmassn/${tpopmassn.TPopMassnId}`,
       table: `tpopmassn`,
       id: tpopmassn.TPopMassnId,
-      name: `${tpopmassn.TPopMassnJahr ? tpopmassn.TPopMassnJahr : `(kein Jahr)`}/${tpopmassn.MassnTypTxt ? tpopmassn.MassnTypTxt : `(kein Typ)`}`,
+      name: `${tpopmassn.TPopMassnJahr ? tpopmassn.TPopMassnJahr : `(kein Jahr)`}: ${tpopmassn.MassnTypTxt ? tpopmassn.MassnTypTxt : `(kein Typ)`}`,
       expanded: false,
       path: [
         { table: `projekt`, id: tpopmassn.ProjId },
@@ -94,7 +94,7 @@ module.exports = (request, callback) => {
       nodeId: `tpopmassnber/${tpopmassnber.TPopMassnBerId}`,
       table: `tpopmassnber`,
       id: tpopmassnber.TPopMassnBerId,
-      name: `${tpopmassnber.TPopMassnBerJahr ? tpopmassnber.TPopMassnBerJahr : `(kein Jahr)`}/${tpopmassnber.BeurteilTxt ? tpopmassnber.BeurteilTxt : `(keine Beurteilung)`}`,
+      name: `${tpopmassnber.TPopMassnBerJahr ? tpopmassnber.TPopMassnBerJahr : `(kein Jahr)`}: ${tpopmassnber.BeurteilTxt ? tpopmassnber.BeurteilTxt : `(keine Beurteilung)`}`,
       expanded: false,
       path: [
         { table: `projekt`, id: tpopmassnber.ProjId },
@@ -167,7 +167,7 @@ module.exports = (request, callback) => {
       nodeId: `tpopfeldkontr/${tpopfeldkontr.TPopKontrId}`,
       table: `tpopfeldkontr`,
       id: tpopfeldkontr.TPopKontrId,
-      name: `${tpopfeldkontr.TPopKontrJahr ? tpopfeldkontr.TPopKontrJahr : `(kein Jahr)`}/${tpopfeldkontr.TPopKontrTyp ? tpopfeldkontr.TPopKontrTyp : `(kein Typ)`}`,
+      name: `${tpopfeldkontr.TPopKontrJahr ? tpopfeldkontr.TPopKontrJahr : `(kein Jahr)`}: ${tpopfeldkontr.TPopKontrTyp ? tpopfeldkontr.TPopKontrTyp : `(kein Typ)`}`,
       expanded: false,
       path: [
         { table: `projekt`, id: tpopfeldkontr.ProjId },
@@ -175,6 +175,146 @@ module.exports = (request, callback) => {
         { table: `pop`, id: tpopfeldkontr.PopId },
         { table: `tpop`, id: tpopfeldkontr.TPopId },
         { table: `tpopfeldkontr`, id: tpopfeldkontr.TPopKontrId }
+      ],
+    }))
+
+    // build tpopfreiwkontr
+    const tpopfreiwkontrListe = yield app.db.any(`
+      SELECT
+       "TPopKontrId",
+       apflora.tpopkontr."TPopId",
+       "TPopKontrJahr",
+       "TPopKontrTyp",
+       apflora.pop."PopId",
+       apflora.ap."ApArtId",
+       apflora.ap."ProjId"
+      FROM
+        apflora.tpopkontr
+      INNER JOIN
+        apflora.tpop
+        ON apflora.tpopkontr."TPopId" = apflora.tpop."TPopId"
+        INNER JOIN
+          apflora.pop
+          ON apflora.tpop."PopId" = apflora.pop."PopId"
+          INNER JOIN
+            apflora.ap
+            ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+      WHERE
+       apflora.tpopkontr."TPopId" = ${id}
+       AND "TPopKontrTyp" = 'Freiwilligen-Erfolgskontrolle'
+      ORDER BY
+        "TPopKontrJahr",
+        "TPopKontrTyp"`
+    )
+    const tpopfreiwkontrFolderChildren = tpopfreiwkontrListe.map(tpopfreiwkontr => ({
+      nodeId: `tpopfreiwkontr/${tpopfreiwkontr.TPopKontrId}`,
+      table: `tpopfreiwkontr`,
+      id: tpopfreiwkontr.TPopKontrId,
+      name: `${tpopfreiwkontr.TPopKontrJahr ? tpopfreiwkontr.TPopKontrJahr : `(kein Jahr)`}`,
+      expanded: false,
+      path: [
+        { table: `projekt`, id: tpopfreiwkontr.ProjId },
+        { table: `ap`, id: tpopfreiwkontr.ApArtId },
+        { table: `pop`, id: tpopfreiwkontr.PopId },
+        { table: `tpop`, id: tpopfreiwkontr.TPopId },
+        { table: `tpopfreiwkontr`, id: tpopfreiwkontr.TPopKontrId }
+      ],
+    }))
+
+    // build tpopber
+    const tpopberListe = yield app.db.any(`
+      SELECT
+        "TPopBerId",
+        apflora.tpopber."TPopId",
+        "TPopBerJahr",
+        "EntwicklungTxt",
+        "EntwicklungOrd",
+        apflora.pop."PopId",
+        apflora.ap."ApArtId",
+        apflora.ap."ProjId"
+      FROM
+        apflora.tpopber
+        LEFT JOIN
+          apflora.tpop_entwicklung_werte
+          ON "TPopBerEntwicklung" = "EntwicklungCode"
+        INNER JOIN
+          apflora.tpop
+          ON apflora.tpopber."TPopId" = apflora.tpop."TPopId"
+          INNER JOIN
+            apflora.pop
+            ON apflora.tpop."PopId" = apflora.pop."PopId"
+            INNER JOIN
+              apflora.ap
+              ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+      WHERE
+        apflora.tpopber."TPopId" = ${id}
+      ORDER BY
+        "TPopBerJahr",
+        "EntwicklungOrd"`
+    )
+    const tpopberFolderChildren = tpopberListe.map(tpopber => ({
+      nodeId: `tpopber/${tpopber.TPopBerId}`,
+      table: `tpopber`,
+      id: tpopber.TPopBerId,
+      name: `${tpopber.TPopBerJahr ? tpopber.TPopBerJahr : `(kein Jahr)`}: ${tpopber.EntwicklungTxt ? tpopber.EntwicklungTxt : `(nicht beurteilt)`}`,
+      expanded: false,
+      path: [
+        { table: `projekt`, id: tpopber.ProjId },
+        { table: `ap`, id: tpopber.ApArtId },
+        { table: `pop`, id: tpopber.PopId },
+        { table: `tpop`, id: tpopber.TPopId },
+        { table: `tpopber`, id: tpopber.TPopBerId }
+      ],
+    }))
+
+    // build beobzuordnung
+    const beobzuordnungListe = yield app.db.any(`
+      SELECT
+        apflora.beobzuordnung."NO_NOTE",
+        apflora.beobzuordnung."TPopId",
+        apflora.beobzuordnung."BeobNichtZuordnen",
+        apflora.beobzuordnung."BeobBemerkungen",
+        apflora.beobzuordnung."BeobMutWann",
+        apflora.beobzuordnung."BeobMutWer",
+        beob.beob_bereitgestellt."Datum",
+        beob.beob_bereitgestellt."Autor",
+        'evab' AS "beobtyp",
+        apflora.pop."PopId",
+        apflora.ap."ApArtId",
+        apflora.ap."ProjId"
+      FROM
+        apflora.beobzuordnung
+        INNER JOIN
+          beob.beob_bereitgestellt
+          ON apflora.beobzuordnung."NO_NOTE" = beob.beob_bereitgestellt."BeobId"
+        INNER JOIN
+          apflora.tpop
+          ON apflora.beobzuordnung."TPopId" = apflora.tpop."TPopId"
+          INNER JOIN
+            apflora.pop
+            ON apflora.tpop."PopId" = apflora.pop."PopId"
+            INNER JOIN
+              apflora.ap
+              ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+      WHERE
+        apflora.beobzuordnung."TPopId" = ${id}
+        AND (
+          apflora.beobzuordnung."BeobNichtZuordnen" = 0
+          OR apflora.beobzuordnung."BeobNichtZuordnen" IS NULL
+        )`
+    )
+    const beobzuordnungFolderChildren = beobzuordnungListe.map(beobzuordnung => ({
+      nodeId: `beobzuordnung/${beobzuordnung.NO_NOTE}`,
+      table: `beobzuordnung`,
+      id: beobzuordnung.NO_NOTE,
+      name: `${beobzuordnung.Datum ? beobzuordnung.Datum : `(kein Datum)`}: ${beobzuordnung.Autor ? beobzuordnung.Autor : `(kein Autor)`}`,
+      expanded: false,
+      path: [
+        { table: `projekt`, id: beobzuordnung.ProjId },
+        { table: `ap`, id: beobzuordnung.ApArtId },
+        { table: `pop`, id: beobzuordnung.PopId },
+        { table: `tpop`, id: beobzuordnung.TPopId },
+        { table: `beobzuordnung`, id: beobzuordnung.NO_NOTE }
       ],
     }))
 
@@ -215,11 +355,59 @@ module.exports = (request, callback) => {
       {
         nodeId: `tpopfeldkontr/${id}/tpopfeldkontr`,
         folder: `tpopfeldkontr`,
-        table: `tpopkontr`,
+        table: `tpop`,
         id,
         name: `Feld-Kontrollen (${tpopfeldkontrListe.length})`,
         expanded: false,
         children: tpopfeldkontrFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id: apArtId },
+          { table: `pop`, id: popId },
+          { table: `tpop`, id },
+        ],
+      },
+      // tpopfreiwkontr folder
+      {
+        nodeId: `tpopfreiwkontr/${id}/tpopfreiwkontr`,
+        folder: `tpopfreiwkontr`,
+        table: `tpop`,
+        id,
+        name: `Freiwilligen-Kontrollen (${tpopfreiwkontrListe.length})`,
+        expanded: false,
+        children: tpopfreiwkontrFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id: apArtId },
+          { table: `pop`, id: popId },
+          { table: `tpop`, id },
+        ],
+      },
+      // tpopber folder
+      {
+        nodeId: `tpopber/${id}/tpopber`,
+        folder: `tpopber`,
+        table: `tpop`,
+        id,
+        name: `Kontroll-Berichte (${tpopberListe.length})`,
+        expanded: false,
+        children: tpopberFolderChildren,
+        path: [
+          { table: `projekt`, id: projId },
+          { table: `ap`, id: apArtId },
+          { table: `pop`, id: popId },
+          { table: `tpop`, id },
+        ],
+      },
+      // beobzuordnung folder
+      {
+        nodeId: `beobzuordnung/${id}/beobzuordnung`,
+        folder: `beobzuordnung`,
+        table: `tpop`,
+        id,
+        name: `zugeordnete Beobachtungen (${beobzuordnungListe.length})`,
+        expanded: false,
+        children: beobzuordnungFolderChildren,
         path: [
           { table: `projekt`, id: projId },
           { table: `ap`, id: apArtId },
