@@ -232,9 +232,13 @@ WHERE length("NO_NOTE") < 10;
 DROP TABLE IF EXISTS apflora.projekt;
 CREATE TABLE apflora.projekt (
   "ProjId" SERIAL PRIMARY KEY,
-  "ProjName" varchar(150) DEFAULT NULL
+  "ProjName" varchar(150) DEFAULT NULL,
+  "MutWann" date DEFAULT NULL,
+  "MutWer" varchar(20) DEFAULT NULL
 );
 CREATE INDEX ON apflora.projekt USING btree ("ProjName");
+COMMENT ON COLUMN apflora.projekt."MutWann" IS 'Wann wurde der Datensatz zuletzt geändert?';
+COMMENT ON COLUMN apflora.projekt."MutWer" IS 'Von wem wurde der Datensatz zuletzt geändert?';
 INSERT INTO apflora.projekt VALUES (1, 'AP Flora Kt. ZH');
 
 DROP TABLE IF EXISTS apflora.ber;

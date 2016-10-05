@@ -27,7 +27,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'ap',
     initiiereFunktion: 'initiiereAp',
-    treeTyp: 'gibt es nicht!'
+    treeTyp: 'gibt es nicht!',
   },
   {
     database: 'apflora',
@@ -37,7 +37,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'pop',
     initiiereFunktion: 'initiierePop',
-    treeTyp: 'pop'
+    treeTyp: 'pop',
   },
   {
     database: 'apflora',
@@ -47,7 +47,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'tpop',
     initiiereFunktion: 'initiiereTPop',
-    treeTyp: 'tpop'
+    treeTyp: 'tpop',
   },
   {
     database: 'apflora',
@@ -57,7 +57,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'tpopfeldkontr',
     initiiereFunktion: 'initiiereTPopKontr',
-    treeTyp: 'tpopfeldkontr'
+    treeTyp: 'tpopfeldkontr',
   },
   {
     database: 'apflora',
@@ -67,7 +67,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'tpopkontrzaehl',
     initiiereFunktion: 'initiiereTPopKontr',
-    treeTyp: 'tpopfeldkontr'
+    treeTyp: 'tpopfeldkontr',
   },
   {
     database: 'apflora',
@@ -77,7 +77,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'tpopmassn',
     initiiereFunktion: 'initiiereTPopMassn',
-    treeTyp: 'tpopmassn'
+    treeTyp: 'tpopmassn',
   },
   {
     database: 'apflora',
@@ -87,7 +87,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'apziel',
     initiiereFunktion: 'initiiereApziel',
-    treeTyp: 'apziel'
+    treeTyp: 'apziel',
   },
   {
     database: 'apflora',
@@ -97,7 +97,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'zielber',
     initiiereFunktion: 'initiiereZielber',
-    treeTyp: 'zielber'
+    treeTyp: 'zielber',
   },
   {
     database: 'apflora',
@@ -107,7 +107,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'erfkrit',
     initiiereFunktion: 'initiiereErfkrit',
-    treeTyp: 'erfkrit'
+    treeTyp: 'erfkrit',
   },
   {
     database: 'apflora',
@@ -117,7 +117,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'jber',
     initiiereFunktion: 'initiiereJber',
-    treeTyp: 'jber'
+    treeTyp: 'jber',
   },
   {
     database: 'apflora',
@@ -127,7 +127,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'jberUebersicht',
     initiiereFunktion: 'initiiereJberUebersicht',
-    treeTyp: 'jberUebersicht'
+    treeTyp: 'jberUebersicht',
   },
   {
     database: 'apflora',
@@ -137,7 +137,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'ber',
     initiiereFunktion: 'initiiereBer',
-    treeTyp: 'ber'
+    treeTyp: 'ber',
   },
   {
     database: 'apflora',
@@ -147,7 +147,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'idealbiotop',
     initiiereFunktion: 'initiiereIdealbiotop',
-    treeTyp: 'idealbiotop'
+    treeTyp: 'idealbiotop',
   },
   {
     database: 'apflora',
@@ -157,7 +157,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'assozarten',
     initiiereFunktion: 'initiiereAssozart',
-    treeTyp: 'assozarten'
+    treeTyp: 'assozarten',
   },
   {
     database: 'apflora',
@@ -167,7 +167,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'popber',
     initiiereFunktion: 'initiierePopBer',
-    treeTyp: 'popber'
+    treeTyp: 'popber',
   },
   {
     database: 'apflora',
@@ -177,7 +177,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'popmassnber',
     initiiereFunktion: 'initiierePopMassnBer',
-    treeTyp: 'popmassnber'
+    treeTyp: 'popmassnber',
   },
   {
     database: 'apflora',
@@ -187,7 +187,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'tpopber',
     initiiereFunktion: 'initiiereTPopBer',
-    treeTyp: 'tpopber'
+    treeTyp: 'tpopber',
   },
   {
     database: 'apflora',
@@ -197,7 +197,7 @@ config.tables = [
     mutWerFeld: 'MutWer',
     form: 'tpopmassnber',
     initiiereFunktion: 'initiiereTPopMassnBer',
-    treeTyp: 'tpopmassnber'
+    treeTyp: 'tpopmassnber',
   },
   {
     database: 'apflora',
@@ -207,8 +207,18 @@ config.tables = [
     mutWerFeld: 'BeobMutWer',
     form: 'beob',
     initiiereFunktion: '',
-    treeTyp: 'drei verschiedene!'
-  }
+    treeTyp: 'drei verschiedene!',
+  },
+  {
+    database: 'apflora',
+    tabelleInDb: 'projekt',
+    tabelleIdFeld: 'ProjId',
+    mutWannFeld: 'MutWann',
+    mutWerFeld: 'MutWer',
+    form: 'projekt',
+    initiiereFunktion: '',
+    treeTyp: 'projekt!',
+  },
 ]
 
 module.exports = config
