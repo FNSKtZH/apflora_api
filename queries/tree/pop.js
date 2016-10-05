@@ -6,7 +6,7 @@ const escapeStringForSql = require(`../escapeStringForSql`)
 const erstelleTpopOrdner = require(`./tpopOrdner`)
 const erstellePopMassnBerOrdner = require(`./popMassnBerOrdner`)
 const erstellePopBerOrdner = require(`./popBerOrdner`)
-const ergaenzePopNrUmFuehrendeNullen = require(`../../src/ergaenzePopNrUmFuehrendeNullen`)
+const ergaenzeNrUmFuehrendeNullen = require(`../../src/ergaenzeNrUmFuehrendeNullen`)
 
 module.exports = (request, reply) => {
   const apId = escapeStringForSql(request.params.apId)
@@ -252,7 +252,7 @@ module.exports = (request, reply) => {
           let data
           let popSort
 
-          pop.PopNr = ergaenzePopNrUmFuehrendeNullen(popNrMax, pop.PopNr)
+          pop.PopNr = ergaenzeNrUmFuehrendeNullen(popNrMax, pop.PopNr)
 
           // nodes für pop aufbauen
           if (pop.PopName && pop.PopNr) {

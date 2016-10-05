@@ -2,7 +2,7 @@
 
 const app = require(`ampersand-app`)
 const _ = require(`underscore`)
-const ergaenzePopNrUmFuehrendeNullen = require(`../../src/ergaenzePopNrUmFuehrendeNullen`)
+const ergaenzeNrUmFuehrendeNullen = require(`../../src/ergaenzeNrUmFuehrendeNullen`)
 
 module.exports = (request, callback) => {
   let id = encodeURIComponent(request.query.id)
@@ -13,7 +13,7 @@ module.exports = (request, callback) => {
 
   // build pop
   app.db.task(function* getData() {
-    const popListe = yield app.db.any(`
+    let popListe = yield app.db.any(`
       SELECT
         "PopNr",
         "PopName",
@@ -35,28 +35,15 @@ module.exports = (request, callback) => {
     // Nullen voranstellen, damit sie im tree auch als String richtig sortiert werden
     const popNrMax = _.max(popListe, pop => pop.PopNr).PopNr
     popListe.forEach((pop) => {
-      pop.PopNr = ergaenzePopNrUmFuehrendeNullen(popNrMax, pop.PopNr)
-      // nodes für pop aufbauen
-      if (pop.PopName && pop.PopNr) {
-        pop.name = `${pop.PopNr}: ${pop.PopName}`
-        pop.sort = pop.PopNr
-      } else if (pop.PopNr) {
-        pop.name = `${pop.PopNr}: (kein Name)`
-        pop.sort = pop.PopNr
-      } else if (pop.PopName) {
-        pop.name = `(keine Nr): ${pop.PopName}`
-        // pop ohne Nummern zuunterst sortieren
-        pop.sort = 1000
-      } else {
-        pop.name = `(keine Nr, kein Name)`
-        pop.sort = 1000
-      }
+      pop.sort = pop.PopNr ? pop.PopNr : 1000
+      pop.PopNr = ergaenzeNrUmFuehrendeNullen(popNrMax, pop.PopNr)
     })
+    popListe = _.sortBy(popListe, `sort`)
     const popFolderChildren = popListe.map(pop => ({
       nodeId: `pop/${pop.PopId}`,
       table: `pop`,
       id: pop.PopId,
-      name: pop.name,
+      name: `${pop.PopNr ? pop.PopNr : `(keine Nr)`}/${pop.PopName ? pop.PopName : `(kein Name)`}`,
       expanded: false,
       children: [0],
       path: [{ table: `projekt`, id: pop.ProjId }, { table: `ap`, id: pop.ApArtId }, { table: `pop`, id: pop.PopId }],
@@ -286,7 +273,6 @@ module.exports = (request, callback) => {
       id: assozart.AaId,
       name: assozart.Artname,
       expanded: false,
-      children: [0],
       path: [{ table: `projekt`, id: assozart.ProjId }, { table: `ap`, id: assozart.ApArtId }, { table: `assozart`, id: assozart.AaId }],
     }))
 
