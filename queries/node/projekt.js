@@ -58,31 +58,31 @@ module.exports = (request, callback) => {
         id: projekt.ProjId,
         name: projekt.ProjName,
         expanded: idActive, // || oneProject,  // temporarily disabled
+        path: [`Projekte`, projekt.ProjId],
         children: [
           // ap folder
           {
-            nodeId: `proj/${id}/ap`,
+            nodeId: `projekt/${projekt.ProjId}/ap`,
             folder: `ap`,
             table: `projekt`,
-            id,
+            id: projekt.ProjId,
             name: `Arten (${projekt.AnzAp})`,
             expanded: false,
             children: [0],
-            path: [`Projekt`, projekt.ProjId, `Arten`]
+            path: [`Projekte`, projekt.ProjId, `Arten`]
           },
           // apberuebersicht folder
           {
-            nodeId: `proj/${id}/apberuebersicht`,
+            nodeId: `projekt/${projekt.ProjId}/apberuebersicht`,
             folder: `apberuebersicht`,
             table: `projekt`,
-            id,
-            name: `AP-Berichte: Jährliche Übersicht über alle Arten (${projekt.AnzApberuebersicht})`,
+            id: projekt.ProjId,
+            name: `AP-Berichte (${projekt.AnzApberuebersicht})`,
             expanded: false,
             children: [0],
-            path: [`Projekt`, projekt.ProjId, `AP-Berichte-Übersicht`]
+            path: [`Projekte`, projekt.ProjId, `AP-Berichte`]
           },
         ],
-        path: [`Projekt`, projekt.ProjId]
       }
     })
   })

@@ -10,12 +10,12 @@ const tpop = require(`./tpop`)
 module.exports = (request, callback) => {
   const table = encodeURIComponent(request.query.table)
   const folder = encodeURIComponent(request.query.folder)
-  const folderExists = !folder
+  const folderExists = folder !== `null` && folder !== `undefined`
 
   if (folderExists) {
     const callHandler = {
-      apFolder() { apFolder(request, callback) },
-      apberuebersichtFolder() { apberuebersichtFolder(request, callback) },
+      ap() { apFolder(request, callback) },
+      apberuebersicht() { apberuebersichtFolder(request, callback) },
     }
     callHandler[folder]()
   } else {
