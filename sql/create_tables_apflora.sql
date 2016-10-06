@@ -170,15 +170,18 @@ SELECT setval(pg_get_serial_sequence('apflora.apber', 'JBerId'), coalesce(max("J
 
 DROP TABLE IF EXISTS apflora.apberuebersicht;
 CREATE TABLE apflora.apberuebersicht (
-  "JbuJahr" smallint PRIMARY KEY,
+  "ProjId" integer DEFAULT 1,
+  "JbuJahr" smallint NOT NULL,
   "JbuBemerkungen" text,
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
-COMMENT ON COLUMN apflora.apberuebersicht."JbuJahr" IS 'Berichtsjahr. Primärschlüssel der Tabelle "apberuebersicht"';
+COMMENT ON COLUMN apflora.apberuebersicht."ProjId" IS 'Zugehöriges Projekt. Zusammen mit JbuJahr Primärschlüssel der Tabelle "apberuebersicht"';
+COMMENT ON COLUMN apflora.apberuebersicht."JbuJahr" IS 'Berichtsjahr. Zusammen mit ProjId Primärschlüssel der Tabelle "apberuebersicht"';
 COMMENT ON COLUMN apflora.apberuebersicht."JbuBemerkungen" IS 'Bemerkungen zur Artübersicht';
 COMMENT ON COLUMN apflora.apberuebersicht."MutWann" IS 'Wann wurde der Datensatz zuletzt geändert?';
 COMMENT ON COLUMN apflora.apberuebersicht."MutWer" IS 'Von wem wurde der Datensatz zuletzt geändert?';
+ALTER TABLE apflora.apberuebersicht ADD CONSTRAINT apberuebersicht_proj_jahr_pk PRIMARY KEY ("ProjId", "JbuJahr");
 
 DROP TABLE IF EXISTS apflora.assozart;
 CREATE TABLE apflora.assozart (
