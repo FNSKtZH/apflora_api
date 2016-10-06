@@ -2,17 +2,29 @@
 
 const projekt = require(`./projekt`)
 const ap = require(`./ap`)
+const apFolder = require(`./apFolder`)
+const apberuebersichtFolder = require(`./apberuebersichtFolder`)
 const pop = require(`./pop`)
 const tpop = require(`./tpop`)
 
 module.exports = (request, callback) => {
   const table = encodeURIComponent(request.query.table)
-  const callHandler = {
-    projekt() { projekt(request, callback) },
-    ap() { ap(request, callback) },
-    pop() { pop(request, callback) },
-    tpop() { tpop(request, callback) },
-  }
+  const folder = encodeURIComponent(request.query.folder)
+  const folderExists = !folder
 
-  callHandler[table]()
+  if (folderExists) {
+    const callHandler = {
+      apFolder() { apFolder(request, callback) },
+      apberuebersichtFolder() { apberuebersichtFolder(request, callback) },
+    }
+    callHandler[folder]()
+  } else {
+    const callHandler = {
+      projekt() { projekt(request, callback) },
+      ap() { ap(request, callback) },
+      pop() { pop(request, callback) },
+      tpop() { tpop(request, callback) },
+    }
+    callHandler[table]()
+  }
 }
