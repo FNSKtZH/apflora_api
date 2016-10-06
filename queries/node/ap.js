@@ -316,7 +316,7 @@ module.exports = (request, callback) => {
       nodeId: `assozarten/${assozart.AaId}`,
       table: `assozart`,
       id: assozart.AaId,
-      name: assozart.Artname,
+      name: `${assozart.Artname ? assozart.Artname : `(keine Art gewählt)`}`,
       expanded: false,
       path: [
         { table: `projekt`, id: assozart.ProjId },
