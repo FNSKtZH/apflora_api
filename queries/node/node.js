@@ -3,9 +3,17 @@
 const projekt = require(`./projekt`)
 const ap = require(`./ap`)
 const apFolder = require(`./apFolder`)
+const apberFolder = require(`./apberFolder`)
 const apberuebersichtFolder = require(`./apberuebersichtFolder`)
+const assozartFolder = require(`./assozartFolder`)
+const beobNichtBeurteiltFolder = require(`./beobNichtBeurteiltFolder`)
+const beobNichtZuzuordnenFolder = require(`./beobNichtZuzuordnenFolder`)
+const berFolder = require(`./berFolder`)
+const erfkritFolder = require(`./erfkritFolder`)
 const pop = require(`./pop`)
+const popFolder = require(`./popFolder`)
 const tpop = require(`./tpop`)
+const zielFolder = require(`./zielFolder`)
 
 module.exports = (request, callback) => {
   const table = encodeURIComponent(request.query.table)
@@ -15,7 +23,15 @@ module.exports = (request, callback) => {
   if (folderExists) {
     const callHandler = {
       ap() { apFolder(request, callback) },
+      apber() { apberFolder(request, callback) },
       apberuebersicht() { apberuebersichtFolder(request, callback) },
+      assozart() { assozartFolder(request, callback) },
+      beobNichtBeurteilt() { beobNichtBeurteiltFolder(request, callback) },
+      beobNichtZuzuordnen() { beobNichtZuzuordnenFolder(request, callback) },
+      ber() { berFolder(request, callback) },
+      erfkrit() { erfkritFolder(request, callback) },
+      pop() { popFolder(request, callback) },
+      ziel() { zielFolder(request, callback) },
     }
     callHandler[folder]()
   } else {
