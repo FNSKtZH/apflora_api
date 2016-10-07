@@ -8,6 +8,7 @@ const apberuebersichtFolder = require(`./apberuebersichtFolder`)
 const assozartFolder = require(`./assozartFolder`)
 const beobNichtBeurteiltFolder = require(`./beobNichtBeurteiltFolder`)
 const beobNichtZuzuordnenFolder = require(`./beobNichtZuzuordnenFolder`)
+const beobzuordnungFolder = require(`./beobzuordnungFolder`)
 const berFolder = require(`./berFolder`)
 const erfkritFolder = require(`./erfkritFolder`)
 const pop = require(`./pop`)
@@ -16,6 +17,11 @@ const popmassnberFolder = require(`./popmassnberFolder`)
 const popberFolder = require(`./popberFolder`)
 const tpop = require(`./tpop`)
 const tpopFolder = require(`./tpopFolder`)
+const tpopberFolder = require(`./tpopberFolder`)
+const tpopfreiwkontrFolder = require(`./tpopfreiwkontrFolder`)
+const tpopfeldkontrFolder = require(`./tpopfeldkontrFolder`)
+const tpopmassnberFolder = require(`./tpopmassnberFolder`)
+const tpopmassnFolder = require(`./tpopmassnFolder`)
 const zielFolder = require(`./zielFolder`)
 
 module.exports = (request, callback) => {
@@ -31,12 +37,18 @@ module.exports = (request, callback) => {
       assozart() { assozartFolder(request, callback) },
       beobNichtBeurteilt() { beobNichtBeurteiltFolder(request, callback) },
       beobNichtZuzuordnen() { beobNichtZuzuordnenFolder(request, callback) },
+      beobzuordnung() { beobzuordnungFolder(request, callback) },
       ber() { berFolder(request, callback) },
       erfkrit() { erfkritFolder(request, callback) },
       pop() { popFolder(request, callback) },
       popmassnber() { popmassnberFolder(request, callback) },
       popber() { popberFolder(request, callback) },
       tpop() { tpopFolder(request, callback) },
+      tpopber() { tpopberFolder(request, callback) },
+      tpopfreiwkontr() { tpopfreiwkontrFolder(request, callback) },
+      tpopfeldkontr() { tpopfeldkontrFolder(request, callback) },
+      tpopmassnber() { tpopmassnberFolder(request, callback) },
+      tpopmassn() { tpopmassnFolder(request, callback) },
       ziel() { zielFolder(request, callback) },
     }
     callHandler[folder]()

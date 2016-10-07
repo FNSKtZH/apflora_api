@@ -45,6 +45,7 @@ module.exports = (request, callback) => {
         id: el.PopId,
         name: `${el.PopNr ? el.PopNr : `(keine Nr)`}: ${el.PopName ? el.PopName : `(kein Name)`}`,
         expanded: false,
+        children: [0],
         path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId],
       }))
     })

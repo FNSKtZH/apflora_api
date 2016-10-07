@@ -49,6 +49,7 @@ module.exports = (request, callback) => {
         id: el.TPopId,
         name: `${el.TPopNr ? el.TPopNr : `(keine Nr)`}: ${el.TPopFlurname ? el.TPopFlurname : `(kein Flurname)`}`,
         expanded: false,
+        children: [0],
         path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, id, `Teil-Populationen`, el.TPopId],
       }))
     })

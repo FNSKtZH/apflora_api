@@ -45,7 +45,7 @@ module.exports = (request, callback) => {
         apflora.ap
         ON apflora.ap."ApArtId" = apflora.pop."ApArtId"
     WHERE
-      apflora.ap."ApArtId" = ${id}
+      apflora.pop."PopId" = ${id}
     `
   )
     .then(pop => [
