@@ -11,7 +11,7 @@
     "inert": "4.0.2",
     "json2csv": "3.7.0",
     "json2xls": "0.1.2",
-    "lodash": "4.16.3",
+    "lodash": "4.16.4",
     "pg-promise": "5.3.4",
     "request": "2.75.0",
     "underscore": "1.8.3"
@@ -28,8 +28,8 @@
     "gulp": "3.9.1",
     "gulp-sftp": "0.1.5",
     "lab": "11.1.0",
-    "nodemon": "1.10.2",
-    "require-dir": "0.3.0",
+    "nodemon": "1.11.0",
+    "require-dir": "0.3.1",
     "run-sequence": "1.2.2"
   },
   "scripts": {
