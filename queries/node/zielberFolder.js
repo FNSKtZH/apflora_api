@@ -38,7 +38,7 @@ module.exports = (request, callback) => {
         id: el.ZielBerId,
         name: `${el.ZielBerJahr ? el.ZielBerJahr : `(kein Jahr)`}: ${el.ZielBerErreichung ? el.ZielBerErreichung : `(keine Entwicklung)`}`,
         expanded: false,
-        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `AP-Ziele`, id, `Berichte`, el.ZielBerId],
+        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `AP-Ziele`, id, `Berichte`, el.ZielBerId],
       }))
     )
     .then(nodes => callback(null, nodes))

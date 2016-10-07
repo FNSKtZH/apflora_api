@@ -32,7 +32,7 @@ module.exports = (request, callback) => {
         id: el.JBerId,
         name: el.JBerJahr ? el.JBerJahr : `(kein Jahr)`,
         expanded: false,
-        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `AP-Berichte`, el.JBerId],
+        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `AP-Berichte`, el.JBerId],
       }))
     )
     .then(nodes => callback(null, nodes))

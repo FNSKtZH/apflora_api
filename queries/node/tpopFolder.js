@@ -50,7 +50,7 @@ module.exports = (request, callback) => {
         name: `${el.TPopNr ? el.TPopNr : `(keine Nr)`}: ${el.TPopFlurname ? el.TPopFlurname : `(kein Flurname)`}`,
         expanded: false,
         children: [0],
-        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, id, `Teil-Populationen`, el.TPopId],
+        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, id, `Teil-Populationen`, el.TPopId],
       }))
     })
     .then(nodes => callback(null, nodes))

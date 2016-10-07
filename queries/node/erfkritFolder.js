@@ -37,7 +37,7 @@ module.exports = (request, callback) => {
         id: el.ErfkritId,
         name: `${el.BeurteilTxt ? `${el.BeurteilTxt}` : `(nicht beurteilt)`}: ${el.ErfkritTxt ? `${el.ErfkritTxt}` : `(keine Kriterien erfasst)`}`,
         expanded: false,
-        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `AP-Erfolgskriterien`, el.ErfkritId],
+        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `AP-Erfolgskriterien`, el.ErfkritId],
       }))
     )
     .then(nodes => callback(null, nodes))

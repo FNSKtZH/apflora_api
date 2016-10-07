@@ -54,7 +54,7 @@ module.exports = (request, callback) => {
         id: el.TPopKontrId,
         name: `${el.TPopKontrJahr ? el.TPopKontrJahr : `(kein Jahr)`}: ${el.TPopKontrTyp ? el.TPopKontrTyp : `(kein Typ)`}`,
         expanded: false,
-        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId],
+        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId],
         children: [{
           nodeId: `tpopkontr/${el.TPopKontrId}/tpopkontrzaehl`,
           folder: `tpopkontrzaehl`,
@@ -62,7 +62,7 @@ module.exports = (request, callback) => {
           id: el.TPopKontrId,
           name: `Zählungen (${el.AnzTPopkontrzaehl})`,
           expanded: false,
-          path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId, `Zählungen`],
+          urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId, `Zählungen`],
           children: [0],
         }]
       }))

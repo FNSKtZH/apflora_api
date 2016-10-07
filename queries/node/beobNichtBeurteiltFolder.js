@@ -40,7 +40,7 @@ module.exports = (request, callback) => {
         id: el.BeobId,
         name: `${el.Datum ? `${el.Datum}` : `(kein Datum)`}: ${el.Autor ? `${el.Autor}` : `(kein Autor)`} (${el.Quelle})`,
         expanded: false,
-        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `nicht-beurteilte-Beobachtungen`, el.BeobId],
+        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `nicht-beurteilte-Beobachtungen`, el.BeobId],
       }))
     )
     .then(nodes => callback(null, nodes))

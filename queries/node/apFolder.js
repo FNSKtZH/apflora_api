@@ -31,7 +31,7 @@ module.exports = (request, callback) => {
         id: ap.ApArtId,
         name: ap.Artname,
         expanded: false,
-        path: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId],
+        urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId],
         children: [0],
       }))
     )

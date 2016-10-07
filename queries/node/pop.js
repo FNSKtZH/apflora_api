@@ -58,7 +58,7 @@ module.exports = (request, callback) => {
         name: `Teil-Populationen (${pop.AnzTPop})`,
         expanded: false,
         children: [0],
-        path: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Teil-Populationen`],
+        urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Teil-Populationen`],
       },
       // popber folder
       {
@@ -69,7 +69,7 @@ module.exports = (request, callback) => {
         name: `Kontroll-Berichte (${pop.AnzPopber})`,
         expanded: false,
         children: [0],
-        path: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Kontroll-Berichte`],
+        urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Kontroll-Berichte`],
       },
       // popmassnber folder
       {
@@ -80,7 +80,7 @@ module.exports = (request, callback) => {
         name: `Massnahmen-Berichte (${pop.AnzPopmassnber})`,
         expanded: false,
         children: [0],
-        path: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Massnahmen-Berichte`],
+        urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Massnahmen-Berichte`],
       },
     ])
     .then(nodes => callback(null, nodes))

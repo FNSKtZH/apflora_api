@@ -52,7 +52,7 @@ module.exports = (request, callback) => {
         id: el.TPopKontrZaehlId,
         name: `${el.Anzahl ? el.Anzahl : `(keine Anzahl)`} ${el.Einheit ? el.Einheit : `(keine Einheit)`} ${el.Methode ? ` ${el.Methode}` : `(keine Methode)`}`,
         expanded: false,
-        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, el.TPopId, `Feld-Kontrollen`, id, `Zählungen`, el.TPopKontrZaehlId],
+        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, el.TPopId, `Feld-Kontrollen`, id, `Zählungen`, el.TPopKontrZaehlId],
       }))
     )
     .then(nodes => callback(null, nodes))
