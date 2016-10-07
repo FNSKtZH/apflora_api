@@ -84,17 +84,6 @@ module.exports = (request, callback) => {
     `
   )
   .then(ap => [
-    // qk folder
-    {
-      nodeId: `ap/${id}/qk`,
-      folder: `qk`,
-      table: `ap`,
-      id,
-      name: `Qualitätskontrollen`,
-      expanded: false,
-      children: [0],
-      path: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `Qualitätskontrollen`],
-    },
     // pop folder
     {
       nodeId: `ap/${id}/pop`,
@@ -192,7 +181,18 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       path: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `assoziierte-Arten`],
-    }
+    },
+    // qk folder
+    {
+      nodeId: `ap/${id}/qk`,
+      folder: `qk`,
+      table: `ap`,
+      id,
+      name: `Qualitätskontrollen`,
+      expanded: false,
+      children: [0],
+      path: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `Qualitätskontrollen`],
+    },
   ])
   .then(nodes => callback(null, nodes))
   .catch(error => callback(error, null))

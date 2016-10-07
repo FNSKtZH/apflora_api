@@ -43,18 +43,16 @@ module.exports = (request, callback) => {
     WHERE
      apflora.tpopkontrzaehl."TPopKontrId" = ${id}
     ORDER BY
-      "ZaehleinheitTxt",
-      "ZaehleinheitCode",
-      "Anzahl"`
+      "TPopKontrZaehlId"`
   )
     .then(liste =>
       liste.map(el => ({
         nodeId: `tpopkontrzaehl/${el.TPopKontrZaehlId}`,
         table: `tpopkontrzaehl`,
         id: el.TPopKontrZaehlId,
-        name: `${el.Einheit ? el.Einheit : `(keine Einheit)`}: ${el.Anzahl ? el.Anzahl : `(keine Anzahl)`}${el.Methode ? ` (${el.Methode})` : ` (keine Methode)`}`,
+        name: `${el.Anzahl ? el.Anzahl : `(keine Anzahl)`} ${el.Einheit ? el.Einheit : `(keine Einheit)`} ${el.Methode ? ` ${el.Methode}` : `(keine Methode)`}`,
         expanded: false,
-        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, id, `Zählungen`, el.TPopKontrZaehlId],
+        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, el.TPopId, `Feld-Kontrollen`, id, `Zählungen`, el.TPopKontrZaehlId],
       }))
     )
     .then(nodes => callback(null, nodes))

@@ -57,6 +57,7 @@ module.exports = (request, callback) => {
         path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId],
         children: [{
           nodeId: `tpopkontr/${el.TPopKontrId}/tpopkontrzaehl`,
+          folder: `tpopkontrzaehl`,
           table: `tpopkontr`,
           id: el.TPopKontrId,
           name: `Zählungen (${el.AnzTPopkontrzaehl})`,
