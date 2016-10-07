@@ -46,7 +46,7 @@ module.exports = (request, callback) => {
         id: el.TPopKontrId,
         name: `${el.TPopKontrJahr ? el.TPopKontrJahr : `(kein Jahr)`}: ${el.TPopKontrTyp ? el.TPopKontrTyp : `(kein Typ)`}`,
         expanded: false,
-        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, id, `Teil-Populationen`, el.TPopId, `Feld-Kontrollen`, el.TPopKontrId],
+        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId],
       }))
     )
     .then(nodes => callback(null, nodes))
