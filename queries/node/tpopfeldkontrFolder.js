@@ -17,7 +17,15 @@ module.exports = (request, callback) => {
      "TPopKontrTyp",
      apflora.pop."PopId",
      apflora.ap."ApArtId",
-     apflora.ap."ProjId"
+     apflora.ap."ProjId",
+     (
+       SELECT
+        COUNT(*)
+       FROM
+        apflora.tpopkontrzaehl
+       WHERE
+        apflora.tpopkontrzaehl."TPopKontrId" = apflora.tpopkontr."TPopKontrId"
+     ) AS "AnzTPopkontrzaehl"
     FROM
       apflora.tpopkontr
     INNER JOIN
@@ -47,6 +55,15 @@ module.exports = (request, callback) => {
         name: `${el.TPopKontrJahr ? el.TPopKontrJahr : `(kein Jahr)`}: ${el.TPopKontrTyp ? el.TPopKontrTyp : `(kein Typ)`}`,
         expanded: false,
         path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId],
+        children: [{
+          nodeId: `tpopkontr/${el.TPopKontrId}/tpopkontrzaehl`,
+          table: `tpopkontr`,
+          id: el.TPopKontrId,
+          name: `Zählungen (${el.AnzTPopkontrzaehl})`,
+          expanded: false,
+          path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId, `Zählungen`],
+          children: [0],
+        }]
       }))
     )
     .then(nodes => callback(null, nodes))

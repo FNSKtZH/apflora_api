@@ -20,6 +20,7 @@ const tpopFolder = require(`./tpopFolder`)
 const tpopberFolder = require(`./tpopberFolder`)
 const tpopfreiwkontrFolder = require(`./tpopfreiwkontrFolder`)
 const tpopfeldkontrFolder = require(`./tpopfeldkontrFolder`)
+const tpopfeldkontrzaehlFolder = require(`./tpopfeldkontrzaehlFolder`)
 const tpopmassnberFolder = require(`./tpopmassnberFolder`)
 const tpopmassnFolder = require(`./tpopmassnFolder`)
 const zielFolder = require(`./zielFolder`)
@@ -48,6 +49,7 @@ module.exports = (request, callback) => {
       tpopber() { tpopberFolder(request, callback) },
       tpopfreiwkontr() { tpopfreiwkontrFolder(request, callback) },
       tpopfeldkontr() { tpopfeldkontrFolder(request, callback) },
+      tpopkontrzaehl() { tpopfeldkontrzaehlFolder(request, callback) },
       tpopmassnber() { tpopmassnberFolder(request, callback) },
       tpopmassn() { tpopmassnFolder(request, callback) },
       ziel() { zielFolder(request, callback) },
