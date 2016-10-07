@@ -9,7 +9,7 @@ module.exports = (request, callback) => {
     id = parseInt(id, 0)
   }
 
-  app.db.many(`
+  app.db.any(`
     SELECT
       beob.beob_bereitgestellt."NO_ISFS",
       apflora.beobzuordnung."NO_NOTE",
@@ -20,7 +20,8 @@ module.exports = (request, callback) => {
       beob.beob_bereitgestellt."Datum",
       beob.beob_bereitgestellt."Autor",
       beob.beob_quelle.name AS "Quelle",
-      apflora.ap."ProjId"
+      apflora.ap."ProjId",
+      apflora.ap."ApArtId"
     FROM
       apflora.beobzuordnung
       INNER JOIN

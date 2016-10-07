@@ -13,7 +13,7 @@ module.exports = (request, callback) => {
   }
 
 
-  app.db.many(`
+  app.db.any(`
     SELECT
       "ProjId",
       "ProjName",

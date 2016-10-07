@@ -12,7 +12,10 @@ const berFolder = require(`./berFolder`)
 const erfkritFolder = require(`./erfkritFolder`)
 const pop = require(`./pop`)
 const popFolder = require(`./popFolder`)
+const popmassnberFolder = require(`./popmassnberFolder`)
+const popberFolder = require(`./popberFolder`)
 const tpop = require(`./tpop`)
+const tpopFolder = require(`./tpopFolder`)
 const zielFolder = require(`./zielFolder`)
 
 module.exports = (request, callback) => {
@@ -31,6 +34,9 @@ module.exports = (request, callback) => {
       ber() { berFolder(request, callback) },
       erfkrit() { erfkritFolder(request, callback) },
       pop() { popFolder(request, callback) },
+      popmassnber() { popmassnberFolder(request, callback) },
+      popber() { popberFolder(request, callback) },
+      tpop() { tpopFolder(request, callback) },
       ziel() { zielFolder(request, callback) },
     }
     callHandler[folder]()

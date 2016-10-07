@@ -11,7 +11,7 @@ module.exports = (request, callback) => {
     id = parseInt(id, 0)
   }
 
-  app.db.many(`
+  app.db.any(`
       SELECT
         "PopNr",
         "PopName",

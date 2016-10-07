@@ -9,7 +9,7 @@ module.exports = (request, callback) => {
     id = parseInt(id, 0)
   }
 
-  app.db.many(`
+  app.db.any(`
     SELECT
       beob.beob_bereitgestellt."BeobId",
       beob.beob_bereitgestellt."QuelleId",
@@ -17,6 +17,7 @@ module.exports = (request, callback) => {
       beob.beob_bereitgestellt."Autor",
       beob.beob_quelle.name AS "Quelle",
       apflora.ap."ProjId",
+      apflora.ap."ApArtId",
       beob.beob_bereitgestellt."NO_ISFS"
     FROM
       beob.beob_bereitgestellt
