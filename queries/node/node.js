@@ -23,6 +23,7 @@ const tpopfeldkontrFolder = require(`./tpopfeldkontrFolder`)
 const tpopmassnberFolder = require(`./tpopmassnberFolder`)
 const tpopmassnFolder = require(`./tpopmassnFolder`)
 const zielFolder = require(`./zielFolder`)
+const zielberFolder = require(`./zielberFolder`)
 
 module.exports = (request, callback) => {
   const table = encodeURIComponent(request.query.table)
@@ -50,6 +51,7 @@ module.exports = (request, callback) => {
       tpopmassnber() { tpopmassnberFolder(request, callback) },
       tpopmassn() { tpopmassnFolder(request, callback) },
       ziel() { zielFolder(request, callback) },
+      zielber() { zielberFolder(request, callback) },
     }
     callHandler[folder]()
   } else {

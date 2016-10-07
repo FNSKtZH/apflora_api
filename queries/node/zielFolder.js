@@ -16,7 +16,15 @@ module.exports = (request, callback) => {
       apflora.ziel_typ_werte."ZieltypTxt",
       apflora.ziel."ZielJahr",
       apflora.ziel."ZielBezeichnung",
-      apflora.ap."ProjId"
+      apflora.ap."ProjId",
+      (
+        SELECT
+          COUNT(*)
+        FROM
+          apflora.zielber
+        WHERE
+          apflora.zielber."ZielId" = apflora.ziel."ZielId"
+      ) AS "AnzZielber"
     FROM
       apflora.ziel
       INNER JOIN
@@ -38,7 +46,17 @@ module.exports = (request, callback) => {
         id: el.ZielId,
         name: `${el.ZielJahr ? `${el.ZielJahr}` : `(kein Jahr)`}: ${el.ZielBezeichnung} (${el.ZieltypTxt})`,
         expanded: false,
-        path: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `AP-Ziele`, el.ZielId],
+        path: [`Projekte`, el.ProjId, `Arten`, id, `AP-Ziele`, el.ZielId],
+        children: [{
+          nodeId: `ziel/${el.ZielId}/zielber`,
+          folder: `zielber`,
+          table: `ziel`,
+          id: el.ZielId,
+          name: `Berichte (${el.AnzZielber})`,
+          expanded: false,
+          children: [0],
+          path: [`Projekte`, el.ProjId, `Arten`, id, `AP-Ziele`, el.ZielId, `Berichte`]
+        }],
       }))
     )
     .then(nodes => callback(null, nodes))
