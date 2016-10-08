@@ -12,8 +12,11 @@ module.exports = (request, callback) => {
     id = parseInt(id, 0)
   }
 
-
-  projektQuery({ user, projId: id, withAp: false, withApBerUebersicht: false })
+  projektQuery({
+    user,
+    projId: id,
+    folders: []
+  })
     .then(nodes => callback(null, nodes))
     .catch(error => callback(error, null))
 }

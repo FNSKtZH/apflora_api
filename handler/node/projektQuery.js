@@ -1,16 +1,14 @@
 'use strict'
 
-/* eslint-disable no-unused-vars */
-
 const app = require(`ampersand-app`)
 const apFolderQuery = require(`./apFolderQuery`)
 
 let apFolder = [0]
 let projektListe
 
-module.exports = ({ user, projId, withAp, withApBerUebersicht }) =>
+module.exports = ({ user, projId, folders }) =>
   app.db.task(function* getData() {
-    if (withAp) {
+    if (folders.includes(`ap`)) {
       apFolder = yield apFolderQuery(projId)
     }
     projektListe = yield app.db.any(`

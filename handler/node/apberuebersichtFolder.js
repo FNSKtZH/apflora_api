@@ -1,37 +1,24 @@
 'use strict'
 
-const app = require(`ampersand-app`)
+const apberuebersichtFolderQuery = require(`./apberuebersichtFolderQuery`)
+const projektQuery = require(`./projektQuery`)
 
 module.exports = (request, callback) => {
   let id = encodeURIComponent(request.query.id)
+  const levels = encodeURIComponent(request.query.levels)
 
   if (id) {
     id = parseInt(id, 0)
   }
 
-  app.db.any(`
-    SELECT
-      "ProjId",
-      "JbuJahr"
-    FROM
-      apflora.apberuebersicht
-    WHERE
-      apflora.apberuebersicht."ProjId" = ${id}
-    ORDER BY
-      "JbuJahr"
-    `
-  )
-    .then(apberuebersichtListe =>
-      apberuebersichtListe.map(el => ({
-        nodeId: `apberuebersicht/${el.JbuJahr}`,
-        table: `apberuebersicht`,
-        id: el.JbuJahr,
-        name: el.JbuJahr,
-        expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `AP-Berichte`, el.JbuJahr],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/apberuebersicht`, `apberuebersicht/${el.JbuJahr}`],
-      }))
-    )
-    .then(nodes => callback(null, nodes))
-    .catch(error => callback(error, null))
+  if (levels && levels === `all`) {
+    const user = 23
+    projektQuery({ user, projId: id, folders: [`apberuebersicht`] })
+      .then(nodes => callback(null, nodes))
+      .catch(error => callback(error, null))
+  } else {
+    apberuebersichtFolderQuery(id)
+      .then(nodes => callback(null, nodes))
+      .catch(error => callback(error, null))
+  }
 }
