@@ -59,6 +59,7 @@ module.exports = (request, callback) => {
         expanded: false,
         children: [0],
         urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Teil-Populationen`],
+        nodeIdPath: [`projekt/${pop.ProjId}`, `projekt/${pop.ProjId}/ap`, `ap/${pop.ApArtId}`, `ap/${pop.ApArtId}/pop`, `pop/${id}`, `pop/${id}/tpop`],
       },
       // popber folder
       {
@@ -70,6 +71,7 @@ module.exports = (request, callback) => {
         expanded: false,
         children: [0],
         urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Kontroll-Berichte`],
+        nodeIdPath: [`projekt/${pop.ProjId}`, `projekt/${pop.ProjId}/ap`, `ap/${pop.ApArtId}`, `ap/${pop.ApArtId}/pop`, `pop/${id}`, `pop/${id}/popber`],
       },
       // popmassnber folder
       {
@@ -81,6 +83,7 @@ module.exports = (request, callback) => {
         expanded: false,
         children: [0],
         urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Massnahmen-Berichte`],
+        nodeIdPath: [`projekt/${pop.ProjId}`, `projekt/${pop.ProjId}/ap`, `ap/${pop.ApArtId}`, `ap/${pop.ApArtId}/pop`, `pop/${id}`, `pop/${id}/popmassnber`],
       },
     ])
     .then(nodes => callback(null, nodes))
