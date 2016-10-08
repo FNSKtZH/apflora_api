@@ -32,6 +32,7 @@ module.exports = (request, callback) => {
         name: ap.Artname,
         expanded: false,
         urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId],
+        nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`],
         children: [0],
       }))
     )

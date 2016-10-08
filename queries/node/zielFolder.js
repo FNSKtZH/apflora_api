@@ -47,6 +47,7 @@ module.exports = (request, callback) => {
         name: `${el.ZielJahr ? `${el.ZielJahr}` : `(kein Jahr)`}: ${el.ZielBezeichnung} (${el.ZieltypTxt})`,
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, id, `AP-Ziele`, el.ZielId],
+        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/ziel`, `ziel/${el.ZielId}`],
         children: [{
           nodeId: `ziel/${el.ZielId}/zielber`,
           folder: `zielber`,
@@ -55,7 +56,8 @@ module.exports = (request, callback) => {
           name: `Berichte (${el.AnzZielber})`,
           expanded: false,
           children: [0],
-          urlPath: [`Projekte`, el.ProjId, `Arten`, id, `AP-Ziele`, el.ZielId, `Berichte`]
+          urlPath: [`Projekte`, el.ProjId, `Arten`, id, `AP-Ziele`, el.ZielId, `Berichte`],
+          nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/ziel`, `ziel/${el.ZielId}`, `ziel/${el.ZielId}/zielber`],
         }],
       }))
     )

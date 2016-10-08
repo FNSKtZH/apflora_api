@@ -36,6 +36,7 @@ module.exports = (request, callback) => {
         name: `${el.Artname ? el.Artname : `(keine Art gewählt)`}`,
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `assoziierte-Arten`, el.AaId],
+        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${id}/assozart`, `assozart/${el.AaId}`],
       }))
     )
     .then(nodes => callback(null, nodes))

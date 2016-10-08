@@ -94,6 +94,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `Populationen`],
+      nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${id}/pop`],
     },
     // ziel folder
     {
@@ -105,6 +106,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `AP-Ziele`],
+      nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${id}/ziel`],
     },
     // erfkrit folder
     {
@@ -116,6 +118,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `AP-Erfolgskriterien`],
+      nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${id}/erfkrit`],
     },
     // apber folder
     {
@@ -127,6 +130,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `AP-Berichte`],
+      nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${id}/apber`],
     },
     // ber folder
     {
@@ -138,6 +142,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `Berichte`],
+      nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${id}/ber`],
     },
     // beobNichtBeurteilt folder
     {
@@ -149,6 +154,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `nicht-beurteilte-Beobachtungen`],
+      nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${id}/beobNichtBeurteilt`],
     },
     // beobNichtZuzuordnen folder
     {
@@ -160,6 +166,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `nicht-zuzuordnende-Beobachtungen`],
+      nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${id}/beobNichtZuzuordnen`],
     },
     // idealbiotop folder
     {
@@ -170,6 +177,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `Idealbiotop`],
+      nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `idealbiotop/${id}`],
     },
     // assozarten folder
     {
@@ -181,6 +189,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `assoziierte-Arten`],
+      nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${id}/assozart`],
     },
     // qk folder
     {
@@ -192,6 +201,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `Qualitätskontrollen`],
+      nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${id}/qk`],
     },
   ])
   .then(nodes => callback(null, nodes))

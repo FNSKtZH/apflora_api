@@ -47,6 +47,7 @@ module.exports = (request, callback) => {
         expanded: false,
         children: [0],
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId],
+        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`],
       }))
     })
     .then(nodes => callback(null, nodes))

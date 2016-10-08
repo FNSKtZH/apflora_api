@@ -50,6 +50,7 @@ module.exports = (request, callback) => {
         name: `${el.Datum ? `${el.Datum}` : `(kein Datum)`}: ${el.Autor ? `${el.Autor}` : `(kein Autor)`} (${el.Quelle})`,
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `nicht-zuzuordnende-Beobachtungen`, el.NO_NOTE],
+        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${id}/beobNichtZuzuordnen`, `beobNichtZuzuordnen/${el.NO_NOTE}`],
       }))
     )
     .then(nodes => callback(null, nodes))

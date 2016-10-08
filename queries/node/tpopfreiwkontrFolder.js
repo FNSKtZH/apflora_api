@@ -44,6 +44,7 @@ module.exports = (request, callback) => {
         name: `${el.TPopKontrJahr ? el.TPopKontrJahr : `(kein Jahr)`}`,
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Freiwilligen-Kontrollen`, el.TPopKontrId],
+        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${el.TPopId}/tpopkontr`, `tpopkontr/${el.TPopKontrId}`],
       }))
     )
     .then(nodes => callback(null, nodes))

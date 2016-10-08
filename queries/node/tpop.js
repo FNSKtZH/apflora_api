@@ -91,6 +91,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Massnahmen`],
+      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopmassn`],
     },
     // tpopmassnber folder
     {
@@ -102,6 +103,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Massnahmen-Berichte`],
+      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopmassnber`],
     },
     // tpopfeldkontr folder
     {
@@ -113,6 +115,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`],
+      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopfeldkontr`],
     },
     // tpopfreiwkontr folder
     {
@@ -124,6 +127,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Freiwilligen-Kontrollen`],
+      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopfreiwkontr`],
     },
     // tpopber folder
     {
@@ -135,6 +139,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Kontroll-Berichte`],
+      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopber`],
     },
     // beobzuordnung folder
     {
@@ -146,6 +151,7 @@ module.exports = (request, callback) => {
       expanded: false,
       children: [0],
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `zugeordnete-Beobachtungen`],
+      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/beobzuordnung`],
     },
   ])
   .then(nodes => callback(null, nodes))

@@ -60,6 +60,7 @@ module.exports = (request, callback) => {
           name: projekt.ProjName,
           expanded: idActive, // || oneProject,  // temporarily disabled
           urlPath: [`Projekte`, projekt.ProjId],
+          nodeIdPath: [`projekt/${projekt.ProjId}`],
           children: [
             // ap folder
             {
@@ -70,7 +71,8 @@ module.exports = (request, callback) => {
               name: `Arten (${projekt.AnzAp})`,
               expanded: false,
               children: [0],
-              urlPath: [`Projekte`, projekt.ProjId, `Arten`]
+              urlPath: [`Projekte`, projekt.ProjId, `Arten`],
+              nodeIdPath: [`projekt/${projekt.ProjId}`, `projekt/${projekt.ProjId}/ap`],
             },
             // apberuebersicht folder
             {
@@ -81,7 +83,8 @@ module.exports = (request, callback) => {
               name: `AP-Berichte (${projekt.AnzApberuebersicht})`,
               expanded: false,
               children: [0],
-              urlPath: [`Projekte`, projekt.ProjId, `AP-Berichte`]
+              urlPath: [`Projekte`, projekt.ProjId, `AP-Berichte`],
+              nodeIdPath: [`projekt/${projekt.ProjId}`, `projekt/${projekt.ProjId}/apberuebersicht`],
             },
           ],
         }
