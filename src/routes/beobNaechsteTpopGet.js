@@ -1,6 +1,6 @@
 'use strict'
 
-const queryBeobNaechsteTpop = require(`../../queries/beobNaechsteTpop.js`)
+const queryBeobNaechsteTpop = require(`../../handler/beobNaechsteTpop.js`)
 
 module.exports = [
   {

@@ -11,6 +11,7 @@ module.exports = {
   "rules": {
     "react/require-extension": "off",
     // "linebreak-style": ["error", "windows"],
+    "linebreak-style": 0,
     "react/jsx-sort-props": 0,
     "react/jsx-no-bind": 0,
     "comma-dangle": 0,

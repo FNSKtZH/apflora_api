@@ -1,6 +1,6 @@
 'use strict'
 
-const queryQkView = require(`../../queries/qkView.js`)
+const queryQkView = require(`../../handler/qkView.js`)
 
 module.exports = [
   {

@@ -1,6 +1,6 @@
 'use strict'
 
-const exportView = require(`../../queries/exportView.js`)
+const exportView = require(`../../handler/exportView.js`)
 const getKmlForPop = require(`../getKmlForPop.js`)
 const getKmlForTpop = require(`../getKmlForTpop.js`)
 

@@ -1,7 +1,7 @@
 'use strict'
 
-const queryAp = require(`../../queries/ap.js`)
-const queryApInsert = require(`../../queries/apInsert.js`)
+const queryAp = require(`../../handler/ap.js`)
+const queryApInsert = require(`../../handler/apInsert.js`)
 
 module.exports = [
   {

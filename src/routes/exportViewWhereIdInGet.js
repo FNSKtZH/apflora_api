@@ -1,8 +1,8 @@
 'use strict'
 
 const json2csv = require(`json2csv`)
-const exportViewWhereIdIn = require(`../../queries/exportViewWhereIdIn.js`)
-const escapeStringForSql = require(`../../queries/escapeStringForSql.js`)
+const exportViewWhereIdIn = require(`../../handler/exportViewWhereIdIn.js`)
+const escapeStringForSql = require(`../../handler/escapeStringForSql.js`)
 
 module.exports = [
   {

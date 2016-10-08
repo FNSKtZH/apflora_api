@@ -1,6 +1,6 @@
 'use strict'
 
-const queryFeldkontrInsert = require(`../../queries/feldkontrInsert.js`)
+const queryFeldkontrInsert = require(`../../handler/feldkontrInsert.js`)
 
 module.exports = [
   {

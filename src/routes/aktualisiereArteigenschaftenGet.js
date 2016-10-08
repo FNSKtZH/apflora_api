@@ -1,6 +1,6 @@
 'use strict'
 
-const aktualisiereArteigenschaften = require(`../../queries/aktualisiereArteigenschaften.js`)
+const aktualisiereArteigenschaften = require(`../../handler/aktualisiereArteigenschaften.js`)
 
 module.exports = [
   {

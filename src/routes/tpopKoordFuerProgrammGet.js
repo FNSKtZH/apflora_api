@@ -1,6 +1,6 @@
 'use strict'
 
-const queryTpopKoordFuerProgramm = require(`../../queries/tpopKoordFuerProgramm.js`)
+const queryTpopKoordFuerProgramm = require(`../../handler/tpopKoordFuerProgramm.js`)
 
 module.exports = [
   {

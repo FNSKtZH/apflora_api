@@ -1,6 +1,6 @@
 'use strict'
 
-const queryBeobDistzutpopEvab = require(`../../queries/beobDistzutpopEvab.js`)
+const queryBeobDistzutpopEvab = require(`../../handler/beobDistzutpopEvab.js`)
 
 module.exports = [
   {

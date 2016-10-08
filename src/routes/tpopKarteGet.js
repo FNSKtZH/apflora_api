@@ -1,6 +1,6 @@
 'use strict'
 
-const queryTPopKarte = require(`../../queries/tpopKarte.js`)
+const queryTPopKarte = require(`../../handler/tpopKarte.js`)
 
 module.exports = [
   {

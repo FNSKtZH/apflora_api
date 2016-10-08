@@ -1,6 +1,6 @@
 'use strict'
 
-const queryTabelleInsertMultipleApflora = require(`../../queries/tabelleInsertMultipleApflora.js`)
+const queryTabelleInsertMultipleApflora = require(`../../handler/tabelleInsertMultipleApflora.js`)
 
 module.exports = [
   {

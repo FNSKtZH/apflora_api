@@ -1,6 +1,6 @@
 'use strict'
 
-const queryQkTpopOhneTpopber = require(`../../queries/qkTpopOhneTpopber.js`)
+const queryQkTpopOhneTpopber = require(`../../handler/qkTpopOhneTpopber.js`)
 
 module.exports = [
   {

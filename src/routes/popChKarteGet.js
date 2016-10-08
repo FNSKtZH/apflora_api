@@ -1,6 +1,6 @@
 'use strict'
 
-const queryPopChKarte = require(`../../queries/popChKarte.js`)
+const queryPopChKarte = require(`../../handler/popChKarte.js`)
 
 module.exports = [
   {

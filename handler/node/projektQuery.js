@@ -1,18 +1,13 @@
 'use strict'
 
+/* eslint-disable no-unused-vars */
+
 const app = require(`ampersand-app`)
+const apFolderQuery = require(`./apFolderQuery`)
 
 // TODO: get real user
 
-module.exports = (request, callback) => {
-  let id = encodeURIComponent(request.query.id)
-  const user = 23
-
-  if (id) {
-    id = parseInt(id, 0)
-  }
-
-
+module.exports = ({ user, projId, withAp, withApBerUebersicht }) =>
   app.db.any(`
     SELECT
       "ProjId",
@@ -51,7 +46,7 @@ module.exports = (request, callback) => {
   )
     .then(projektListe =>
       projektListe.map((projekt) => {
-        const idActive = !!id && id === projekt.ProjId
+        const idActive = !!projId && projId === projekt.ProjId
         // const oneProject = projektListe.length === 1  // temporarily disabled
         return {
           nodeId: `projekt/${projekt.ProjId}`,
@@ -90,6 +85,5 @@ module.exports = (request, callback) => {
         }
       })
     )
-    .then(nodes => callback(null, nodes))
-    .catch(error => callback(error, null))
-}
+    .then(nodes => nodes)
+    .catch((error) => { throw error })

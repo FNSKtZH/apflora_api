@@ -1,6 +1,6 @@
 'use strict'
 
-const queryTpopkontrInsertKopie = require(`../../queries/tpopkontrInsertKopie.js`)
+const queryTpopkontrInsertKopie = require(`../../handler/tpopkontrInsertKopie.js`)
 
 module.exports = [
   {

@@ -1,6 +1,6 @@
 'use strict'
 
-const queryAdressen = require(`../../queries/adressen.js`)
+const queryAdressen = require(`../../handler/adressen.js`)
 
 module.exports = [
   {

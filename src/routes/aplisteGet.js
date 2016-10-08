@@ -1,6 +1,6 @@
 'use strict'
 
-const queryApliste = require(`../../queries/apliste.js`)
+const queryApliste = require(`../../handler/apliste.js`)
 
 module.exports = [
   {

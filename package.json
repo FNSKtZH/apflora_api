@@ -41,7 +41,7 @@
     "deploy": "gulp prod_copy",
     "postdeploy": "gulp prod_sftp",
     "test": "lab",
-    "lint": "eslint src queries test --fix ",
+    "lint": "eslint src handler test --fix ",
     "yolo": "npm run deploy"
   },
   "repository": {

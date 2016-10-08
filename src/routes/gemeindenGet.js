@@ -1,6 +1,6 @@
 'use strict'
 
-const queryGemeinden = require(`../../queries/gemeinden.js`)
+const queryGemeinden = require(`../../handler/gemeinden.js`)
 
 module.exports = [
   {

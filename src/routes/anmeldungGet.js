@@ -1,6 +1,6 @@
 'use strict'
 
-const queryAnmeldung = require(`../../queries/anmeldung.js`)
+const queryAnmeldung = require(`../../handler/anmeldung.js`)
 
 module.exports = [
   {

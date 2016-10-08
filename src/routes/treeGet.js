@@ -1,15 +1,15 @@
 'use strict'
 
-const treeQualitaetskontrollen = require(`../../queries/tree/qualitaetskontrollen.js`)
-const treeAssozarten = require(`../../queries/tree/assozarten.js`)
-const treeIdealbiotop = require(`../../queries/tree/idealbiotop.js`)
-const treeBeobNichtZuzuordnen = require(`../../queries/tree/beobNichtZuzuordnen.js`)
-const treeBeobNichtBeurteilt = require(`../../queries/tree/beobNichtBeurteilt.js`)
-const treeBer = require(`../../queries/tree/ber.js`)
-const treeJBer = require(`../../queries/tree/jber.js`)
-const treeErfkrit = require(`../../queries/tree/erfkrit.js`)
-const treeApziel = require(`../../queries/tree/apziel.js`)
-const treePop = require(`../../queries/tree/pop.js`)
+const treeQualitaetskontrollen = require(`../../handler/tree/qualitaetskontrollen.js`)
+const treeAssozarten = require(`../../handler/tree/assozarten.js`)
+const treeIdealbiotop = require(`../../handler/tree/idealbiotop.js`)
+const treeBeobNichtZuzuordnen = require(`../../handler/tree/beobNichtZuzuordnen.js`)
+const treeBeobNichtBeurteilt = require(`../../handler/tree/beobNichtBeurteilt.js`)
+const treeBer = require(`../../handler/tree/ber.js`)
+const treeJBer = require(`../../handler/tree/jber.js`)
+const treeErfkrit = require(`../../handler/tree/erfkrit.js`)
+const treeApziel = require(`../../handler/tree/apziel.js`)
+const treePop = require(`../../handler/tree/pop.js`)
 
 /**
  * Wenn mehrere DB-Aufrufe nötig sind, können sie parallel getätigt werden:

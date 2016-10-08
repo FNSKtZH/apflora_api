@@ -1,10 +1,10 @@
 'use strict'
 
-const queryTabelleDeleteApflora = require(`../../queries/tabelleDeleteApflora.js`)
-const queryTabelleInsertApflora = require(`../../queries/tabelleInsertApflora.js`)
-const queryTabelleUpdateApflora = require(`../../queries/tabelleUpdateApflora.js`)
-const queryTabelleSelectApfloraNumber = require(`../../queries/tabelleSelectApfloraNumber.js`)
-const queryTabelleSelectApfloraString = require(`../../queries/tabelleSelectApfloraString.js`)
+const queryTabelleDeleteApflora = require(`../../handler/tabelleDeleteApflora.js`)
+const queryTabelleInsertApflora = require(`../../handler/tabelleInsertApflora.js`)
+const queryTabelleUpdateApflora = require(`../../handler/tabelleUpdateApflora.js`)
+const queryTabelleSelectApfloraNumber = require(`../../handler/tabelleSelectApfloraNumber.js`)
+const queryTabelleSelectApfloraString = require(`../../handler/tabelleSelectApfloraString.js`)
 
 module.exports = [
   {

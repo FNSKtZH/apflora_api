@@ -1,7 +1,7 @@
 'use strict'
 
-const escapeStringForSql = require(`../../queries/escapeStringForSql.js`)
-const exportView = require(`../../queries/exportView.js`)
+const escapeStringForSql = require(`../../handler/escapeStringForSql.js`)
+const exportView = require(`../../handler/exportView.js`)
 const json2csv = require(`json2csv`)
 
 module.exports = [

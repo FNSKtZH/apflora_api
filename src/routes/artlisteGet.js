@@ -1,6 +1,6 @@
 'use strict'
 
-const queryArtliste = require(`../../queries/artliste.js`)
+const queryArtliste = require(`../../handler/artliste.js`)
 
 module.exports = [
   {

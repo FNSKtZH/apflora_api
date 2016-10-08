@@ -1,6 +1,6 @@
 'use strict'
 
-const queryBeobDistzutpopInfospezies = require(`../../queries/beobDistzutpopInfospezies.js`)
+const queryBeobDistzutpopInfospezies = require(`../../handler/beobDistzutpopInfospezies.js`)
 
 module.exports = [
   {

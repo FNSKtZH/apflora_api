@@ -1,9 +1,9 @@
 'use strict'
 
-const node = require(`../../queries/node/node.js`)
+const node = require(`../../handler/node/node.js`)
 
 /**
- * queries:
+ * handler:
  * - table
  * - id
  * - folder

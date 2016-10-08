@@ -1,6 +1,6 @@
 'use strict'
 
-const queryApKarte = require(`../../queries/apKarte.js`)
+const queryApKarte = require(`../../handler/apKarte.js`)
 
 module.exports = [
   {

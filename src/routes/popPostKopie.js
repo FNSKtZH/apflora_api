@@ -1,6 +1,6 @@
 'use strict'
 
-const queryPopInsertKopie = require(`../../queries/popInsertKopie.js`)
+const queryPopInsertKopie = require(`../../handler/popInsertKopie.js`)
 
 module.exports = [
   {

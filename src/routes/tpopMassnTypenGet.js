@@ -1,6 +1,6 @@
 'use strict'
 
-const queryTpopMassnTypen = require(`../../queries/tpopMassnTypen.js`)
+const queryTpopMassnTypen = require(`../../handler/tpopMassnTypen.js`)
 
 module.exports = [
   {

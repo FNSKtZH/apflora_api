@@ -1,6 +1,6 @@
 'use strict'
 
-const exportView = require(`../../queries/exportView.js`)
+const exportView = require(`../../handler/exportView.js`)
 
 module.exports = [
   {

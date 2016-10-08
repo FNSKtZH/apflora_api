@@ -1,6 +1,6 @@
 'use strict'
 
-const queryBeobKarte = require(`../../queries/beobKarte.js`)
+const queryBeobKarte = require(`../../handler/beobKarte.js`)
 
 module.exports = [
   {

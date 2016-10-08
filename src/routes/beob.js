@@ -1,7 +1,7 @@
 'use strict'
 
-const queryTabelleSelectBeobNumber = require(`../../queries/tabelleSelectBeobNumber.js`)
-const queryTabelleSelectBeobString = require(`../../queries/tabelleSelectBeobString.js`)
+const queryTabelleSelectBeobNumber = require(`../../handler/tabelleSelectBeobNumber.js`)
+const queryTabelleSelectBeobString = require(`../../handler/tabelleSelectBeobString.js`)
 
 module.exports = [
   {

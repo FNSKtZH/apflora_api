@@ -1,6 +1,6 @@
 'use strict'
 
-const queryBeobZuordnen = require(`../../queries/beobZuordnen.js`)
+const queryBeobZuordnen = require(`../../handler/beobZuordnen.js`)
 
 module.exports = [
   {
