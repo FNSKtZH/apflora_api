@@ -13,7 +13,7 @@ module.exports = (request, callback) => {
 
   if (levels && levels === `all`) {
     const user = 23
-    projektQuery({ user, projId: id, folders: [`apberuebersicht`] })
+    projektQuery({ user, projId: id, children: [`apberuebersichtFolder`] })
       .then(nodes => callback(null, nodes))
       .catch(error => callback(error, null))
   } else {

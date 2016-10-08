@@ -2,16 +2,20 @@
 
 const app = require(`ampersand-app`)
 const apFolderQuery = require(`./apFolderQuery`)
+const apberuebersichtFolderQuery = require(`./apberuebersichtFolderQuery`)
 
-let apFolder = [0]
-let projektListe
-
-module.exports = ({ user, projId, folders }) =>
+module.exports = ({ user, projId, children }) =>
   app.db.task(function* getData() {
-    if (folders.includes(`ap`)) {
-      apFolder = yield apFolderQuery(projId)
+    let apFolder = [0]
+    let apberuebersichtFolder = [0]
+
+    if (children.includes(`apFolder`)) {
+      apFolder = yield apFolderQuery(projId, children)
     }
-    projektListe = yield app.db.any(`
+    if (children.includes(`apberuebersichtFolder`)) {
+      apberuebersichtFolder = yield apberuebersichtFolderQuery(projId)
+    }
+    const projektListe = yield app.db.any(`
       SELECT
         "ProjId",
         "ProjName",
@@ -79,7 +83,7 @@ module.exports = ({ user, projId, folders }) =>
             id: projekt.ProjId,
             name: `AP-Berichte (${projekt.AnzApberuebersicht})`,
             expanded: false,
-            children: [0],
+            children: apberuebersichtFolder,
             urlPath: [`Projekte`, projekt.ProjId, `AP-Berichte`],
             nodeIdPath: [`projekt/${projekt.ProjId}`, `projekt/${projekt.ProjId}/apberuebersicht`],
           },

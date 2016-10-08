@@ -2,7 +2,7 @@
 
 const projekt = require(`./projekt`)
 const ap = require(`./ap`)
-const apFolder = require(`./apFolder.js`)
+const apFolder = require(`./apFolder`)
 const apberFolder = require(`./apberFolder`)
 const apberuebersichtFolder = require(`./apberuebersichtFolder`)
 const assozartFolder = require(`./assozartFolder`)

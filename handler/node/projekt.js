@@ -15,7 +15,7 @@ module.exports = (request, callback) => {
   projektQuery({
     user,
     projId: id,
-    folders: []
+    children: []
   })
     .then(nodes => callback(null, nodes))
     .catch(error => callback(error, null))
