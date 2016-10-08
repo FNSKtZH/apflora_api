@@ -3,6 +3,17 @@
 const app = require(`ampersand-app`)
 
 module.exports = ({ apArtId, children }) =>
+  let popChildren = [0]
+  let zielChildren = [0]
+  let erfkritChildren = [0]
+  let apberChildren = [0]
+  let berChildren = [0]
+  let beobNichtBeurteiltChildren = [0]
+  let beobNichtZuzuordnenChildren = [0]
+  let idealbiotopFolder = [0]
+  let assozartenFolder = [0]
+  let qkFolder = [0]
+
   app.db.task(function* getData() {
     const ap = yield app.db.oneOrNone(`
       SELECT
