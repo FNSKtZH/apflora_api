@@ -14,7 +14,7 @@ module.exports = [
     handler: queryTabelleDeleteApflora,
     config: {
       validate: {
-        query: {
+        params: {
           tabelle: Joi.string().required(),
           tabelleIdFeld: Joi.string().required(),
           tabelleId: Joi.number().required(),
@@ -28,7 +28,7 @@ module.exports = [
     handler: queryTabelleInsertApflora,
     config: {
       validate: {
-        query: {
+        params: {
           tabelle: Joi.string().required(),
           feld: Joi.string().required(),
           wert: Joi.required(),
@@ -43,11 +43,12 @@ module.exports = [
     handler: queryTabelleUpdateApflora,
     config: {
       validate: {
-        query: {
+        params: {
           tabelle: Joi.string().required(),
           tabelleIdFeld: Joi.string().required(),
           tabelleId: Joi.number().required(),
           feld: Joi.string().required(),
+          wert: Joi.any(),
           user: Joi.string().required(),
         }
       }
@@ -59,7 +60,7 @@ module.exports = [
     handler: queryTabelleSelectApfloraNumber,
     config: {
       validate: {
-        query: {
+        params: {
           tabelle: Joi.string().required(),
           feld: Joi.string().required(),
           wert: Joi.required(),
@@ -73,7 +74,7 @@ module.exports = [
     handler: queryTabelleSelectApfloraString,
     config: {
       validate: {
-        query: {
+        params: {
           tabelle: Joi.string().required(),
           feld: Joi.string().required(),
           wert: Joi.required(),

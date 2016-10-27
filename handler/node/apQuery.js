@@ -2,7 +2,7 @@
 
 const app = require(`ampersand-app`)
 
-module.exports = ({ apArtId, children }) => {
+module.exports = ({ apArtId, children }) => {  // eslint-disable-line
   const popChildren = [0]
   const zielChildren = [0]
   const erfkritChildren = [0]
