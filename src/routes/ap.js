@@ -1,5 +1,6 @@
 'use strict'
 
+const Joi = require(`joi`)
 const queryAp = require(`../../handler/ap.js`)
 const queryApInsert = require(`../../handler/apInsert.js`)
 
@@ -12,6 +13,14 @@ module.exports = [
   {
     method: `POST`,
     path: `/apInsert/apId={apId}/user={user}`,
-    handler: queryApInsert
+    handler: queryApInsert,
+    config: {
+      validate: {
+        params: {
+          apId: Joi.number().required(),
+          user: Joi.string().required(),
+        }
+      }
+    }
   }
 ]
