@@ -7,6 +7,13 @@ module.exports = [
   {
     method: `GET`,
     path: `/popChKarte/popId={popId}`,
-    handler: queryPopChKarte
+    handler: queryPopChKarte,
+    config: {
+      validate: {
+        params: {
+          popId: Joi.number().required(),
+        }
+      }
+    }
   }
 ]
