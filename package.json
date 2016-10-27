@@ -45,7 +45,8 @@
     "postdeploy": "gulp prod_sftp",
     "test": "lab",
     "lint": "eslint src handler test --fix ",
-    "yolo": "npm run deploy"
+    "yolo": "npm run deploy",
+    "flow": "flow"
   },
   "repository": {
     "type": "git",
