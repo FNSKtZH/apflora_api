@@ -1,5 +1,6 @@
 'use strict'
 
+const Joi = require(`joi`)
 const queryTabelleDeleteApflora = require(`../../handler/tabelleDeleteApflora.js`)
 const queryTabelleInsertApflora = require(`../../handler/tabelleInsertApflora.js`)
 const queryTabelleUpdateApflora = require(`../../handler/tabelleUpdateApflora.js`)
@@ -10,26 +11,74 @@ module.exports = [
   {
     method: `DELETE`,
     path: `/apflora/tabelle={tabelle}/tabelleIdFeld={tabelleIdFeld}/tabelleId={tabelleId}`,
-    handler: queryTabelleDeleteApflora
+    handler: queryTabelleDeleteApflora,
+    config: {
+      validate: {
+        query: {
+          tabelle: Joi.string().required(),
+          tabelleIdFeld: Joi.string().required(),
+          tabelleId: Joi.number().required(),
+        }
+      }
+    }
   },
   {
     method: `POST`,
     path: `/insert/apflora/tabelle={tabelle}/feld={feld}/wert={wert}/user={user}`,
-    handler: queryTabelleInsertApflora
+    handler: queryTabelleInsertApflora,
+    config: {
+      validate: {
+        query: {
+          tabelle: Joi.string().required(),
+          feld: Joi.string().required(),
+          wert: Joi.required(),
+          user: Joi.string().required(),
+        }
+      }
+    }
   },
   {
     method: `PUT`,
     path: `/update/apflora/tabelle={tabelle}/tabelleIdFeld={tabelleIdFeld}/tabelleId={tabelleId}/feld={feld}/wert={wert?}/user={user}`,  // eslint-disable-line max-len
-    handler: queryTabelleUpdateApflora
+    handler: queryTabelleUpdateApflora,
+    config: {
+      validate: {
+        query: {
+          tabelle: Joi.string().required(),
+          tabelleIdFeld: Joi.string().required(),
+          tabelleId: Joi.number().required(),
+          feld: Joi.string().required(),
+          user: Joi.string().required(),
+        }
+      }
+    }
   },
   {
     method: `GET`,
     path: `/apflora/tabelle={tabelle}/feld={feld}/wertNumber={wert}`,
-    handler: queryTabelleSelectApfloraNumber
+    handler: queryTabelleSelectApfloraNumber,
+    config: {
+      validate: {
+        query: {
+          tabelle: Joi.string().required(),
+          feld: Joi.string().required(),
+          wert: Joi.required(),
+        }
+      }
+    }
   },
   {
     method: `GET`,
     path: `/apflora/tabelle={tabelle}/feld={feld}/wertString={wert}`,
-    handler: queryTabelleSelectApfloraString
+    handler: queryTabelleSelectApfloraString,
+    config: {
+      validate: {
+        query: {
+          tabelle: Joi.string().required(),
+          feld: Joi.string().required(),
+          wert: Joi.required(),
+        }
+      }
+    }
   }
 ]
