@@ -1,5 +1,6 @@
 'use strict'
 
+const Joi = require(`joi`)
 const treeQualitaetskontrollen = require(`../../handler/tree/qualitaetskontrollen.js`)
 const treeAssozarten = require(`../../handler/tree/assozarten.js`)
 const treeIdealbiotop = require(`../../handler/tree/idealbiotop.js`)
@@ -50,6 +51,11 @@ module.exports = [
           request.pre.idealbiotop,
           request.pre.assozarten
         ])
+      },
+      validate: {
+        params: {
+          apId: Joi.number().required(),
+        }
       }
     }
   }
