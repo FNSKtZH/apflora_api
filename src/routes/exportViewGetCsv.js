@@ -1,5 +1,6 @@
 'use strict'
 
+const Joi = require(`joi`)
 const escapeStringForSql = require(`../../handler/escapeStringForSql.js`)
 const exportView = require(`../../handler/exportView.js`)
 const json2csv = require(`json2csv`)
@@ -25,6 +26,14 @@ module.exports = [
           }
         )
       })
+    },
+    config: {
+      validate: {
+        params: {
+          view: Joi.string().required(),
+          filename: Joi.string().required(),
+        }
+      }
     }
   }
 ]
