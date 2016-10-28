@@ -2,8 +2,6 @@
  * startet die Anwendung, indem der Server gestartet wird
  */
 
-// @flow
-
 'use strict'
 
 const Hapi = require(`hapi`)

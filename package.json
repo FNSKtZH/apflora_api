@@ -26,7 +26,6 @@
     "eslint-plugin-import": "2.0.1",
     "eslint-plugin-jsx-a11y": "2.2.3",
     "eslint-plugin-react": "6.4.1",
-    "flow-bin": "0.33.0",
     "gulp": "3.9.1",
     "gulp-sftp": "0.1.5",
     "lab": "11.1.0",
@@ -44,8 +43,7 @@
     "postdeploy": "gulp prod_sftp",
     "test": "lab",
     "lint": "eslint src handler test --fix ",
-    "yolo": "npm run deploy",
-    "flow": "flow"
+    "yolo": "npm run deploy"
   },
   "repository": {
     "type": "git",
