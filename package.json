@@ -5,7 +5,6 @@
   "main": "server.js",
   "dependencies": {
     "ampersand-app": "2.0.0",
-    "async": "2.0.1",
     "boom": "4.2.0",
     "dateformat": "1.0.12",
     "hapi": "15.1.1",
