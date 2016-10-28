@@ -1,7 +1,7 @@
 'use strict'
 
 const Joi = require(`joi`)
-const queryBeobDistzutpopInfospezies = require(`../../handler/beobDistzutpopInfospezies.js`)
+const queryBeobDistzutpopInfospezies = require(`../handler/beobDistzutpopInfospezies.js`)
 
 module.exports = [
   {

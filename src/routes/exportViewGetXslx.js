@@ -1,7 +1,7 @@
 'use strict'
 
 const Joi = require(`joi`)
-const exportView = require(`../../handler/exportView.js`)
+const exportView = require(`../handler/exportView.js`)
 
 module.exports = [
   {

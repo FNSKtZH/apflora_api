@@ -1,7 +1,7 @@
 'use strict'
 
 const Joi = require(`joi`)
-const queryQkView = require(`../../handler/qkView.js`)
+const queryQkView = require(`../handler/qkView.js`)
 
 module.exports = [
   {

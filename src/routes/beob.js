@@ -1,8 +1,8 @@
 'use strict'
 
 const Joi = require(`joi`)
-const queryTabelleSelectBeobNumber = require(`../../handler/tabelleSelectBeobNumber.js`)
-const queryTabelleSelectBeobString = require(`../../handler/tabelleSelectBeobString.js`)
+const queryTabelleSelectBeobNumber = require(`../handler/tabelleSelectBeobNumber.js`)
+const queryTabelleSelectBeobString = require(`../handler/tabelleSelectBeobString.js`)
 
 module.exports = [
   {

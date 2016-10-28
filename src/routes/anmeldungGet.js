@@ -1,7 +1,7 @@
 'use strict'
 
 const Joi = require(`joi`)
-const queryAnmeldung = require(`../../handler/anmeldung.js`)
+const queryAnmeldung = require(`../handler/anmeldung.js`)
 
 module.exports = [
   {

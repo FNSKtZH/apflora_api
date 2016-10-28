@@ -2,8 +2,8 @@
 
 const Joi = require(`joi`)
 const json2csv = require(`json2csv`)
-const exportViewWhereIdIn = require(`../../handler/exportViewWhereIdIn.js`)
-const escapeStringForSql = require(`../../handler/escapeStringForSql.js`)
+const exportViewWhereIdIn = require(`../handler/exportViewWhereIdIn.js`)
+const escapeStringForSql = require(`../escapeStringForSql.js`)
 
 module.exports = [
   {

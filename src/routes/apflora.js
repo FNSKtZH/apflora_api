@@ -1,11 +1,11 @@
 'use strict'
 
 const Joi = require(`joi`)
-const queryTabelleDeleteApflora = require(`../../handler/tabelleDeleteApflora.js`)
-const queryTabelleInsertApflora = require(`../../handler/tabelleInsertApflora.js`)
-const queryTabelleUpdateApflora = require(`../../handler/tabelleUpdateApflora.js`)
-const queryTabelleSelectApfloraNumber = require(`../../handler/tabelleSelectApfloraNumber.js`)
-const queryTabelleSelectApfloraString = require(`../../handler/tabelleSelectApfloraString.js`)
+const queryTabelleDeleteApflora = require(`../handler/tabelleDeleteApflora.js`)
+const queryTabelleInsertApflora = require(`../handler/tabelleInsertApflora.js`)
+const queryTabelleUpdateApflora = require(`../handler/tabelleUpdateApflora.js`)
+const queryTabelleSelectApfloraNumber = require(`../handler/tabelleSelectApfloraNumber.js`)
+const queryTabelleSelectApfloraString = require(`../handler/tabelleSelectApfloraString.js`)
 
 module.exports = [
   {

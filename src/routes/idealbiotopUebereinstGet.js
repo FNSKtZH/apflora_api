@@ -1,6 +1,6 @@
 'use strict'
 
-const queryIdealbiotopUebereinst = require(`../../handler/idealbiotopUebereinst.js`)
+const queryIdealbiotopUebereinst = require(`../handler/idealbiotopUebereinst.js`)
 
 module.exports = [
   {

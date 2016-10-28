@@ -1,7 +1,7 @@
 'use strict'
 
 const Joi = require(`joi`)
-const queryTabelleInsertMultipleApflora = require(`../../handler/tabelleInsertMultipleApflora.js`)
+const queryTabelleInsertMultipleApflora = require(`../handler/tabelleInsertMultipleApflora.js`)
 
 module.exports = [
   {

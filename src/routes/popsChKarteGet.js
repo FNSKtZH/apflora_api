@@ -1,7 +1,7 @@
 'use strict'
 
 const Joi = require(`joi`)
-const queryPopsChKarte = require(`../../handler/popsChKarte.js`)
+const queryPopsChKarte = require(`../handler/popsChKarte.js`)
 
 module.exports = [
   {

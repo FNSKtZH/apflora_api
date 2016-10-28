@@ -1,6 +1,6 @@
 'use strict'
 
-const node = require(`../../handler/node/node.js`)
+const node = require(`../handler/node/node.js`)
 
 /**
  * handler:

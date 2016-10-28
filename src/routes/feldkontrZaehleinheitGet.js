@@ -1,6 +1,6 @@
 'use strict'
 
-const queryFeldkontrZaehleinheit = require(`../../handler/feldkontrZaehleinheit.js`)
+const queryFeldkontrZaehleinheit = require(`../handler/feldkontrZaehleinheit.js`)
 
 module.exports = [
   {

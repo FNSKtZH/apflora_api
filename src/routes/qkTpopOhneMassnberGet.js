@@ -1,7 +1,7 @@
 'use strict'
 
 const Joi = require(`joi`)
-const queryQkTpopOhneMassnber = require(`../../handler/qkTpopOhneMassnber.js`)
+const queryQkTpopOhneMassnber = require(`../handler/qkTpopOhneMassnber.js`)
 
 module.exports = [
   {

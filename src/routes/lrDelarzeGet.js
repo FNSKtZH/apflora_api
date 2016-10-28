@@ -1,6 +1,6 @@
 'use strict'
 
-const queryLrDelarze = require(`../../handler/lrDelarze.js`)
+const queryLrDelarze = require(`../handler/lrDelarze.js`)
 
 module.exports = [
   {

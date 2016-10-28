@@ -1,7 +1,7 @@
 'use strict'
 
 const Joi = require(`joi`)
-const queryTpopmassnInsertKopie = require(`../../handler/tpopmassnInsertKopie.js`)
+const queryTpopmassnInsertKopie = require(`../handler/tpopmassnInsertKopie.js`)
 
 module.exports = [
   {

@@ -1,7 +1,7 @@
 'use strict'
 
 const Joi = require(`joi`)
-const queryApliste = require(`../../handler/apliste.js`)
+const queryApliste = require(`../handler/apliste.js`)
 
 module.exports = [
   {

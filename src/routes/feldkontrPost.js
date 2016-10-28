@@ -1,7 +1,7 @@
 'use strict'
 
 const Joi = require(`joi`)
-const queryFeldkontrInsert = require(`../../handler/feldkontrInsert.js`)
+const queryFeldkontrInsert = require(`../handler/feldkontrInsert.js`)
 
 module.exports = [
   {
