@@ -3393,8 +3393,7 @@ SELECT
   apflora.tpopkontr."TPopKontrJungPflJN",
   apflora.tpopkontr."TPopKontrVegHoeMax",
   apflora.tpopkontr."TPopKontrVegHoeMit",
-  apflora.tpopkontr."TPopKontrGefaehrdung",
-  apflora.tpopkontr."TPopKontrMutDat"
+  apflora.tpopkontr."TPopKontrGefaehrdung"
 FROM
   (((((((beob.adb_eigenschaften
   INNER JOIN
