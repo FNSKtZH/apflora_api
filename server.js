@@ -44,9 +44,10 @@ server.register(Inert, (err) => {
 })
 
 const second = 1000
+const minute = 60 * second
 server.method(`felder`, felder, {
   cache: {
-    expiresIn: 100000 * second,
+    expiresIn: 60 * 12 * minute,
     generateTimeout: 100
   }
 })
