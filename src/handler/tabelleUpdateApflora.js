@@ -7,6 +7,8 @@
 
 const app = require(`ampersand-app`)
 const _ = require(`lodash`)
+const Joi = require(`joi`)
+const Boom = require(`boom`)
 const config = require(`../../configuration`)
 const escapeStringForSql = require(`../escapeStringForSql`)
 
@@ -19,8 +21,10 @@ module.exports = (request, callback) => {
   const user = escapeStringForSql(request.params.user) // der Benutzername
   const date = new Date().toISOString() // wann gespeichert wird
   const table = _.find(config.tables, { tabelleInDb: tabelle }) // Infos über die Tabelle holen
-  const mutWannFeld = table.mutWannFeld // so heisst das Feld für MutWann
-  const mutWerFeld = table.mutWerFeld // so heisst das Feld für MutWer
+  // achtung: wenn eine nicht existente Tabelle übergeben wurde, gibt das einen Fehler, daher abfangen
+  const mutWannFeld = table ? table.mutWannFeld : null // so heisst das Feld für MutWann
+  const mutWerFeld = table ? table.mutWerFeld : null // so heisst das Feld für MutWer
+
   let sql = `
     UPDATE
       apflora.${tabelle}
@@ -43,7 +47,82 @@ module.exports = (request, callback) => {
         "${tabelleIdFeld}" = '${tabelleId}'`
   }
 
-  app.db.any(sql)
-    .then(rows => callback(null, rows))
-    .catch(error => callback(error, null))
+  app.server.methods.felder((error, felder) => {
+    if (error) {
+      return callback(error, null)
+    }
+    // check felder to:
+    // - check if this table exists in table_name
+    const felderVonApflora = felder.filter(f => f.table_schema === `apflora`)
+    const felderDerTabelle = felderVonApflora.filter(f => f.table_name === tabelle)
+    if (felderDerTabelle.length === 0) {
+      return callback(Boom.badRequest(`Die Tabelle '${tabelle}' existiert nicht`))
+    }
+    // - check if this tabelleIdFeld exists in column_name
+    const datentypenDesIdFelds = felderDerTabelle.filter(f => f.column_name === tabelleIdFeld)
+    if (datentypenDesIdFelds.length === 0) {
+      return callback(Boom.badRequest(`Das Feld '${tabelleIdFeld}' existiert nicht`))
+    }
+    // - check if feld exists in column_name
+    const datentypenDesFelds = felderDerTabelle.filter(f => f.column_name === feld)
+    if (datentypenDesFelds.length === 0) {
+      return callback(Boom.badRequest(`Das Feld '${feld}' existiert nicht`))
+    }
+    // - check if the wert complies to data_type
+    const dataType = datentypenDesFelds[0].data_type
+    switch (dataType) {
+      case `integer`: {
+        const validDataType = Joi.validate(wert, Joi.number().min(-2147483648).max(+2147483647))
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'integer' des Felds '${feld}'`))
+        }
+        break
+      }
+      case `smallint`: {
+        const validDataType = Joi.validate(wert, Joi.number().min(-32768).max(+32767))
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'integer' des Felds '${feld}'`))
+        }
+        break
+      }
+      case `double precision`: {
+        const validDataType = Joi.validate(wert, Joi.number())
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${wert}' im Feld '${feld}' muss eine Nummer sein`))
+        }
+        break
+      }
+      case `character varying`: {
+        // - if field type is varchar: check if wert length complies to character_maximum_length
+        const maxLen = datentypenDesFelds[0].character_maximum_length
+        if (maxLen && maxLen < wert.length) {
+          return callback(Boom.badRequest(`Der Wert '${wert}' ist zu lang für das Feld '${feld}'. Erlaubt sind ${maxLen} Zeichen`))
+        }
+        break
+      }
+      case `uuid`: {
+        const validDataType = Joi.validate(wert, Joi.string().guid())
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'uuid' des Felds '${feld}'`))
+        }
+        break
+      }
+      case `date`: {
+        const validDataType = Joi.validate(wert, Joi.date())
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'date' des Felds '${feld}'`))
+        }
+        break
+      }
+      case `time without time zone`:
+      case `text`:
+        // do nothing
+        break
+      default:
+        // do nothing
+    }
+    app.db.any(sql)
+      .then(rows => callback(null, rows))
+      .catch(err => callback(err, null))
+  })
 }
