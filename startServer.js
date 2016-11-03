@@ -4,9 +4,17 @@
 
 'use strict'
 
-const server = require('./server.js')
+const server = require(`./server.js`)
+const app = require(`ampersand-app`)
 
 server.start((err) => {
   if (err) throw err
-  console.log('Server running at:', server.info.uri)
+  // make server accessible from handlers
+  app.extend({
+    init() {
+      this.server = server
+    }
+  })
+  app.init()
+  console.log(`Server running at:`, server.info.uri)  // eslint-disable-line no-console
 })
