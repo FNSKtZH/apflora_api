@@ -8104,6 +8104,8 @@ FROM
 GROUP BY
   apflora.tpopber."TPopId";
 
+
+
 DROP VIEW IF EXISTS views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr AS
 SELECT
@@ -8118,9 +8120,13 @@ FROM
   apflora.beobzuordnung
   INNER JOIN
     beob.beob_bereitgestellt
-    ON CAST(apflora.beobzuordnung."NO_NOTE" AS integer) = beob.beob_bereitgestellt."NO_NOTE"
+    ON apflora.beobzuordnung."NO_NOTE" = beob.beob_bereitgestellt."BeobId"
+WHERE
+  beob.beob_bereitgestellt."Datum" ~ '^[0-9]+$'
 GROUP BY
   apflora.beobzuordnung."TPopId";
+
+
 
 DROP VIEW IF EXISTS views.v_apber_pop_uebersicht CASCADE;
 CREATE OR REPLACE VIEW views.v_apber_pop_uebersicht AS
