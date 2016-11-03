@@ -51,4 +51,12 @@ server.method(`felder`, felder, {
   }
 })
 
+// make server accessible from handlers
+app.extend({
+  init() {
+    this.server = server
+  }
+})
+app.init()
+
 module.exports = server
