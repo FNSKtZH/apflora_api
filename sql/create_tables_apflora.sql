@@ -602,6 +602,7 @@ CREATE TABLE apflora.tpopkontr (
   "TPopKontrVegHoeMax" smallint DEFAULT NULL,
   "TPopKontrVegHoeMit" smallint DEFAULT NULL,
   "TPopKontrGefaehrdung" text DEFAULT NULL,
+  "TPopKontrMutDat" time DEFAULT NULL,
   "TPopKontrGuid" UUID DEFAULT gen_random_uuid(),
   "ZeitGuid" UUID DEFAULT gen_random_uuid(),
   "MutWann" date DEFAULT NULL,
