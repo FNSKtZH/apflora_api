@@ -114,10 +114,7 @@ module.exports = (request, callback) => {
         }
         break
       }
-      case `time without time zone`:
       case `text`:
-        // do nothing
-        break
       default:
         // do nothing
     }
