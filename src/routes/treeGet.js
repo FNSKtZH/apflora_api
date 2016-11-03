@@ -36,7 +36,6 @@ module.exports = [
           { method: treePop, assign: `pop` },
           { method: treeQualitaetskontrollen, assign: `qualitaetskontrollen` }
         ]
-
       ],
       handler(request, reply) {
         reply([
