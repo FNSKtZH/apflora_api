@@ -29,7 +29,7 @@ const zielberFolder = require(`./zielberFolder`)
 module.exports = (request, callback) => {
   const table = encodeURIComponent(request.query.table)
   const folder = encodeURIComponent(request.query.folder)
-  const folderExists = folder !== `null` && folder !== `undefined`
+  const folderExists = !!folder && (folder !== `null` && folder !== `undefined`)
 
   if (folderExists) {
     const callHandler = {
