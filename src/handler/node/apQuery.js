@@ -14,7 +14,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
   const assozartenChildren = [0]
   const qkChildren = [0]
 
-  app.db.task(function* getData() {
+  return app.db.task(function* getData() {
     const ap = yield app.db.oneOrNone(`
       SELECT
         apflora.ap."ProjId",
@@ -211,6 +211,9 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
       },
     ]
   })
-  .then(nodes => nodes)
+  .then((nodes) => {
+    console.log(`apQuery: nodes:`, nodes)
+    return nodes
+  })
   .catch((error) => { throw error })
 }
