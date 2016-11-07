@@ -10,7 +10,8 @@ const sql = `
       WHEN "Status" NOT LIKE 'akzeptierter Name'
       THEN CONCAT("Artname", ' (', "Status", ')')
       ELSE "Artname"
-    END AS label
+    END AS label,
+    "Artwert" as artwert
   FROM
     beob.adb_eigenschaften
   ORDER BY
