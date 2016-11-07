@@ -44,7 +44,6 @@ module.exports = (request, reply) => {
           "ZielBerErreichung"`
       )
     }
-    return
   })
     .then(() => {
       // in der apzielliste alls ZielJahr NULL mit '(kein Jahr)' ersetzen

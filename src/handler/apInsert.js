@@ -39,7 +39,6 @@ module.exports = (request, callback) => {
       )
     }
     // keine Fehler melden, wenn bloss der Artwert nicht geholt wurde
-    return
   })
     .then(() => callback(null, apId))
     .catch(error => callback(error, null))
