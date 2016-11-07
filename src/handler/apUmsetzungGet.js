@@ -8,7 +8,7 @@ module.exports = (request, callback) => {
       "DomainCode",
       "DomainTxt"
     FROM
-      apflora.ap_bearbstand_werte
+      apflora.ap_umsetzung_werte
     ORDER BY
       "DomainOrd"`
 
