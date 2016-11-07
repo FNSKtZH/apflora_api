@@ -211,9 +211,6 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
       },
     ]
   })
-  .then((nodes) => {
-    console.log(`apQuery: nodes:`, nodes)
-    return nodes
-  })
+  .then(nodes => nodes)
   .catch((error) => { throw error })
 }
