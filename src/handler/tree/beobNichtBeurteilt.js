@@ -26,7 +26,19 @@ module.exports = (request, reply) => {
       beob.beob_bereitgestellt."NO_NOTE_PROJET",
       beob.beob_bereitgestellt."NO_ISFS",
       beob.beob_bereitgestellt."Datum",
-      beob.beob_bereitgestellt."Autor"
+      beob.beob_bereitgestellt."Autor",
+      (
+        SELECT
+          COUNT(*)
+        FROM
+          beob.beob_bereitgestellt
+          LEFT JOIN
+            apflora.beobzuordnung
+            ON beob.beob_bereitgestellt."BeobId" = apflora.beobzuordnung."NO_NOTE"
+        WHERE
+          beob.beob_bereitgestellt."NO_ISFS" = ${apId}
+          AND apflora.beobzuordnung."NO_NOTE" Is Null
+      ) AS "AnzBeobNichtBeurteilt"
     FROM
       beob.beob_bereitgestellt
       LEFT JOIN
@@ -42,7 +54,7 @@ module.exports = (request, reply) => {
   app.db.any(sql)
     .then((rows) => {
       const node = {
-        data: `nicht beurteilte Beobachtungen (${rows.length < 100 ? `` : `neuste `}${rows.length})`,
+        data: `nicht beurteilte Beobachtungen (${rows.length < 100 ? `` : `neuste `}${rows.length}${rows[0] && rows[0].AnzBeobNichtBeurteilt ? ` von ${rows[0].AnzBeobNichtBeurteilt}` : ``})`,
         attr: {
           id: `apOrdnerBeobNichtBeurteilt${apId}`,
           typ: `apOrdnerBeobNichtBeurteilt`
