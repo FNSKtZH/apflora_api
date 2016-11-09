@@ -36,26 +36,7 @@ module.exports = (request, reply) => {
       apflora.beobzuordnung
       INNER JOIN
         beob.beob_bereitgestellt
-        ON apflora.beobzuordnung."NO_NOTE" = to_char(beob.beob_bereitgestellt."NO_NOTE", 'FM99999999')
-    WHERE
-      apflora.beobzuordnung."NO_NOTE" IS NOT NULL
-      AND apflora.beobzuordnung."BeobNichtZuordnen" = 1
-      AND beob.beob_bereitgestellt."NO_ISFS" = ${apId}
-    UNION SELECT
-      beob.beob_bereitgestellt."NO_ISFS",
-      apflora.beobzuordnung."NO_NOTE",
-      apflora.beobzuordnung."BeobNichtZuordnen",
-      apflora.beobzuordnung."BeobBemerkungen",
-      apflora.beobzuordnung."BeobMutWann",
-      apflora.beobzuordnung."BeobMutWer",
-      beob.beob_bereitgestellt."Datum",
-      beob.beob_bereitgestellt."Autor",
-      'evab' AS "beobtyp"
-    FROM
-      apflora.beobzuordnung
-      INNER JOIN
-        beob.beob_bereitgestellt
-        ON apflora.beobzuordnung."NO_NOTE" = beob.beob_bereitgestellt."NO_NOTE_PROJET"
+        ON apflora.beobzuordnung."NO_NOTE" = beob.beob_bereitgestellt."BeobId"
     WHERE
       apflora.beobzuordnung."NO_NOTE" IS NOT NULL
       AND apflora.beobzuordnung."BeobNichtZuordnen" = 1
