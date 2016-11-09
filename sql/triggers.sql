@@ -7,7 +7,7 @@ DROP FUNCTION IF EXISTS tpop_max_one_massnber_per_year();
 CREATE FUNCTION tpop_max_one_massnber_per_year() RETURNS trigger AS $tpop_max_one_massnber_per_year$
   BEGIN
     -- check if a tpopmassnber already exists for this year
-    IF 
+    IF
       (
         NEW."TPopMassnBerJahr" > 0
         AND NEW."TPopMassnBerJahr" IN
@@ -120,3 +120,22 @@ $tpop_max_one_tpopber_per_year$ LANGUAGE plpgsql;
 
 CREATE TRIGGER tpop_max_one_tpopber_per_year BEFORE UPDATE OR INSERT ON apflora.tpopber
   FOR EACH ROW EXECUTE PROCEDURE tpop_max_one_tpopber_per_year();
+
+-- make sure every dataset in apflora.beobzuordnung has QuelleId set
+DROP TRIGGER IF EXISTS beob_zuordnung_set_quelleid_on_insert ON apflora.beobzuordnung;
+DROP FUNCTION IF EXISTS beob_zuordnung_set_quelleid_on_insert();
+CREATE FUNCTION beob_zuordnung_set_quelleid_on_insert() RETURNS trigger AS $beob_zuordnung_set_quelleid_on_insert$
+  BEGIN
+    IF
+      length(NEW."NO_NOTE") > 10
+    THEN
+      NEW."QuelleId" = '1';
+    ELSE
+      NEW."QuelleId" = '2';
+    END IF;
+    RETURN NEW;
+  END;
+$beob_zuordnung_set_quelleid_on_insert$ LANGUAGE plpgsql;
+
+CREATE TRIGGER beob_zuordnung_set_quelleid_on_insert BEFORE INSERT ON apflora.beobzuordnung
+  FOR EACH ROW EXECUTE PROCEDURE beob_zuordnung_set_quelleid_on_insert();
