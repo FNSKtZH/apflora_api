@@ -13,7 +13,10 @@ module.exports = [
         params: {
           apId: Joi.number(),
           tpopId: Joi.number(),
-          beobId: Joi.any(),
+          beobId: Joi.alternatives().try(
+            Joi.number().min(-2147483648).max(+2147483647),
+            Joi.string().guid()
+          ),
           nichtZuzuordnen: Joi.any(),
         }
       }

@@ -19,7 +19,7 @@ module.exports = [
           tabelleIdFeld: Joi.string().required(),
           tabelleId: Joi.alternatives().try(
             Joi.number().min(-2147483648).max(+2147483647),
-            Joi.string()
+            Joi.string().guid()
           ).required(),
         }
       }

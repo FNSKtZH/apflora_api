@@ -11,7 +11,10 @@ module.exports = [
     config: {
       validate: {
         params: {
-          beobId: Joi.string().required(),
+          beobId: Joi.alternatives().try(
+            Joi.number().min(-2147483648).max(+2147483647),
+            Joi.string().guid()
+          ).required(),
         }
       }
     }
