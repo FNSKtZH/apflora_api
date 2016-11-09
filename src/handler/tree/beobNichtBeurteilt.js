@@ -28,19 +28,13 @@ module.exports = (request, reply) => {
       beob.beob_bereitgestellt."Datum",
       beob.beob_bereitgestellt."Autor"
     FROM
-      (beob.beob_bereitgestellt
+      beob.beob_bereitgestellt
       LEFT JOIN
         apflora.beobzuordnung
-        ON to_char(beob.beob_bereitgestellt."NO_NOTE", 'FM99999999') = apflora.beobzuordnung."NO_NOTE")
-      LEFT JOIN
-        apflora.beobzuordnung AS "tblBeobZuordnung_1"
-        ON beob.beob_bereitgestellt."NO_NOTE_PROJET" = "tblBeobZuordnung_1"."NO_NOTE"
+        ON beob.beob_bereitgestellt."BeobId" = apflora.beobzuordnung."NO_NOTE"
     WHERE
       beob.beob_bereitgestellt."NO_ISFS" = ${apId}
-      AND (
-        (beob.beob_bereitgestellt."NO_NOTE_PROJET" Is Not Null AND "tblBeobZuordnung_1"."NO_NOTE" Is Null)
-        OR (beob.beob_bereitgestellt."NO_NOTE" Is Not Null AND apflora.beobzuordnung."NO_NOTE" Is Null)
-      )
+      AND apflora.beobzuordnung."NO_NOTE" Is Null
     ORDER BY
       beob.beob_bereitgestellt."Datum" DESC
     LIMIT 100`
