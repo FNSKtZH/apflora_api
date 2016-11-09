@@ -17,7 +17,10 @@ module.exports = [
         params: {
           tabelle: Joi.string().required(),
           tabelleIdFeld: Joi.string().required(),
-          tabelleId: Joi.number().min(-2147483648).max(+2147483647).required(),
+          tabelleId: Joi.alternatives().try(
+            Joi.number().min(-2147483648).max(+2147483647),
+            Joi.string()
+          ).required(),
         }
       }
     }
@@ -46,7 +49,10 @@ module.exports = [
         params: {
           tabelle: Joi.string().required(),
           tabelleIdFeld: Joi.string().required(),
-          tabelleId: Joi.number().min(-2147483648).max(+2147483647).required(),
+          tabelleId: Joi.alternatives().try(
+            Joi.number().min(-2147483648).max(+2147483647),
+            Joi.string()
+          ).required(),
           feld: Joi.string().required(),
           wert: Joi.any(),
           user: Joi.string().required(),
