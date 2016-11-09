@@ -72,14 +72,14 @@ module.exports = (request, callback) => {
     const dataType = datentypenDesFelds[0].data_type
     switch (dataType) {
       case `integer`: {
-        const validDataType = Joi.validate(wert, Joi.number().min(-2147483648).max(+2147483647))
+        const validDataType = Joi.validate(wert, Joi.number().integer().min(-2147483648).max(+2147483647))
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'integer' des Felds '${feld}'`))
         }
         break
       }
       case `smallint`: {
-        const validDataType = Joi.validate(wert, Joi.number().min(-32768).max(+32767))
+        const validDataType = Joi.validate(wert, Joi.number().integer().min(-32768).max(+32767))
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'integer' des Felds '${feld}'`))
         }
