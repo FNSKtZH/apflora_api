@@ -72,16 +72,24 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
             COUNT(*)
           FROM
             beob.beob_bereitgestellt
+            LEFT JOIN
+              apflora.beobzuordnung
+              ON beob.beob_bereitgestellt."BeobId" = apflora.beobzuordnung."NO_NOTE"
           WHERE
             beob.beob_bereitgestellt."NO_ISFS" = ${apArtId}
+            AND apflora.beobzuordnung."NO_NOTE" Is Null
         ) AS "AnzBeobNichtBeurteilt",
         (
           SELECT
             COUNT(*)
           FROM
             beob.beob_bereitgestellt
+            INNER JOIN
+              apflora.beobzuordnung
+              ON beob.beob_bereitgestellt."BeobId" = apflora.beobzuordnung."NO_NOTE"
           WHERE
             beob.beob_bereitgestellt."NO_ISFS" = ${apArtId}
+            AND apflora.beobzuordnung."BeobNichtZuordnen" = 1
         ) AS "AnzBeobNichtZuzuordnen"
       FROM
         apflora.ap
