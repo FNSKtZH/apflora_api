@@ -31,7 +31,19 @@ module.exports = (request, reply) => {
       apflora.beobzuordnung."BeobMutWer",
       beob.beob_bereitgestellt."Datum",
       beob.beob_bereitgestellt."Autor",
-      'infospezies' AS "beobtyp"
+      'infospezies' AS "beobtyp",
+      (
+        SELECT
+          COUNT(*)
+        FROM
+          beob.beob_bereitgestellt
+          INNER JOIN
+            apflora.beobzuordnung
+            ON beob.beob_bereitgestellt."BeobId" = apflora.beobzuordnung."NO_NOTE"
+        WHERE
+          beob.beob_bereitgestellt."NO_ISFS" = ${apId}
+          AND apflora.beobzuordnung."BeobNichtZuordnen" = 1
+      ) AS "AnzBeobNichtZuzuordnen"
     FROM
       apflora.beobzuordnung
       INNER JOIN
@@ -49,7 +61,7 @@ module.exports = (request, reply) => {
   app.db.any(sql)
     .then((rows) => {
       const node = {
-        data: `nicht zuzuordnende Beobachtungen (${rows.length < 100 ? `` : `neuste `}${rows.length})`,
+        data: `nicht zuzuordnende Beobachtungen (${rows.length < 100 ? `` : `neuste `}${rows.length}${rows[0] && rows[0].AnzBeobNichtZuzuordnen ? ` von ${rows[0].AnzBeobNichtZuzuordnen}` : ``})`,
         attr: {
           id: `apOrdnerBeobNichtZuzuordnen${apId}`,
           typ: `apOrdnerBeobNichtZuzuordnen`

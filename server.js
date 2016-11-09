@@ -21,7 +21,7 @@ const serverOptionsDevelopment = { // eslint-disable-line no-unused-vars
 }
 // TODO: cache für Felder schaffen
 // siehe: http://hapijs.com/api#new-serveroptions > cache
-const server = new Hapi.Server()
+const server = new Hapi.Server(serverOptionsDevelopment)
 
 server.connection(dbConnection)
 
