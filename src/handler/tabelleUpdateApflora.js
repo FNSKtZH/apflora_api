@@ -108,7 +108,7 @@ module.exports = (request, callback) => {
         break
       }
       case `date`: {
-        const validDataType = Joi.validate(wert, Joi.date())
+        const validDataType = Joi.validate(wert, Joi.string())
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'date' des Felds '${feld}'`))
         }
