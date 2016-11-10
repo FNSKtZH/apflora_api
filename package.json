@@ -20,6 +20,7 @@
   "devDependencies": {
     "babel-eslint": "7.1.0",
     "code": "4.0.0",
+    "cross-env": "^3.1.3",
     "del": "2.2.2",
     "eslint": "3.9.1",
     "eslint-config-airbnb": "13.0.0",
@@ -34,10 +35,10 @@
     "run-sequence": "1.2.2"
   },
   "scripts": {
-    "dev": "npm run lint && npm test && nodemon startServer.js",
-    "devWithoutLinting": "npm test && nodemon startServer.js",
-    "devWithoutTests": "nodemon startServer.js",
-    "start": "npm run lint && npm test && node startServer.js",
+    "dev": "npm run lint && npm test && cross-env NODE_ENV=development nodemon startServer.js",
+    "devWithoutLinting": "npm test && cross-env NODE_ENV=development nodemon startServer.js",
+    "devWithoutTests": "cross-env NODE_ENV=development nodemon startServer.js",
+    "start": "cross-env NODE_ENV=production node startServer.js",
     "predeploy": "gulp prod_clean_dist",
     "deploy": "gulp prod_copy",
     "postdeploy": "gulp prod_sftp",

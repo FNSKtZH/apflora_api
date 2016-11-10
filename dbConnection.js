@@ -1,9 +1,12 @@
 'use strict'
 
-module.exports = {
-  host: '0.0.0.0',
-  port: 4001,
-  routes: {
-    // cors: true
+module.exports = () => {
+  const isDev = process.env.NODE_ENV !== `production`
   }
+  if (isDev) {
+    options.routes = {
+      cors: true,
+    }
+  }
+  return options
 }

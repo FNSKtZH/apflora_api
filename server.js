@@ -11,6 +11,8 @@ const config = require(`./configuration.js`)
 const pgp = require(`pg-promise`)()
 const dbConnection = require(`./dbConnection.js`)
 const felder = require(`./src/handler/felder.js`)
+
+const isDev = process.env.NODE_ENV !== `production`
 // wird nur in Entwicklung genutzt
 // in new Hapi.Server() einsetzen
 const serverOptionsDevelopment = { // eslint-disable-line no-unused-vars
@@ -19,11 +21,13 @@ const serverOptionsDevelopment = { // eslint-disable-line no-unused-vars
     request: [`error`]
   }
 }
+const serverOptionsProduction = {}
+const serverOptions = isDev ? serverOptionsDevelopment : serverOptionsProduction
 // TODO: cache für Felder schaffen
 // siehe: http://hapijs.com/api#new-serveroptions > cache
-const server = new Hapi.Server(serverOptionsDevelopment)
+const server = new Hapi.Server(serverOptions)
 
-server.connection(dbConnection)
+server.connection(dbConnection())
 
 // non-Query routes had to be separated
 // because when testing directory handler produces an error
