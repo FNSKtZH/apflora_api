@@ -2,7 +2,7 @@
 
 module.exports = (str) => {
   if (str && typeof str === `string`) { // eslint-disable-line valid-typeof
-    return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, (char) => {  // eslint-disable-line no-useless-escape
+    return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%/]/g, (char) => {  // eslint-disable-line no-useless-escape
       switch (char) {  // eslint-disable-line default-case
         case `\0`:
           return `\\0`
@@ -21,6 +21,8 @@ module.exports = (str) => {
         case `\\`:
         case `%`:
           return `\\${char}` // prepends a backslash to backslash, percent and double/single quotes
+        case `/`:
+          return `|`
       }
     })
   }

@@ -25,6 +25,9 @@ module.exports = (request, callback) => {
   const mutWannFeld = table ? table.mutWannFeld : null // so heisst das Feld für MutWann
   const mutWerFeld = table ? table.mutWerFeld : null // so heisst das Feld für MutWer
 
+  // console.log(`tabelleUpdateApflora: wert bekommen:`, request.params.wert)
+  // console.log(`tabelleUpdateApflora: wert nach escape:`, wert)
+
   let sql = `
     UPDATE
       apflora.${tabelle}
