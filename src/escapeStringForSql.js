@@ -22,6 +22,7 @@ module.exports = (str) => {
         case `%`:
           return `\\${char}` // prepends a backslash to backslash, percent and double/single quotes
         case `/`:
+        case `\`:
           return `|`
       }
     })
