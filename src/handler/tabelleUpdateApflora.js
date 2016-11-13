@@ -89,7 +89,7 @@ module.exports = (request, callback) => {
         break
       }
       case `double precision`: {
-        const validDataType = Joi.validate(wert, Joi.number())
+        const validDataType = Joi.validate(wert, Joi.number().precision(15))
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${wert}' im Feld '${feld}' muss eine Nummer sein`))
         }
@@ -102,8 +102,11 @@ module.exports = (request, callback) => {
         }
         // - if field type is varchar: check if wert length complies to character_maximum_length
         const maxLen = datentypenDesFelds[0].character_maximum_length
-        if (maxLen && maxLen < wert.length) {
-          return callback(Boom.badRequest(`Der Wert '${wert}' ist zu lang für das Feld '${feld}'. Erlaubt sind ${maxLen} Zeichen`))
+        if (maxLen) {
+          const validDataType2 = Joi.validate(wert, Joi.string().max(maxLen))
+          if (validDataType2.error) {
+            return callback(Boom.badRequest(`Der Wert '${wert}' ist zu lang für das Feld '${feld}'. Erlaubt sind ${maxLen} Zeichen`))
+          }
         }
         break
       }
