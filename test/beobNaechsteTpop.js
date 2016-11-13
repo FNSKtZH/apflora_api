@@ -22,9 +22,10 @@ describe(`/beobNaechsteTpop`, () => {
   it(`should return one TPop for ApId 206200 and a set of koordinates`, (done) => {
     const method = `GET`
     const url = `/beobNaechsteTpop/apId=206200/X=682226/Y=268513`
-    server.inject({ method, url }, (res) => {
-      expect(res.result.length).to.equal(1)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.result.length).to.equal(1)
+        done()
+      })
   })
 })
