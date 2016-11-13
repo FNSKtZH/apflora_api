@@ -18,10 +18,11 @@ describe(`/qkView`, () => {
   it(`should get status o.k. for view v_qk_pop_ohnepopnr, apId = 900 and berichtjahr = 2015`, (done) => {
     const method = `GET`
     const url = `/qkView/v_qk_pop_ohnepopnr/900`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.be.at.least(0)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.length).to.be.at.least(0)
+        done()
+      })
   })
 })
