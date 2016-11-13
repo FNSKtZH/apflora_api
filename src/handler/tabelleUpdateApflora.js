@@ -59,17 +59,17 @@ module.exports = (request, callback) => {
     const felderVonApflora = felder.filter(f => f.table_schema === `apflora`)
     const felderDerTabelle = felderVonApflora.filter(f => f.table_name === tabelle)
     if (felderDerTabelle.length === 0) {
-      return callback(Boom.badRequest(`Die Tabelle '${tabelle}' existiert nicht`))
+      return callback(Boom.notFound(`Die Tabelle '${tabelle}' existiert nicht`))
     }
     // - check if this tabelleIdFeld exists in column_name
     const datentypenDesIdFelds = felderDerTabelle.filter(f => f.column_name === tabelleIdFeld)
     if (datentypenDesIdFelds.length === 0) {
-      return callback(Boom.badRequest(`Das Feld '${tabelleIdFeld}' existiert nicht`))
+      return callback(Boom.notFound(`Das Feld '${tabelleIdFeld}' existiert nicht`))
     }
     // - check if feld exists in column_name
     const datentypenDesFelds = felderDerTabelle.filter(f => f.column_name === feld)
     if (datentypenDesFelds.length === 0) {
-      return callback(Boom.badRequest(`Das Feld '${feld}' existiert nicht`))
+      return callback(Boom.notFound(`Das Feld '${feld}' existiert nicht`))
     }
     // - check if the wert complies to data_type
     const dataType = datentypenDesFelds[0].data_type

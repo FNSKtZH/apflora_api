@@ -6,6 +6,7 @@
 
 const Hapi = require(`hapi`)
 const Inert = require(`inert`)
+const InjectThen = require(`inject-then`)
 const app = require(`ampersand-app`)
 const config = require(`./configuration.js`)
 const pgp = require(`pg-promise`)()
@@ -33,8 +34,8 @@ server.connection(dbConnection())
 // because when testing directory handler produces an error
 const routes = require(`./src/routes`).concat(require(`./src/nonQueryRoutes`))
 
-server.register(Inert, (err) => {
-  if (err) console.log(`failed loading Inert plugin`) // eslint-disable-line no-console
+server.register([Inert, InjectThen], (err) => {
+  if (err) console.log(`failed loading plugins`) // eslint-disable-line no-console
 
   // add all the routes
   server.route(routes)
