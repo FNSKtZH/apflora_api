@@ -26,20 +26,19 @@ describe(`/insertMultiple/apflora`, () => {
       MutWer: `test`
     }
     const felder = JSON.stringify(felderObject)
-    server.inject(
-      {
-        method: `POST`,
-        url: `/insertMultiple/apflora/tabelle=pop/felder=${felder}`,
-      },
-      (res) => {
+    server.injectThen({
+      method: `POST`,
+      url: `/insertMultiple/apflora/tabelle=pop/felder=${felder}`,
+    })
+      .then((res) => {
         const popId = res.result
         expect(res.statusCode).to.equal(200)
         expect(popId).to.be.above(0)
         // remove inserted row
         const method = `DELETE`
         const url = `/apflora/tabelle=pop/tabelleIdFeld=PopId/tabelleId=${popId}`
-        server.inject({ method, url }, () => done())
-      }
-    )
+        return server.injectThen({ method, url })
+      })
+      .then(() => done())
   })
 })

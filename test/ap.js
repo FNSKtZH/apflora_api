@@ -22,10 +22,11 @@ describe(`/ap`, () => {
   it(`should return 1 row with ApArtId 900`, (done) => {
     const method = `GET`
     const url = `/ap=900`
-    server.inject({ method, url }, (res) => {
-      expect(res.result.length).to.equal(1)
-      expect(res.result[0].ApArtId).to.equal(900)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.result.length).to.equal(1)
+        expect(res.result[0].ApArtId).to.equal(900)
+        done()
+      })
   })
 })

@@ -22,18 +22,17 @@ const server = require(`../server.js`)
 describe(`/apInsert`, () => {
   it(`should insert in table ap 1 row with ApArtId 150`, (done) => {
     const name = appPassFile.user
-    server.inject(
-      {
-        method: `POST`,
-        url: `/apInsert/apId=150/user=${name}`,
-      },
-      (res) => {
+    server.injectThen({
+      method: `POST`,
+      url: `/apInsert/apId=150/user=${name}`,
+    })
+      .then((res) => {
         expect(res.statusCode).to.equal(200)
         // remove row
         const method = `DELETE`
         const url = `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
-        server.inject({ method, url }, () => done())
-      }
-    )
+        server.injectThen({ method, url })
+      })
+      .then(() => done())
   })
 })

@@ -23,10 +23,11 @@ describe.skip(`/aktualisiereArteigenschaften`, { timeout: 100000 }, () => {
   it(`should update Arteigenschaften`, (done) => {
     const method = `GET`
     const url = `/aktualisiereArteigenschaften`
-    server.inject({ method, url }, (res) => {
-      expect(res.result).to.equal(`Arteigenschaften hinzugefügt`)
-      expect(res.statusCode).to.equal(200)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.result).to.equal(`Arteigenschaften hinzugefügt`)
+        expect(res.statusCode).to.equal(200)
+        done()
+      })
   })
 })

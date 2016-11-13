@@ -25,19 +25,21 @@ describe(`/anmeldung`, () => {
     const pwd = appPassFile.pass
     const method = `GET`
     const url = `/anmeldung/name=${name}/pwd=${pwd}`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.equal(1)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.length).to.equal(1)
+        done()
+      })
   })
   it(`should not accept unknown user`, (done) => {
     const method = `GET`
     const url = `/anmeldung/name=whoami/pwd=dontknow`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.equal(0)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.length).to.equal(0)
+        done()
+      })
   })
 })
