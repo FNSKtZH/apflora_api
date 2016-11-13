@@ -18,9 +18,10 @@ describe(`/tree`, () => {
   it(`should get more than 1 row for popId = 5495`, (done) => {
     const method = `GET`
     const url = `/tree/apId=900`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        done()
+      })
   })
 })

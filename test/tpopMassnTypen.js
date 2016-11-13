@@ -18,10 +18,11 @@ describe(`/tpopMassnTypen`, () => {
   it(`should get more than 7 rows`, (done) => {
     const method = `GET`
     const url = `/tpopMassnTypen`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.be.above(7)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.length).to.be.above(7)
+        done()
+      })
   })
 })
