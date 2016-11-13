@@ -22,9 +22,10 @@ describe(`/artliste`, () => {
   it(`should return more than 8000 rows for programmAp`, (done) => {
     const method = `GET`
     const url = `/artliste`
-    server.inject({ method, url }, (res) => {
-      expect(res.result.length).to.be.above(8000)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.result.length).to.be.above(8000)
+        done()
+      })
   })
 })

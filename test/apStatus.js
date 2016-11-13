@@ -22,9 +22,10 @@ describe(`/apStatus`, () => {
   it(`should return more than 3 rows`, (done) => {
     const method = `GET`
     const url = `/apStatus`
-    server.inject({ method, url }, (res) => {
-      expect(res.result.length).to.be.above(3)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.result.length).to.be.above(3)
+        done()
+      })
   })
 })

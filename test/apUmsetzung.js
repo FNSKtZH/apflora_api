@@ -22,9 +22,10 @@ describe(`/apUmsetzung`, () => {
   it(`should return more than 2 rows`, (done) => {
     const method = `GET`
     const url = `/apUmsetzung`
-    server.inject({ method, url }, (res) => {
-      expect(res.result.length).to.be.above(2)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.result.length).to.be.above(2)
+        done()
+      })
   })
 })
