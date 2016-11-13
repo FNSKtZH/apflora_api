@@ -73,6 +73,69 @@ describe(`/apflora`, () => {
         done()
       })
   })
+  it(`should not accept non existing field`, (done) => {
+    const method = `PUT`
+    const url = `/update/apflora/tabelle=pop/tabelleIdFeld=PopId/tabelleId=-871888542/feld=PopNameXX/wert=testName/user=${user}`
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(404)
+        done()
+      })
+  })
+  it(`should not accept value of wrong type`, (done) => {
+    const method = `PUT`
+    const url = `/update/apflora/tabelle=pop/tabelleIdFeld=PopId/tabelleId=-871888542/feld=PopNr/wert=text/user=${user}`
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(400)
+        done()
+      })
+  })
+  it(`should not accept too big value for field of type integer`, (done) => {
+    const method = `PUT`
+    const url = `/update/apflora/tabelle=pop/tabelleIdFeld=PopId/tabelleId=-871888542/feld=PopNr/wert=2147483648/user=${user}`
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(400)
+        done()
+      })
+  })
+  it(`should not accept too small value for field of type integer`, (done) => {
+    const method = `PUT`
+    const url = `/update/apflora/tabelle=pop/tabelleIdFeld=PopId/tabelleId=-871888542/feld=PopNr/wert=-2147483649/user=${user}`
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(400)
+        done()
+      })
+  })
+  it(`should not accept too big value for field of type smallint`, (done) => {
+    const method = `PUT`
+    const url = `/update/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=100/feld=ApJahr/wert=32768/user=${user}`
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(400)
+        done()
+      })
+  })
+  it(`should not accept too small value for field of type smallint`, (done) => {
+    const method = `PUT`
+    const url = `/update/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=100/feld=ApJahr/wert=-32770/user=${user}`
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(400)
+        done()
+      })
+  })
+  it(`should not accept too long value for field of type character varying`, (done) => {
+    const method = `PUT`
+    const url = `/update/apflora/tabelle=pop/tabelleIdFeld=PopId/tabelleId=-871888542/feld=MutWer/wert=d2345678911234567892z/user=${user}`
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(400)
+        done()
+      })
+  })
   it(`should get more than 500 rows of Pops with PopNr 1`, (done) => {
     const method = `GET`
     const url = `/apflora/tabelle=pop/feld=PopNr/wertNumber=1`
