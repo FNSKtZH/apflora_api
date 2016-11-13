@@ -18,10 +18,11 @@ describe(`/tpopKarte`, () => {
   it(`should get 0 or one rows for TPopId = 13542`, (done) => {
     const method = `GET`
     const url = `/tpopKarte/tpopId=13542`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.be.at.least(0)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.length).to.be.at.least(0)
+        done()
+      })
   })
 })

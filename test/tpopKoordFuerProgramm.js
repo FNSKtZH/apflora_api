@@ -18,10 +18,11 @@ describe(`/tpopKoordFuerProgramm`, () => {
   it(`should get more than 100 rows for apId = 900`, (done) => {
     const method = `GET`
     const url = `/tpopKoordFuerProgramm/apId=900`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.be.above(100)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.length).to.be.above(100)
+        done()
+      })
   })
 })
