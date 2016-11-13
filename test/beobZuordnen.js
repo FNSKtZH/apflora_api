@@ -22,9 +22,10 @@ describe(`/beobZuordnen`, () => {
   it(`should return more than 300 rows for ApId 206200`, (done) => {
     const method = `GET`
     const url = `/beobZuordnen/apId=206200`
-    server.inject({ method, url }, (res) => {
-      expect(res.result.length).to.be.above(300)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.result.length).to.be.above(300)
+        done()
+      })
   })
 })

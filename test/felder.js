@@ -22,9 +22,10 @@ describe(`/felder`, () => {
   it(`should return more than 500 rows`, (done) => {
     const method = `GET`
     const url = `/felder`
-    server.inject({ method, url }, (res) => {
-      expect(res.result.length).to.be.above(500)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.result.length).to.be.above(500)
+        done()
+      })
   })
 })

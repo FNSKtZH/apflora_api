@@ -22,10 +22,11 @@ describe(`/exportViewWhereIdIn`, () => {
   it(`should return text/x-csv for view v_ap and ApId 900 and 206200`, (done) => {
     const method = `GET`
     const url = `/exportViewWhereIdIn/csv/view=v_ap/idName=ApArtId/idListe=900,206200/filename=test`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.headers[`content-type`]).to.equal(`text/x-csv; charset=utf-8`)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.headers[`content-type`]).to.equal(`text/x-csv; charset=utf-8`)
+        done()
+      })
   })
 })
