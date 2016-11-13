@@ -22,10 +22,11 @@ describe(`/gemeinden`, () => {
   it(`should get more than 150 Gemeinden`, (done) => {
     const method = `GET`
     const url = `/gemeinden`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.be.above(150)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.length).to.be.above(150)
+        done()
+      })
   })
 })

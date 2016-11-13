@@ -22,10 +22,11 @@ describe(`/idealbiotopUebereinst`, () => {
   it(`should get 5 rows`, (done) => {
     const method = `GET`
     const url = `/idealbiotopUebereinst`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.equal(5)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.length).to.equal(5)
+        done()
+      })
   })
 })

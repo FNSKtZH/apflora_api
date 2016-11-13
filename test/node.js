@@ -21,18 +21,20 @@ const method = `GET`
 describe(`/node`, () => {
   it(`should return more than 0 rows for "?table=projekt"`, (done) => {
     const url = `/node?table=projekt`
-    server.inject({ method, url }, (res) => {
-      expect(res.result.length).to.be.above(0)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.result.length).to.be.above(0)
+        done()
+      })
   })
   it(`When "?table=projekt&id=1", id 1 should be expanded`, (done) => {
     const url = `/node?table=projekt&id=1`
-    server.inject({ method, url }, (res) => {
-      expect(res.result.length).to.be.above(0)
-      const resultForId1 = res.result.find(r => r.id === 1)
-      expect(resultForId1.expanded).to.equal(true)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.result.length).to.be.above(0)
+        const resultForId1 = res.result.find(r => r.id === 1)
+        expect(resultForId1.expanded).to.equal(true)
+        done()
+      })
   })
 })

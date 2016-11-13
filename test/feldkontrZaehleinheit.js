@@ -22,10 +22,11 @@ describe(`/feldkontrZaehleinheit`, () => {
   it(`should get more than 20 Zähleinheiten`, (done) => {
     const method = `GET`
     const url = `/feldkontrZaehleinheit`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.be.above(20)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.length).to.be.above(20)
+        done()
+      })
   })
 })

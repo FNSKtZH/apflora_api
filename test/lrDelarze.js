@@ -22,10 +22,11 @@ describe(`/lrDelarze`, () => {
   it(`should get more than 250 rows`, (done) => {
     const method = `GET`
     const url = `/lrDelarze`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.be.above(250)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.length).to.be.above(250)
+        done()
+      })
   })
 })
