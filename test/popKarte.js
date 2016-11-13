@@ -18,10 +18,11 @@ describe(`/popKarte`, () => {
   it(`should get 1 row for PopId = 5430`, (done) => {
     const method = `GET`
     const url = `/popKarte/popId=5430`
-    server.inject({ method, url }, (res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result.length).to.be.at.least(1)
-      done()
-    })
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result.length).to.be.at.least(1)
+        done()
+      })
   })
 })
