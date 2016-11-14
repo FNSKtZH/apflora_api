@@ -5,8 +5,8 @@ const app = require(`ampersand-app`)
 module.exports = (request, callback) => {
   const sql = `
     SELECT
-      "BeurteilId",
-      "BeurteilTxt"
+      "BeurteilId" AS "DomainCode",
+      "BeurteilTxt" AS "DomainTxt"
     FROM
       apflora.ap_erfkrit_werte
     ORDER BY
