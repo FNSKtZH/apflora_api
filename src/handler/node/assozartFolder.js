@@ -32,7 +32,9 @@ module.exports = (request, callback) => {
       apListe.map(el => ({
         nodeId: `assozart/${el.AaId}`,
         table: `assozart`,
-        id: el.AaId,
+        row: {
+          AaId: el.AaId,
+        },
         name: `${el.Artname ? el.Artname : `(keine Art gewählt)`}`,
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `assoziierte-Arten`, el.AaId],
