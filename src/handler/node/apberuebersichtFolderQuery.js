@@ -19,8 +19,9 @@ module.exports = projId =>
       apberuebersichtListe.map(el => ({
         nodeId: `apberuebersicht/${el.JbuJahr}`,
         table: `apberuebersicht`,
-        id: el.JbuJahr,
-        name: el.JbuJahr,
+        row: {
+          JbuJahr: el.JbuJahr
+        },
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `AP-Berichte`, el.JbuJahr],
         nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/apberuebersicht`, `apberuebersicht/${el.JbuJahr}`],
