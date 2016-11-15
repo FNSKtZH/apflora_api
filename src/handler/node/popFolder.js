@@ -42,8 +42,7 @@ module.exports = (request, callback) => {
       return popList.map(el => ({
         nodeId: `pop/${el.PopId}`,
         table: `pop`,
-        id: el.PopId,
-        name: `${el.PopNr ? el.PopNr : `(keine Nr)`}: ${el.PopName ? el.PopName : `(kein Name)`}`,
+        label: `${el.PopNr ? el.PopNr : `(keine Nr)`}: ${el.PopName ? el.PopName : `(kein Name)`}`,
         expanded: false,
         children: [0],
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId],

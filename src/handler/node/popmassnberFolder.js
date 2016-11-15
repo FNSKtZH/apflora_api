@@ -39,8 +39,11 @@ module.exports = (request, callback) => {
       apListe.map(el => ({
         nodeId: `popmassnber/${el.PopMassnBerId}`,
         table: `popmassnber`,
-        id: el.PopMassnBerId,
-        name: `${el.PopMassnBerJahr ? `${el.PopMassnBerJahr}` : `(kein Jahr)`}: ${el.BeurteilTxt ? `${el.BeurteilTxt}` : `(nicht beurteilt)`}`,
+        row: {
+          PopMassnBerId: el.PopMassnBerId,
+          PopMassnBerJahr: el.PopMassnBerJahr,
+          BeurteilTxt: el.BeurteilTxt,
+        },
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, id, `Massnahmen-Berichte`, el.PopMassnBerId],
         nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/popmassnber`, `popmassnber/${el.PopMassnBerId}`],

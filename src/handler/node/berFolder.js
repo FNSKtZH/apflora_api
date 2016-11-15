@@ -31,8 +31,11 @@ module.exports = (request, callback) => {
       list.map(el => ({
         nodeId: `ber/${el.BerId}`,
         table: `ber`,
-        id: el.BerId,
-        name: `${el.BerJahr ? `${el.BerJahr}` : `(kein Jahr)`}: ${el.BerTitel ? `${el.BerTitel}` : `(kein Titel)`}`,
+        row: {
+          BerId: el.BerId,
+          BerJahr: el.BerJahr,
+          BerTitel: el.BerTitel,
+        },
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Berichte`, el.BerId],
         nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${id}/ber`, `ber/${el.BerId}`],

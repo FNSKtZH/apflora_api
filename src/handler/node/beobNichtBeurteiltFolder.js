@@ -37,8 +37,12 @@ module.exports = (request, callback) => {
       apListe.map(el => ({
         nodeId: `beobNichtBeurteilt/${el.BeobId}`,
         table: `beob_bereitgestellt`,
-        id: el.BeobId,
-        name: `${el.Datum ? `${el.Datum}` : `(kein Datum)`}: ${el.Autor ? `${el.Autor}` : `(kein Autor)`} (${el.Quelle})`,
+        row: {
+          BeobId: el.BeobId,
+          Datum: el.Datum,
+          Autor: el.Autor,
+          Quelle: el.Quelle,
+        },
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `nicht-beurteilte-Beobachtungen`, el.BeobId],
         nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${id}/beobNichtBeurteilt`, `beobNichtBeurteilt/${el.BeobId}`],

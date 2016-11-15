@@ -48,8 +48,12 @@ module.exports = (request, callback) => {
       liste.map(el => ({
         nodeId: `beobzuordnung/${el.NO_NOTE}`,
         table: `beobzuordnung`,
-        id: el.NO_NOTE,
-        name: `${el.Datum ? el.Datum : `(kein Datum)`}: ${el.Autor ? el.Autor : `(kein Autor)`}`,
+        row: {
+          NO_NOTE: el.NO_NOTE,
+          Datum: el.Datum,
+          Autor: el.Autor,
+          Quelle: el.Quelle,
+        },
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `zugeordnete-Beobachtungen`, el.NO_NOTE],
         nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${id}/beobzuordnung`, `beobzuordnung/${el.NO_NOTE}`],

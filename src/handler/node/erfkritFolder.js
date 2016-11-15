@@ -34,8 +34,11 @@ module.exports = (request, callback) => {
       list.map(el => ({
         nodeId: `erfkrit/${el.ErfkritId}`,
         table: `erfkrit`,
-        id: el.ErfkritId,
-        name: `${el.BeurteilTxt ? `${el.BeurteilTxt}` : `(nicht beurteilt)`}: ${el.ErfkritTxt ? `${el.ErfkritTxt}` : `(keine Kriterien erfasst)`}`,
+        row: {
+          ErfkritId: el.ErfkritId,
+          BeurteilTxt: el.BeurteilTxt,
+          ErfkritTxt: el.ErfkritTxt,
+        },
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `AP-Erfolgskriterien`, el.ErfkritId],
         nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${id}/erfkrit`, `erfkrit/${el.ErfkritId}`],

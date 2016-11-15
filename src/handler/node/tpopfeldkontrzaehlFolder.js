@@ -12,8 +12,8 @@ module.exports = (request, callback) => {
   app.db.any(`
     SELECT
     "TPopKontrZaehlId",
-    "ZaehleinheitTxt" AS "Einheit",
-    "BeurteilTxt" AS "Methode",
+    "Zaehleinheit",
+    "Methode",
     "Anzahl",
      apflora.tpopkontr."TPopKontrId",
      apflora.tpop."TPopId",
@@ -22,12 +22,6 @@ module.exports = (request, callback) => {
      apflora.ap."ProjId"
     FROM
       apflora.tpopkontrzaehl
-      LEFT JOIN
-        apflora.tpopkontrzaehl_einheit_werte
-        ON apflora.tpopkontrzaehl_einheit_werte."ZaehleinheitCode" = apflora.tpopkontrzaehl."Zaehleinheit"
-      LEFT JOIN
-        apflora.tpopkontrzaehl_methode_werte
-        ON apflora.tpopkontrzaehl_methode_werte."BeurteilCode" = apflora.tpopkontrzaehl."Methode"
       INNER JOIN
         apflora.tpopkontr
         ON apflora.tpopkontr."TPopKontrId" = apflora.tpopkontrzaehl."TPopKontrId"
@@ -49,6 +43,12 @@ module.exports = (request, callback) => {
       liste.map(el => ({
         nodeId: `tpopkontrzaehl/${el.TPopKontrZaehlId}`,
         table: `tpopkontrzaehl`,
+        row: {
+          TPopKontrZaehlId: el.TPopKontrZaehlId,
+          Anzahl: el.Anzahl,
+          Zaehleinheit: el.Zaehleinheit,
+          Methode: el.Methode,
+        },
         id: el.TPopKontrZaehlId,
         name: `${el.Anzahl ? el.Anzahl : `(keine Anzahl)`} ${el.Einheit ? el.Einheit : `(keine Einheit)`} ${el.Methode ? ` ${el.Methode}` : `(keine Methode)`}`,
         expanded: false,

@@ -57,8 +57,10 @@ module.exports = ({ user, projId, children }) =>
       return {
         nodeId: `projekt/${projekt.ProjId}`,
         table: `projekt`,
-        id: projekt.ProjId,
-        name: projekt.ProjName,
+        row: {
+          ProjId: projekt.ProjId,
+          ProjName: projekt.ProjName,
+        },
         expanded: idActive, // || oneProject,  // temporarily disabled
         urlPath: [`Projekte`, projekt.ProjId],
         nodeIdPath: [`projekt/${projekt.ProjId}`],
@@ -68,8 +70,7 @@ module.exports = ({ user, projId, children }) =>
             nodeId: `projekt/${projekt.ProjId}/ap`,
             folder: `ap`,
             table: `projekt`,
-            id: projekt.ProjId,
-            name: `Arten (${projekt.AnzAp})`,
+            label: `Arten (${projekt.AnzAp})`,
             expanded: false,
             children: apFolder,
             urlPath: [`Projekte`, projekt.ProjId, `Arten`],
@@ -79,8 +80,7 @@ module.exports = ({ user, projId, children }) =>
           {
             nodeId: `projekt/${projekt.ProjId}/apberuebersicht`,
             folder: `apberuebersicht`,
-            table: `projekt`,
-            id: projekt.ProjId,
+            label: projekt.ProjId,
             name: `AP-Berichte (${projekt.AnzApberuebersicht})`,
             expanded: false,
             children: apberuebersichtFolder,

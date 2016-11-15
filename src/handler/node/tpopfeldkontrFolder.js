@@ -51,8 +51,11 @@ module.exports = (request, callback) => {
       liste.map(el => ({
         nodeId: `tpopkontr/${el.TPopKontrId}`,
         table: `tpopkontr`,
-        id: el.TPopKontrId,
-        name: `${el.TPopKontrJahr ? el.TPopKontrJahr : `(kein Jahr)`}: ${el.TPopKontrTyp ? el.TPopKontrTyp : `(kein Typ)`}`,
+        row: {
+          TPopKontrId: el.TPopKontrId,
+          TPopKontrJahr: el.TPopKontrJahr,
+          TPopKontrTyp: el.TPopKontrTyp,
+        },
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId],
         nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${id}/tpopkontr`, `tpopkontr/${el.TPopKontrId}`],
@@ -60,8 +63,7 @@ module.exports = (request, callback) => {
           nodeId: `tpopkontr/${el.TPopKontrId}/tpopkontrzaehl`,
           folder: `tpopkontrzaehl`,
           table: `tpopkontr`,
-          id: el.TPopKontrId,
-          name: `Zählungen (${el.AnzTPopkontrzaehl})`,
+          label: `Zählungen (${el.AnzTPopkontrzaehl})`,
           expanded: false,
           urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId, `Zählungen`],
           nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${id}/tpopkontr`, `tpopkontr/${el.TPopKontrId}`, `tpopkontr/${el.TPopKontrId}/tpopkontrzaehl`],
