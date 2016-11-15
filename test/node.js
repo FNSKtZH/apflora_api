@@ -32,7 +32,7 @@ describe(`/node`, () => {
     server.injectThen({ method, url })
       .then((res) => {
         expect(res.result.length).to.be.above(0)
-        const resultForId1 = res.result.find(r => r.id === 1)
+        const resultForId1 = res.result.find(r => r.row.ProjId === 1)
         expect(resultForId1.expanded).to.equal(true)
         done()
       })
