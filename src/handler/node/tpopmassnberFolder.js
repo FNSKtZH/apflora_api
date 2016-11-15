@@ -46,6 +46,7 @@ module.exports = (request, callback) => {
         row: {
           TPopMassnBerId: el.TPopMassnBerId,
           TPopMassnBerJahr: el.TPopMassnBerJahr,
+          TPopMassnBerErfolgsbeurteilung: el.TPopMassnBerErfolgsbeurteilung,
         },
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Massnahmen-Berichte`, el.TPopMassnBerId],

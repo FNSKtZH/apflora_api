@@ -44,6 +44,11 @@ module.exports = (request, callback) => {
       liste.map(el => ({
         nodeId: `tpopmassn/${el.TPopMassnId}`,
         table: `tpopmassn`,
+        row: {
+          TPopMassnId: el.TPopMassnId,
+          TPopMassnJahr: el.TPopMassnJahr,
+          TPopMassnTyp: el.TPopMassnTyp,
+        },
         id: el.TPopMassnId,
         name: `${el.TPopMassnJahr ? el.TPopMassnJahr : `(kein Jahr)`}: ${el.MassnTypTxt ? el.MassnTypTxt : `(kein Typ)`}`,
         expanded: false,

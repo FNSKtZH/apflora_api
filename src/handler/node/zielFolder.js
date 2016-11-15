@@ -43,6 +43,12 @@ module.exports = (request, callback) => {
       list.map(el => ({
         nodeId: `ziel/${el.ZielId}`,
         table: `ziel`,
+        row: {
+          ZielId: el.ZielId,
+          ZielJahr: el.ZielJahr,
+          ZielBezeichnung: el.ZielBezeichnung,
+          ZielTyp: el.ZielTyp,
+        },
         id: el.ZielId,
         name: `${el.ZielJahr ? `${el.ZielJahr}` : `(kein Jahr)`}: ${el.ZielBezeichnung} (${el.ZieltypTxt})`,
         expanded: false,
