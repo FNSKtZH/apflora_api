@@ -14,6 +14,7 @@ module.exports = (request, callback) => {
       "TPopMassnBerId",
       apflora.tpopmassnber."TPopId",
       "TPopMassnBerJahr",
+      "TPopMassnBerErfolgsbeurteilung",
       "BeurteilTxt",
       apflora.pop."PopId",
       apflora.ap."ApArtId",
@@ -42,8 +43,10 @@ module.exports = (request, callback) => {
       liste.map(el => ({
         nodeId: `tpopmassnber/${el.TPopMassnBerId}`,
         table: `tpopmassnber`,
-        id: el.TPopMassnBerId,
-        name: `${el.TPopMassnBerJahr ? el.TPopMassnBerJahr : `(kein Jahr)`}: ${el.BeurteilTxt ? el.BeurteilTxt : `(keine Beurteilung)`}`,
+        row: {
+          TPopMassnBerId: el.TPopMassnBerId,
+          TPopMassnBerJahr: el.TPopMassnBerJahr,
+        },
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Massnahmen-Berichte`, el.TPopMassnBerId],
         nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${el.TPopId}/tpopmassnber`, `tpopmassnber/${el.TPopMassnBerId}`],

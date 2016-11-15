@@ -46,8 +46,10 @@ module.exports = (request, callback) => {
       return tpopListe.map(el => ({
         nodeId: `tpop/${el.TPopId}`,
         table: `tpop`,
-        id: el.TPopId,
-        name: `${el.TPopNr ? el.TPopNr : `(keine Nr)`}: ${el.TPopFlurname ? el.TPopFlurname : `(kein Flurname)`}`,
+        row: {
+          TPopId: el.TPopId,
+          TPopFlurname: el.TPopFlurname,
+        },
         expanded: false,
         children: [0],
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, id, `Teil-Populationen`, el.TPopId],

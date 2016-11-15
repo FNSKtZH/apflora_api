@@ -49,8 +49,6 @@ module.exports = (request, callback) => {
           Zaehleinheit: el.Zaehleinheit,
           Methode: el.Methode,
         },
-        id: el.TPopKontrZaehlId,
-        name: `${el.Anzahl ? el.Anzahl : `(keine Anzahl)`} ${el.Einheit ? el.Einheit : `(keine Einheit)`} ${el.Methode ? ` ${el.Methode}` : `(keine Methode)`}`,
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, el.TPopId, `Feld-Kontrollen`, id, `Zählungen`, el.TPopKontrZaehlId],
         nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${el.TPopId}/tpopkontr`, `tpopkontr/${el.TPopKontrId}`, `tpopkontr/${el.TPopKontrId}/tpopkontrzaehl`, `tpopkontrzaehl/${el.TPopKontrZaehlId}`],
