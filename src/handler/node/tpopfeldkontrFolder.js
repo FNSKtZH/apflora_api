@@ -63,7 +63,7 @@ module.exports = (request, callback) => {
           nodeId: `tpopkontr/${el.TPopKontrId}/tpopkontrzaehl`,
           folder: `tpopkontrzaehl`,
           table: `tpopkontr`,
-          name: `Zählungen (${el.AnzTPopkontrzaehl})`,
+          folderLabel: `Zählungen (${el.AnzTPopkontrzaehl})`,
           expanded: false,
           urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId, `Zählungen`],
           nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${id}/tpopkontr`, `tpopkontr/${el.TPopKontrId}`, `tpopkontr/${el.TPopKontrId}/tpopkontrzaehl`],

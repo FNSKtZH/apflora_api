@@ -49,8 +49,6 @@ module.exports = (request, callback) => {
           TPopMassnJahr: el.TPopMassnJahr,
           TPopMassnTyp: el.TPopMassnTyp,
         },
-        id: el.TPopMassnId,
-        name: `${el.TPopMassnJahr ? el.TPopMassnJahr : `(kein Jahr)`}: ${el.MassnTypTxt ? el.MassnTypTxt : `(kein Typ)`}`,
         expanded: false,
         urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Massnahmen`, el.TPopMassnId],
         nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${el.TPopId}/tpopmassn`, `tpopmassn/${el.TPopMassnId}`],
