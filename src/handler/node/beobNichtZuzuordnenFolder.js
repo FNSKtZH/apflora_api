@@ -12,11 +12,7 @@ module.exports = (request, callback) => {
   app.db.any(`
     SELECT
       beob.beob_bereitgestellt."NO_ISFS",
-      apflora.beobzuordnung."NO_NOTE",
-      apflora.beobzuordnung."BeobNichtZuordnen",
-      apflora.beobzuordnung."BeobBemerkungen",
-      apflora.beobzuordnung."BeobMutWann",
-      apflora.beobzuordnung."BeobMutWer",
+      apflora.beobzuordnung.*,
       beob.beob_bereitgestellt."Datum",
       beob.beob_bereitgestellt."Autor",
       beob.beob_quelle.name AS "Quelle",
@@ -43,18 +39,13 @@ module.exports = (request, callback) => {
       100`
   )
     .then(apListe =>
-      apListe.map(el => ({
-        nodeId: `beobNichtZuzuordnen/${el.NO_NOTE}`,
+      apListe.map(row => ({
+        nodeId: `beobNichtZuzuordnen/${row.NO_NOTE}`,
         table: `beobzuordnung`,
-        row: {
-          NO_NOTE: el.NO_NOTE,
-          Datum: el.Datum,
-          Autor: el.Autor,
-          Quelle: el.Quelle,
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `nicht-zuzuordnende-Beobachtungen`, el.NO_NOTE],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${id}/beobNichtZuzuordnen`, `beobNichtZuzuordnen/${el.NO_NOTE}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `nicht-zuzuordnende-Beobachtungen`, row.NO_NOTE],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${id}/beobNichtZuzuordnen`, `beobNichtZuzuordnen/${row.NO_NOTE}`],
       }))
     )
     .then(nodes => callback(null, nodes))

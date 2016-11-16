@@ -11,10 +11,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-     "TPopKontrId",
-     apflora.tpopkontr."TPopId",
-     "TPopKontrJahr",
-     "TPopKontrTyp",
+     apflora.tpopkontr.*,
      apflora.pop."PopId",
      apflora.ap."ApArtId",
      apflora.ap."ProjId",
@@ -48,25 +45,21 @@ module.exports = (request, callback) => {
       "TPopKontrTyp"`
   )
     .then(liste =>
-      liste.map(el => ({
-        nodeId: `tpopkontr/${el.TPopKontrId}`,
+      liste.map(row => ({
+        nodeId: `tpopkontr/${row.TPopKontrId}`,
         table: `tpopkontr`,
-        row: {
-          TPopKontrId: el.TPopKontrId,
-          TPopKontrJahr: el.TPopKontrJahr,
-          TPopKontrTyp: el.TPopKontrTyp,
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${id}/tpopkontr`, `tpopkontr/${el.TPopKontrId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, row.TPopKontrId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${id}/tpopkontr`, `tpopkontr/${row.TPopKontrId}`],
         children: [{
-          nodeId: `tpopkontr/${el.TPopKontrId}/tpopkontrzaehl`,
+          nodeId: `tpopkontr/${row.TPopKontrId}/tpopkontrzaehl`,
           folder: `tpopkontrzaehl`,
           table: `tpopkontr`,
-          folderLabel: `Zählungen (${el.AnzTPopkontrzaehl})`,
+          folderLabel: `Zählungen (${row.AnzTPopkontrzaehl})`,
           expanded: false,
-          urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, el.TPopKontrId, `Zählungen`],
-          nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${id}/tpopkontr`, `tpopkontr/${el.TPopKontrId}`, `tpopkontr/${el.TPopKontrId}/tpopkontrzaehl`],
+          urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, row.TPopKontrId, `Zählungen`],
+          nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${id}/tpopkontr`, `tpopkontr/${row.TPopKontrId}`, `tpopkontr/${row.TPopKontrId}/tpopkontrzaehl`],
           children: [0],
         }]
       }))

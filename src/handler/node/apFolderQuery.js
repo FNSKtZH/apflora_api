@@ -11,8 +11,7 @@ module.exports = ({ projId, children }) =>
     }
     const apListe = yield app.db.any(`
       SELECT
-        apflora.ap."ProjId",
-        apflora.ap."ApArtId",
+        apflora.ap.*,
         beob.adb_eigenschaften."Artname"
       FROM
         apflora.ap
@@ -24,15 +23,13 @@ module.exports = ({ projId, children }) =>
         beob.adb_eigenschaften."Artname"
       `
     )
-    return apListe.map(ap => ({
-      nodeId: `ap/${ap.ApArtId}`,
+    return apListe.map(row => ({
+      nodeId: `ap/${row.ApArtId}`,
       table: `ap`,
-      row: {
-        ApArtId: ap.ApArtId,
-      },
+      row,
       expanded: false,
-      urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId],
-      nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`],
+      urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId],
+      nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`],
       children: apChildren,
     }))
   })

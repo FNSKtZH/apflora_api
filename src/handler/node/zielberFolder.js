@@ -11,10 +11,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-      "ZielBerId",
-      apflora.zielber."ZielId",
-      "ZielBerJahr",
-      "ZielBerErreichung",
+      apflora.zielber.*,
       apflora.ap."ProjId",
       apflora.ap."ApArtId"
     FROM
@@ -32,17 +29,13 @@ module.exports = (request, callback) => {
       "ZielBerErreichung"`
   )
     .then(list =>
-      list.map(el => ({
-        nodeId: `zielber/${el.ZielBerId}`,
+      list.map(row => ({
+        nodeId: `zielber/${row.ZielBerId}`,
         table: `zielber`,
-        row: {
-          ZielBerId: el.ZielBerId,
-          ZielBerJahr: el.ZielBerJahr,
-          ZielBerErreichung: el.ZielBerErreichung,
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `AP-Ziele`, id, `Berichte`, el.ZielBerId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/ziel`, `ziel/${el.ZielId}`, `ziel/${el.ZielId}/zielber`, `zielber/${el.ZielBerId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `AP-Ziele`, id, `Berichte`, row.ZielBerId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/ziel`, `ziel/${row.ZielId}`, `ziel/${row.ZielId}/zielber`, `zielber/${row.ZielBerId}`],
       }))
     )
     .then(nodes => callback(null, nodes))

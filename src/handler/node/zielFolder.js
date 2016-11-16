@@ -11,11 +11,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-      apflora.ziel."ApArtId",
-      apflora.ziel."ZielId",
-      apflora.ziel_typ_werte."ZieltypTxt",
-      apflora.ziel."ZielJahr",
-      apflora.ziel."ZielBezeichnung",
+      apflora.ziel.*,
       apflora.ap."ProjId",
       (
         SELECT
@@ -30,9 +26,6 @@ module.exports = (request, callback) => {
       INNER JOIN
         apflora.ap
         ON apflora.ziel."ApArtId" = apflora.ap."ApArtId"
-      LEFT JOIN
-        apflora.ziel_typ_werte
-        ON apflora.ziel."ZielTyp" = apflora.ziel_typ_werte."ZieltypId"
     WHERE
       apflora.ap."ApArtId" = ${id}
     ORDER BY
@@ -40,27 +33,22 @@ module.exports = (request, callback) => {
       "ZielBezeichnung"`
   )
     .then(list =>
-      list.map(el => ({
-        nodeId: `ziel/${el.ZielId}`,
+      list.map(row => ({
+        nodeId: `ziel/${row.ZielId}`,
         table: `ziel`,
-        row: {
-          ZielId: el.ZielId,
-          ZielJahr: el.ZielJahr,
-          ZielBezeichnung: el.ZielBezeichnung,
-          ZielTyp: el.ZielTyp,
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, id, `AP-Ziele`, el.ZielId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/ziel`, `ziel/${el.ZielId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, id, `AP-Ziele`, row.ZielId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/ziel`, `ziel/${row.ZielId}`],
         children: [{
-          nodeId: `ziel/${el.ZielId}/zielber`,
+          nodeId: `ziel/${row.ZielId}/zielber`,
           folder: `zielber`,
           table: `ziel`,
-          folderLabel: `Berichte (${el.AnzZielber})`,
+          folderLabel: `Berichte (${row.AnzZielber})`,
           expanded: false,
           children: [0],
-          urlPath: [`Projekte`, el.ProjId, `Arten`, id, `AP-Ziele`, el.ZielId, `Berichte`],
-          nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/ziel`, `ziel/${el.ZielId}`, `ziel/${el.ZielId}/zielber`],
+          urlPath: [`Projekte`, row.ProjId, `Arten`, id, `AP-Ziele`, row.ZielId, `Berichte`],
+          nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/ziel`, `ziel/${row.ZielId}`, `ziel/${row.ZielId}/zielber`],
         }],
       }))
     )

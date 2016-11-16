@@ -11,11 +11,8 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-      "ErfkritId",
+      apflora.erfkrit.*,
       apflora.ap."ApArtId",
-      "BeurteilTxt",
-      "ErfkritTxt",
-      "BeurteilOrd",
       apflora.ap."ProjId"
     FROM
       apflora.erfkrit
@@ -31,17 +28,13 @@ module.exports = (request, callback) => {
       "BeurteilOrd"`
   )
     .then(list =>
-      list.map(el => ({
-        nodeId: `erfkrit/${el.ErfkritId}`,
+      list.map(row => ({
+        nodeId: `erfkrit/${row.ErfkritId}`,
         table: `erfkrit`,
-        row: {
-          ErfkritId: el.ErfkritId,
-          BeurteilTxt: el.BeurteilTxt,
-          ErfkritTxt: el.ErfkritTxt,
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `AP-Erfolgskriterien`, el.ErfkritId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${id}/erfkrit`, `erfkrit/${el.ErfkritId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `AP-Erfolgskriterien`, row.ErfkritId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${id}/erfkrit`, `erfkrit/${row.ErfkritId}`],
       }))
     )
     .then(nodes => callback(null, nodes))

@@ -5,8 +5,7 @@ const app = require(`ampersand-app`)
 module.exports = projId =>
   app.db.any(`
     SELECT
-      "ProjId",
-      "JbuJahr"
+      apflora.apberuebersicht.*
     FROM
       apflora.apberuebersicht
     WHERE
@@ -16,15 +15,13 @@ module.exports = projId =>
     `
   )
     .then(apberuebersichtListe =>
-      apberuebersichtListe.map(el => ({
-        nodeId: `apberuebersicht/${el.JbuJahr}`,
+      apberuebersichtListe.map(row => ({
+        nodeId: `apberuebersicht/${row.JbuJahr}`,
         table: `apberuebersicht`,
-        row: {
-          JbuJahr: el.JbuJahr
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `AP-Berichte`, el.JbuJahr],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/apberuebersicht`, `apberuebersicht/${el.JbuJahr}`],
+        urlPath: [`Projekte`, row.ProjId, `AP-Berichte`, row.JbuJahr],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/apberuebersicht`, `apberuebersicht/${row.JbuJahr}`],
       }))
     )
     .then(nodes => nodes)

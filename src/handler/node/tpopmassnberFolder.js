@@ -11,11 +11,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-      "TPopMassnBerId",
-      apflora.tpopmassnber."TPopId",
-      "TPopMassnBerJahr",
-      "TPopMassnBerErfolgsbeurteilung",
-      "BeurteilTxt",
+      apflora.tpopmassnber.*,
       apflora.pop."PopId",
       apflora.ap."ApArtId",
       apflora.ap."ProjId"
@@ -40,17 +36,13 @@ module.exports = (request, callback) => {
       "BeurteilTxt"`
   )
     .then(liste =>
-      liste.map(el => ({
-        nodeId: `tpopmassnber/${el.TPopMassnBerId}`,
+      liste.map(row => ({
+        nodeId: `tpopmassnber/${row.TPopMassnBerId}`,
         table: `tpopmassnber`,
-        row: {
-          TPopMassnBerId: el.TPopMassnBerId,
-          TPopMassnBerJahr: el.TPopMassnBerJahr,
-          TPopMassnBerErfolgsbeurteilung: el.TPopMassnBerErfolgsbeurteilung,
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `Massnahmen-Berichte`, el.TPopMassnBerId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${el.TPopId}/tpopmassnber`, `tpopmassnber/${el.TPopMassnBerId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, id, `Massnahmen-Berichte`, row.TPopMassnBerId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${row.TPopId}/tpopmassnber`, `tpopmassnber/${row.TPopMassnBerId}`],
       }))
     )
     .then(nodes => callback(null, nodes))

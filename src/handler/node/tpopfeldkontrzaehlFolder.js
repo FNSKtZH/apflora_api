@@ -11,10 +11,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-    "TPopKontrZaehlId",
-    "Zaehleinheit",
-    "Methode",
-    "Anzahl",
+     apflora.tpopkontrzaehl.*,
      apflora.tpopkontr."TPopKontrId",
      apflora.tpop."TPopId",
      apflora.pop."PopId",
@@ -40,18 +37,13 @@ module.exports = (request, callback) => {
       "TPopKontrZaehlId"`
   )
     .then(liste =>
-      liste.map(el => ({
-        nodeId: `tpopkontrzaehl/${el.TPopKontrZaehlId}`,
+      liste.map(row => ({
+        nodeId: `tpopkontrzaehl/${row.TPopKontrZaehlId}`,
         table: `tpopkontrzaehl`,
-        row: {
-          TPopKontrZaehlId: el.TPopKontrZaehlId,
-          Anzahl: el.Anzahl,
-          Zaehleinheit: el.Zaehleinheit,
-          Methode: el.Methode,
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, el.TPopId, `Feld-Kontrollen`, id, `Zählungen`, el.TPopKontrZaehlId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${el.TPopId}/tpopkontr`, `tpopkontr/${el.TPopKontrId}`, `tpopkontr/${el.TPopKontrId}/tpopkontrzaehl`, `tpopkontrzaehl/${el.TPopKontrZaehlId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, row.TPopId, `Feld-Kontrollen`, id, `Zählungen`, row.TPopKontrZaehlId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${row.TPopId}/tpopkontr`, `tpopkontr/${row.TPopKontrId}`, `tpopkontr/${row.TPopKontrId}/tpopkontrzaehl`, `tpopkontrzaehl/${row.TPopKontrZaehlId}`],
       }))
     )
     .then(nodes => callback(null, nodes))

@@ -13,10 +13,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-      "TPopNr",
-      "TPopFlurname",
-      "TPopId",
-      apflora.tpop."PopId",
+      apflora.tpop.*,
       apflora.ap."ApArtId",
       apflora.ap."ProjId"
     FROM
@@ -43,17 +40,14 @@ module.exports = (request, callback) => {
         tpop.TPopNr = ergaenzeNrUmFuehrendeNullen(tpopNrMax, tpop.TPopNr)
       })
       tpopListe = _.sortBy(tpopListe, `sort`)
-      return tpopListe.map(el => ({
-        nodeId: `tpop/${el.TPopId}`,
+      return tpopListe.map(row => ({
+        nodeId: `tpop/${row.TPopId}`,
         table: `tpop`,
-        row: {
-          TPopId: el.TPopId,
-          TPopFlurname: el.TPopFlurname,
-        },
+        row,
         expanded: false,
         children: [0],
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, id, `Teil-Populationen`, el.TPopId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${el.TPopId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, id, `Teil-Populationen`, row.TPopId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${row.TPopId}`],
       }))
     })
     .then(nodes => callback(null, nodes))

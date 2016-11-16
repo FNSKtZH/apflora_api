@@ -11,10 +11,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-      beob.beob_bereitgestellt."BeobId",
-      beob.beob_bereitgestellt."QuelleId",
-      beob.beob_bereitgestellt."Datum",
-      beob.beob_bereitgestellt."Autor",
+      beob.beob_bereitgestellt.*,
       beob.beob_quelle.name AS "Quelle",
       apflora.ap."ProjId",
       apflora.ap."ApArtId",
@@ -34,18 +31,13 @@ module.exports = (request, callback) => {
     LIMIT 100`
   )
     .then(apListe =>
-      apListe.map(el => ({
-        nodeId: `beobNichtBeurteilt/${el.BeobId}`,
+      apListe.map(row => ({
+        nodeId: `beobNichtBeurteilt/${row.BeobId}`,
         table: `beob_bereitgestellt`,
-        row: {
-          BeobId: el.BeobId,
-          Datum: el.Datum,
-          Autor: el.Autor,
-          Quelle: el.Quelle,
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `nicht-beurteilte-Beobachtungen`, el.BeobId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${id}/beobNichtBeurteilt`, `beobNichtBeurteilt/${el.BeobId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `nicht-beurteilte-Beobachtungen`, row.BeobId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${id}/beobNichtBeurteilt`, `beobNichtBeurteilt/${row.BeobId}`],
       }))
     )
     .then(nodes => callback(null, nodes))

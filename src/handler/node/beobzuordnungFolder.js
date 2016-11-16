@@ -11,12 +11,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-      apflora.beobzuordnung."NO_NOTE",
-      apflora.beobzuordnung."TPopId",
-      apflora.beobzuordnung."BeobNichtZuordnen",
-      apflora.beobzuordnung."BeobBemerkungen",
-      apflora.beobzuordnung."BeobMutWann",
-      apflora.beobzuordnung."BeobMutWer",
+      apflora.beobzuordnung.*,
       beob.beob_bereitgestellt."Datum",
       beob.beob_bereitgestellt."Autor",
       'evab' AS "beobtyp",
@@ -45,18 +40,13 @@ module.exports = (request, callback) => {
       )`
   )
     .then(liste =>
-      liste.map(el => ({
-        nodeId: `beobzuordnung/${el.NO_NOTE}`,
+      liste.map(row => ({
+        nodeId: `beobzuordnung/${row.NO_NOTE}`,
         table: `beobzuordnung`,
-        row: {
-          NO_NOTE: el.NO_NOTE,
-          Datum: el.Datum,
-          Autor: el.Autor,
-          Quelle: el.Quelle,
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId, `Teil-Populationen`, id, `zugeordnete-Beobachtungen`, el.NO_NOTE],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/tpop`, `tpop/${id}/beobzuordnung`, `beobzuordnung/${el.NO_NOTE}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, id, `zugeordnete-Beobachtungen`, row.NO_NOTE],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${id}/beobzuordnung`, `beobzuordnung/${row.NO_NOTE}`],
       }))
     )
     .then(nodes => callback(null, nodes))

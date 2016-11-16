@@ -11,10 +11,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-      "JBerId",
-      apflora.ap."ApArtId",
-      "JBerJahr",
-      apflora.ap."ProjId"
+      apflora.ap.*
     FROM
       apflora.apber
       INNER JOIN
@@ -26,16 +23,13 @@ module.exports = (request, callback) => {
       "JBerJahr"`
   )
     .then(list =>
-      list.map(el => ({
-        nodeId: `apber/${el.JBerId}`,
+      list.map(row => ({
+        nodeId: `apber/${row.JBerId}`,
         table: `apber`,
-        row: {
-          JBerId: el.JBerId,
-          JBerJahr: el.JBerJahr
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `AP-Berichte`, el.JBerId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${id}/apber`, `apber/${el.JBerId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `AP-Berichte`, row.JBerId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${id}/apber`, `apber/${row.JBerId}`],
       }))
     )
     .then(nodes => callback(null, nodes))

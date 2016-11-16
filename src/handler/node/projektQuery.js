@@ -17,8 +17,7 @@ module.exports = ({ user, projId, children }) =>
     }
     const projektListe = yield app.db.any(`
       SELECT
-        "ProjId",
-        "ProjName",
+        apflora.projekt.*,
         (
           SELECT
             COUNT(*)
@@ -51,41 +50,38 @@ module.exports = ({ user, projId, children }) =>
       `,
       user
     )
-    return projektListe.map((projekt) => {
-      const idActive = !!projId && projId === projekt.ProjId
+    return projektListe.map((row) => {
+      const idActive = !!projId && projId === row.ProjId
       // const oneProject = projektListe.length === 1  // temporarily disabled
       return {
-        nodeId: `projekt/${projekt.ProjId}`,
+        nodeId: `projekt/${row.ProjId}`,
         table: `projekt`,
-        row: {
-          ProjId: projekt.ProjId,
-          ProjName: projekt.ProjName,
-        },
+        row,
         expanded: idActive, // || oneProject,  // temporarily disabled
-        urlPath: [`Projekte`, projekt.ProjId],
-        nodeIdPath: [`projekt/${projekt.ProjId}`],
+        urlPath: [`Projekte`, row.ProjId],
+        nodeIdPath: [`projekt/${row.ProjId}`],
         children: [
           // ap folder
           {
-            nodeId: `projekt/${projekt.ProjId}/ap`,
+            nodeId: `projekt/${row.ProjId}/ap`,
             folder: `ap`,
             table: `projekt`,
-            folderLabel: `Arten (${projekt.AnzAp})`,
+            folderLabel: `Arten (${row.AnzAp})`,
             expanded: false,
             children: apFolder,
-            urlPath: [`Projekte`, projekt.ProjId, `Arten`],
-            nodeIdPath: [`projekt/${projekt.ProjId}`, `projekt/${projekt.ProjId}/ap`],
+            urlPath: [`Projekte`, row.ProjId, `Arten`],
+            nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`],
           },
           // apberuebersicht folder
           {
-            nodeId: `projekt/${projekt.ProjId}/apberuebersicht`,
+            nodeId: `projekt/${row.ProjId}/apberuebersicht`,
             folder: `apberuebersicht`,
-            label: projekt.ProjId,
-            folderLabel: `AP-Berichte (${projekt.AnzApberuebersicht})`,
+            label: row.ProjId,
+            folderLabel: `AP-Berichte (${row.AnzApberuebersicht})`,
             expanded: false,
             children: apberuebersichtFolder,
-            urlPath: [`Projekte`, projekt.ProjId, `AP-Berichte`],
-            nodeIdPath: [`projekt/${projekt.ProjId}`, `projekt/${projekt.ProjId}/apberuebersicht`],
+            urlPath: [`Projekte`, row.ProjId, `AP-Berichte`],
+            nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/apberuebersicht`],
           },
         ],
       }

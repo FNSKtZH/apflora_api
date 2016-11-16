@@ -11,7 +11,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-      apflora.assozart."AaId",
+      apflora.assozart.*,
       beob.adb_eigenschaften."Artname",
       apflora.ap."ProjId",
       apflora.ap."ApArtId"
@@ -29,16 +29,13 @@ module.exports = (request, callback) => {
         beob.adb_eigenschaften."Artname"`
   )
     .then(apListe =>
-      apListe.map(el => ({
-        nodeId: `assozart/${el.AaId}`,
+      apListe.map(row => ({
+        nodeId: `assozart/${row.AaId}`,
         table: `assozart`,
-        row: {
-          AaId: el.AaId,
-          AaApArtId: el.AaApArtId,
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `assoziierte-Arten`, el.AaId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${id}/assozart`, `assozart/${el.AaId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `assoziierte-Arten`, row.AaId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${id}/assozart`, `assozart/${row.AaId}`],
       }))
     )
     .then(nodes => callback(null, nodes))

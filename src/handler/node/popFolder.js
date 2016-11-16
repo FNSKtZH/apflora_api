@@ -13,9 +13,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
       SELECT
-        "PopNr",
-        "PopName",
-        "PopId",
+        apflora.pop.*,
         apflora.ap."ApArtId",
         apflora.ap."ProjId"
       FROM
@@ -39,18 +37,14 @@ module.exports = (request, callback) => {
         pop.PopNr = ergaenzeNrUmFuehrendeNullen(popNrMax, pop.PopNr)
       })
       popList = _.sortBy(popList, `sort`)
-      return popList.map(el => ({
-        nodeId: `pop/${el.PopId}`,
+      return popList.map(row => ({
+        nodeId: `pop/${row.PopId}`,
         table: `pop`,
-        row: {
-          PopId: el.PopId,
-          PopNr: el.PopNr,
-          PopName: el.PopName,
-        },
+        row,
         expanded: false,
         children: [0],
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, el.PopId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`],
       }))
     })
     .then(nodes => callback(null, nodes))

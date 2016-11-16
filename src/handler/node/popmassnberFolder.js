@@ -11,11 +11,7 @@ module.exports = (request, callback) => {
 
   app.db.any(`
     SELECT
-      "PopMassnBerId",
-      apflora.popmassnber."PopId",
-      "PopMassnBerJahr",
-      "BeurteilTxt",
-      "BeurteilOrd",
+      apflora.popmassnber.*,
       apflora.ap."ApArtId",
       apflora.ap."ProjId"
     FROM
@@ -36,17 +32,13 @@ module.exports = (request, callback) => {
       "BeurteilOrd"`
   )
     .then(apListe =>
-      apListe.map(el => ({
-        nodeId: `popmassnber/${el.PopMassnBerId}`,
+      apListe.map(row => ({
+        nodeId: `popmassnber/${row.PopMassnBerId}`,
         table: `popmassnber`,
-        row: {
-          PopMassnBerId: el.PopMassnBerId,
-          PopMassnBerJahr: el.PopMassnBerJahr,
-          BeurteilTxt: el.BeurteilTxt,
-        },
+        row,
         expanded: false,
-        urlPath: [`Projekte`, el.ProjId, `Arten`, el.ApArtId, `Populationen`, id, `Massnahmen-Berichte`, el.PopMassnBerId],
-        nodeIdPath: [`projekt/${el.ProjId}`, `projekt/${el.ProjId}/ap`, `ap/${el.ApArtId}`, `ap/${el.ApArtId}/pop`, `pop/${el.PopId}`, `pop/${el.PopId}/popmassnber`, `popmassnber/${el.PopMassnBerId}`],
+        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, id, `Massnahmen-Berichte`, row.PopMassnBerId],
+        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/popmassnber`, `popmassnber/${row.PopMassnBerId}`],
       }))
     )
     .then(nodes => callback(null, nodes))
