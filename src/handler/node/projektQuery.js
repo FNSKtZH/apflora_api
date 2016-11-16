@@ -70,7 +70,7 @@ module.exports = ({ user, projId, children }) =>
             nodeId: `projekt/${projekt.ProjId}/ap`,
             folder: `ap`,
             table: `projekt`,
-            label: `Arten (${projekt.AnzAp})`,
+            name: `Arten (${projekt.AnzAp})`,
             expanded: false,
             children: apFolder,
             urlPath: [`Projekte`, projekt.ProjId, `Arten`],
