@@ -49,6 +49,6 @@ module.exports = (request, callback) => {
         "PopId" = ${newPopId}
     `)
   })
-    .then(row => callback(null, newPopId))
+    .then(() => callback(null, newPopId))
     .catch(error => callback(error, null))
 }
