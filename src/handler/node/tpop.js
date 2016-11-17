@@ -11,7 +11,7 @@ module.exports = (request, callback) => {
 
   app.db.oneOrNone(`
     SELECT
-      "TPopId",
+      apflora.tpop.*,
       apflora.pop."PopId",
       apflora.ap."ProjId",
       apflora.ap."ApArtId",
@@ -80,78 +80,84 @@ module.exports = (request, callback) => {
       apflora.tpop."TPopId" = ${id}
     `
   )
-  .then(tpop => [
+  .then(row => [
     // tpopmassn folder
     {
       nodeId: `tpop/${id}/tpopmassn`,
       folder: `tpopmassn`,
       table: `tpop`,
+      row,
       id,
-      label: `Massnahmen (${tpop.AnzTPopmassn})`,
+      label: `Massnahmen (${row.AnzTPopmassn})`,
       expanded: false,
       children: [0],
-      urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Massnahmen`],
-      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopmassn`],
+      urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, id, `Massnahmen`],
+      nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${id}/tpopmassn`],
     },
     // tpopmassnber folder
     {
       nodeId: `tpop/${id}/tpopmassnber`,
       folder: `tpopmassnber`,
       table: `tpop`,
+      row,
       id,
-      label: `Massnahmen-Berichte (${tpop.AnzTPopmassnber})`,
+      label: `Massnahmen-Berichte (${row.AnzTPopmassnber})`,
       expanded: false,
       children: [0],
-      urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Massnahmen-Berichte`],
-      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopmassnber`],
+      urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, id, `Massnahmen-Berichte`],
+      nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${id}/tpopmassnber`],
     },
     // tpopfeldkontr folder
     {
       nodeId: `tpop/${id}/tpopfeldkontr`,
       folder: `tpopfeldkontr`,
       table: `tpop`,
+      row,
       id,
-      label: `Feld-Kontrollen (${tpop.AnzTPopfeldkontr})`,
+      label: `Feld-Kontrollen (${row.AnzTPopfeldkontr})`,
       expanded: false,
       children: [0],
-      urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`],
-      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopfeldkontr`],
+      urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`],
+      nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${id}/tpopfeldkontr`],
     },
     // tpopfreiwkontr folder
     {
       nodeId: `tpop/${id}/tpopfreiwkontr`,
       folder: `tpopfreiwkontr`,
       table: `tpop`,
+      row,
       id,
-      label: `Freiwilligen-Kontrollen (${tpop.AnzTPopfreiwkontr})`,
+      label: `Freiwilligen-Kontrollen (${row.AnzTPopfreiwkontr})`,
       expanded: false,
       children: [0],
-      urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Freiwilligen-Kontrollen`],
-      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopfreiwkontr`],
+      urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, id, `Freiwilligen-Kontrollen`],
+      nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${id}/tpopfreiwkontr`],
     },
     // tpopber folder
     {
       nodeId: `tpop/${id}/tpopber`,
       folder: `tpopber`,
       table: `tpop`,
+      row,
       id,
-      label: `Kontroll-Berichte (${tpop.AnzTPopber})`,
+      label: `Kontroll-Berichte (${row.AnzTPopber})`,
       expanded: false,
       children: [0],
-      urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Kontroll-Berichte`],
-      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopber`],
+      urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, id, `Kontroll-Berichte`],
+      nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${id}/tpopber`],
     },
     // beobzuordnung folder
     {
       nodeId: `tpop/${id}/beobzuordnung`,
       folder: `beobzuordnung`,
       table: `tpop`,
+      row,
       id,
-      label: `zugeordnete Beobachtungen (${tpop.AnzTPopbeobzuordnung})`,
+      label: `zugeordnete Beobachtungen (${row.AnzTPopbeobzuordnung})`,
       expanded: false,
       children: [0],
-      urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `zugeordnete-Beobachtungen`],
-      nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/beobzuordnung`],
+      urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, id, `zugeordnete-Beobachtungen`],
+      nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${row.PopId}`, `pop/${row.PopId}/tpop`, `tpop/${id}/beobzuordnung`],
     },
   ])
   .then(nodes => callback(null, nodes))
