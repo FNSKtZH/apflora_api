@@ -2,7 +2,7 @@
 
 const app = require(`ampersand-app`)
 const escapeStringForSql = require(`../escapeStringForSql`)
-const newGuid = require(`..//newGuid.js`)
+const newGuid = require(`../newGuid.js`)
 
 module.exports = (request, callback) => {
   const tpopId = escapeStringForSql(request.params.tpopId)
@@ -11,42 +11,43 @@ module.exports = (request, callback) => {
   const date = new Date().toISOString() // wann gespeichert wird
   let newTPopMassnId = null
 
-  app.db.task(function* manageData() {
-    // allfällige temporäre Tabelle löschen
-    yield app.db.none(`DROP TABLE IF EXISTS tmp`)
-    // temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
-    yield app.db.none(`
-      CREATE TEMPORARY TABLE
-        tmp
-      AS SELECT
-        *
+  app.db.tx(function* manageData() {
+    // need a statement that selects all fields but some
+    // from: http://dba.stackexchange.com/questions/1957/sql-select-all-columns-except-some
+    const fieldsListStatement = yield app.db.one(`
+      SELECT array_to_string(ARRAY(SELECT '"' || c.column_name || '"'
+        FROM information_schema.columns As c
+          WHERE table_name = 'tpopmassn'
+          AND  c.column_name NOT IN('TPopMassnId', 'TPopMassnGuid')
+        ), ',') As sqlstmt
+    `)
+    const fieldsList = fieldsListStatement.sqlstmt
+
+    newTPopMassnId = yield app.db.one(`
+      INSERT INTO
+        apflora.tpopmassn (${fieldsList})
+      SELECT
+        ${fieldsList}
       FROM
         apflora.tpopmassn
       WHERE
-        "TPopMassnId" = ${tpopMassnId}`
-    )
-    // get new TPopMassnId
-    const nextvalRow = yield app.db.one(`select nextval('apflora."tpopmassn_TPopMassnId_seq"')`)
-    newTPopMassnId = parseInt(nextvalRow.nextval, 0)
-    // TPopId anpassen
+        "TPopMassnId" = ${tpopMassnId}
+      RETURNING "TPopMassnId"
+    `)
+
+    newTPopMassnId = newTPopMassnId.TPopMassnId
+
     yield app.db.none(`
       UPDATE
-        tmp
-      SET
-        "TPopMassnId" = ${newTPopMassnId},
-        "TPopMassnGuid" = '${newGuid()}',
-        "TPopId" = ${tpopId},
-        "MutWann" = '${date}',
-        "MutWer" = '${user}'`
-    )
-    return yield app.db.none(`
-      INSERT INTO
         apflora.tpopmassn
-      SELECT
-        *
-      FROM
-        tmp`
-    )
+      SET
+        "TPopId" = ${tpopId},
+        "TPopMassnGuid" = ${`'${newGuid()}'`},
+        "MutWer" = ${`'${user}'`},
+        "MutWann" = ${`'${date}'`}
+      WHERE
+        "TPopMassnId" = ${newTPopMassnId}
+    `)
   })
     // neue id zurück liefern
     .then(() => callback(null, newTPopMassnId))

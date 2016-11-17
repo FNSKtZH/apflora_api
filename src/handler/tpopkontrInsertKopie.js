@@ -2,7 +2,7 @@
 
 const app = require(`ampersand-app`)
 const escapeStringForSql = require(`../escapeStringForSql`)
-const newGuid = require(`..//newGuid.js`)
+const newGuid = require(`../newGuid.js`)
 
 module.exports = (request, callback) => {
   const tpopId = escapeStringForSql(request.params.tpopId)
@@ -12,40 +12,43 @@ module.exports = (request, callback) => {
   let newTPopKontrId = null
 
   app.db.tx(function* manageData() {
-    // allfällige temporäre Tabelle löschen
-    yield app.db.none(`DROP TABLE IF EXISTS tmp`)
-    // temporäre Tabelle erstellen mit dem zu kopierenden Datensatz
-    yield app.db.none(`
-      CREATE TEMPORARY TABLE
-        tmp
-      AS SELECT
-        *
+    // need a statement that selects all fields but some
+    // from: http://dba.stackexchange.com/questions/1957/sql-select-all-columns-except-some
+    const fieldsListStatement = yield app.db.one(`
+      SELECT array_to_string(ARRAY(SELECT '"' || c.column_name || '"'
+        FROM information_schema.columns As c
+          WHERE table_name = 'tpopkontr'
+          AND  c.column_name NOT IN('TPopKontrId', 'TPopKontrGuid')
+        ), ',') As sqlstmt
+    `)
+    const fieldsList = fieldsListStatement.sqlstmt
+
+    newTPopKontrId = yield app.db.one(`
+      INSERT INTO
+        apflora.tpopkontr (${fieldsList})
+      SELECT
+        ${fieldsList}
       FROM
         apflora.tpopkontr
       WHERE
-        "TPopKontrId" = ${tpopKontrId}`
-    )
-    // get new TPopKontrId
-    const nextvalRow = yield app.db.one(`select nextval('apflora."tpopkontr_TPopKontrId_seq"')`)
-    newTPopKontrId = parseInt(nextvalRow.nextval, 0)
-    // TPopId anpassen
+        "TPopKontrId" = ${tpopKontrId}
+      RETURNING "TPopKontrId"
+    `)
+
+    newTPopKontrId = newTPopKontrId.TPopKontrId
+
     yield app.db.none(`
-      UPDATE tmp
-      SET
-        "TPopKontrId" = ${newTPopKontrId},
-        "TPopId" = ${tpopId},
-        "TPopKontrGuid" = '${newGuid()}',
-        "MutWann" = '${date}',
-        "MutWer" = '${user}'`
-    )
-    yield app.db.none(`
-      INSERT INTO
+      UPDATE
         apflora.tpopkontr
-      SELECT
-        *
-      FROM
-        tmp`
-    )
+      SET
+        "TPopId" = ${tpopId},
+        "TPopKontrGuid" = ${`'${newGuid()}'`},
+        "MutWer" = ${`'${user}'`},
+        "MutWann" = ${`'${date}'`}
+      WHERE
+        "TPopKontrId" = ${newTPopKontrId}
+    `)
+
     // Zählungen der herkunfts-Kontrolle holen und der neuen Kontrolle anfügen
     return yield app.db.none(`
       INSERT INTO
