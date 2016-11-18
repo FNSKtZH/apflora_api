@@ -44,7 +44,6 @@ module.exports = (request, callback) => {
           nodeId: `ziel/${row.ZielId}/zielber`,
           folder: `zielber`,
           table: `ziel`,
-          row,
           id: row.ProjId,
           label: `Berichte (${row.AnzZielber})`,
           expanded: false,

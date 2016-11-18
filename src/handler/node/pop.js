@@ -12,7 +12,7 @@ module.exports = (request, callback) => {
   // build tpop
   app.db.oneOrNone(`
     SELECT
-      apflora.pop.*,
+      "PopId",
       apflora.ap."ProjId",
       apflora.ap."ApArtId",
       (
@@ -48,45 +48,42 @@ module.exports = (request, callback) => {
       apflora.pop."PopId" = ${id}
     `
   )
-    .then(row => [
+    .then(pop => [
       // tpop folder
       {
         nodeId: `pop/${id}/tpop`,
         folder: `tpop`,
         table: `pop`,
-        row,
         id,
-        label: `Teil-Populationen (${row.AnzTPop})`,
+        label: `Teil-Populationen (${pop.AnzTPop})`,
         expanded: false,
         children: [0],
-        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, id, `Teil-Populationen`],
-        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${id}`, `pop/${id}/tpop`],
+        urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Teil-Populationen`],
+        nodeIdPath: [`projekt/${pop.ProjId}`, `projekt/${pop.ProjId}/ap`, `ap/${pop.ApArtId}`, `ap/${pop.ApArtId}/pop`, `pop/${id}`, `pop/${id}/tpop`],
       },
       // popber folder
       {
         nodeId: `pop/${id}/popber`,
         folder: `popber`,
         table: `pop`,
-        row,
         id,
-        label: `Kontroll-Berichte (${row.AnzPopber})`,
+        label: `Kontroll-Berichte (${pop.AnzPopber})`,
         expanded: false,
         children: [0],
-        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, id, `Kontroll-Berichte`],
-        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${id}`, `pop/${id}/popber`],
+        urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Kontroll-Berichte`],
+        nodeIdPath: [`projekt/${pop.ProjId}`, `projekt/${pop.ProjId}/ap`, `ap/${pop.ApArtId}`, `ap/${pop.ApArtId}/pop`, `pop/${id}`, `pop/${id}/popber`],
       },
       // popmassnber folder
       {
         nodeId: `pop/${id}/popmassnber`,
         folder: `popmassnber`,
         table: `pop`,
-        row,
         id,
-        label: `Massnahmen-Berichte (${row.AnzPopmassnber})`,
+        label: `Massnahmen-Berichte (${pop.AnzPopmassnber})`,
         expanded: false,
         children: [0],
-        urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, id, `Massnahmen-Berichte`],
-        nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/pop`, `pop/${id}`, `pop/${id}/popmassnber`],
+        urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Massnahmen-Berichte`],
+        nodeIdPath: [`projekt/${pop.ProjId}`, `projekt/${pop.ProjId}/ap`, `ap/${pop.ApArtId}`, `ap/${pop.ApArtId}/pop`, `pop/${id}`, `pop/${id}/popmassnber`],
       },
     ])
     .then(nodes => callback(null, nodes))

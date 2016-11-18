@@ -56,7 +56,6 @@ module.exports = (request, callback) => {
           nodeId: `tpopkontr/${row.TPopKontrId}/tpopkontrzaehl`,
           folder: `tpopkontrzaehl`,
           table: `tpopkontr`,
-          row,
           id: row.ProjId,
           label: `Zählungen (${row.AnzTPopkontrzaehl})`,
           expanded: false,
