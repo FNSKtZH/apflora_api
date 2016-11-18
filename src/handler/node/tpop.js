@@ -1,6 +1,7 @@
 'use strict'
 
 const app = require(`ampersand-app`)
+const _ = require(`lodash`)
 
 module.exports = (request, callback) => {
   let id = encodeURIComponent(request.query.id)
@@ -89,7 +90,7 @@ module.exports = (request, callback) => {
       id,
       folderLabel: `Massnahmen (${tpop.AnzTPopmassn})`,
       expanded: false,
-      children: [0],
+      children: _.times(tpop.AnzTPopmassn, _.constant(0)),
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Massnahmen`],
       nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopmassn`],
     },
@@ -101,7 +102,7 @@ module.exports = (request, callback) => {
       id,
       folderLabel: `Massnahmen-Berichte (${tpop.AnzTPopmassnber})`,
       expanded: false,
-      children: [0],
+      children: _.times(tpop.AnzTPopmassnber, _.constant(0)),
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Massnahmen-Berichte`],
       nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopmassnber`],
     },
@@ -113,7 +114,7 @@ module.exports = (request, callback) => {
       id,
       folderLabel: `Feld-Kontrollen (${tpop.AnzTPopfeldkontr})`,
       expanded: false,
-      children: [0],
+      children: _.times(tpop.AnzTPopfeldkontr, _.constant(0)),
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`],
       nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopfeldkontr`],
     },
@@ -125,7 +126,7 @@ module.exports = (request, callback) => {
       id,
       folderLabel: `Freiwilligen-Kontrollen (${tpop.AnzTPopfreiwkontr})`,
       expanded: false,
-      children: [0],
+      children: _.times(tpop.AnzTPopfreiwkontr, _.constant(0)),
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Freiwilligen-Kontrollen`],
       nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopfreiwkontr`],
     },
@@ -137,7 +138,7 @@ module.exports = (request, callback) => {
       id,
       folderLabel: `Kontroll-Berichte (${tpop.AnzTPopber})`,
       expanded: false,
-      children: [0],
+      children: _.times(tpop.AnzTPopber, _.constant(0)),
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `Kontroll-Berichte`],
       nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/tpopber`],
     },
@@ -149,7 +150,7 @@ module.exports = (request, callback) => {
       id,
       folderLabel: `zugeordnete Beobachtungen (${tpop.AnzTPopbeobzuordnung})`,
       expanded: false,
-      children: [0],
+      children: _.times(tpop.AnzTPopbeobzuordnung, _.constant(0)),
       urlPath: [`Projekte`, tpop.ProjId, `Arten`, tpop.ApArtId, `Populationen`, tpop.PopId, `Teil-Populationen`, id, `zugeordnete-Beobachtungen`],
       nodeIdPath: [`projekt/${tpop.ProjId}`, `projekt/${tpop.ProjId}/ap`, `ap/${tpop.ApArtId}`, `ap/${tpop.ApArtId}/pop`, `pop/${tpop.PopId}`, `pop/${tpop.PopId}/tpop`, `tpop/${id}/beobzuordnung`],
     },

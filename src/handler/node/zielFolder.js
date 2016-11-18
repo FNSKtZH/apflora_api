@@ -1,6 +1,7 @@
 'use strict'
 
 const app = require(`ampersand-app`)
+const _ = require(`lodash`)
 
 module.exports = (request, callback) => {
   let id = encodeURIComponent(request.query.id)
@@ -47,7 +48,7 @@ module.exports = (request, callback) => {
           id: row.ProjId,
           folderLabel: `Berichte (${row.AnzZielber})`,
           expanded: false,
-          children: [0],
+          children: _.times(row.AnzZielber, _.constant(0)),
           urlPath: [`Projekte`, row.ProjId, `Arten`, id, `AP-Ziele`, row.ZielId, `Berichte`],
           nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`, `ap/${row.ApArtId}`, `ap/${row.ApArtId}/ziel`, `ziel/${row.ZielId}`, `ziel/${row.ZielId}/zielber`],
         }],

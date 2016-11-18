@@ -1,17 +1,10 @@
 'use strict'
 
 const app = require(`ampersand-app`)
+const _ = require(`lodash`)
 
 module.exports = ({ apArtId, children }) => {  // eslint-disable-line
-  const popChildren = [0]
-  const zielChildren = [0]
-  const erfkritChildren = [0]
-  const apberChildren = [0]
-  const berChildren = [0]
-  const beobNichtBeurteiltChildren = [0]
-  const beobNichtZuzuordnenChildren = [0]
   const idealbiotopChildren = [0]
-  const assozartenChildren = [0]
   const qkChildren = [0]
 
   return app.db.task(function* getData() {
@@ -106,7 +99,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         id: apArtId,
         folderLabel: `Populationen (${ap.AnzPop})`,
         expanded: false,
-        children: popChildren,
+        children: _.times(ap.AnzPop, _.constant(0)),
         urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `Populationen`],
         nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${apArtId}/pop`],
       },
@@ -118,7 +111,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         id: apArtId,
         folderLabel: `AP-Ziele (${ap.AnzZiel})`,
         expanded: false,
-        children: zielChildren,
+        children: _.times(ap.AnzZiel, _.constant(0)),
         urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `AP-Ziele`],
         nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${apArtId}/ziel`],
       },
@@ -130,7 +123,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         id: apArtId,
         folderLabel: `AP-Erfolgskriterien (${ap.AnzErfkrit})`,
         expanded: false,
-        children: erfkritChildren,
+        children: _.times(ap.AnzErfkrit, _.constant(0)),
         urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `AP-Erfolgskriterien`],
         nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${apArtId}/erfkrit`],
       },
@@ -142,7 +135,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         id: apArtId,
         folderLabel: `AP-Berichte (${ap.AnzApber})`,
         expanded: false,
-        children: apberChildren,
+        children: _.times(ap.AnzApber, _.constant(0)),
         urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `AP-Berichte`],
         nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${apArtId}/apber`],
       },
@@ -154,7 +147,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         id: apArtId,
         folderLabel: `Berichte (${ap.AnzBer})`,
         expanded: false,
-        children: berChildren,
+        children: _.times(ap.AnzBer, _.constant(0)),
         urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `Berichte`],
         nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${apArtId}/ber`],
       },
@@ -166,7 +159,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         id: apArtId,
         folderLabel: `nicht beurteilte Beobachtungen (${ap.AnzBeobNichtBeurteilt < 100 ? ap.AnzBeobNichtBeurteilt : `neuste 100 von ${ap.AnzBeobNichtBeurteilt}`})`,
         expanded: false,
-        children: beobNichtBeurteiltChildren,
+        children: _.times(ap.AnzBeobNichtBeurteilt, _.constant(0)),
         urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `nicht-beurteilte-Beobachtungen`],
         nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${apArtId}/beobNichtBeurteilt`],
       },
@@ -178,7 +171,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         id: apArtId,
         folderLabel: `nicht zuzuordnende Beobachtungen (${ap.AnzBeobNichtZuzuordnen < 100 ? ap.AnzBeobNichtZuzuordnen : `neuste 100 von ${ap.AnzBeobNichtZuzuordnen}`})`,
         expanded: false,
-        children: beobNichtZuzuordnenChildren,
+        children: _.times(ap.AnzBeobNichtZuzuordnen, _.constant(0)),
         urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `nicht-zuzuordnende-Beobachtungen`],
         nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${apArtId}/beobNichtZuzuordnen`],
       },
@@ -201,7 +194,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         id: apArtId,
         folderLabel: `assoziierte Arten (${ap.AnzAssozart})`,
         expanded: false,
-        children: assozartenChildren,
+        children: _.times(ap.AnzAssozart, _.constant(0)),
         urlPath: [`Projekte`, ap.ProjId, `Arten`, ap.ApArtId, `assoziierte-Arten`],
         nodeIdPath: [`projekt/${ap.ProjId}`, `projekt/${ap.ProjId}/ap`, `ap/${ap.ApArtId}`, `ap/${apArtId}/assozart`],
       },

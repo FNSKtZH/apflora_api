@@ -1,6 +1,7 @@
 'use strict'
 
 const app = require(`ampersand-app`)
+const _ = require(`lodash`)
 
 module.exports = (request, callback) => {
   let id = encodeURIComponent(request.query.id)
@@ -57,7 +58,7 @@ module.exports = (request, callback) => {
         id,
         folderLabel: `Teil-Populationen (${pop.AnzTPop})`,
         expanded: false,
-        children: [0],
+        children: _.times(pop.AnzTPop, _.constant(0)),
         urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Teil-Populationen`],
         nodeIdPath: [`projekt/${pop.ProjId}`, `projekt/${pop.ProjId}/ap`, `ap/${pop.ApArtId}`, `ap/${pop.ApArtId}/pop`, `pop/${id}`, `pop/${id}/tpop`],
       },
@@ -69,7 +70,7 @@ module.exports = (request, callback) => {
         id,
         folderLabel: `Kontroll-Berichte (${pop.AnzPopber})`,
         expanded: false,
-        children: [0],
+        children: _.times(pop.AnzPopber, _.constant(0)),
         urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Kontroll-Berichte`],
         nodeIdPath: [`projekt/${pop.ProjId}`, `projekt/${pop.ProjId}/ap`, `ap/${pop.ApArtId}`, `ap/${pop.ApArtId}/pop`, `pop/${id}`, `pop/${id}/popber`],
       },
@@ -81,7 +82,7 @@ module.exports = (request, callback) => {
         id,
         folderLabel: `Massnahmen-Berichte (${pop.AnzPopmassnber})`,
         expanded: false,
-        children: [0],
+        children: _.times(pop.AnzPopmassnber, _.constant(0)),
         urlPath: [`Projekte`, pop.ProjId, `Arten`, pop.ApArtId, `Populationen`, id, `Massnahmen-Berichte`],
         nodeIdPath: [`projekt/${pop.ProjId}`, `projekt/${pop.ProjId}/ap`, `ap/${pop.ApArtId}`, `ap/${pop.ApArtId}/pop`, `pop/${id}`, `pop/${id}/popmassnber`],
       },

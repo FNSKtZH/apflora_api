@@ -1,13 +1,14 @@
 'use strict'
 
 const app = require(`ampersand-app`)
+const _ = require(`lodash`)
 const apFolderQuery = require(`./apFolderQuery`)
 const apberuebersichtFolderQuery = require(`./apberuebersichtFolderQuery`)
 
 module.exports = ({ user, projId, children }) =>
   app.db.task(function* getData() {
-    let apFolder = [0]
-    let apberuebersichtFolder = [0]
+    let apFolder = []
+    let apberuebersichtFolder = []
 
     if (children.includes(`apFolder`)) {
       apFolder = yield apFolderQuery(projId, children)
@@ -69,7 +70,7 @@ module.exports = ({ user, projId, children }) =>
             id: row.ProjId,
             folderLabel: `Arten (${row.AnzAp})`,
             expanded: false,
-            children: apFolder,
+            children: apFolder.length === 0 ? _.times(row.AnzAp, _.constant(0)) : apFolder,
             urlPath: [`Projekte`, row.ProjId, `Arten`],
             nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/ap`],
           },
@@ -81,7 +82,11 @@ module.exports = ({ user, projId, children }) =>
             id: row.ProjId,
             folderLabel: `AP-Berichte (${row.AnzApberuebersicht})`,
             expanded: false,
-            children: apberuebersichtFolder,
+            children: (
+              apberuebersichtFolder.length === 0 ?
+              _.times(row.AnzApberuebersicht, _.constant(0)) :
+              apberuebersichtFolder
+            ),
             urlPath: [`Projekte`, row.ProjId, `AP-Berichte`],
             nodeIdPath: [`projekt/${row.ProjId}`, `projekt/${row.ProjId}/apberuebersicht`],
           },
