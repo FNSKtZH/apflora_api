@@ -46,7 +46,6 @@ module.exports = (request, callback) => {
           folder: `zielber`,
           table: `ziel`,
           id: row.ProjId,
-          folderLabel: `Berichte (${row.AnzZielber})`,
           expanded: false,
           children: _.times(row.AnzZielber, _.constant(0)),
           urlPath: [`Projekte`, row.ProjId, `Arten`, id, `AP-Ziele`, row.ZielId, `Berichte`],

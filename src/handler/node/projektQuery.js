@@ -68,7 +68,6 @@ module.exports = ({ user, projId, children }) =>
             folder: `ap`,
             table: `projekt`,
             id: row.ProjId,
-            folderLabel: `Arten (${row.AnzAp})`,
             expanded: false,
             children: apFolder.length === 0 ? _.times(row.AnzAp, _.constant(0)) : apFolder,
             urlPath: [`Projekte`, row.ProjId, `Arten`],
@@ -80,7 +79,6 @@ module.exports = ({ user, projId, children }) =>
             folder: `apberuebersicht`,
             table: `projekt`,
             id: row.ProjId,
-            folderLabel: `AP-Berichte (${row.AnzApberuebersicht})`,
             expanded: false,
             children: (
               apberuebersichtFolder.length === 0 ?
