@@ -45,6 +45,7 @@ module.exports = (request, callback) => {
           nodeId: `ziel/${row.ZielId}/zielber`,
           folder: `zielber`,
           table: `ziel`,
+          row,
           id: row.ProjId,
           expanded: false,
           children: _.times(row.AnzZielber, _.constant(0)),

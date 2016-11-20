@@ -57,6 +57,7 @@ module.exports = (request, callback) => {
           nodeId: `tpopkontr/${row.TPopKontrId}/tpopkontrzaehl`,
           folder: `tpopkontrzaehl`,
           table: `tpopkontr`,
+          row,
           id: row.ProjId,
           expanded: false,
           urlPath: [`Projekte`, row.ProjId, `Arten`, row.ApArtId, `Populationen`, row.PopId, `Teil-Populationen`, id, `Feld-Kontrollen`, row.TPopKontrId, `Zählungen`],

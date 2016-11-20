@@ -67,6 +67,7 @@ module.exports = ({ user, projId, children }) =>
             nodeId: `projekt/${row.ProjId}/ap`,
             folder: `ap`,
             table: `projekt`,
+            row,
             id: row.ProjId,
             expanded: false,
             children: apFolder.length === 0 ? _.times(row.AnzAp, _.constant(0)) : apFolder,
@@ -78,6 +79,7 @@ module.exports = ({ user, projId, children }) =>
             nodeId: `projekt/${row.ProjId}/apberuebersicht`,
             folder: `apberuebersicht`,
             table: `projekt`,
+            row,
             id: row.ProjId,
             expanded: false,
             children: (

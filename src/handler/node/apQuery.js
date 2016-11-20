@@ -10,8 +10,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
   return app.db.task(function* getData() {
     const ap = yield app.db.oneOrNone(`
       SELECT
-        apflora.ap."ProjId",
-        apflora.ap."ApArtId",
+        apflora.ap.*,
         (
           SELECT
             COUNT(*)
@@ -96,6 +95,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         nodeId: `ap/${apArtId}/pop`,
         folder: `pop`,
         table: `ap`,
+        row: ap,
         id: apArtId,
         expanded: false,
         children: _.times(ap.AnzPop, _.constant(0)),
@@ -107,6 +107,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         nodeId: `ap/${apArtId}/ziel`,
         folder: `ziel`,
         table: `ap`,
+        row: ap,
         id: apArtId,
         expanded: false,
         children: _.times(ap.AnzZiel, _.constant(0)),
@@ -118,6 +119,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         nodeId: `ap/${apArtId}/erfkrit`,
         folder: `erfkrit`,
         table: `ap`,
+        row: ap,
         id: apArtId,
         expanded: false,
         children: _.times(ap.AnzErfkrit, _.constant(0)),
@@ -129,6 +131,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         nodeId: `ap/${apArtId}/apber`,
         folder: `apber`,
         table: `ap`,
+        row: ap,
         id: apArtId,
         expanded: false,
         children: _.times(ap.AnzApber, _.constant(0)),
@@ -140,6 +143,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         nodeId: `ap/${apArtId}/ber`,
         folder: `ber`,
         table: `ap`,
+        row: ap,
         id: apArtId,
         expanded: false,
         children: _.times(ap.AnzBer, _.constant(0)),
@@ -151,6 +155,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         nodeId: `ap/${apArtId}/beobNichtBeurteilt`,
         folder: `beobNichtBeurteilt`,
         table: `ap`,
+        row: ap,
         id: apArtId,
         folderLabel: `nicht beurteilte Beobachtungen (${ap.AnzBeobNichtBeurteilt < 100 ? ap.AnzBeobNichtBeurteilt : `neuste 100 von ${ap.AnzBeobNichtBeurteilt}`})`,
         expanded: false,
@@ -163,6 +168,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         nodeId: `ap/${apArtId}/beobNichtZuzuordnen`,
         folder: `beobNichtZuzuordnen`,
         table: `ap`,
+        row: ap,
         id: apArtId,
         folderLabel: `nicht zuzuordnende Beobachtungen (${ap.AnzBeobNichtZuzuordnen < 100 ? ap.AnzBeobNichtZuzuordnen : `neuste 100 von ${ap.AnzBeobNichtZuzuordnen}`})`,
         expanded: false,
@@ -174,6 +180,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
       {
         nodeId: `idealbiotop/${apArtId}`,
         table: `idealbiotop`,
+        row: ap,
         id: apArtId,
         expanded: false,
         children: idealbiotopChildren,
@@ -185,6 +192,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         nodeId: `ap/${apArtId}/assozart`,
         folder: `assozart`,
         table: `ap`,
+        row: ap,
         id: apArtId,
         expanded: false,
         children: _.times(ap.AnzAssozart, _.constant(0)),
@@ -196,6 +204,7 @@ module.exports = ({ apArtId, children }) => {  // eslint-disable-line
         nodeId: `ap/${apArtId}/qk`,
         folder: `qk`,
         table: `ap`,
+        row: ap,
         id: apArtId,
         folderLabel: `Qualitätskontrollen`,
         expanded: false,

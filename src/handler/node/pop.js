@@ -13,7 +13,7 @@ module.exports = (request, callback) => {
   // build tpop
   app.db.oneOrNone(`
     SELECT
-      "PopId",
+      apflora.pop.*,
       apflora.ap."ProjId",
       apflora.ap."ApArtId",
       (
@@ -55,6 +55,7 @@ module.exports = (request, callback) => {
         nodeId: `pop/${id}/tpop`,
         folder: `tpop`,
         table: `pop`,
+        row: pop,
         id,
         expanded: false,
         children: _.times(pop.AnzTPop, _.constant(0)),
@@ -66,6 +67,7 @@ module.exports = (request, callback) => {
         nodeId: `pop/${id}/popber`,
         folder: `popber`,
         table: `pop`,
+        row: pop,
         id,
         expanded: false,
         children: _.times(pop.AnzPopber, _.constant(0)),
@@ -77,6 +79,7 @@ module.exports = (request, callback) => {
         nodeId: `pop/${id}/popmassnber`,
         folder: `popmassnber`,
         table: `pop`,
+        row: pop,
         id,
         expanded: false,
         children: _.times(pop.AnzPopmassnber, _.constant(0)),
