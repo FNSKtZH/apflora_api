@@ -129,3 +129,38 @@ FOREIGN KEY ("AaSisfNr")
 REFERENCES beob.adb_eigenschaften ("TaxonomieId")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+-- idealbiotop
+delete from apflora.idealbiotop where "IbApArtId" = 150;
+
+ALTER TABLE apflora.idealbiotop
+DROP CONSTRAINT IF EXISTS idealbiotop_fk_ap;
+
+ALTER TABLE apflora.idealbiotop
+ADD CONSTRAINT idealbiotop_fk_ap
+FOREIGN KEY ("IbApArtId")
+REFERENCES apflora.ap
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+-- ziel
+
+ALTER TABLE apflora.ziel
+DROP CONSTRAINT IF EXISTS ziel_fk_ap;
+
+ALTER TABLE apflora.ziel
+ADD CONSTRAINT ziel_fk_ap
+FOREIGN KEY ("ApArtId")
+REFERENCES apflora.ap
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE apflora.ziel
+DROP CONSTRAINT IF EXISTS ziel_fk_ziel_typ_werte;
+
+ALTER TABLE apflora.ziel
+ADD CONSTRAINT ziel_fk_ziel_typ_werte
+FOREIGN KEY ("ZielTyp")
+REFERENCES apflora.ziel_typ_werte ("ZieltypId")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
