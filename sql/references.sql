@@ -1,3 +1,5 @@
+-- ap
+
 ALTER TABLE apflora.ap
 DROP CONSTRAINT IF EXISTS ap_fk_projekt;
 
@@ -38,6 +40,8 @@ REFERENCES apflora.ap_umsetzung_werte ("DomainCode")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
 
+-- apber
+
 ALTER TABLE apflora.apber
 DROP CONSTRAINT IF EXISTS apber_fk_ap;
 
@@ -71,6 +75,8 @@ REFERENCES apflora.adresse ("AdrId")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
 
+-- ber
+
 ALTER TABLE apflora.ber
 DROP CONSTRAINT IF EXISTS ber_fk_ap;
 
@@ -80,6 +86,8 @@ FOREIGN KEY ("ApArtId")
 REFERENCES apflora.ap
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+-- erfkrit
 
 ALTER TABLE apflora.erfkrit
 DROP CONSTRAINT IF EXISTS erfkrit_fk_ap;
@@ -102,6 +110,7 @@ ON DELETE SET NULL
 ON UPDATE CASCADE;
 
 -- assozart
+
 ALTER TABLE apflora.assozart
 DROP CONSTRAINT IF EXISTS assozart_fk_ap;
 
@@ -131,6 +140,7 @@ ON DELETE SET NULL
 ON UPDATE CASCADE;
 
 -- idealbiotop
+
 delete from apflora.idealbiotop where "IbApArtId" = 150;
 
 ALTER TABLE apflora.idealbiotop
@@ -162,5 +172,17 @@ ALTER TABLE apflora.ziel
 ADD CONSTRAINT ziel_fk_ziel_typ_werte
 FOREIGN KEY ("ZielTyp")
 REFERENCES apflora.ziel_typ_werte ("ZieltypId")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+-- zielber
+
+ALTER TABLE apflora.zielber
+DROP CONSTRAINT IF EXISTS zielber_fk_ziel;
+
+ALTER TABLE apflora.zielber
+ADD CONSTRAINT zielber_fk_ziel
+FOREIGN KEY ("ZielId")
+REFERENCES apflora.ziel
 ON DELETE SET NULL
 ON UPDATE CASCADE;
