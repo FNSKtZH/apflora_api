@@ -28,6 +28,71 @@ module.exports = (request, callback) => {
   // console.log(`tabelleUpdateApflora: wert bekommen:`, request.params.wert)
   // console.log(`tabelleUpdateApflora: wert nach escape:`, wert)
 
+  const checkDatatype = (dataTypes, field, value) => {
+    const dataType = dataTypes[0].data_type
+    switch (dataType) {
+      case `integer`: {
+        const validDataType = Joi.validate(value, Joi.number().integer().min(-2147483648).max(+2147483647))
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'integer' des Felds '${field}'`))
+        }
+        break
+      }
+      case `smallint`: {
+        const validDataType = Joi.validate(value, Joi.number().integer().min(-32768).max(+32767))
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'integer' des Felds '${field}'`))
+        }
+        break
+      }
+      case `double precision`: {
+        const validDataType = Joi.validate(value, Joi.number().precision(15))
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${value}' im Feld '${field}' muss eine Nummer sein`))
+        }
+        break
+      }
+      case `character varying`: {
+        const validDataType = Joi.validate(value, Joi.string().allow(``))
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'character varying' des Felds '${field}'`))
+        }
+        // - if field type is varchar: check if value length complies to character_maximum_length
+        const maxLen = dataTypes[0].character_maximum_length
+        if (maxLen) {
+          const validDataType2 = Joi.validate(value, Joi.string().max(maxLen))
+          if (validDataType2.error) {
+            return callback(Boom.badRequest(`Der Wert '${value}' ist zu lang für das Feld '${field}'. Erlaubt sind ${maxLen} Zeichen`))
+          }
+        }
+        break
+      }
+      case `uuid`: {
+        const validDataType = Joi.validate(value, Joi.string().guid())
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'uuid' des Felds '${field}'`))
+        }
+        break
+      }
+      case `date`: {
+        const validDataType = Joi.validate(value, Joi.string())
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'date' des Felds '${field}'`))
+        }
+        break
+      }
+      case `text`: {
+        const validDataType = Joi.validate(value, Joi.string().allow(``))
+        if (validDataType.error) {
+          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'text' des Felds '${field}'`))
+        }
+        break
+      }
+      default:
+        // do nothing
+    }
+  }
+
   let sql = `
     UPDATE
       apflora.${tabelle}
@@ -66,74 +131,15 @@ module.exports = (request, callback) => {
     if (datentypenDesIdFelds.length === 0) {
       return callback(Boom.notFound(`Das Feld '${tabelleIdFeld}' existiert nicht`))
     }
+    // - check if the wert complies to data_type
+    checkDatatype(datentypenDesIdFelds, tabelleIdFeld, tabelleId)
     // - check if feld exists in column_name
     const datentypenDesFelds = felderDerTabelle.filter(f => f.column_name === feld)
     if (datentypenDesFelds.length === 0) {
       return callback(Boom.notFound(`Das Feld '${feld}' existiert nicht`))
     }
     // - check if the wert complies to data_type
-    const dataType = datentypenDesFelds[0].data_type
-    switch (dataType) {
-      case `integer`: {
-        const validDataType = Joi.validate(wert, Joi.number().integer().min(-2147483648).max(+2147483647))
-        if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'integer' des Felds '${feld}'`))
-        }
-        break
-      }
-      case `smallint`: {
-        const validDataType = Joi.validate(wert, Joi.number().integer().min(-32768).max(+32767))
-        if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'integer' des Felds '${feld}'`))
-        }
-        break
-      }
-      case `double precision`: {
-        const validDataType = Joi.validate(wert, Joi.number().precision(15))
-        if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${wert}' im Feld '${feld}' muss eine Nummer sein`))
-        }
-        break
-      }
-      case `character varying`: {
-        const validDataType = Joi.validate(wert, Joi.string().allow(``))
-        if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'character varying' des Felds '${feld}'`))
-        }
-        // - if field type is varchar: check if wert length complies to character_maximum_length
-        const maxLen = datentypenDesFelds[0].character_maximum_length
-        if (maxLen) {
-          const validDataType2 = Joi.validate(wert, Joi.string().max(maxLen))
-          if (validDataType2.error) {
-            return callback(Boom.badRequest(`Der Wert '${wert}' ist zu lang für das Feld '${feld}'. Erlaubt sind ${maxLen} Zeichen`))
-          }
-        }
-        break
-      }
-      case `uuid`: {
-        const validDataType = Joi.validate(wert, Joi.string().guid())
-        if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'uuid' des Felds '${feld}'`))
-        }
-        break
-      }
-      case `date`: {
-        const validDataType = Joi.validate(wert, Joi.string())
-        if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'date' des Felds '${feld}'`))
-        }
-        break
-      }
-      case `text`: {
-        const validDataType = Joi.validate(wert, Joi.string().allow(``))
-        if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${wert}' entspricht nicht dem Datentyp 'text' des Felds '${feld}'`))
-        }
-        break
-      }
-      default:
-        // do nothing
-    }
+    checkDatatype(datentypenDesFelds, feld, wert)
     app.db.any(sql)
       .then(rows => callback(null, rows))
       .catch(err => callback(err, null))
