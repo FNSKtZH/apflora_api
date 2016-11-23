@@ -316,3 +316,37 @@ FOREIGN KEY ("TPopBerEntwicklung")
 REFERENCES apflora.tpop_entwicklung_werte ("EntwicklungCode")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+-- tpopmassn
+
+delete from apflora.tpopmassn where "TPopId" not in (select "TPopId" from apflora.tpop);
+
+ALTER TABLE apflora.tpopmassn
+DROP CONSTRAINT IF EXISTS tpopmassn_fk_tpop;
+
+ALTER TABLE apflora.tpopmassn
+ADD CONSTRAINT tpopmassn_fk_tpop
+FOREIGN KEY ("TPopId")
+REFERENCES apflora.tpop
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE apflora.tpopmassn
+DROP CONSTRAINT IF EXISTS tpopmassn_fk_tpopmassn_typ_werte;
+
+ALTER TABLE apflora.tpopmassn
+ADD CONSTRAINT tpopmassn_fk_tpopmassn_typ_werte
+FOREIGN KEY ("TPopMassnTyp")
+REFERENCES apflora.tpopmassn_typ_werte ("MassnTypCode")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE apflora.tpopmassn
+DROP CONSTRAINT IF EXISTS tpopmassn_fk_adresse;
+
+ALTER TABLE apflora.tpopmassn
+ADD CONSTRAINT tpopmassn_fk_adresse
+FOREIGN KEY ("TPopMassnBearb")
+REFERENCES apflora.adresse ("AdrId")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
