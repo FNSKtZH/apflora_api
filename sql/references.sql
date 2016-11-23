@@ -376,3 +376,81 @@ FOREIGN KEY ("TPopMassnBerErfolgsbeurteilung")
 REFERENCES apflora.tpopmassn_erfbeurt_werte ("BeurteilId")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+-- beobzuordnung
+
+update apflora.beobzuordnung
+set "TPopId" = NULL where "TPopId" not in (select "TPopId" from apflora.tpop);
+
+ALTER TABLE apflora.beobzuordnung
+DROP CONSTRAINT IF EXISTS beobzuordnung_fk_tpop;
+
+ALTER TABLE apflora.beobzuordnung
+ADD CONSTRAINT beobzuordnung_fk_tpop
+FOREIGN KEY ("TPopId")
+REFERENCES apflora.tpop
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE apflora.beobzuordnung
+DROP CONSTRAINT IF EXISTS beobzuordnung_fk_beob_quelle;
+
+ALTER TABLE apflora.beobzuordnung
+ADD CONSTRAINT beobzuordnung_fk_beob_quelle
+FOREIGN KEY ("QuelleId")
+REFERENCES beob.beob_quelle ("id")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+-- add unique constraint to beob.beob_bereitgestellt.BeobId
+ALTER TABLE beob.beob_bereitgestellt
+ADD UNIQUE ("BeobId");
+
+-- remove 7 not fitting datasets
+delete from apflora.beobzuordnung
+where
+	"NO_NOTE" is not null
+	and "NO_NOTE" not in (select "BeobId" from beob.beob_bereitgestellt);
+
+ALTER TABLE apflora.beobzuordnung
+DROP CONSTRAINT IF EXISTS beobzuordnung_fk_beob_bereitgestellt;
+
+ALTER TABLE apflora.beobzuordnung
+ADD CONSTRAINT beobzuordnung_fk_beob_bereitgestellt
+FOREIGN KEY ("NO_NOTE")
+REFERENCES beob.beob_bereitgestellt ("BeobId")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+-- beob.beob_bereitgestellt
+
+-- add unique constraint to beob.beob_evab.NO_NOTE_PROJET
+ALTER TABLE beob.beob_evab
+ADD UNIQUE ("NO_NOTE_PROJET");
+
+ALTER TABLE beob.beob_bereitgestellt
+DROP CONSTRAINT IF EXISTS beob_bereitgestellt_fk_beob_evab;
+
+ALTER TABLE beob.beob_bereitgestellt
+ADD CONSTRAINT beob_bereitgestellt_fk_beob_evab
+FOREIGN KEY ("NO_NOTE_PROJET")
+REFERENCES beob.beob_evab ("NO_NOTE_PROJET")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+-- add unique constraint to beob.beob_infospezies.NO_NOTE_PROJET
+ALTER TABLE beob.beob_infospezies
+ADD UNIQUE ("NO_NOTE");
+
+ALTER TABLE beob.beob_infospezies
+DROP CONSTRAINT "beob_infospezies_NO_NOTE_key1";
+
+ALTER TABLE beob.beob_bereitgestellt
+DROP CONSTRAINT IF EXISTS beob_bereitgestellt_fk_beob_infospezies;
+
+ALTER TABLE beob.beob_bereitgestellt
+ADD CONSTRAINT beob_bereitgestellt_fk_beob_infospezies
+FOREIGN KEY ("NO_NOTE")
+REFERENCES beob.beob_infospezies ("NO_NOTE")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
