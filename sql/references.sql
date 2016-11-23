@@ -292,3 +292,27 @@ FOREIGN KEY ("TPopApBerichtRelevant")
 REFERENCES apflora.tpop_apberrelevant_werte ("DomainCode")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+-- tpopber
+
+delete from apflora.tpopber where "TPopId" not in (select "TPopId" from apflora.tpop);
+
+ALTER TABLE apflora.tpopber
+DROP CONSTRAINT IF EXISTS tpopber_fk_tpop;
+
+ALTER TABLE apflora.tpopber
+ADD CONSTRAINT tpopber_fk_tpop
+FOREIGN KEY ("TPopId")
+REFERENCES apflora.tpop
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE apflora.tpopber
+DROP CONSTRAINT IF EXISTS tpopber_fk_tpop_entwicklung_werte;
+
+ALTER TABLE apflora.tpopber
+ADD CONSTRAINT tpopber_fk_tpop_entwicklung_werte
+FOREIGN KEY ("TPopBerEntwicklung")
+REFERENCES apflora.tpop_entwicklung_werte ("EntwicklungCode")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
