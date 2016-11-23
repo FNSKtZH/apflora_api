@@ -234,3 +234,27 @@ FOREIGN KEY ("PopBerEntwicklung")
 REFERENCES apflora.pop_entwicklung_werte ("EntwicklungId")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+-- popmassnber
+
+delete from apflora.popmassnber where "PopId" not in (select "PopId" from apflora.pop);
+
+ALTER TABLE apflora.popmassnber
+DROP CONSTRAINT IF EXISTS popmassnber_fk_pop;
+
+ALTER TABLE apflora.popmassnber
+ADD CONSTRAINT popmassnber_fk_pop
+FOREIGN KEY ("PopId")
+REFERENCES apflora.pop
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE apflora.popmassnber
+DROP CONSTRAINT IF EXISTS popmassnber_fk_tpopmassn_erfbeurt_werte;
+
+ALTER TABLE apflora.popmassnber
+ADD CONSTRAINT popmassnber_fk_tpopmassn_erfbeurt_werte
+FOREIGN KEY ("PopMassnBerErfolgsbeurteilung")
+REFERENCES apflora.tpopmassn_erfbeurt_werte ("BeurteilId")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
