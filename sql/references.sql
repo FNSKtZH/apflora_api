@@ -350,3 +350,29 @@ FOREIGN KEY ("TPopMassnBearb")
 REFERENCES apflora.adresse ("AdrId")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+-- tpopmassnber
+
+delete from apflora.tpopmassnber where "TPopId" not in (select "TPopId" from apflora.tpop);
+
+ALTER TABLE apflora.tpopmassnber
+DROP CONSTRAINT IF EXISTS tpopmassnber_fk_tpop;
+
+ALTER TABLE apflora.tpopmassnber
+ADD CONSTRAINT tpopmassnber_fk_tpop
+FOREIGN KEY ("TPopId")
+REFERENCES apflora.tpop
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+delete from apflora.tpopmassnber where "TPopMassnBerErfolgsbeurteilung" not in (select "BeurteilId" from apflora.tpopmassn_erfbeurt_werte group by "BeurteilId");
+
+ALTER TABLE apflora.tpopmassnber
+DROP CONSTRAINT IF EXISTS tpopmassnber_fk_tpopmassn_erfbeurt_werte;
+
+ALTER TABLE apflora.tpopmassnber
+ADD CONSTRAINT tpopmassnber_fk_tpopmassn_erfbeurt_werte
+FOREIGN KEY ("TPopMassnBerErfolgsbeurteilung")
+REFERENCES apflora.tpopmassn_erfbeurt_werte ("BeurteilId")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
