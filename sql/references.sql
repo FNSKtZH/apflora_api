@@ -210,3 +210,27 @@ FOREIGN KEY ("PopHerkunft")
 REFERENCES apflora.pop_status_werte ("HerkunftId")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+-- popber
+
+delete from apflora.popber where "PopId" not in (select "PopId" from apflora.pop);
+
+ALTER TABLE apflora.popber
+DROP CONSTRAINT IF EXISTS popber_fk_pop;
+
+ALTER TABLE apflora.popber
+ADD CONSTRAINT popber_fk_pop
+FOREIGN KEY ("PopId")
+REFERENCES apflora.pop
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE apflora.popber
+DROP CONSTRAINT IF EXISTS popber_fk_pop_entwicklung_werte;
+
+ALTER TABLE apflora.popber
+ADD CONSTRAINT popber_fk_pop_entwicklung_werte
+FOREIGN KEY ("PopBerEntwicklung")
+REFERENCES apflora.pop_entwicklung_werte ("EntwicklungId")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
