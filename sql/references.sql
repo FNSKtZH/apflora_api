@@ -501,3 +501,43 @@ FOREIGN KEY ("TPopKontrIdealBiotopUebereinst")
 REFERENCES apflora.tpopkontr_idbiotuebereinst_werte ("DomainCode")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+-- tpopkontrzaehl
+
+delete from apflora.tpopkontrzaehl where "TPopKontrId" not in (select "TPopKontrId" from apflora.tpopkontr);
+
+ALTER TABLE apflora.tpopkontrzaehl
+DROP CONSTRAINT IF EXISTS tpopkontrzaehl_fk_tpopkontr;
+
+ALTER TABLE apflora.tpopkontrzaehl
+ADD CONSTRAINT tpopkontrzaehl_fk_tpopkontr
+FOREIGN KEY ("TPopKontrId")
+REFERENCES apflora.tpopkontr
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+-- get rid of 0 values
+update apflora.tpopkontrzaehl set "Zaehleinheit" = NULL where "Zaehleinheit" = 0;
+
+ALTER TABLE apflora.tpopkontrzaehl
+DROP CONSTRAINT IF EXISTS tpopkontrzaehl_fk_tpopkontrzaehl_einheit_werte;
+
+ALTER TABLE apflora.tpopkontrzaehl
+ADD CONSTRAINT tpopkontrzaehl_fk_tpopkontrzaehl_einheit_werte
+FOREIGN KEY ("Zaehleinheit")
+REFERENCES apflora.tpopkontrzaehl_einheit_werte ("ZaehleinheitCode")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+-- get rid of 0 values
+update apflora.tpopkontrzaehl set "Methode" = NULL where "Methode" = 0;
+
+ALTER TABLE apflora.tpopkontrzaehl
+DROP CONSTRAINT IF EXISTS tpopkontrzaehl_fk_tpopkontrzaehl_methode_werte;
+
+ALTER TABLE apflora.tpopkontrzaehl
+ADD CONSTRAINT tpopkontrzaehl_fk_tpopkontrzaehl_methode_werte
+FOREIGN KEY ("Methode")
+REFERENCES apflora.tpopkontrzaehl_methode_werte ("BeurteilCode")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
