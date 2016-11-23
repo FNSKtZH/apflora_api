@@ -186,3 +186,27 @@ FOREIGN KEY ("ZielId")
 REFERENCES apflora.ziel
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+-- pop
+
+delete from apflora.pop where "ApArtId" not in (select "ApArtId" from apflora.ap);
+
+ALTER TABLE apflora.pop
+DROP CONSTRAINT IF EXISTS pop_fk_ap;
+
+ALTER TABLE apflora.pop
+ADD CONSTRAINT pop_fk_ap
+FOREIGN KEY ("ApArtId")
+REFERENCES apflora.ap
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE apflora.pop
+DROP CONSTRAINT IF EXISTS pop_fk_pop_status_werte;
+
+ALTER TABLE apflora.pop
+ADD CONSTRAINT pop_fk_pop_status_werte
+FOREIGN KEY ("PopHerkunft")
+REFERENCES apflora.pop_status_werte ("HerkunftId")
+ON DELETE SET NULL
+ON UPDATE CASCADE;
