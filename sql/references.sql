@@ -7,7 +7,7 @@ ALTER TABLE apflora.ap
 ADD CONSTRAINT ap_fk_projekt
 FOREIGN KEY ("ProjId")
 REFERENCES apflora.projekt
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE apflora.ap
@@ -49,7 +49,7 @@ ALTER TABLE apflora.apber
 ADD CONSTRAINT apber_fk_ap
 FOREIGN KEY ("ApArtId")
 REFERENCES apflora.ap
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE apflora.apber
@@ -84,7 +84,7 @@ ALTER TABLE apflora.ber
 ADD CONSTRAINT ber_fk_ap
 FOREIGN KEY ("ApArtId")
 REFERENCES apflora.ap
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 -- erfkrit
@@ -96,7 +96,7 @@ ALTER TABLE apflora.erfkrit
 ADD CONSTRAINT erfkrit_fk_ap
 FOREIGN KEY ("ApArtId")
 REFERENCES apflora.ap
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE apflora.erfkrit
@@ -118,12 +118,13 @@ ALTER TABLE apflora.assozart
 ADD CONSTRAINT assozart_fk_ap
 FOREIGN KEY ("AaApArtId")
 REFERENCES apflora.ap
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 -- add unique constraint to beob.adb_eigenschaften.TaxonomieId
-ALTER TABLE beob.adb_eigenschaften
-ADD UNIQUE ("TaxonomieId");
+-- but only once!
+-- ALTER TABLE beob.adb_eigenschaften
+-- ADD UNIQUE ("TaxonomieId");
 
 -- get rid of 0 values
 -- update beob.adb_eigenschaften set "TaxonomieId" = NULL where "TaxonomieId" = 0;
@@ -150,7 +151,7 @@ ALTER TABLE apflora.idealbiotop
 ADD CONSTRAINT idealbiotop_fk_ap
 FOREIGN KEY ("IbApArtId")
 REFERENCES apflora.ap
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 -- ziel
@@ -162,7 +163,7 @@ ALTER TABLE apflora.ziel
 ADD CONSTRAINT ziel_fk_ap
 FOREIGN KEY ("ApArtId")
 REFERENCES apflora.ap
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE apflora.ziel
@@ -184,7 +185,7 @@ ALTER TABLE apflora.zielber
 ADD CONSTRAINT zielber_fk_ziel
 FOREIGN KEY ("ZielId")
 REFERENCES apflora.ziel
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 -- pop
@@ -198,7 +199,7 @@ ALTER TABLE apflora.pop
 ADD CONSTRAINT pop_fk_ap
 FOREIGN KEY ("ApArtId")
 REFERENCES apflora.ap
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE apflora.pop
@@ -222,7 +223,7 @@ ALTER TABLE apflora.popber
 ADD CONSTRAINT popber_fk_pop
 FOREIGN KEY ("PopId")
 REFERENCES apflora.pop
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE apflora.popber
@@ -246,7 +247,7 @@ ALTER TABLE apflora.popmassnber
 ADD CONSTRAINT popmassnber_fk_pop
 FOREIGN KEY ("PopId")
 REFERENCES apflora.pop
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE apflora.popmassnber
@@ -270,7 +271,7 @@ ALTER TABLE apflora.tpop
 ADD CONSTRAINT tpop_fk_pop
 FOREIGN KEY ("PopId")
 REFERENCES apflora.pop
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE apflora.tpop
@@ -304,7 +305,7 @@ ALTER TABLE apflora.tpopber
 ADD CONSTRAINT tpopber_fk_tpop
 FOREIGN KEY ("TPopId")
 REFERENCES apflora.tpop
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE apflora.tpopber
@@ -328,7 +329,7 @@ ALTER TABLE apflora.tpopmassn
 ADD CONSTRAINT tpopmassn_fk_tpop
 FOREIGN KEY ("TPopId")
 REFERENCES apflora.tpop
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE apflora.tpopmassn
@@ -362,7 +363,7 @@ ALTER TABLE apflora.tpopmassnber
 ADD CONSTRAINT tpopmassnber_fk_tpop
 FOREIGN KEY ("TPopId")
 REFERENCES apflora.tpop
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 delete from apflora.tpopmassnber where "TPopMassnBerErfolgsbeurteilung" not in (select "BeurteilId" from apflora.tpopmassn_erfbeurt_werte group by "BeurteilId");
@@ -389,7 +390,7 @@ ALTER TABLE apflora.beobzuordnung
 ADD CONSTRAINT beobzuordnung_fk_tpop
 FOREIGN KEY ("TPopId")
 REFERENCES apflora.tpop
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 ALTER TABLE apflora.beobzuordnung
@@ -403,8 +404,9 @@ ON DELETE SET NULL
 ON UPDATE CASCADE;
 
 -- add unique constraint to beob.beob_bereitgestellt.BeobId
-ALTER TABLE beob.beob_bereitgestellt
-ADD UNIQUE ("BeobId");
+-- but only once!
+-- ALTER TABLE beob.beob_bereitgestellt
+-- ADD UNIQUE ("BeobId");
 
 -- remove 7 not fitting datasets
 delete from apflora.beobzuordnung
@@ -425,8 +427,9 @@ ON UPDATE CASCADE;
 -- beob.beob_bereitgestellt
 
 -- add unique constraint to beob.beob_evab.NO_NOTE_PROJET
-ALTER TABLE beob.beob_evab
-ADD UNIQUE ("NO_NOTE_PROJET");
+-- but only once!
+-- ALTER TABLE beob.beob_evab
+-- ADD UNIQUE ("NO_NOTE_PROJET");
 
 ALTER TABLE beob.beob_bereitgestellt
 DROP CONSTRAINT IF EXISTS beob_bereitgestellt_fk_beob_evab;
@@ -439,8 +442,9 @@ ON DELETE SET NULL
 ON UPDATE CASCADE;
 
 -- add unique constraint to beob.beob_infospezies.NO_NOTE_PROJET
-ALTER TABLE beob.beob_infospezies
-ADD UNIQUE ("NO_NOTE");
+-- but only once!
+-- ALTER TABLE beob.beob_infospezies
+-- ADD UNIQUE ("NO_NOTE");
 
 ALTER TABLE beob.beob_infospezies
 DROP CONSTRAINT "beob_infospezies_NO_NOTE_key1";
@@ -466,7 +470,7 @@ ALTER TABLE apflora.tpopkontr
 ADD CONSTRAINT tpopkontr_fk_tpop
 FOREIGN KEY ("TPopId")
 REFERENCES apflora.tpop
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 -- get rid of 0 values
@@ -513,7 +517,7 @@ ALTER TABLE apflora.tpopkontrzaehl
 ADD CONSTRAINT tpopkontrzaehl_fk_tpopkontr
 FOREIGN KEY ("TPopKontrId")
 REFERENCES apflora.tpopkontr
-ON DELETE SET NULL
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 
 -- get rid of 0 values
