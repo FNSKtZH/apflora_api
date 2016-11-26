@@ -446,9 +446,6 @@ ON UPDATE CASCADE;
 -- ALTER TABLE beob.beob_infospezies
 -- ADD UNIQUE ("NO_NOTE");
 
-ALTER TABLE beob.beob_infospezies
-DROP CONSTRAINT "beob_infospezies_NO_NOTE_key1";
-
 ALTER TABLE beob.beob_bereitgestellt
 DROP CONSTRAINT IF EXISTS beob_bereitgestellt_fk_beob_infospezies;
 
