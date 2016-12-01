@@ -11,11 +11,18 @@ module.exports = [
     config: {
       validate: {
         params: {
-          apId: Joi.number(),
-          tpopId: Joi.number(),
+          apId: Joi.alternatives().try(
+            Joi.number().min(-2147483648).max(+2147483647),
+            Joi.empty()
+          ),
+          tpopId: Joi.alternatives().try(
+            Joi.number().min(-2147483648).max(+2147483647),
+            Joi.empty()
+          ),
           beobId: Joi.alternatives().try(
             Joi.number().min(-2147483648).max(+2147483647),
-            Joi.string().guid()
+            Joi.string().guid(),
+            Joi.empty()
           ),
           nichtZuzuordnen: Joi.any(),
         }
