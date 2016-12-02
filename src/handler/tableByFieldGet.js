@@ -20,7 +20,7 @@ module.exports = (request, callback) => {
     WHERE
       "${field}" = ${valueSql}`
 
-  app.db.many(sql)
+  app.db.manyOrNone(sql)
     .then((rows) => {
       callback(null, rows)
     })
