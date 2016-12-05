@@ -32,28 +32,42 @@ module.exports = (request, callback) => {
     const dataType = dataTypes[0].data_type
     switch (dataType) {
       case `integer`: {
-        const validDataType = Joi.validate(value, Joi.number().integer().min(-2147483648).max(+2147483647))
+        const validDataType = Joi.validate(
+          value,
+          Joi.number()
+            .integer()
+            .min(-2147483648)
+            .max(+2147483647)
+            .allow(null)
+        )
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'integer' des Felds '${field}'`))
         }
         break
       }
       case `smallint`: {
-        const validDataType = Joi.validate(value, Joi.number().integer().min(-32768).max(+32767))
+        const validDataType = Joi.validate(
+          value,
+          Joi.number()
+            .integer()
+            .min(-32768)
+            .max(+32767)
+            .allow(null)
+        )
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'integer' des Felds '${field}'`))
         }
         break
       }
       case `double precision`: {
-        const validDataType = Joi.validate(value, Joi.number().precision(15))
+        const validDataType = Joi.validate(value, Joi.number().precision(15).allow(null))
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${value}' im Feld '${field}' muss eine Nummer sein`))
         }
         break
       }
       case `character varying`: {
-        const validDataType = Joi.validate(value, Joi.string().allow(``))
+        const validDataType = Joi.validate(value, Joi.string().allow(``).allow(null))
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'character varying' des Felds '${field}'`))
         }
@@ -68,21 +82,21 @@ module.exports = (request, callback) => {
         break
       }
       case `uuid`: {
-        const validDataType = Joi.validate(value, Joi.string().guid())
+        const validDataType = Joi.validate(value, Joi.string().guid().allow(``).allow(null))
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'uuid' des Felds '${field}'`))
         }
         break
       }
       case `date`: {
-        const validDataType = Joi.validate(value, Joi.string())
+        const validDataType = Joi.validate(value, Joi.string().allow(``).allow(null))
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'date' des Felds '${field}'`))
         }
         break
       }
       case `text`: {
-        const validDataType = Joi.validate(value, Joi.string().allow(``))
+        const validDataType = Joi.validate(value, Joi.string().allow(``).allow(null))
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'text' des Felds '${field}'`))
         }
