@@ -74,7 +74,11 @@ module.exports = (request, callback) => {
       case `character varying`: {
         const validDataType = Joi.validate(
           value,
-          Joi.alternatives().try(Joi.number(), Joi.string())
+          Joi.alternatives()
+            .try(
+              Joi.number(),
+              Joi.string()
+            )
             .allow(``)
             .allow(null)
         )
@@ -129,7 +133,11 @@ module.exports = (request, callback) => {
       case `text`: {
         const validDataType = Joi.validate(
           value,
-          Joi.alternatives().try(Joi.number(), Joi.string())
+          Joi.alternatives()
+            .try(
+              Joi.number(),
+              Joi.string()
+            )
             .allow(``)
             .allow(null)
         )
