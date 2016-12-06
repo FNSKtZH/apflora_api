@@ -67,14 +67,25 @@ module.exports = (request, callback) => {
         break
       }
       case `character varying`: {
-        const validDataType = Joi.validate(value, Joi.string().allow(``).allow(null))
+        const validDataType = Joi.validate(
+          value,
+          Joi.string()
+            .allow(``)
+            .allow(null)
+        )
         if (validDataType.error) {
           return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'character varying' des Felds '${field}'`))
         }
         // - if field type is varchar: check if value length complies to character_maximum_length
         const maxLen = dataTypes[0].character_maximum_length
         if (maxLen) {
-          const validDataType2 = Joi.validate(value, Joi.string().max(maxLen))
+          const validDataType2 = Joi.validate(
+            value,
+            Joi.string()
+              .max(maxLen)
+              .allow(``)
+              .allow(null)
+          )
           if (validDataType2.error) {
             return callback(Boom.badRequest(`Der Wert '${value}' ist zu lang für das Feld '${field}'. Erlaubt sind ${maxLen} Zeichen`))
           }
