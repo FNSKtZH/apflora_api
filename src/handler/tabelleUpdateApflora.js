@@ -38,6 +38,7 @@ module.exports = (request, callback) => {
             .integer()
             .min(-2147483648)
             .max(+2147483647)
+            .allow(``)
             .allow(null)
         )
         if (validDataType.error) {
@@ -52,6 +53,7 @@ module.exports = (request, callback) => {
             .integer()
             .min(-32768)
             .max(+32767)
+            .allow(``)
             .allow(null)
         )
         if (validDataType.error) {
@@ -64,6 +66,7 @@ module.exports = (request, callback) => {
           value,
           Joi.number()
             .precision(15)
+            .allow(``)
             .allow(null)
         )
         if (validDataType.error) {
