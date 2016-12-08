@@ -1,22 +1,123 @@
-CREATE OR REPLACE FUNCTION tpop_update_notify() RETURNS trigger AS $$
-DECLARE
-  id bigint;
+-- needed function:
+CREATE OR REPLACE FUNCTION tabelle_update_notify() RETURNS trigger AS $$
 BEGIN
-  IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
-    id = NEW."TPopId";
-  ELSE
-    id = OLD."TPopId";
-  END IF;
-  PERFORM pg_notify('tpop_update', row_to_json(NEW)::text);
+  PERFORM pg_notify('tabelle_update', json_build_object('table', TG_TABLE_NAME, 'type', TG_OP, 'row', row_to_json(NEW))::text);
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-DROP TRIGGER tpop_notify_update ON apflora.tpop;
-CREATE TRIGGER tpop_notify_update AFTER UPDATE ON apflora.tpop FOR EACH ROW EXECUTE PROCEDURE tpop_update_notify();
+CREATE OR REPLACE FUNCTION tabelle_insert_notify() RETURNS trigger AS $$
+BEGIN
+  PERFORM pg_notify('tabelle_update', json_build_object('table', TG_TABLE_NAME, 'type', TG_OP, 'row', row_to_json(NEW))::text);
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
-DROP TRIGGER tpop_notify_insert ON apflora.tpop;
-CREATE TRIGGER tpop_notify_insert AFTER INSERT ON apflora.tpop FOR EACH ROW EXECUTE PROCEDURE tpop_update_notify();
+CREATE OR REPLACE FUNCTION tabelle_delete_notify() RETURNS trigger AS $$
+BEGIN
+  PERFORM pg_notify('tabelle_update', json_build_object('table', TG_TABLE_NAME, 'type', TG_OP, 'row', row_to_json(OLD))::text);
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
 
-DROP TRIGGER tpop_notify_delete ON apflora.tpop;
-CREATE TRIGGER tpop_notify_delete AFTER DELETE ON apflora.tpop FOR EACH ROW EXECUTE PROCEDURE tpop_update_notify();
+-- examples:
+DROP TRIGGER IF EXISTS tabelle_notify_update ON apflora.tpop;
+CREATE TRIGGER tabelle_notify_update AFTER UPDATE ON apflora.tpop FOR EACH ROW EXECUTE PROCEDURE tabelle_update_notify();
+
+DROP TRIGGER IF EXISTS tabelle_notify_insert ON apflora.tpop;
+CREATE TRIGGER tabelle_notify_insert AFTER INSERT ON apflora.tpop FOR EACH ROW EXECUTE PROCEDURE tabelle_insert_notify();
+
+DROP TRIGGER IF EXISTS tabelle_notify_delete ON apflora.tpop;
+CREATE TRIGGER tabelle_notify_delete AFTER DELETE ON apflora.tpop FOR EACH ROW EXECUTE PROCEDURE tabelle_delete_notify();
+
+-- create code to do it with all tables:
+-- do this in psql
+SELECT
+    'DROP TRIGGER IF EXISTS '
+    || tabnames.table_name
+    || '_notify_update ON apflora.'
+    || tabnames.table_name
+    || ';' AS trigger_drop_query
+FROM (
+    SELECT
+        table_name
+    FROM
+        information_schema.tables
+    WHERE
+        table_schema  = 'apflora'
+) AS tabnames;
+
+SELECT
+    'DROP TRIGGER IF EXISTS '
+    || tabnames.table_name
+    || '_notify_insert ON apflora.'
+    || tabnames.table_name
+    || ';' AS trigger_drop_query
+FROM (
+    SELECT
+        table_name
+    FROM
+        information_schema.tables
+    WHERE
+        table_schema  = 'apflora'
+) AS tabnames;
+
+SELECT
+    'DROP TRIGGER IF EXISTS '
+    || tabnames.table_name
+    || '_notify_delete ON apflora.'
+    || tabnames.table_name
+    || ';' AS trigger_drop_query
+FROM (
+    SELECT
+        table_name
+    FROM
+        information_schema.tables
+    WHERE
+        table_schema  = 'apflora'
+) AS tabnames;
+
+SELECT
+    'CREATE TRIGGER '
+    || tabnames.table_name
+    || '_notify_update AFTER UPDATE ON apflora.'
+    || tabnames.table_name
+    || ' FOR EACH ROW EXECUTE PROCEDURE tabelle_update_notify();' AS trigger_creation_query
+FROM (
+    SELECT
+        table_name
+    FROM
+        information_schema.tables
+    WHERE
+        table_schema  = 'apflora'
+) AS tabnames;
+
+SELECT
+    'CREATE TRIGGER '
+    || tabnames.table_name
+    || '_notify_insert AFTER INSERT ON apflora.'
+    || tabnames.table_name
+    || ' FOR EACH ROW EXECUTE PROCEDURE tabelle_insert_notify();' AS trigger_creation_query
+FROM (
+    SELECT
+        table_name
+    FROM
+        information_schema.tables
+    WHERE
+        table_schema  = 'apflora'
+) AS tabnames;
+
+SELECT
+    'CREATE TRIGGER '
+    || tabnames.table_name
+    || '_notify_delete AFTER DELETE ON apflora.'
+    || tabnames.table_name
+    || ' FOR EACH ROW EXECUTE PROCEDURE tabelle_delete_notify();' AS trigger_creation_query
+FROM (
+    SELECT
+        table_name
+    FROM
+        information_schema.tables
+    WHERE
+        table_schema  = 'apflora'
+) AS tabnames;
