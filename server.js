@@ -8,8 +8,10 @@ const Hapi = require(`hapi`)
 const Inert = require(`inert`)
 const InjectThen = require(`inject-then`)
 const app = require(`ampersand-app`)
+const PGPubsub = require(`pg-pubsub`)
 const config = require(`./configuration.js`)
 const pgp = require(`pg-promise`)()
+const socketIo = require(`socket.io`)
 const dbConnection = require(`./dbConnection.js`)
 const felder = require(`./src/handler/felder.js`)
 
@@ -64,5 +66,19 @@ app.extend({
   }
 })
 app.init()
+
+const io = socketIo(server.listener)
+const sockets = []
+io.on(`connection`, (socket) => {
+  sockets.push(socket)
+  socket.emit(`connected`, { connected: true })
+})
+
+// create pub sub channel
+const pubsubInstance = new PGPubsub(config.pgp.connectionString)
+pubsubInstance.addChannel(`tabelle_update`, (payload) => {
+  // inform all socket connections of this change
+  sockets.forEach(s => s.emit(`tabelle_update`, payload))
+})
 
 module.exports = server
