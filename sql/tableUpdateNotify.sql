@@ -31,7 +31,7 @@ DROP TRIGGER IF EXISTS tabelle_notify_delete ON apflora.tpop;
 CREATE TRIGGER tabelle_notify_delete AFTER DELETE ON apflora.tpop FOR EACH ROW EXECUTE PROCEDURE tabelle_delete_notify();
 
 -- create code to do it with all tables:
--- do this in psql
+-- run these in psql, then copy and run output
 SELECT
     'DROP TRIGGER IF EXISTS '
     || tabnames.table_name
