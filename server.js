@@ -12,6 +12,7 @@ const config = require(`./configuration.js`)
 const pgp = require(`pg-promise`)()
 const dbConnection = require(`./dbConnection.js`)
 const felder = require(`./src/handler/felder.js`)
+const PGPubsub = require(`pg-pubsub`)
 
 const isDev = process.env.NODE_ENV !== `production`
 // wird nur in Entwicklung genutzt
@@ -46,6 +47,15 @@ server.register([Inert, InjectThen], (err) => {
     }
   })
   app.init()
+
+  const pubsubInstance = new PGPubsub(config.pgp.connectionString)
+  pubsubInstance.addChannel(`tpop_update`, (pl) => {
+    console.log(`*========*`)
+    Object.keys(pl).forEach((key) => {
+      console.log(key, pl[key])
+    })
+    console.log(`-========-`)
+  })
 })
 
 const second = 1000
