@@ -17,16 +17,17 @@ module.exports = (request, callback) => {
   const tabelleIdFeld = escapeStringForSql(request.params.tabelleIdFeld) // der Name der ID der Tabelle
   const tabelleId = escapeStringForSql(request.params.tabelleId) // der Wert der ID
   const feld = escapeStringForSql(request.params.feld) // der Name des Felds, dessen Daten gespeichert werden sollen
-  const wert = escapeStringForSql(request.params.wert) // der Wert, der gespeichert werden soll
+  let wert = escapeStringForSql(request.params.wert) // der Wert, der gespeichert werden soll
   const user = escapeStringForSql(request.params.user) // der Benutzername
   const date = new Date().toISOString() // wann gespeichert wird
   const table = _.find(config.tables, { tabelleInDb: tabelle }) // Infos über die Tabelle holen
   // achtung: wenn eine nicht existente Tabelle übergeben wurde, gibt das einen Fehler, daher abfangen
   const mutWannFeld = table ? table.mutWannFeld : null // so heisst das Feld für MutWann
   const mutWerFeld = table ? table.mutWerFeld : null // so heisst das Feld für MutWer
-
-  // console.log(`tabelleUpdateApflora: wert bekommen:`, request.params.wert)
-  // console.log(`tabelleUpdateApflora: wert nach escape:`, wert)
+  // null kommt als `null` an:
+  if (wert === `null`) {
+    wert = null
+  }
 
   const checkDatatype = (dataTypes, field, value) => {
     const dataType = dataTypes[0].data_type
