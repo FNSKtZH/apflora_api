@@ -10,13 +10,13 @@
     "hapi": "16.0.1",
     "inert": "4.0.3",
     "joi": "10.0.5",
-    "json2csv": "3.7.2",
+    "json2csv": "3.7.3",
     "json2xls": "0.1.2",
     "lodash": "4.17.2",
     "pg-promise": "5.4.7",
-    "pg-pubsub": "^0.3.0",
+    "pg-pubsub": "0.3.0",
     "request": "2.79.0",
-    "socket.io": "^1.7.1",
+    "socket.io": "1.7.1",
     "underscore": "1.8.3"
   },
   "devDependencies": {
