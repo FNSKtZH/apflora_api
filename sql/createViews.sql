@@ -8408,6 +8408,25 @@ ORDER BY
   apflora.ziel."ZielJahr",
   apflora.ziel."ZielId";
 
+DROP VIEW IF EXISTS views.v_qk2_ziel_ohnetyp CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_ziel_ohnetyp AS
+SELECT
+  apflora.ap."ProjId",
+  apflora.ap."ApArtId",
+  'Ziel ohne Typ:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Ziele', apflora.ziel."ZielId"]::text[] AS "url"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.ziel
+    ON apflora.ap."ApArtId" = apflora.ziel."ApArtId"
+WHERE
+  apflora.ziel."ZielTyp" IS NULL
+ORDER BY
+  apflora.ap."ApArtId",
+  apflora.ziel."ZielJahr",
+  apflora.ziel."ZielId";
+
 DROP VIEW IF EXISTS views.v_qk_ziel_ohneziel CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_ziel_ohneziel AS
 SELECT
@@ -8425,6 +8444,25 @@ SELECT
     ),
     '</a>'
   ) AS "link"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.ziel
+    ON apflora.ap."ApArtId" = apflora.ziel."ApArtId"
+WHERE
+  apflora.ziel."ZielBezeichnung" IS NULL
+ORDER BY
+  apflora.ap."ApArtId",
+  apflora.ziel."ZielJahr",
+  apflora.ziel."ZielId";
+
+DROP VIEW IF EXISTS views.v_qk2_ziel_ohneziel CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_ziel_ohneziel AS
+SELECT
+  apflora.ap."ProjId",
+  apflora.ap."ApArtId",
+  'Ziel ohne Ziel:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Ziele', apflora.ziel."ZielId"]::text[] AS "url"
 FROM
   apflora.ap
   INNER JOIN
@@ -8462,6 +8500,24 @@ ORDER BY
   apflora.ap."ApArtId",
   apflora.erfkrit."ErfkritId";
 
+DROP VIEW IF EXISTS views.v_qk2_erfkrit_ohnebeurteilung CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_erfkrit_ohnebeurteilung AS
+SELECT
+  apflora.ap."ProjId",
+  apflora.ap."ApArtId",
+  'Erfolgskriterium ohne Beurteilung:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Erfolgskriterien', apflora.erfkrit."ErfkritId"]::text[] AS "url"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.erfkrit
+    ON apflora.ap."ApArtId" = apflora.erfkrit."ApArtId"
+WHERE
+  apflora.erfkrit."ErfkritErreichungsgrad" IS NULL
+ORDER BY
+  apflora.ap."ApArtId",
+  apflora.erfkrit."ErfkritId";
+
 DROP VIEW IF EXISTS views.v_qk_erfkrit_ohnekriterien CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_erfkrit_ohnekriterien AS
 SELECT
@@ -8476,6 +8532,24 @@ SELECT
     concat('Erfkrit.-ID: ', apflora.erfkrit."ErfkritId"),
     '</a>'
   ) AS "link"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.erfkrit
+    ON apflora.ap."ApArtId" = apflora.erfkrit."ApArtId"
+WHERE
+  apflora.erfkrit."ErfkritTxt" IS NULL
+ORDER BY
+  apflora.ap."ApArtId",
+  apflora.erfkrit."ErfkritId";
+
+DROP VIEW IF EXISTS views.v_qk2_erfkrit_ohnekriterien CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_erfkrit_ohnekriterien AS
+SELECT
+  apflora.ap."ProjId",
+  apflora.ap."ApArtId",
+  'Erfolgskriterium ohne Kriterien:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Erfolgskriterien', apflora.erfkrit."ErfkritId"]::text[] AS "url"
 FROM
   apflora.ap
   INNER JOIN
@@ -8516,6 +8590,25 @@ ORDER BY
   apflora.apber."JBerJahr",
   apflora.apber."JBerId";
 
+DROP VIEW IF EXISTS views.v_qk2_apber_ohnejahr CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_apber_ohnejahr AS
+SELECT
+  apflora.ap."ProjId",
+  apflora.ap."ApArtId",
+  'AP-Bericht ohne Jahr:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'AP-Berichte', apflora.apber."JBerId"]::text[] AS "url"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.apber
+    ON apflora.ap."ApArtId" = apflora.apber."ApArtId"
+WHERE
+  apflora.apber."JBerJahr" IS NULL
+ORDER BY
+  apflora.ap."ApArtId",
+  apflora.apber."JBerJahr",
+  apflora.apber."JBerId";
+
 DROP VIEW IF EXISTS views.v_qk_apber_ohnevergleichvorjahrgesamtziel CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_apber_ohnevergleichvorjahrgesamtziel AS
 SELECT
@@ -8533,6 +8626,27 @@ SELECT
     ),
     '</a>'
   ) AS "link",
+  apflora.apber."JBerJahr" AS "Berichtjahr"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.apber
+    ON apflora.ap."ApArtId" = apflora.apber."ApArtId"
+WHERE
+  apflora.apber."JBerVergleichVorjahrGesamtziel" IS NULL
+  AND apflora.apber."JBerJahr" IS NOT NULL
+ORDER BY
+  apflora.ap."ApArtId",
+  apflora.apber."JBerJahr",
+  apflora.apber."JBerId";
+
+DROP VIEW IF EXISTS views.v_qk2_apber_ohnevergleichvorjahrgesamtziel CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_apber_ohnevergleichvorjahrgesamtziel AS
+SELECT
+  apflora.ap."ProjId",
+  apflora.ap."ApArtId",
+  'AP-Bericht ohne Vergleich Vorjahr - Gesamtziel:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'AP-Berichte', apflora.apber."JBerId"]::text[] AS "url",
   apflora.apber."JBerJahr" AS "Berichtjahr"
 FROM
   apflora.ap
@@ -8578,6 +8692,28 @@ ORDER BY
   apflora.apber."JBerJahr",
   apflora.apber."JBerId";
 
+DROP VIEW IF EXISTS views.v_qk2_apber_ohnebeurteilung CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_apber_ohnebeurteilung AS
+SELECT
+  apflora.ap."ProjId",
+  apflora.ap."ApArtId",
+  'AP-Bericht ohne Vergleich Vorjahr - Gesamtziel:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'AP-Berichte', apflora.apber."JBerId"]::text[] AS "url",
+  apflora.apber."JBerJahr" AS "Berichtjahr"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.apber
+    ON apflora.ap."ApArtId" = apflora.apber."ApArtId"
+WHERE
+  apflora.apber."JBerBeurteilung" IS NULL
+  AND apflora.apber."JBerJahr" IS NOT NULL
+ORDER BY
+  apflora.ap."ApArtId",
+  apflora.apber."JBerJahr",
+  apflora.apber."JBerId";
+
+
 DROP VIEW IF EXISTS views.v_qk_assozart_ohneart CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_assozart_ohneart AS
 SELECT
@@ -8592,6 +8728,26 @@ SELECT
     concat('Assoz.-Art-ID: ', apflora.assozart."AaId"),
     '</a>'
   ) AS "link"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.assozart
+    ON apflora.ap."ApArtId" = apflora.assozart."AaApArtId"
+WHERE
+  apflora.assozart."AaSisfNr" IS NULL
+  OR apflora.assozart."AaSisfNr" = 0
+ORDER BY
+  apflora.ap."ApArtId",
+  apflora.assozart."AaId";
+
+
+DROP VIEW IF EXISTS views.v_qk2_assozart_ohneart CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_assozart_ohneart AS
+SELECT
+  apflora.ap."ProjId",
+  apflora.ap."ApArtId",
+  'Assoziierte Art ohne Art:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'assoziierte-Arten', apflora.assozart."AaId"]::text[] AS "url"
 FROM
   apflora.ap
   INNER JOIN
@@ -8652,6 +8808,33 @@ ORDER BY
     '</a>'
   );
 
+DROP VIEW IF EXISTS views.v_qk2_pop_koordentsprechenkeinertpop CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_pop_koordentsprechenkeinertpop AS
+SELECT DISTINCT
+  apflora.ap."ProjId",
+  apflora.pop."ApArtId",
+  'Population: Koordinaten entsprechen keiner Teilpopulation:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId"]::text[] AS "url",
+  apflora.pop."PopXKoord" AS "XKoord",
+  apflora.pop."PopYKoord" AS "YKoord"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.pop
+    ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+WHERE
+  apflora.pop."PopXKoord" Is NOT Null
+  AND apflora.pop."PopYKoord" IS NOT NULL
+  AND apflora.pop."PopId" NOT IN (
+    SELECT
+      apflora.tpop."PopId"
+    FROM
+      apflora.tpop
+    WHERE
+      apflora.tpop."TPopXKoord" = "PopXKoord"
+      AND apflora.tpop."TPopYKoord" = "PopYKoord"
+  );
+
 DROP VIEW IF EXISTS views.v_qk_pop_statusansaatversuchmitaktuellentpop CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_pop_statusansaatversuchmitaktuellentpop AS
 SELECT DISTINCT
@@ -8694,6 +8877,29 @@ ORDER BY
       concat('Pop: id=', apflora.pop."PopId")
     ),
     '</a>'
+  );
+
+DROP VIEW IF EXISTS views.v_qk2_pop_statusansaatversuchmitaktuellentpop CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_pop_statusansaatversuchmitaktuellentpop AS
+SELECT DISTINCT
+  apflora.ap."ProjId",
+  apflora.pop."ApArtId",
+  'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine Teilpopulation mit Status "urspruenglich, aktuell":'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId"]::text[] AS "url"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.pop
+    ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+WHERE
+  apflora.pop."PopHerkunft" = 201
+  AND apflora.pop."PopId" IN (
+    SELECT DISTINCT
+      apflora.tpop."PopId"
+    FROM
+      apflora.tpop
+    WHERE
+      apflora.tpop."TPopHerkunft" = 100
   );
 
 DROP VIEW IF EXISTS views.v_qk_pop_statusansaatversuchmittpopursprerloschen CASCADE;
@@ -8740,6 +8946,30 @@ ORDER BY
     '</a>'
   );
 
+
+  DROP VIEW IF EXISTS views.v_qk2_pop_statusansaatversuchmittpopursprerloschen CASCADE;
+  CREATE OR REPLACE VIEW views.v_qk2_pop_statusansaatversuchmittpopursprerloschen AS
+  SELECT DISTINCT
+    apflora.ap."ProjId",
+    apflora.pop."ApArtId",
+    'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine Teilpopulation mit Status "urspruenglich, erloschen":'::text AS "hw",
+    ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId"]::text[] AS "url"
+  FROM
+    apflora.ap
+    INNER JOIN
+      apflora.pop
+      ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+  WHERE
+    apflora.pop."PopHerkunft" = 201
+    AND apflora.pop."PopId" IN (
+      SELECT DISTINCT
+        apflora.tpop."PopId"
+      FROM
+        apflora.tpop
+      WHERE
+        apflora.tpop."TPopHerkunft" = 101
+    );
+
 DROP VIEW IF EXISTS views.v_qk_pop_statuserloschenmittpopaktuell CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_pop_statuserloschenmittpopaktuell AS
 SELECT DISTINCT
@@ -8782,6 +9012,29 @@ ORDER BY
       concat('Pop: id=', apflora.pop."PopId")
     ),
     '</a>'
+  );
+
+DROP VIEW IF EXISTS views.v_qk2_pop_statuserloschenmittpopaktuell CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_pop_statuserloschenmittpopaktuell AS
+SELECT DISTINCT
+  apflora.ap."ProjId",
+  apflora.pop."ApArtId",
+  'Population: Status ist "erloschen" (urspruenglich oder angesiedelt), es gibt aber eine Teilpopulation mit Status "aktuell" (urspruenglich oder angesiedelt):'::text AS "hw",
+    ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId"]::text[] AS "url"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.pop
+    ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+WHERE
+  apflora.pop."PopHerkunft" IN (101, 202, 211)
+  AND apflora.pop."PopId" IN (
+    SELECT DISTINCT
+      apflora.tpop."PopId"
+    FROM
+      apflora.tpop
+    WHERE
+      apflora.tpop."TPopHerkunft" IN (100, 200, 210)
   );
 
 DROP VIEW IF EXISTS views.v_qk_pop_statuserloschenmittpopansaatversuch CASCADE;
@@ -8828,6 +9081,29 @@ ORDER BY
     '</a>'
   );
 
+DROP VIEW IF EXISTS views.v_qk2_pop_statuserloschenmittpopansaatversuch CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_pop_statuserloschenmittpopansaatversuch AS
+SELECT DISTINCT
+  apflora.ap."ProjId",
+  apflora.pop."ApArtId",
+  'Population: Status ist "erloschen" (urspruenglich oder angesiedelt), es gibt aber eine Teilpopulation mit Status "angesiedelt, Ansaatversuch":'::text AS "hw",
+    ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId"]::text[] AS "url"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.pop
+    ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+WHERE
+  apflora.pop."PopHerkunft" IN (101, 202, 211)
+  AND apflora.pop."PopId" IN (
+    SELECT DISTINCT
+      apflora.tpop."PopId"
+    FROM
+      apflora.tpop
+    WHERE
+      apflora.tpop."TPopHerkunft" = 201
+  );
+
 DROP VIEW IF EXISTS views.v_qk_pop_statusangesiedeltmittpopurspruenglich CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_pop_statusangesiedeltmittpopurspruenglich AS
 SELECT DISTINCT
@@ -8872,6 +9148,29 @@ ORDER BY
     '</a>'
   );
 
+DROP VIEW IF EXISTS views.v_qk2_pop_statusangesiedeltmittpopurspruenglich CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_pop_statusangesiedeltmittpopurspruenglich AS
+SELECT DISTINCT
+  apflora.ap."ProjId",
+  apflora.pop."ApArtId",
+  'Population: Status ist "angesiedelt", es gibt aber eine Teilpopulation mit Status "urspruenglich":'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId"]::text[] AS "url"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.pop
+    ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+WHERE
+  apflora.pop."PopHerkunft" IN (200, 201, 202, 210, 211)
+  AND apflora.pop."PopId" IN (
+    SELECT DISTINCT
+      apflora.tpop."PopId"
+    FROM
+      apflora.tpop
+    WHERE
+      apflora.tpop."TPopHerkunft" = 100
+  );
+
 DROP VIEW IF EXISTS views.v_qk_pop_statuspotwuchsortmittpopanders CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_pop_statuspotwuchsortmittpopanders AS
 SELECT DISTINCT
@@ -8914,6 +9213,29 @@ ORDER BY
       concat('Pop: id=', apflora.pop."PopId")
     ),
     '</a>'
+  );
+
+DROP VIEW IF EXISTS views.v_qk2_pop_statuspotwuchsortmittpopanders CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_pop_statuspotwuchsortmittpopanders AS
+SELECT DISTINCT
+  apflora.ap."ProjId",
+  apflora.pop."ApArtId",
+  'Population: Status ist "potenzieller Wuchs-/Ansiedlungsort", es gibt aber eine Teilpopulation mit Status "angesiedelt" oder "urspruenglich":'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId"]::text[] AS "url"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.pop
+    ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+WHERE
+  apflora.pop."PopHerkunft" = 300
+  AND apflora.pop."PopId" IN (
+    SELECT DISTINCT
+      apflora.tpop."PopId"
+    FROM
+      apflora.tpop
+    WHERE
+      apflora.tpop."TPopHerkunft" < 300
   );
 
 DROP VIEW IF EXISTS views.v_qk_tpop_mitstatusansaatversuchundzaehlungmitanzahl CASCADE;
@@ -8990,6 +9312,45 @@ ORDER BY
     '</a>'
   );
 
+DROP VIEW IF EXISTS views.v_qk2_tpop_mitstatusansaatversuchundzaehlungmitanzahl CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_tpop_mitstatusansaatversuchundzaehlungmitanzahl AS
+SELECT DISTINCT
+  apflora.ap."ProjId",
+  apflora.pop."ApArtId",
+  apflora.pop."PopId",
+  apflora.tpop."TPopId",
+  'Teilpopulation mit Status "Ansaatversuch", bei denen in der letzten Kontrolle eine Anzahl festgestellt wurde:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId", 'Teil-Populationen', apflora.tpop."TPopId"]::text[] AS "url"
+FROM
+  apflora.ap
+  INNER JOIN
+    (apflora.pop
+    INNER JOIN
+      apflora.tpop
+      ON apflora.tpop."PopId" = apflora.pop."PopId")
+    ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+WHERE
+  apflora.tpop."TPopHerkunft" = 201
+  AND apflora.tpop."TPopId" IN (
+    SELECT DISTINCT
+      apflora.tpopkontr."TPopId"
+    FROM
+      (apflora.tpopkontr
+      INNER JOIN
+        apflora.tpopkontrzaehl
+        ON apflora.tpopkontr."TPopKontrId" = apflora.tpopkontrzaehl."TPopKontrId")
+      INNER JOIN
+        views.v_tpopkontr_letzteid
+        ON
+          (
+            views.v_tpopkontr_letzteid."TPopId" = apflora.tpopkontr."TPopId"
+            AND views.v_tpopkontr_letzteid."MaxTPopKontrId" = apflora.tpopkontr."TPopKontrId"
+          )
+    WHERE
+      apflora.tpopkontr."TPopKontrTyp" NOT IN ('Zwischenziel', 'Ziel')
+      AND apflora.tpopkontrzaehl."Anzahl" > 0
+  );
+
 DROP VIEW IF EXISTS views.v_qk_tpop_mitstatuspotentiellundzaehlungmitanzahl CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatuspotentiellundzaehlungmitanzahl AS
 SELECT DISTINCT
@@ -9057,6 +9418,38 @@ ORDER BY
     '</a>'
   );
 
+DROP VIEW IF EXISTS views.v_qk2_tpop_mitstatuspotentiellundzaehlungmitanzahl CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_tpop_mitstatuspotentiellundzaehlungmitanzahl AS
+SELECT DISTINCT
+  apflora.ap."ProjId",
+  apflora.pop."ApArtId",
+  apflora.pop."PopId",
+  apflora.tpop."TPopId",
+  'Teilpopulation mit Status "potentieller Wuchs-/Ansiedlungsort", bei denen in einer Kontrolle eine Anzahl festgestellt wurde:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId", 'Teil-Populationen', apflora.tpop."TPopId"]::text[] AS "url"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.pop
+    INNER JOIN
+      apflora.tpop
+      ON apflora.tpop."PopId" = apflora.pop."PopId"
+    ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+WHERE
+  apflora.tpop."TPopHerkunft" = 300
+  AND apflora.tpop."TPopId" IN (
+    SELECT DISTINCT
+      apflora.tpopkontr."TPopId"
+    FROM
+      apflora.tpopkontr
+      INNER JOIN
+        apflora.tpopkontrzaehl
+        ON apflora.tpopkontr."TPopKontrId" = apflora.tpopkontrzaehl."TPopKontrId"
+    WHERE
+      apflora.tpopkontr."TPopKontrTyp" NOT IN ('Zwischenziel', 'Ziel')
+      AND apflora.tpopkontrzaehl."Anzahl" > 0
+  );
+
 DROP VIEW IF EXISTS views.v_qk_tpop_mitstatuspotentiellundmassnansiedlung CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatuspotentiellundmassnansiedlung AS
 SELECT DISTINCT
@@ -9120,6 +9513,35 @@ ORDER BY
     '</a>'
   );
 
+DROP VIEW IF EXISTS views.v_qk2_tpop_mitstatuspotentiellundmassnansiedlung CASCADE;
+CREATE OR REPLACE VIEW views.v_qk2_tpop_mitstatuspotentiellundmassnansiedlung AS
+SELECT DISTINCT
+  apflora.ap."ProjId",
+  apflora.pop."ApArtId",
+  apflora.pop."PopId",
+  apflora.tpop."TPopId",
+  'Teilpopulation mit Status "potentieller Wuchs-/Ansiedlungsort", bei der eine Massnahme des Typs "Ansiedlung" existiert:'::text AS "hw",
+  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId", 'Teil-Populationen', apflora.tpop."TPopId"]::text[] AS "url"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.pop
+    INNER JOIN
+      apflora.tpop
+      ON apflora.tpop."PopId" = apflora.pop."PopId"
+    ON apflora.pop."ApArtId" = apflora.ap."ApArtId"
+WHERE
+  apflora.tpop."TPopHerkunft" = 300
+  AND apflora.tpop."TPopId" IN (
+    SELECT DISTINCT
+      apflora.tpopmassn."TPopId"
+    FROM
+      apflora.tpopmassn
+    WHERE
+      apflora.tpopmassn."TPopMassnTyp" < 4
+  );
+
+-- wozu wird das benutzt?
 DROP VIEW IF EXISTS views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_tpop_mitstatusaktuellundtpopbererloschen_maxtpopberjahr AS
 SELECT
@@ -9129,8 +9551,6 @@ FROM
   apflora.tpopber
 GROUP BY
   apflora.tpopber."TPopId";
-
-
 
 DROP VIEW IF EXISTS views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr AS
