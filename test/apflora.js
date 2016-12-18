@@ -46,6 +46,21 @@ describe(`/apflora`, () => {
     })
     .then(() => done())
   })
+  it(`should insert table projekt a new row`, (done) => {
+    server.injectThen({
+      method: `POST`,
+      url: `/insert/apflora/tabelle=projekt/user=${user}`
+    })
+    .then((res) => {
+      expect(res.statusCode).to.equal(200)
+      expect(res.result).to.be.at.least(0)
+      // remove this row again
+      const method = `DELETE`
+      const url = `/apflora/tabelle=projekt/tabelleIdFeld=ProjId/tabelleId=${res.result}`
+      return server.injectThen({ method, url })
+    })
+    .then(() => done())
+  })
   it(`should update Name of Pop with Id -871888542`, (done) => {
     const method = `PUT`
     const url = `/update/apflora/tabelle=pop/tabelleIdFeld=PopId/tabelleId=-871888542/feld=PopName/wert=testName/user=${user}`
