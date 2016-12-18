@@ -46,6 +46,21 @@ describe(`/apflora`, () => {
     })
     .then(() => done())
   })
+  it(`should insert table ap the row with ApArtId 150`, (done) => {
+    server.injectThen({
+      method: `POST`,
+      url: `/apflora/ap/ApArtId/150`
+    })
+    .then((res) => {
+      expect(res.statusCode).to.equal(200)
+      expect(res.result).to.be.at.least(0)
+      // remove this row again
+      const method = `DELETE`
+      const url = `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
+      return server.injectThen({ method, url })
+    })
+    .then(() => done())
+  })
   it(`should insert table projekt a new row`, (done) => {
     server.injectThen({
       method: `POST`,

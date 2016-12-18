@@ -3,6 +3,7 @@
 const Joi = require(`joi`)
 const queryTabelleDeleteApflora = require(`../handler/tabelleDeleteApflora.js`)
 const queryTabelleInsertApflora = require(`../handler/tabelleInsertApflora.js`)
+const queryTabelleInsertApfloraV3 = require(`../handler/tabelleInsertApfloraV3.js`)
 const queryTabelleInsertEmptyApflora = require(`../handler/tabelleInsertEmptyApflora.js`)
 const queryTabelleUpdateApflora = require(`../handler/tabelleUpdateApflora.js`)
 const queryTabelleSelectApfloraNumber = require(`../handler/tabelleSelectApfloraNumber.js`)
@@ -37,6 +38,21 @@ module.exports = [
           feld: Joi.string().required(),
           wert: Joi.required(),
           user: Joi.string().required(),
+        }
+      }
+    }
+  },
+  // this is for apf
+  {
+    method: `POST`,
+    path: `/apflora/{tabelle}/{feld}/{wert}`,
+    handler: queryTabelleInsertApfloraV3,
+    config: {
+      validate: {
+        params: {
+          tabelle: Joi.string().required(),
+          feld: Joi.string().required(),
+          wert: Joi.required(),
         }
       }
     }
