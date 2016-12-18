@@ -11,14 +11,22 @@ module.exports = (request, callback) => {
   const wert = escapeStringForSql(request.params.wert) // der Wert, der gespeichert werden soll
   const configTable = _.find(config.tables, { tabelleInDb: tabelle }) // die table in der Konfiguration, welche die Informationen dieser Tabelle enthält
   const tabelleIdFeld = configTable.tabelleIdFeld
-  const sql = `
+
+  app.db.one(`
     INSERT INTO
       apflora.${tabelle} ("${feld}")
     VALUES
       ('${wert}')
-    RETURNING "${tabelleIdFeld}"`
-
-  app.db.one(sql)
+    RETURNING "${tabelleIdFeld}"
+  `)
+    .then(data => app.db.one(`
+        SELECT
+          *
+        FROM
+          apflora.${tabelle}
+        WHERE
+          "${tabelleIdFeld}" = $1
+      `, data[tabelleIdFeld]))
     .then(row => callback(null, row))
     .catch(error => callback(error, null))
 }
