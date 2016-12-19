@@ -7,7 +7,7 @@
     "ampersand-app": "2.0.0",
     "boom": "4.2.0",
     "dateformat": "2.0.0",
-    "hapi": "16.0.1",
+    "hapi": "16.0.2",
     "inert": "4.0.3",
     "joi": "10.0.6",
     "json2csv": "3.7.3",
