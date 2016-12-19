@@ -312,7 +312,7 @@ CREATE TABLE apflora.idealbiotop (
   "IbKrautschicht" text,
   "IbStrauchschicht" text,
   "IbBaumschicht" text,
-  "IbBemerkungen" text NOT NULL,
+  "IbBemerkungen" text,
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );

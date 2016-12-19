@@ -196,3 +196,17 @@ $apberuebersicht_insert_set_year$ LANGUAGE plpgsql;
 
 CREATE TRIGGER apberuebersicht_insert_set_year BEFORE INSERT ON apflora.apberuebersicht
   FOR EACH ROW EXECUTE PROCEDURE apberuebersicht_insert_set_year();
+
+DROP TRIGGER IF EXISTS ap_insert_add_idealbiotop ON apflora.ap;
+DROP FUNCTION IF EXISTS ap_insert_add_idealbiotop();
+CREATE FUNCTION ap_insert_add_idealbiotop() RETURNS trigger AS $ap_insert_add_idealbiotop$
+BEGIN
+  INSERT INTO
+    apflora.idealbiotop ("IbApArtId")
+  VALUES (NEW."ApArtId");
+  RETURN NEW;
+END;
+$ap_insert_add_idealbiotop$ LANGUAGE plpgsql;
+
+CREATE TRIGGER ap_insert_add_idealbiotop AFTER INSERT ON apflora.ap
+  FOR EACH ROW EXECUTE PROCEDURE ap_insert_add_idealbiotop();
