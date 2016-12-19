@@ -139,3 +139,60 @@ $beob_zuordnung_set_quelleid_on_insert$ LANGUAGE plpgsql;
 
 CREATE TRIGGER beob_zuordnung_set_quelleid_on_insert BEFORE INSERT ON apflora.beobzuordnung
   FOR EACH ROW EXECUTE PROCEDURE beob_zuordnung_set_quelleid_on_insert();
+
+DROP TRIGGER IF EXISTS apberuebersicht_insert_set_year ON apflora.apberuebersicht;
+DROP FUNCTION IF EXISTS apberuebersicht_insert_set_year();
+CREATE FUNCTION apberuebersicht_insert_set_year() RETURNS trigger AS $apberuebersicht_insert_set_year$
+  BEGIN
+    -- check if a apberuebersicht already exists for this year
+    IF
+      (
+        NEW."JbuJahr" IS NULL
+        AND NEW."ProjId" > 0
+        AND EXTRACT(YEAR FROM CURRENT_DATE) NOT IN
+          (
+            SELECT DISTINCT
+              "JbuJahr"
+            FROM
+              apflora.apberuebersicht
+            WHERE
+              "ProjId" = NEW."ProjId"
+          )
+      )
+    THEN
+      NEW."JbuJahr" = EXTRACT(YEAR FROM CURRENT_DATE);
+    ELSEIF
+      (
+        NEW."JbuJahr" IS NULL
+        AND NEW."ProjId" > 0
+        AND EXTRACT(YEAR FROM CURRENT_DATE) + 1 NOT IN
+          (
+            SELECT DISTINCT
+              "JbuJahr"
+            FROM
+              apflora.apberuebersicht
+            WHERE
+              "ProjId" = NEW."ProjId"
+          )
+      )
+    THEN
+      NEW."JbuJahr" = EXTRACT(YEAR FROM CURRENT_DATE) + 1;
+    ELSEIF
+      (
+        NEW."JbuJahr" IS NULL
+        AND NEW."ProjId" > 0
+      )
+    THEN
+      NEW."JbuJahr" = (SELECT
+        max("JbuJahr") + 1
+      FROM
+        apflora.apberuebersicht
+      WHERE
+        "ProjId" = NEW."ProjId");
+    END IF;
+    RETURN NEW;
+  END;
+$apberuebersicht_insert_set_year$ LANGUAGE plpgsql;
+
+CREATE TRIGGER apberuebersicht_insert_set_year BEFORE INSERT ON apflora.apberuebersicht
+  FOR EACH ROW EXECUTE PROCEDURE apberuebersicht_insert_set_year();
