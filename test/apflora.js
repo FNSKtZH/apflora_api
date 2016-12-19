@@ -32,49 +32,57 @@ describe(`/apflora`, () => {
       })
   })
   it(`should insert table ap the row with ApArtId 150`, (done) => {
+    // first delete dataset in case it still exists
     server.injectThen({
-      method: `POST`,
-      url: `/insert/apflora/tabelle=ap/feld=ApArtId/wert=150/user=${user}`
+      method: `DELETE`,
+      url: `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
     })
-    .then((res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result).to.be.at.least(0)
-      // remove this row again
-      const method = `DELETE`
-      const url = `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
-      return server.injectThen({ method, url })
-    })
-    .then(() => done())
+      .then(() => server.injectThen({
+        method: `POST`,
+        url: `/insert/apflora/tabelle=ap/feld=ApArtId/wert=150/user=${user}`
+      }))
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result).to.be.at.least(0)
+        // remove this row again
+        const method = `DELETE`
+        const url = `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
+        return server.injectThen({ method, url })
+      })
+      .then(() => done())
   })
   it(`should insert table ap the row with ApArtId 150`, (done) => {
     server.injectThen({
-      method: `POST`,
-      url: `/apflora/ap/ApArtId/150`
+      method: `DELETE`,
+      url: `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
     })
-    .then((res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result).to.be.at.least(0)
-      // remove this row again
-      const method = `DELETE`
-      const url = `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
-      return server.injectThen({ method, url })
-    })
-    .then(() => done())
+      .then(() => server.injectThen({
+        method: `POST`,
+        url: `/apflora/ap/ApArtId/150`
+      }))
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        // remove this row again
+        const method = `DELETE`
+        const url = `/apflora/tabelle=ap/tabelleIdFeld=ApArtId/tabelleId=150`
+        return server.injectThen({ method, url })
+      })
+      .then(() => done())
   })
   it(`should insert table projekt a new row`, (done) => {
     server.injectThen({
       method: `POST`,
       url: `/insert/apflora/tabelle=projekt/user=${user}`
     })
-    .then((res) => {
-      expect(res.statusCode).to.equal(200)
-      expect(res.result).to.be.at.least(0)
-      // remove this row again
-      const method = `DELETE`
-      const url = `/apflora/tabelle=projekt/tabelleIdFeld=ProjId/tabelleId=${res.result}`
-      return server.injectThen({ method, url })
-    })
-    .then(() => done())
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        expect(res.result).to.be.at.least(0)
+        // remove this row again
+        const method = `DELETE`
+        const url = `/apflora/tabelle=projekt/tabelleIdFeld=ProjId/tabelleId=${res.result}`
+        return server.injectThen({ method, url })
+      })
+      .then(() => done())
   })
   it(`should update Name of Pop with Id -871888542`, (done) => {
     const method = `PUT`
