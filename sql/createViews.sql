@@ -7318,6 +7318,7 @@ FROM
 WHERE
   apflora.tpopkontrzaehl."Zaehleinheit" IS NULL
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  AND apflora.tpopkontr."TPopKontrTyp" <> 'Freiwilligen-Erfolgskontrolle'
 ORDER BY
   apflora.ap."ApArtId",
   apflora.pop."PopNr",
@@ -7350,6 +7351,7 @@ FROM
 WHERE
   apflora.tpopkontrzaehl."Zaehleinheit" IS NULL
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  AND apflora.tpopkontr."TPopKontrTyp" <> 'Freiwilligen-Erfolgskontrolle'
 ORDER BY
   apflora.ap."ApArtId",
   apflora.pop."PopNr",
@@ -7404,6 +7406,7 @@ FROM
 WHERE
   apflora.tpopkontrzaehl."Zaehleinheit" IS NULL
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  AND apflora.tpopkontr."TPopKontrTyp" = 'Freiwilligen-Erfolgskontrolle'
 ORDER BY
   apflora.ap."ApArtId",
   apflora.pop."PopNr",
@@ -7436,6 +7439,7 @@ FROM
 WHERE
   apflora.tpopkontrzaehl."Zaehleinheit" IS NULL
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  AND apflora.tpopkontr."TPopKontrTyp" = 'Freiwilligen-Erfolgskontrolle'
 ORDER BY
   apflora.ap."ApArtId",
   apflora.pop."PopNr",
