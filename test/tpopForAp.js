@@ -18,13 +18,13 @@ const server = require(`../server.js`)
 
 // test
 
-describe(`/beobzuordnung`, () => {
-  it(`should return more than 50 rows for ApId 206200`, (done) => {
+describe(`/tpopForAp`, () => {
+  it(`should return more than 1 row with ApArtId 900`, (done) => {
     const method = `GET`
-    const url = `/beobzuordnung/206200`
+    const url = `/tpopForAp/900`
     server.injectThen({ method, url })
       .then((res) => {
-        expect(res.result.length).to.be.above(50)
+        expect(res.result.length).to.be.above(1)
         done()
       })
   })
