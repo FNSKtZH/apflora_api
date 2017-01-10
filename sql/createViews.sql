@@ -8843,7 +8843,7 @@ DROP VIEW IF EXISTS views.v_qk_pop_statusansaatversuchmitaktuellentpop CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_pop_statusansaatversuchmitaktuellentpop AS
 SELECT DISTINCT
   apflora.pop."ApArtId",
-  'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine Teilpopulation mit Status "urspruenglich, aktuell":'::text AS "hw",
+  'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine aktuelle Teilpopulation:'::text AS "hw",
   concat(
     '<a href="http://apflora.ch/index.html?ap=',
     apflora.pop."ApArtId",
@@ -8866,7 +8866,7 @@ WHERE
     FROM
       apflora.tpop
     WHERE
-      apflora.tpop."TPopHerkunft" = 100
+      apflora.tpop."TPopHerkunft" IN (100, 101, 200, 210, 211, 300)
   )
 ORDER BY
   apflora.pop."ApArtId",
@@ -8888,7 +8888,7 @@ CREATE OR REPLACE VIEW views.v_qk2_pop_statusansaatversuchmitaktuellentpop AS
 SELECT DISTINCT
   apflora.ap."ProjId",
   apflora.pop."ApArtId",
-  'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine Teilpopulation mit Status "urspruenglich, aktuell":'::text AS "hw",
+  'Population: Status ist "angesiedelt, Ansaatversuch", es gibt aber eine aktuelle Teilpopulation:'::text AS "hw",
   ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId"]::text[] AS "url"
 FROM
   apflora.ap
@@ -8903,7 +8903,7 @@ WHERE
     FROM
       apflora.tpop
     WHERE
-      apflora.tpop."TPopHerkunft" = 100
+      apflora.tpop."TPopHerkunft" IN (100, 101, 200, 210, 211, 300)
   );
 
 DROP VIEW IF EXISTS views.v_qk_pop_statusansaatversuchalletpoperloschen CASCADE;
