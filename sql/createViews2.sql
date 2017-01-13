@@ -829,7 +829,6 @@ SELECT
   beob.adb_eigenschaften."Artname" AS "Art",
   apflora.apber."JBerId",
   apflora.apber."JBerJahr",
-  apflora.apber."JBerSituation",
   apflora.apber."JBerVergleichVorjahrGesamtziel",
   apflora.apber."JBerBeurteilung",
   apflora.apber."JBerAnalyse",

@@ -147,7 +147,7 @@ CREATE TABLE apflora.apber (
 );
 COMMENT ON COLUMN apflora.apber."JBerId" IS 'Primärschlüssel der Tabelle "apber"';
 COMMENT ON COLUMN apflora.apber."JBerJahr" IS 'Für welches Jahr gilt der Bericht?';
-COMMENT ON COLUMN apflora.apber."JBerSituation" IS 'Beschreibung der Situation im Berichtjahr';
+COMMENT ON COLUMN apflora.apber."JBerSituation" IS 'Beschreibung der Situation im Berichtjahr. Nicht mehr verwendet: Früher wurden hier die Massnahmen aufgelistet';
 COMMENT ON COLUMN apflora.apber."JBerVergleichVorjahrGesamtziel" IS 'Vergleich zu Vorjahr und Ausblick auf das Gesamtziel';
 COMMENT ON COLUMN apflora.apber."JBerBeurteilung" IS 'Beurteilung des Erfolgs des Aktionsplans bisher';
 COMMENT ON COLUMN apflora.apber."JBerVeraenGegenVorjahr" IS 'Veränderung gegenüber dem Vorjahr: plus heisst aufgestiegen, minus heisst abgestiegen';
