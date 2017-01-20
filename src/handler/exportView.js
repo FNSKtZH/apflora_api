@@ -11,13 +11,11 @@ module.exports = (request, callback) => {
   app.db.any(sql)
     .then((rows) => {
       // null-werte eliminieren
-      console.log(`exportView.js: rows:`, rows)
       rows.forEach((object) => {
         Object.keys(object).forEach((key) => {
           if (object[key] === null) object[key] = ``
         })
       })
-      console.log(`exportView.js: rows after removing null values:`, rows)
       callback(null, rows)
     })
     .catch(error => callback(error, null))
