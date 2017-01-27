@@ -1897,7 +1897,7 @@ SELECT
   apflora.ap."ProjId",
   apflora.ap."ApArtId",
   'erloschene Teilpopulation "Fuer AP-Bericht relevant" aber letzte Beobachtung vor 1950:' AS "hw",
-  ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId", 'Teil-Populationen', apflora.tpop."TPopId"]::text[] AS "url"
+  array_agg(distinct ARRAY['Projekte', 1 , 'Arten', apflora.ap."ApArtId", 'Populationen', apflora.pop."PopId", 'Teil-Populationen', apflora.tpop."TPopId"]::text[]) AS "url"
 FROM
   apflora.ap
   INNER JOIN
@@ -1906,7 +1906,11 @@ FROM
       apflora.tpop
       ON apflora.pop."PopId" = apflora.tpop."PopId")
     ON apflora.ap."ApArtId" = apflora.pop."ApArtId"
-WHERE
+GROUP BY
+  apflora.ap."ApArtId",
+  apflora.pop."PopId",
+  apflora.tpop."TPopId"
+HAVING
   apflora.tpop."TPopHerkunft" IN (101, 202, 211)
   AND apflora.tpop."TPopApBerichtRelevant" = 1
   AND apflora.tpop."TPopId" NOT IN (
