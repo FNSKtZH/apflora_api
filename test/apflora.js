@@ -174,13 +174,13 @@ describe(`/apflora`, () => {
         done()
       })
   })
-  it(`should get more than 500 rows of Pops with PopNr 1`, (done) => {
+  it(`should get more than 300 rows of Pops with PopNr 1`, (done) => {
     const method = `GET`
     const url = `/apflora/tabelle=pop/feld=PopNr/wertNumber=1`
     server.injectThen({ method, url })
       .then((res) => {
         expect(res.statusCode).to.equal(200)
-        expect(res.result.length).to.be.above(500)
+        expect(res.result.length).to.be.above(300)
         done()
       })
   })
