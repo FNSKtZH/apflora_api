@@ -34,7 +34,7 @@ SELECT setval(pg_get_serial_sequence('apflora.adresse', 'AdrId'), coalesce(max("
 
 DROP TABLE IF EXISTS apflora.ap;
 CREATE TABLE apflora.ap (
-  "ApArtId" integer PRIMARY KEY,
+  "ApArtId" integer PRIMARY KEY DEFAULT 0,
   "ProjId" integer DEFAULT NULL,
   "ApStatus" integer DEFAULT NULL,
   "ApJahr" smallint DEFAULT NULL,
