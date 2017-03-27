@@ -40,13 +40,22 @@ describe(`/exportView`, () => {
         done()
       })
   })
-  it(`should return json for view v_ap`, (done) => {
+  it(`should return 200 for view v_ap and json`, (done) => {
     const method = `GET`
     const url = `/exportView/json/view=v_ap`
     server.injectThen({ method, url })
       .then((res) => {
         expect(res.statusCode).to.equal(200)
         // how to check check number of rows?
+        done()
+      })
+  })
+  it(`should return 200 for view v_ap and ApArtId 206200 and json`, (done) => {
+    const method = `GET`
+    const url = `/exportView/json/view=v_ap/206200`
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
         done()
       })
   })
