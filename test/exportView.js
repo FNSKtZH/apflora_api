@@ -40,4 +40,14 @@ describe(`/exportView`, () => {
         done()
       })
   })
+  it(`should return json for view v_ap`, (done) => {
+    const method = `GET`
+    const url = `/exportView/json/view=v_ap`
+    server.injectThen({ method, url })
+      .then((res) => {
+        expect(res.statusCode).to.equal(200)
+        // how to check check number of rows?
+        done()
+      })
+  })
 })
