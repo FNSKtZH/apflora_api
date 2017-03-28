@@ -409,6 +409,7 @@ SELECT
   apflora.ap_bearbstand_werte."DomainTxt" AS "AP Status",
   apflora.ap."ApJahr" AS "AP Start im Jahr",
   apflora.ap_umsetzung_werte."DomainTxt" AS "AP Stand Umsetzung",
+  apflora.pop."PopId",
   apflora.pop."PopGuid" AS "Pop Guid",
   apflora.pop."PopNr" AS "Pop Nr",
   apflora.pop."PopName" AS "Pop Name",
@@ -418,6 +419,7 @@ SELECT
   apflora.pop."PopHerkunftUnklarBegruendung" AS "Pop Begruendung fuer unklaren Status",
   apflora.pop."PopXKoord" AS "Pop X-Koordinaten",
   apflora.pop."PopYKoord" AS "Pop Y-Koordinaten",
+  apflora.tpop."TPopId",
   apflora.tpop."TPopGuid" AS "TPop Guid",
   apflora.tpop."TPopNr" AS "TPop Nr",
   apflora.tpop."TPopGemeinde" AS "TPop Gemeinde",
@@ -475,6 +477,7 @@ GROUP BY
   apflora.ap_bearbstand_werte."DomainTxt",
   apflora.ap."ApJahr",
   apflora.ap_umsetzung_werte."DomainTxt",
+  apflora.pop."PopId",
   apflora.pop."PopGuid",
   apflora.pop."PopNr",
   apflora.pop."PopName",
@@ -581,6 +584,7 @@ SELECT
   apflora.ap_bearbstand_werte."DomainTxt" AS "AP Status",
   apflora.ap."ApJahr" AS "AP Start im Jahr",
   apflora.ap_umsetzung_werte."DomainTxt" AS "AP Stand Umsetzung",
+  apflora.pop."PopId",
   apflora.pop."PopGuid" AS "Pop Guid",
   apflora.pop."PopNr" AS "Pop Nr",
   apflora.pop."PopName" AS "Pop Name",
@@ -620,6 +624,7 @@ GROUP BY
   apflora.ap_bearbstand_werte."DomainTxt",
   apflora.ap."ApJahr",
   apflora.ap_umsetzung_werte."DomainTxt",
+  apflora.pop."PopId",
   apflora.pop."PopGuid",
   apflora.pop."PopNr",
   apflora.pop."PopName",
@@ -894,6 +899,7 @@ SELECT
   apflora.ap_bearbstand_werte."DomainTxt" AS "AP Status",
   apflora.ap."ApJahr" AS "AP Start im Jahr",
   apflora.ap_umsetzung_werte."DomainTxt" AS "AP Stand Umsetzung",
+  apflora.pop."PopId",
   apflora.pop."PopGuid" AS "Pop Guid",
   apflora.pop."PopNr" AS "Pop Nr",
   apflora.pop."PopName" AS "Pop Name",
@@ -1274,8 +1280,10 @@ ORDER BY
 DROP VIEW IF EXISTS views.v_pop_vonapohnestatus CASCADE;
 CREATE OR REPLACE VIEW views.v_pop_vonapohnestatus AS
 SELECT
+  apflora.ap."ApArtId",
   beob.adb_eigenschaften."Artname" AS "Art",
   apflora.ap."ApStatus" AS "Bearbeitungsstand AP",
+  apflora.pop."PopId",
   apflora.pop."PopNr",
   apflora.pop."PopName",
   apflora.pop."PopHerkunft" AS "Status"
