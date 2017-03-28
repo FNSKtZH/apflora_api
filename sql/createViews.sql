@@ -4321,11 +4321,15 @@ DROP VIEW IF EXISTS views.v_beob_infospezies CASCADE;
 CREATE OR REPLACE VIEW views.v_beob_infospezies AS
 SELECT
   beob.beob_infospezies."NO_NOTE",
+  beob.beob_infospezies."NO_NOTE" AS "BeobId",
+  beob.beob_infospezies."QuelleId",
   beob.beob_infospezies."NO_ISFS",
   beob.adb_eigenschaften."Artname",
+  apflora.pop."PopId",
   apflora.pop."PopGuid",
   apflora.pop."PopNr",
   pop_status_werte."HerkunftTxt" AS "Pop Status",
+  apflora.tpop."TPopId",
   apflora.tpop."TPopGuid",
   apflora.tpop."TPopNr",
   "domPopHerkunft_1"."HerkunftTxt" AS "TPop Status",
