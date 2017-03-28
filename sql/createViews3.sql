@@ -13,6 +13,7 @@ SELECT
 	views.v_tpop_anzkontrinklletzter."AP Start im Jahr",
 	views.v_tpop_anzkontrinklletzter."AP Stand Umsetzung",
 	views.v_tpop_anzkontrinklletzter."AP verantwortlich",
+	views.v_tpop_anzkontrinklletzter."PopId",
 	views.v_tpop_anzkontrinklletzter."Pop Guid",
 	views.v_tpop_anzkontrinklletzter."Pop Nr",
 	views.v_tpop_anzkontrinklletzter."Pop Name",
