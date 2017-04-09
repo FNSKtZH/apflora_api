@@ -33,6 +33,30 @@ CREATE INDEX ON beob.adb_lr USING btree ("Id");
 CREATE INDEX ON beob.adb_lr USING btree ("Label");
 CREATE INDEX ON beob.adb_lr USING btree ("LrMethodId");
 
+--
+
+DROP TABLE IF EXISTS beob.beob;
+CREATE TABLE beob.beob (
+  "QuelleId" integer Default Null,
+  "BeobId" varchar(38) DEFAULT NULL,
+  "ArtId" integer DEFAULT NULL,
+  -- wenn kein Monat: Monat = 1
+  -- wenn kein Tag: Tag = 1
+  "Datum" varchar(10) DEFAULT NULL,
+  -- Nachname Vorname
+  "Autor" varchar(255) DEFAULT NULL,
+  "X" integer DEFAULT NULL,
+  "Y" integer DEFAULT NULL,
+  data jsonb,
+  PRIMARY KEY ("QuelleId", "BeobId")
+);
+CREATE INDEX ON beob.beob USING btree ("BeobId");
+CREATE INDEX ON beob.beob USING btree ("QuelleId");
+CREATE INDEX ON beob.beob USING btree ("ArtId");
+CREATE INDEX ON beob.beob USING btree ("Datum");
+
+--
+
 DROP TABLE IF EXISTS beob.beob_bereitgestellt;
 CREATE TABLE beob.beob_bereitgestellt (
   "BeobId" varchar(38) DEFAULT NULL,
