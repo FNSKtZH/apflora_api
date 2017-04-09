@@ -56,7 +56,7 @@ SELECT
   END,
   CASE WHEN "PRENOM_PERSONNE_OBS" IS NULL
   THEN "NOM_PERSONNE_OBS"
-  ELSE "PRENOM_PERSONNE_OBS" || ' ' || "NOM_PERSONNE_OBS"
+  ELSE "NOM_PERSONNE_OBS" || ' ' || "PRENOM_PERSONNE_OBS"
   END,
   "FNS_XGIS",
   "FNS_YGIS",
@@ -69,6 +69,8 @@ SELECT
   ) AS data
 FROM beob.beob_infospezies
 WHERE
+  -- exclude beob that have no species
+  "NO_ISFS" <> IS NOT NULL AND
   -- exclude beob that were exported from EvAB
   "ZH_GUID" IS NULL AND
   -- exclude beob that have no year
@@ -98,7 +100,7 @@ INSERT INTO beob.beob (
   "data"
 )
 SELECT
-  '2',
+  '1',
   'NO_NOTE_PROJET',
   "NO_ISFS",
   -- build a Date of the form YYYY-MM-DD
@@ -133,7 +135,7 @@ SELECT
   END,
   CASE WHEN "PRENOM_PERSONNE_OBS" IS NULL
   THEN "NOM_PERSONNE_OBS"
-  ELSE "PRENOM_PERSONNE_OBS" || ' ' || "NOM_PERSONNE_OBS"
+  ELSE "NOM_PERSONNE_OBS" || ' ' || "PRENOM_PERSONNE_OBS"
   END,
   "COORDONNEE_FED_E",
   "COORDONNEE_FED_N",
@@ -146,6 +148,8 @@ SELECT
   ) AS data
 FROM beob.beob_evab
 WHERE
+  -- exclude beob that have no species
+  "NO_ISFS" <> IS NOT NULL AND
   -- exclude beob that have no year
   "A_NOTE" <> '0' AND
   -- exclude data without coordinates
