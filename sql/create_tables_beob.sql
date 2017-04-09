@@ -34,7 +34,18 @@ CREATE INDEX ON beob.adb_lr USING btree ("Label");
 CREATE INDEX ON beob.adb_lr USING btree ("LrMethodId");
 
 --
-
+-- beob can collect beob of any provenience by following this convention:
+-- - fields that are used in apflora.ch are appended as regular fields, that is:
+--   QuelleId, ArtId, Datum, Autor, X, Y
+--   These fields are extracted from the original beob at import
+-- - all fields of the original beob are put in jsonb field "data"
+--   and shown in the form that lists beob
+-- - an id field is generated inside beob because we need a unique one
+--   of defined type and id fields sometimes come as integer,
+--   sometimes as GUIDS, so neither in a defined type nor unique
+--   Worse: sometimes the id is not absolutely clear because no field contains
+--   strictly unique values... !!
+-- - "IdField" points to the original id in "data"
 DROP TABLE IF EXISTS beob.beob;
 CREATE TABLE beob.beob (
   id serial PRIMARY KEY,
@@ -43,19 +54,24 @@ CREATE TABLE beob.beob (
   "IdField" varchar(38) DEFAULT NULL,
   -- SISF Nr.
   "ArtId" integer DEFAULT NULL,
-  -- wenn kein Monat: Monat = 1
-  -- wenn kein Tag: Tag = 1
+  -- data without year is not imported
+  -- when no month exists: month = 01
+  -- when no day exists: day = 01
   "Datum" varchar(10) DEFAULT NULL,
   -- Nachname Vorname
   "Autor" varchar(255) DEFAULT NULL,
+  -- data without coordinates is not imported
   "X" integer DEFAULT NULL,
   "Y" integer DEFAULT NULL,
+  -- maybe later add a geojson field for polygons?
   data jsonb,
 );
 CREATE INDEX ON beob.beob USING btree ("QuelleId");
 CREATE INDEX ON beob.beob USING btree ("ArtId");
 CREATE INDEX ON beob.beob USING btree ("Datum");
 
+-- beob_projekt is used to control
+-- what beob are seen in what projekt
 DROP TABLER IF EXISTS beob.beob_projekt;
 CREATE TABLE beob.beob_projekt (
   "ProjektId" integer,
