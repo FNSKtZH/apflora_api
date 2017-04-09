@@ -57,18 +57,20 @@ CREATE TABLE beob.beob (
   -- data without year is not imported
   -- when no month exists: month = 01
   -- when no day exists: day = 01
-  "Datum" varchar(10) DEFAULT NULL,
+  "Datum" date DEFAULT NULL,
   -- Nachname Vorname
-  "Autor" varchar(255) DEFAULT NULL,
+  "Autor" varchar(100) DEFAULT NULL,
   -- data without coordinates is not imported
   "X" integer DEFAULT NULL,
   "Y" integer DEFAULT NULL,
   -- maybe later add a geojson field for polygons?
-  data jsonb,
+  data jsonb
 );
 CREATE INDEX ON beob.beob USING btree ("QuelleId");
 CREATE INDEX ON beob.beob USING btree ("ArtId");
 CREATE INDEX ON beob.beob USING btree ("Datum");
+CREATE INDEX ON beob.beob USING btree ("X");
+CREATE INDEX ON beob.beob USING btree ("Y");
 
 -- beob_projekt is used to control
 -- what beob are seen in what projekt
