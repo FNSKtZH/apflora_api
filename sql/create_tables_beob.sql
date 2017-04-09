@@ -37,8 +37,11 @@ CREATE INDEX ON beob.adb_lr USING btree ("LrMethodId");
 
 DROP TABLE IF EXISTS beob.beob;
 CREATE TABLE beob.beob (
+  id serial PRIMARY KEY,
   "QuelleId" integer Default Null,
-  "BeobId" varchar(38) DEFAULT NULL,
+  -- this field in data contains this datasets id
+  "IdField" varchar(38) DEFAULT NULL,
+  -- SISF Nr.
   "ArtId" integer DEFAULT NULL,
   -- wenn kein Monat: Monat = 1
   -- wenn kein Tag: Tag = 1
@@ -48,12 +51,17 @@ CREATE TABLE beob.beob (
   "X" integer DEFAULT NULL,
   "Y" integer DEFAULT NULL,
   data jsonb,
-  PRIMARY KEY ("QuelleId", "BeobId")
 );
-CREATE INDEX ON beob.beob USING btree ("BeobId");
 CREATE INDEX ON beob.beob USING btree ("QuelleId");
 CREATE INDEX ON beob.beob USING btree ("ArtId");
 CREATE INDEX ON beob.beob USING btree ("Datum");
+
+DROP TABLER IF EXISTS beob.beob_projekt;
+CREATE TABLE beob.beob_projekt (
+  "ProjektId" integer,
+  "BeobId" integer,
+  PRIMARY KEY ("ProjektId", "BeobId")
+);
 
 --
 
@@ -107,16 +115,6 @@ CREATE TABLE beob.beob_quelle
 );
 INSERT INTO beob.beob_quelle VALUES (1, 'evab');
 INSERT INTO beob.beob_quelle VALUES (2, 'infospezies');
-
-DROP TABLE IF EXISTS beob.beob_projekt;
-CREATE TABLE beob.beob_projekt (
-  "ProjId" integer,
-  "BeobId" varchar(38)
-);
-CREATE UNIQUE INDEX ON beob.beob_projekt ("ProjId", "BeobId");
-INSERT INTO beob.beob_projekt ("ProjId", "BeobId")
-SELECT '1', "NO_NOTE"
-FROM beob.beob_bereitgestellt;
 
 DROP TABLE IF EXISTS beob.beob_evab;
 CREATE TABLE beob.beob_evab (
