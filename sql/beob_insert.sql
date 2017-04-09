@@ -71,7 +71,7 @@ WHERE
   -- exclude beob that were exported from EvAB
   "ZH_GUID" IS NULL AND
   -- exclude beob that have no year
-  "J_NOTE" IS NOT NULL AND
+  "A_NOTE" IS NOT NULL AND
   -- exclude data without coordinates
   "FNS_XGIS" IS NOT NULL AND
   "FNS_YGIS" IS NOT NULL;
