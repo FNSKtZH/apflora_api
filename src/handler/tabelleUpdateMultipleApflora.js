@@ -26,9 +26,6 @@ module.exports = (request, callback) => {
   const id = felder.id
   delete felder.id
 
-  // user wird nur für update-Klausel benutzt
-  delete felder.user
-
   // sql beginnen
   sql = `
     UPDATE
@@ -36,6 +33,9 @@ module.exports = (request, callback) => {
     SET
       "${nameMutwannFeld}" = '${date}',
       "${nameMutWerFeld}" = '${felder.user}'`
+
+  // user wurde nur für update-Klausel benutzt
+  delete felder.user
 
   // jetzt für jedes key/value-Paar des Objekts set-Anweisungen generieren
   _.forEach(felder, (wert, feldname) => {
