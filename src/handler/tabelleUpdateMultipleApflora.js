@@ -53,6 +53,7 @@ module.exports = (request, callback) => {
   })
 
   sql += ` WHERE "${tabelleIdFeld}" = ${id}`
+  sql += ` RETURNING *`
 
   app.db.any(sql)
     .then(rows => callback(null, rows))
