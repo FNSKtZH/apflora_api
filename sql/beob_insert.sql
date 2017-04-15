@@ -8,6 +8,8 @@ WHERE  attrelid = 'beob.beob_infospezies'::regclass
 AND    attnum > 0
 AND    NOT attisdropped
 ORDER  BY attnum;
+-- im editor zu eier kommagetrennten Liste verarbeiten
+-- und im nächsten sql einfügen
 
 -- Beobachtungen von Info Spezies bereitstellen:
 INSERT INTO beob.beob (
@@ -87,6 +89,8 @@ WHERE  attrelid = 'beob.beob_evab'::regclass
 AND    attnum > 0
 AND    NOT attisdropped
 ORDER  BY attnum;
+-- im editor zu eier kommagetrennten Liste verarbeiten
+-- und im nächsten sql einfügen
 
 -- Beobachtungen von EvAB bereitstellen:
 INSERT INTO beob.beob (
