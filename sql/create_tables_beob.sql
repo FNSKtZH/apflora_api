@@ -74,7 +74,7 @@ CREATE INDEX ON beob.beob USING btree ("Y");
 
 -- beob_projekt is used to control
 -- what beob are seen in what projekt
-DROP TABLER IF EXISTS beob.beob_projekt;
+DROP TABLE IF EXISTS beob.beob_projekt;
 CREATE TABLE beob.beob_projekt (
   "ProjektId" integer,
   "BeobId" integer,
