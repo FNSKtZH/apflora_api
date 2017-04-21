@@ -203,6 +203,7 @@ SELECT setval(pg_get_serial_sequence('apflora.assozart', 'AaId'), coalesce(max("
 
 DROP TABLE IF EXISTS apflora.beobzuordnung;
 CREATE TABLE apflora.beobzuordnung (
+  "BeobId" integer DEFAULT NULL,
   "NO_NOTE" varchar(38) DEFAULT NULL,
   "QuelleId" integer Default Null,
   "TPopId" integer DEFAULT NULL,
@@ -217,10 +218,14 @@ COMMENT ON COLUMN apflora.beobzuordnung."BeobNichtZuordnen" IS 'Ja oder nein. Wi
 COMMENT ON COLUMN apflora.beobzuordnung."BeobBemerkungen" IS 'Bemerkungen zur Zuordnung';
 COMMENT ON COLUMN apflora.beobzuordnung."BeobMutWann" IS 'Wann wurde der Datensatz zuletzt geändert?';
 COMMENT ON COLUMN apflora.beobzuordnung."BeobMutWer" IS 'Von wem wurde der Datensatz zuletzt geändert?';
+CREATE INDEX ON apflora.beobzuordnung USING btree ("BeobId");
 CREATE INDEX ON apflora.beobzuordnung USING btree ("NO_NOTE");
 CREATE INDEX ON apflora.beobzuordnung USING btree ("QuelleId");
 CREATE INDEX ON apflora.beobzuordnung USING btree ("TPopId");
 CREATE INDEX ON apflora.beobzuordnung USING btree ("BeobNichtZuordnen");
+
+-- change table to use new beob
+ALTER TABLE apflora.beobzuordnung ADD COLUMN "BeobId" integer;
 
 -- in evab NO_NOTE is a guid
 UPDATE apflora.beobzuordnung
