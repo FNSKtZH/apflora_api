@@ -13,7 +13,7 @@ CREATE INDEX ON beob.beob((data->>'NO_NOTE'));
 CREATE INDEX ON beob.beob((data->>'NO_NOTE_PROJET'));
 
 -- update beobid in beobzuordnung
--- this query runs forever
+-- this query took 2.46 hours!
 UPDATE apflora.beobzuordnung
 SET "BeobId" = (
   SELECT
@@ -39,4 +39,5 @@ FROM
     INNER JOIN beob.beob AS beob2
     ON beob2.id = beob.id
   ON apflora.beobzuordnung."BeobId" = beob.beob.id
+WHERE beob."QuelleId" = 1
 LIMIT 10
