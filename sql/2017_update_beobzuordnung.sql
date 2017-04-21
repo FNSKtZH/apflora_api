@@ -9,6 +9,9 @@ FROM
   ON beob2.id = beob.id
 LIMIT 10
 
+CREATE INDEX ON beob.beob((data->>'NO_NOTE'));
+CREATE INDEX ON beob.beob((data->>'NO_NOTE_PROJET'));
+
 -- update beobid in beobzuordnung
 -- this query runs forever
 UPDATE apflora.beobzuordnung
