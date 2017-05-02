@@ -13,14 +13,14 @@
     "json2csv": "3.7.3",
     "json2xls": "0.1.2",
     "lodash": "4.17.4",
-    "pg-promise": "5.6.4",
+    "pg-promise": "5.6.7",
     "pg-pubsub": "0.3.0",
     "request": "2.81.0",
     "socket.io": "1.7.3",
     "underscore": "1.8.3"
   },
   "devDependencies": {
-    "babel-eslint": "7.2.2",
+    "babel-eslint": "7.2.3",
     "code": "4.0.0",
     "cross-env": "4.0.0",
     "del": "2.2.2",
@@ -32,7 +32,7 @@
     "gulp": "3.9.1",
     "gulp-sftp": "0.1.5",
     "inject-then": "2.0.9",
-    "lab": "13.0.2",
+    "lab": "13.0.4",
     "nodemon": "1.11.0",
     "require-dir": "0.3.1",
     "run-sequence": "1.2.2"
