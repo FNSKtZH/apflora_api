@@ -204,7 +204,6 @@ SELECT setval(pg_get_serial_sequence('apflora.assozart', 'AaId'), coalesce(max("
 DROP TABLE IF EXISTS apflora.beobzuordnung;
 CREATE TABLE apflora.beobzuordnung (
   "BeobId" integer DEFAULT NULL,
-  "NO_NOTE" varchar(38) DEFAULT NULL,
   "QuelleId" integer Default Null,
   "TPopId" integer DEFAULT NULL,
   "BeobNichtZuordnen" smallint DEFAULT NULL,
@@ -212,30 +211,38 @@ CREATE TABLE apflora.beobzuordnung (
   "BeobMutWann" date DEFAULT NULL,
   "BeobMutWer" varchar(20) DEFAULT NULL
 );
-COMMENT ON COLUMN apflora.beobzuordnung."NO_NOTE" IS 'Primärschlüssel: ID aus Info Spezies oder aus EvAB';
+COMMENT ON COLUMN apflora.beobzuordnung."BeobId" IS 'Primärschlüssel: ID aus beob.beob';
 COMMENT ON COLUMN apflora.beobzuordnung."TPopId" IS 'Dieser Teilpopulation wurde die Beobachtung zugeordnet. Fremdschlüssel aus der Tabelle "tpop"';
 COMMENT ON COLUMN apflora.beobzuordnung."BeobNichtZuordnen" IS 'Ja oder nein. Wird ja gesetzt, wenn eine Beobachtung keiner Teilpopulation zugeordnet werden kann. Sollte im Bemerkungsfeld begründet werden. In der Regel ist die Artbestimmung zweifelhaft. Oder die Beobachtung ist nicht (genau genug) lokalisierbar';
 COMMENT ON COLUMN apflora.beobzuordnung."BeobBemerkungen" IS 'Bemerkungen zur Zuordnung';
 COMMENT ON COLUMN apflora.beobzuordnung."BeobMutWann" IS 'Wann wurde der Datensatz zuletzt geändert?';
 COMMENT ON COLUMN apflora.beobzuordnung."BeobMutWer" IS 'Von wem wurde der Datensatz zuletzt geändert?';
 CREATE INDEX ON apflora.beobzuordnung USING btree ("BeobId");
-CREATE INDEX ON apflora.beobzuordnung USING btree ("NO_NOTE");
 CREATE INDEX ON apflora.beobzuordnung USING btree ("QuelleId");
 CREATE INDEX ON apflora.beobzuordnung USING btree ("TPopId");
 CREATE INDEX ON apflora.beobzuordnung USING btree ("BeobNichtZuordnen");
 
 -- change table to use new beob
 ALTER TABLE apflora.beobzuordnung ADD COLUMN "BeobId" integer;
+ALTER TABLE apflora.beobzuordnung ADD PRIMARY KEY ("BeobId");
 
--- in evab NO_NOTE is a guid
-UPDATE apflora.beobzuordnung
-SET "QuelleId" = 1
-WHERE length("NO_NOTE") > 10;
+-- oops:
+SELECT count("BeobId") AS "anz_beob", "BeobId" from apflora.beobzuordnung
+GROUP BY "BeobId"
+HAVING count("BeobId") > 1
+ORDER BY "anz_beob" desc
 
--- in infospezies NO_NOTE is an integer
-UPDATE apflora.beobzuordnung
-SET "QuelleId" = 2
-WHERE length("NO_NOTE") < 10;
+DELETE FROM apflora.beobzuordnung WHERE "BeobId" IN (
+  SELECT "BeobId" from apflora.beobzuordnung
+  GROUP BY "BeobId"
+  HAVING count("BeobId") > 1
+)
+
+-- oops:
+SELECT count("BeobId") AS "anz_beob", "BeobId" from apflora.beobzuordnung
+GROUP BY "BeobId"
+HAVING count("BeobId") = 0
+ORDER BY "anz_beob" desc
 
 DROP TABLE IF EXISTS apflora.projekt;
 CREATE TABLE apflora.projekt (

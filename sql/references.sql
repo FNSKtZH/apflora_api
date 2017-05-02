@@ -417,13 +417,6 @@ where
 ALTER TABLE apflora.beobzuordnung
 DROP CONSTRAINT IF EXISTS beobzuordnung_fk_beob_bereitgestellt;
 
-ALTER TABLE apflora.beobzuordnung
-ADD CONSTRAINT beobzuordnung_fk_beob_bereitgestellt
-FOREIGN KEY ("NO_NOTE")
-REFERENCES beob.beob_bereitgestellt ("BeobId")
-ON DELETE SET NULL
-ON UPDATE CASCADE;
-
 -- beob.beob_bereitgestellt
 
 -- add unique constraint to beob.beob_evab.NO_NOTE_PROJET

@@ -202,7 +202,7 @@ config.tables = [
   {
     database: `apflora`,
     tabelleInDb: `beobzuordnung`,
-    tabelleIdFeld: `NO_NOTE`,
+    tabelleIdFeld: `BeobId`,
     mutWannFeld: `BeobMutWann`,
     mutWerFeld: `BeobMutWer`,
     form: `beob`,
