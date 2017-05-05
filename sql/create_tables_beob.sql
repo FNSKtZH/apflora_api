@@ -71,6 +71,8 @@ CREATE INDEX ON beob.beob USING btree ("ArtId");
 CREATE INDEX ON beob.beob USING btree ("Datum");
 CREATE INDEX ON beob.beob USING btree ("X");
 CREATE INDEX ON beob.beob USING btree ("Y");
+CREATE INDEX ON beob.beob((data->>'NO_NOTE'));
+CREATE INDEX ON beob.beob((data->>'NO_NOTE_PROJET'));
 
 -- beob_projekt is used to control
 -- what beob are seen in what projekt

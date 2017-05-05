@@ -16,7 +16,7 @@ CREATE INDEX ON beob.beob((data->>'NO_NOTE_PROJET'));
 -- this query took 2.46 hours!
 UPDATE apflora.beobzuordnung
 SET "BeobId" = (
-  SELECT
+  SELECT DISTINCT
     beob.id
   FROM
     beob.beob

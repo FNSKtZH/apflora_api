@@ -203,7 +203,7 @@ SELECT setval(pg_get_serial_sequence('apflora.assozart', 'AaId'), coalesce(max("
 
 DROP TABLE IF EXISTS apflora.beobzuordnung;
 CREATE TABLE apflora.beobzuordnung (
-  "BeobId" integer DEFAULT NULL,
+  "BeobId" integer PRIMARY KEY,
   "QuelleId" integer Default Null,
   "TPopId" integer DEFAULT NULL,
   "BeobNichtZuordnen" smallint DEFAULT NULL,
@@ -221,28 +221,6 @@ CREATE INDEX ON apflora.beobzuordnung USING btree ("BeobId");
 CREATE INDEX ON apflora.beobzuordnung USING btree ("QuelleId");
 CREATE INDEX ON apflora.beobzuordnung USING btree ("TPopId");
 CREATE INDEX ON apflora.beobzuordnung USING btree ("BeobNichtZuordnen");
-
--- change table to use new beob
-ALTER TABLE apflora.beobzuordnung ADD COLUMN "BeobId" integer;
-ALTER TABLE apflora.beobzuordnung ADD PRIMARY KEY ("BeobId");
-
--- oops:
-SELECT count("BeobId") AS "anz_beob", "BeobId" from apflora.beobzuordnung
-GROUP BY "BeobId"
-HAVING count("BeobId") > 1
-ORDER BY "anz_beob" desc
-
-DELETE FROM apflora.beobzuordnung WHERE "BeobId" IN (
-  SELECT "BeobId" from apflora.beobzuordnung
-  GROUP BY "BeobId"
-  HAVING count("BeobId") > 1
-)
-
--- oops:
-SELECT count("BeobId") AS "anz_beob", "BeobId" from apflora.beobzuordnung
-GROUP BY "BeobId"
-HAVING count("BeobId") = 0
-ORDER BY "anz_beob" desc
 
 DROP TABLE IF EXISTS apflora.projekt;
 CREATE TABLE apflora.projekt (

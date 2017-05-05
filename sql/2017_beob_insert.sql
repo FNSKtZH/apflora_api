@@ -72,7 +72,7 @@ SELECT
 FROM beob.beob_infospezies
 WHERE
   -- exclude beob that have no species
-  "NO_ISFS" <> IS NOT NULL AND
+  "NO_ISFS" IS NOT NULL AND
   -- exclude beob that were exported from EvAB
   "ZH_GUID" IS NULL AND
   -- exclude beob that have no year
@@ -153,7 +153,7 @@ SELECT
 FROM beob.beob_evab
 WHERE
   -- exclude beob that have no species
-  "NO_ISFS" <> IS NOT NULL AND
+  "NO_ISFS" IS NOT NULL AND
   -- exclude beob that have no year
   "A_NOTE" <> '0' AND
   -- exclude data without coordinates
