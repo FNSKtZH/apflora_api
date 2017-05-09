@@ -29,10 +29,9 @@ SELECT
   -- build a Date of the form YYYY-MM-DD
   -- infospezies saves dates as integers
   CASE
-  WHEN "M_NOTE" IS NULL THEN to_date("A_NOTE"::text || '-00-00', 'YYYY-MM-DD')
-  ELSE
-    CASE WHEN "J_NOTE" IS NULL
-    THEN to_date(CONCAT(
+    WHEN "A_NOTE" IS NULL THEN NULL
+    WHEN "M_NOTE" IS NULL THEN to_date("A_NOTE"::text || '-00-00', 'YYYY-MM-DD')
+    WHEN "J_NOTE" IS NULL THEN to_date(CONCAT(
       "A_NOTE"::text,
       '-',
       CASE WHEN char_length("M_NOTE"::text) = 2
@@ -54,7 +53,6 @@ SELECT
       ELSE '0' || "J_NOTE"::text
       END
     ), 'YYYY-MM-DD')
-    END
   END,
   CASE WHEN "PRENOM_PERSONNE_OBS" IS NULL
   THEN "NOM_PERSONNE_OBS"
@@ -74,12 +72,7 @@ WHERE
   -- exclude beob that have no species
   "NO_ISFS" IS NOT NULL AND
   -- exclude beob that were exported from EvAB
-  "ZH_GUID" IS NULL AND
-  -- exclude beob that have no year
-  "A_NOTE" IS NOT NULL AND
-  -- exclude data without coordinates
-  "FNS_XGIS" IS NOT NULL AND
-  "FNS_YGIS" IS NOT NULL;
+  "ZH_GUID" IS NULL;
 
 -- EvAB
 -- Feldliste holen:
@@ -110,10 +103,9 @@ SELECT
   -- build a Date of the form YYYY-MM-DD
   -- EvAB saves dates as strings and '0' for NULL!
   CASE
-  WHEN "M_NOTE" IS NULL THEN to_date("A_NOTE" || '-00-00', 'YYYY-MM-DD')
-  ELSE
-    CASE WHEN "J_NOTE" = '0'
-    THEN to_date(CONCAT(
+    WHEN "A_NOTE" IS NULL THEN NULL
+    WHEN "M_NOTE" IS NULL THEN to_date("A_NOTE" || '-00-00', 'YYYY-MM-DD')
+    WHEN "J_NOTE" = '0' THEN to_date(CONCAT(
       "A_NOTE",
       '-',
       CASE WHEN char_length("M_NOTE") = 2
@@ -135,7 +127,6 @@ SELECT
       ELSE '0' || "J_NOTE"
       END
     ), 'YYYY-MM-DD')
-    END
   END,
   CASE WHEN "PRENOM_PERSONNE_OBS" IS NULL
   THEN "NOM_PERSONNE_OBS"
@@ -153,9 +144,4 @@ SELECT
 FROM beob.beob_evab
 WHERE
   -- exclude beob that have no species
-  "NO_ISFS" IS NOT NULL AND
-  -- exclude beob that have no year
-  "A_NOTE" <> '0' AND
-  -- exclude data without coordinates
-  "COORDONNEE_FED_E" IS NOT NULL AND
-  "COORDONNEE_FED_N" IS NOT NULL;
+  "NO_ISFS" IS NOT NULL;

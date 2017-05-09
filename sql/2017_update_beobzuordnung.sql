@@ -23,7 +23,7 @@ SET "BeobId" = (
     beob.data->>(SELECT "IdField" FROM beob.beob WHERE id = beob2.id) = apflora.beobzuordnung."NO_NOTE"
 )
 
--- alternatives
+-- alternatives, ran 1.37 hours
 UPDATE apflora.beobzuordnung
 SET "BeobId" = (
   SELECT DISTINCT
