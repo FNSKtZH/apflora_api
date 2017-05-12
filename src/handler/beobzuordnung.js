@@ -11,12 +11,13 @@ module.exports = (request, callback) => {
     FROM
       apflora.beobzuordnung
       INNER JOIN
-        beob.beob_bereitgestellt
-        ON beob.beob_bereitgestellt."BeobId" = apflora.beobzuordnung."NO_NOTE"
+        beob.beob
+        ON beob.beob."BeobId" = apflora.beobzuordnung."BeobId"
     WHERE
-      beob.beob_bereitgestellt."NO_ISFS" = ${apId};`
+      beob.beob."ArtId" = ${apId};`
 
-  app.db.any(sql)
+  app.db
+    .any(sql)
     .then(rows => callback(null, rows))
     .catch(error => callback(error, null))
 }
