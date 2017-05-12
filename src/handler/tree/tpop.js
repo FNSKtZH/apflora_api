@@ -5,7 +5,6 @@ const erstelleTpopMassnBerOrdner = require(`./tpopMassnBerOrdner`)
 const erstelleTpopFeldkontrOrdner = require(`./tpopFeldkontrOrdner`)
 const erstelleTpopFreiwkontrOrdner = require(`./tpopFreiwkontrOrdner`)
 const erstelleTpopBerOrdner = require(`./tpopBerOrdner`)
-const erstelleTpopBeobOrdner = require(`./tpopBeobOrdner`)
 
 module.exports = (results, tpop) => {
   let tpopNodeText
@@ -57,10 +56,6 @@ module.exports = (results, tpop) => {
   // tpopOrdnerTpopber aufbauen
   const tpopBerNode = erstelleTpopBerOrdner(results.tpopBerListe, tpop)
   tpopNodeChildren.push(tpopBerNode)
-
-  // tpopOrdnerBeobZugeordnet aufbauen
-  const tpopBeobZugeordnetNode = erstelleTpopBeobOrdner(results.tpopBeobZugeordnetListe, tpop)
-  tpopNodeChildren.push(tpopBeobZugeordnetNode)
 
   return tpopNode
 }

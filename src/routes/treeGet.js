@@ -4,8 +4,6 @@ const Joi = require(`joi`)
 const treeQualitaetskontrollen = require(`../handler/tree/qualitaetskontrollen.js`)
 const treeAssozarten = require(`../handler/tree/assozarten.js`)
 const treeIdealbiotop = require(`../handler/tree/idealbiotop.js`)
-const treeBeobNichtZuzuordnen = require(`../handler/tree/beobNichtZuzuordnen.js`)
-const treeBeobNichtBeurteilt = require(`../handler/tree/beobNichtBeurteilt.js`)
 const treeBer = require(`../handler/tree/ber.js`)
 const treeJBer = require(`../handler/tree/jber.js`)
 const treeErfkrit = require(`../handler/tree/erfkrit.js`)
@@ -27,8 +25,6 @@ module.exports = [
         [
           { method: treeAssozarten, assign: `assozarten` },
           { method: treeIdealbiotop, assign: `idealbiotop` },
-          { method: treeBeobNichtZuzuordnen, assign: `beobNichtZuzuordnen` },
-          { method: treeBeobNichtBeurteilt, assign: `beobNichtBeurteilt` },
           { method: treeBer, assign: `ber` },
           { method: treeJBer, assign: `jber` },
           { method: treeErfkrit, assign: `erfkrit` },
@@ -45,8 +41,6 @@ module.exports = [
           request.pre.erfkrit,
           request.pre.jber,
           request.pre.ber,
-          request.pre.beobNichtBeurteilt,
-          request.pre.beobNichtZuzuordnen,
           request.pre.idealbiotop,
           request.pre.assozarten
         ])

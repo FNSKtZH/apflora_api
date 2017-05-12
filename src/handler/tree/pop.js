@@ -22,7 +22,7 @@ module.exports = (request, reply) => {
     tpopFeldkontrListe: [],
     tpopFreiwkontrListe: [],
     tpopBerListe: [],
-    tpopBeobZugeordnetListe: [],
+    // tpopBeobZugeordnetListe: [],
   }
 
   app.db.task(function* getData() {
@@ -181,52 +181,6 @@ module.exports = (request, reply) => {
         ORDER BY
           "TPopBerJahr",
           "EntwicklungOrd"`
-      )
-      results.tpopBeobZugeordnetListe = yield app.db.any(`
-        SELECT
-          apflora.beobzuordnung."NO_NOTE",
-          apflora.beobzuordnung."TPopId",
-          apflora.beobzuordnung."BeobNichtZuordnen",
-          apflora.beobzuordnung."BeobBemerkungen",
-          apflora.beobzuordnung."BeobMutWann",
-          apflora.beobzuordnung."BeobMutWer",
-          beob.beob_bereitgestellt."Datum",
-          beob.beob_bereitgestellt."Autor",
-          'evab' AS "beobtyp"
-        FROM
-          apflora.beobzuordnung
-          INNER JOIN
-            beob.beob_bereitgestellt
-            ON apflora.beobzuordnung."NO_NOTE" = beob.beob_bereitgestellt."NO_NOTE_PROJET"
-        WHERE
-          apflora.beobzuordnung."TPopId" IN (${results.tpopIds.join()})
-          AND (
-            apflora.beobzuordnung."BeobNichtZuordnen" = 0
-            OR apflora.beobzuordnung."BeobNichtZuordnen" IS NULL
-          )
-        UNION SELECT
-          apflora.beobzuordnung."NO_NOTE",
-          apflora.beobzuordnung."TPopId",
-          apflora.beobzuordnung."BeobNichtZuordnen",
-          apflora.beobzuordnung."BeobBemerkungen",
-          apflora.beobzuordnung."BeobMutWann",
-          apflora.beobzuordnung."BeobMutWer",
-          beob.beob_bereitgestellt."Datum",
-          beob.beob_bereitgestellt."Autor",
-          'infospezies' AS "beobtyp"
-        FROM
-          apflora.beobzuordnung
-          INNER JOIN
-            beob.beob_bereitgestellt
-            ON CAST(apflora.beobzuordnung."NO_NOTE" as CHAR(50)) = CAST(beob.beob_bereitgestellt."NO_NOTE" as CHAR(50))
-        WHERE
-          apflora.beobzuordnung."TPopId" IN (${results.tpopIds.join()})
-          AND (
-            apflora.beobzuordnung."BeobNichtZuordnen" = 0
-            OR apflora.beobzuordnung."BeobNichtZuordnen" IS NULL
-          )
-        ORDER BY
-          "Datum"`
       )
     }
   })
