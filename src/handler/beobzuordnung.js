@@ -12,7 +12,7 @@ module.exports = (request, callback) => {
       apflora.beobzuordnung
       INNER JOIN
         beob.beob
-        ON beob.beob."BeobId" = apflora.beobzuordnung."BeobId"
+        ON beob.beob.id = apflora.beobzuordnung."BeobId"
     WHERE
       beob.beob."ArtId" = ${apId};`
 
