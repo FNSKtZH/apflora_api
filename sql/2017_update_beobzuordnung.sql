@@ -58,4 +58,4 @@ FROM
     ON beob2.id = beob.id
   ON apflora.beobzuordnung."BeobId" = beob.beob.id
 WHERE beob."QuelleId" = 1
-LIMIT 10
+LIMIT 10;
