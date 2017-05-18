@@ -13,7 +13,7 @@
     "json2csv": "3.7.3",
     "json2xls": "0.1.2",
     "lodash": "4.17.4",
-    "pg-promise": "5.7.0",
+    "pg-promise": "5.7.1",
     "pg-pubsub": "0.3.0",
     "request": "2.81.0",
     "socket.io": "2.0.1",
@@ -32,7 +32,7 @@
     "gulp": "3.9.1",
     "gulp-sftp": "0.1.5",
     "inject-then": "2.0.9",
-    "lab": "13.0.4",
+    "lab": "13.1.0",
     "nodemon": "1.11.0",
     "require-dir": "0.3.1",
     "run-sequence": "1.2.2"
