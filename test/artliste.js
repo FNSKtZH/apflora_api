@@ -20,10 +20,10 @@ const server = require(`../server.js`)
 // test
 
 describe(`/artliste`, () => {
-  it(`should return more than 8000 rows for programmAp`, done => {
+  it(`should return more than 8000 rows for programmAp`, (done) => {
     const method = `GET`
     const url = `/artliste`
-    server.injectThen({ method, url }).then(res => {
+    server.injectThen({ method, url }).then((res) => {
       expect(res.result.length).to.be.above(8000)
       done()
     })

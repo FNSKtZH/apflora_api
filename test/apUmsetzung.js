@@ -20,10 +20,10 @@ const server = require(`../server.js`)
 // test
 
 describe(`/apUmsetzung`, () => {
-  it(`should return more than 2 rows`, done => {
+  it(`should return more than 2 rows`, (done) => {
     const method = `GET`
     const url = `/apUmsetzung`
-    server.injectThen({ method, url }).then(res => {
+    server.injectThen({ method, url }).then((res) => {
       expect(res.result.length).to.be.above(2)
       done()
     })
