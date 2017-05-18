@@ -8,7 +8,8 @@ const appPassFile = require(`../appPass.json`)
 
 // test shortcuts
 
-const lab = exports.lab = Lab.script()
+const lab = Lab.script()
+exports.lab = Lab.script()
 const describe = lab.describe
 const it = lab.it
 const expect = Code.expect
@@ -20,13 +21,14 @@ const server = require(`../server.js`)
 // test
 
 describe(`/apInsert`, () => {
-  it(`should insert in table ap 1 row with ApArtId 150`, (done) => {
+  it(`should insert in table ap 1 row with ApArtId 150`, done => {
     const name = appPassFile.user
-    server.injectThen({
-      method: `POST`,
-      url: `/apInsert/apId=150/user=${name}`,
-    })
-      .then((res) => {
+    server
+      .injectThen({
+        method: `POST`,
+        url: `/apInsert/apId=150/user=${name}`,
+      })
+      .then(res => {
         expect(res.statusCode).to.equal(200)
         // remove row
         const method = `DELETE`

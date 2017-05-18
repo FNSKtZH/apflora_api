@@ -7,7 +7,8 @@ const Lab = require(`lab`)
 
 // test shortcuts
 
-const lab = exports.lab = Lab.script()
+const lab = Lab.script()
+exports.lab = Lab.script()
 const describe = lab.describe
 const it = lab.it
 const expect = Code.expect
@@ -21,10 +22,9 @@ describe(`/adressen`, () => {
   it(`should return more than 140 rows`, (done) => {
     const method = `GET`
     const url = `/adressen`
-    server.injectThen({ method, url })
-      .then((res) => {
-        expect(res.result.length).to.be.above(140)
-        done()
-      })
+    server.injectThen({ method, url }).then((res) => {
+      expect(res.result.length).to.be.above(140)
+      done()
+    })
   })
 })

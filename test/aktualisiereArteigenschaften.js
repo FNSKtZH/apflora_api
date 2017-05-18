@@ -7,7 +7,8 @@ const Lab = require(`lab`)
 
 // test shortcuts
 
-const lab = exports.lab = Lab.script()
+const lab = Lab.script()
+exports.lab = Lab.script()
 const describe = lab.describe
 const it = lab.it
 const expect = Code.expect
@@ -23,11 +24,10 @@ describe.skip(`/aktualisiereArteigenschaften`, { timeout: 100000 }, () => {
   it(`should update Arteigenschaften`, (done) => {
     const method = `GET`
     const url = `/aktualisiereArteigenschaften`
-    server.injectThen({ method, url })
-      .then((res) => {
-        expect(res.result).to.equal(`Arteigenschaften hinzugefügt`)
-        expect(res.statusCode).to.equal(200)
-        done()
-      })
+    server.injectThen({ method, url }).then((res) => {
+      expect(res.result).to.equal(`Arteigenschaften hinzugefügt`)
+      expect(res.statusCode).to.equal(200)
+      done()
+    })
   })
 })

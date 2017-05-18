@@ -8,7 +8,8 @@ const appPassFile = require(`../appPass.json`)
 
 // test shortcuts
 
-const lab = exports.lab = Lab.script()
+const lab = Lab.script()
+exports.lab = Lab.script()
 const describe = lab.describe
 const it = lab.it
 const expect = Code.expect
@@ -20,26 +21,24 @@ const server = require(`../server.js`)
 // test
 
 describe(`/anmeldung`, () => {
-  it(`should accept known user`, (done) => {
+  it(`should accept known user`, done => {
     const name = appPassFile.user
     const pwd = appPassFile.pass
     const method = `GET`
     const url = `/anmeldung/name=${name}/pwd=${pwd}`
-    server.injectThen({ method, url })
-      .then((res) => {
-        expect(res.statusCode).to.equal(200)
-        expect(res.result.length).to.equal(1)
-        done()
-      })
+    server.injectThen({ method, url }).then(res => {
+      expect(res.statusCode).to.equal(200)
+      expect(res.result.length).to.equal(1)
+      done()
+    })
   })
-  it(`should not accept unknown user`, (done) => {
+  it(`should not accept unknown user`, done => {
     const method = `GET`
     const url = `/anmeldung/name=whoami/pwd=dontknow`
-    server.injectThen({ method, url })
-      .then((res) => {
-        expect(res.statusCode).to.equal(200)
-        expect(res.result.length).to.equal(0)
-        done()
-      })
+    server.injectThen({ method, url }).then(res => {
+      expect(res.statusCode).to.equal(200)
+      expect(res.result.length).to.equal(0)
+      done()
+    })
   })
 })

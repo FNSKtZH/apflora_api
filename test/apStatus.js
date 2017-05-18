@@ -7,7 +7,8 @@ const Lab = require(`lab`)
 
 // test shortcuts
 
-const lab = exports.lab = Lab.script()
+const lab = Lab.script()
+exports.lab = Lab.script()
 const describe = lab.describe
 const it = lab.it
 const expect = Code.expect
@@ -19,13 +20,12 @@ const server = require(`../server.js`)
 // test
 
 describe(`/apStatus`, () => {
-  it(`should return more than 3 rows`, (done) => {
+  it(`should return more than 3 rows`, done => {
     const method = `GET`
     const url = `/apStatus`
-    server.injectThen({ method, url })
-      .then((res) => {
-        expect(res.result.length).to.be.above(3)
-        done()
-      })
+    server.injectThen({ method, url }).then(res => {
+      expect(res.result.length).to.be.above(3)
+      done()
+    })
   })
 })
