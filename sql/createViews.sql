@@ -9744,24 +9744,20 @@ GROUP BY
 DROP VIEW IF EXISTS views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr CASCADE;
 CREATE OR REPLACE VIEW views.v_qk_tpop_erloschenundrelevantaberletztebeobvor1950_maxbeobjahr AS
 SELECT
-  apflora.beobzuordnung."TPopId",
+ apflora.beobzuordnung."TPopId",
   max(
-    CAST(
-      substring(beob.beob_bereitgestellt."Datum" from 1 for 4)
-      AS integer
-    )
+    date_part('year', beob.beob."Datum")
   ) AS "MaxJahr"
 FROM
   apflora.beobzuordnung
-  INNER JOIN
-    beob.beob_bereitgestellt
-    ON apflora.beobzuordnung."NO_NOTE" = beob.beob_bereitgestellt."BeobId"
+INNER JOIN
+  beob.beob
+  ON apflora.beobzuordnung."BeobId" = beob.beob.id
 WHERE
-  beob.beob_bereitgestellt."Datum" ~ '^[0-9]+$'
+  beob.beob."Datum" IS NOT NULL AND
+  apflora.beobzuordnung."TPopId" IS NOT NULL
 GROUP BY
   apflora.beobzuordnung."TPopId";
-
-
 
 DROP VIEW IF EXISTS views.v_apber_pop_uebersicht CASCADE;
 CREATE OR REPLACE VIEW views.v_apber_pop_uebersicht AS

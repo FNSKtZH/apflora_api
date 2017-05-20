@@ -83,50 +83,6 @@ CREATE TABLE beob.beob_projekt (
   PRIMARY KEY ("ProjektId", "BeobId")
 );
 
---
-
-DROP TABLE IF EXISTS beob.beob_bereitgestellt;
-CREATE TABLE beob.beob_bereitgestellt (
-  "BeobId" varchar(38) DEFAULT NULL,
-  "NO_NOTE" integer DEFAULT NULL,
-  "QuelleId" integer Default Null,
-  "NO_NOTE_STRING" varchar(38) DEFAULT NULL,
-  "NO_NOTE_PROJET" varchar(38) DEFAULT NULL,
-  "NO_ISFS" integer DEFAULT NULL,
-  "Datum" varchar(10) DEFAULT NULL,
-  "Autor" varchar(255) DEFAULT NULL
-);
-CREATE INDEX ON beob.beob_bereitgestellt USING btree ("NO_NOTE");
-CREATE INDEX ON beob.beob_bereitgestellt USING btree ("NO_NOTE_PROJET");
-CREATE INDEX ON beob.beob_bereitgestellt USING btree ("NO_ISFS");
-CREATE INDEX ON beob.beob_bereitgestellt USING btree ("Datum");
-CREATE INDEX ON beob.beob_bereitgestellt USING btree ("QuelleId");
-CREATE INDEX ON beob.beob_bereitgestellt USING btree ("BeobId");
-
-ALTER TABLE beob.beob_bereitgestellt
-  ADD COLUMN "QuelleId" integer Default Null;
-ALTER TABLE beob.beob_bereitgestellt
-  ADD COLUMN "BeobId" varchar(38) Default Null;
-CREATE INDEX ON beob.beob_bereitgestellt USING btree ("BeobId");
-
-UPDATE beob.beob_bereitgestellt
-SET "BeobId" = "NO_NOTE"
-WHERE "NO_NOTE" IS NOT NULL;
-
-UPDATE beob.beob_bereitgestellt
-SET "BeobId" = "NO_NOTE_PROJET"
-WHERE "NO_NOTE_PROJET" IS NOT NULL;
-
--- in evab NO_NOTE is a guid
-UPDATE beob.beob_bereitgestellt
-SET "QuelleId" = 1
-WHERE length("BeobId") > 10;
-
--- in infospezies NO_NOTE is an integer
-UPDATE beob.beob_bereitgestellt
-SET "QuelleId" = 2
-WHERE length("BeobId") < 10;
-
 DROP TABLE IF EXISTS beob.beob_quelle;
 CREATE TABLE beob.beob_quelle
 (

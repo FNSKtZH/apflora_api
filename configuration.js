@@ -219,16 +219,6 @@ config.tables = [
     initiiereFunktion: ``,
     treeTyp: `projekt`,
   },
-  {
-    database: `beob`,
-    tabelleInDb: `beob_bereitgestellt`,
-    tabelleIdFeld: `BeobId`,
-    mutWannFeld: null,
-    mutWerFeld: null,
-    form: null,
-    initiiereFunktion: null,
-    treeTyp: null,
-  },
 ]
 
 module.exports = config
