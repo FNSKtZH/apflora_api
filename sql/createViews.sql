@@ -4207,10 +4207,11 @@ WHERE
 DROP VIEW IF EXISTS views.v_beob CASCADE;
 CREATE OR REPLACE VIEW views.v_beob AS
 SELECT
-  beob.beob_infospezies."NO_NOTE",
-  NULL AS "ID_EVAB",
-  to_char(beob.beob_infospezies."NO_NOTE", 'FM999999999999999999') AS "BeobId",
-  beob.beob_infospezies."NO_ISFS",
+  beob.beob.id,
+  beob.beob_quelle.name AS "Quelle",
+  beob."IdField",
+  beob.data->>(SELECT "IdField" FROM beob.beob WHERE id = beob2.id) AS "OriginalId",
+  beob.beob."ArtId",
   beob.adb_eigenschaften."Artname",
   apflora.pop."PopId",
   apflora.pop."PopGuid",
@@ -4218,41 +4219,41 @@ SELECT
   apflora.tpop."TPopId",
   apflora.tpop."TPopGuid",
   apflora.tpop."TPopNr",
-  beob.beob_infospezies."PROJET",
-  beob.beob_infospezies."NOM_COMMUNE",
-  beob.beob_infospezies."DESC_LOCALITE",
-  beob.beob_infospezies."FNS_XGIS" AS "X",
-  beob.beob_infospezies."FNS_YGIS" AS "Y",
+  beob.beob."X" AS "X",
+  beob.beob."Y" AS "Y",
   CASE
     WHEN
-      beob.beob_infospezies."FNS_XGIS" > 0
+      beob.beob."X" > 0
       AND apflora.tpop."TPopXKoord" > 0
-      AND beob.beob_infospezies."FNS_YGIS" > 0
+      AND beob.beob."Y" > 0
       AND apflora.tpop."TPopYKoord" > 0
     THEN
       round(
         sqrt(
-          power((beob.beob_infospezies."FNS_XGIS" - apflora.tpop."TPopXKoord"), 2) +
-          power((beob.beob_infospezies."FNS_YGIS" - apflora.tpop."TPopYKoord"), 2)
+          power((beob.beob."X" - apflora.tpop."TPopXKoord"), 2) +
+          power((beob.beob."Y" - apflora.tpop."TPopYKoord"), 2)
         )
       )
     ELSE
       NULL
   END AS "Distanz zur Teilpopulation (m)",
-  beob.beob_bereitgestellt."Datum",
-  beob.beob_bereitgestellt."Autor",
+  beob.beob."Datum",
+  beob.beob."Autor",
   apflora.beobzuordnung."BeobNichtZuordnen",
   apflora.beobzuordnung."BeobBemerkungen",
   apflora.beobzuordnung."BeobMutWann",
   apflora.beobzuordnung."BeobMutWer"
 FROM
-  ((beob.beob_infospezies
+  (((beob.beob
   INNER JOIN
-    beob.beob_bereitgestellt
-    ON beob.beob_infospezies."NO_NOTE" = beob.beob_bereitgestellt."NO_NOTE")
+    beob.beob AS beob2
+    ON beob2.id = beob.id)
   INNER JOIN
     beob.adb_eigenschaften
-    ON beob.beob_infospezies."NO_ISFS" = beob.adb_eigenschaften."TaxonomieId")
+    ON beob.beob."ArtId" = beob.adb_eigenschaften."TaxonomieId")
+  INNER JOIN
+    beob.beob_quelle
+    ON beob."QuelleId" = beob_quelle.id)
   INNER JOIN
     (apflora.pop
     RIGHT JOIN
@@ -4261,72 +4262,14 @@ FROM
         apflora.beobzuordnung
         ON apflora.tpop."TPopId" = apflora.beobzuordnung."TPopId")
       ON apflora.pop."PopId" = apflora.tpop."PopId")
-  ON to_char(beob.beob_infospezies."NO_NOTE", 'FM999999999999999999') = apflora.beobzuordnung."NO_NOTE"
+  ON beob.beob.id = apflora.beobzuordnung."BeobId"
 WHERE
-  beob.beob_infospezies."NO_ISFS" > 150
-UNION SELECT
-  NULL AS "NO_NOTE",
-  beob.beob_evab."NO_NOTE_PROJET" AS "ID_EVAB",
-  beob.beob_evab."NO_NOTE_PROJET" AS "BeobId",
-  beob.beob_evab."NO_ISFS",
-  beob.adb_eigenschaften."Artname",
-  apflora.pop."PopId",
-  apflora.pop."PopGuid",
-  apflora.pop."PopNr",
-  apflora.tpop."TPopId",
-  apflora.tpop."TPopGuid",
-  apflora.tpop."TPopNr",
-  beob.beob_evab."Projekt_ZH" AS "PROJET",
-  beob.beob_evab."NOM_COMMUNE",
-  beob.beob_evab."DESC_LOCALITE_" AS "DESC_LOCALITE",
-  beob.beob_evab."COORDONNEE_FED_E" AS "X",
-  beob.beob_evab."COORDONNEE_FED_N" AS "Y",
-  CASE
-    WHEN
-      beob.beob_evab."COORDONNEE_FED_E" > 0
-      AND apflora.tpop."TPopXKoord" > 0
-      AND beob.beob_evab."COORDONNEE_FED_N" > 0
-      AND apflora.tpop."TPopYKoord" > 0
-    THEN
-      round(
-        sqrt(
-          power((beob.beob_evab."COORDONNEE_FED_E" - apflora.tpop."TPopXKoord"), 2) +
-          power((beob.beob_evab."COORDONNEE_FED_N" - apflora.tpop."TPopYKoord"), 2)
-        )
-      )
-    ELSE
-      NULL
-  END AS "Distanz zur Teilpopulation (m)",
-  beob.beob_bereitgestellt."Datum",
-  beob.beob_bereitgestellt."Autor",
-  apflora.beobzuordnung."BeobNichtZuordnen",
-  apflora.beobzuordnung."BeobBemerkungen",
-  apflora.beobzuordnung."BeobMutWann",
-  apflora.beobzuordnung."BeobMutWer"
-FROM
-  ((beob.beob_bereitgestellt
-  INNER JOIN
-    beob.beob_evab
-    ON beob.beob_bereitgestellt."NO_NOTE_PROJET" = beob.beob_evab."NO_NOTE_PROJET")
-  INNER JOIN
-    (apflora.pop
-    RIGHT JOIN
-      (apflora.tpop
-      RIGHT JOIN
-        apflora.beobzuordnung
-        ON apflora.tpop."TPopId" = apflora.beobzuordnung."TPopId")
-      ON apflora.pop."PopId" = apflora.tpop."PopId")
-    ON beob.beob_evab."NO_NOTE_PROJET" = apflora.beobzuordnung."NO_NOTE")
-  INNER JOIN
-    beob.adb_eigenschaften
-    ON beob.beob_evab."NO_ISFS" = beob.adb_eigenschaften."TaxonomieId"
-WHERE
-  beob.beob_evab."NO_ISFS" > 150
+  beob.beob."ArtId" > 150
 ORDER BY
-  "Artname" ASC,
-  "PopNr" ASC,
-  "TPopNr" ASC,
-  "Datum" DESC;
+  beob.adb_eigenschaften."Artname" ASC,
+  apflora.pop."PopNr" ASC,
+  apflora.tpop."TPopNr" ASC,
+  beob.beob."Datum" DESC;
 
 DROP VIEW IF EXISTS views.v_beob_infospezies CASCADE;
 CREATE OR REPLACE VIEW views.v_beob_infospezies AS
@@ -4401,47 +4344,6 @@ ORDER BY
   "PopNr" ASC,
   "TPopNr" ASC,
   "Datum" DESC;
-
-
--- this is a test
-DROP VIEW IF EXISTS views.v_beob_alle CASCADE;
-CREATE OR REPLACE VIEW views.v_beob_alle AS
-SELECT
-  beob.adb_eigenschaften."Artname",
-  apflora.ap_bearbstand_werte."DomainTxt" AS "ApStatus",
-  apflora.ap."ApJahr",
-  beob.beob_bereitgestellt."Datum",
-  beob.beob_bereitgestellt."Autor",
-  apflora.beobzuordnung."TPopId",
-  apflora.beobzuordnung."BeobNichtZuordnen",
-  apflora.beobzuordnung."BeobBemerkungen",
-  apflora.beobzuordnung."BeobMutWann",
-  apflora.beobzuordnung."BeobMutWer"
-FROM
-  ((((beob.beob_bereitgestellt
-  INNER JOIN
-    beob.beob_infospezies
-    ON beob.beob_bereitgestellt."NO_NOTE" = beob.beob_infospezies."NO_NOTE")
-  INNER JOIN
-    beob.adb_eigenschaften
-    ON beob.beob_infospezies."NO_ISFS" = beob.adb_eigenschaften."TaxonomieId")
-  INNER JOIN
-    apflora.ap
-    ON beob.adb_eigenschaften."TaxonomieId" = apflora.ap."ApArtId")
-  LEFT JOIN
-    (apflora.pop
-    RIGHT JOIN
-      (apflora.tpop
-      RIGHT JOIN
-        apflora.beobzuordnung
-        ON apflora.tpop."TPopId" = apflora.beobzuordnung."TPopId")
-      ON apflora.pop."PopId" = apflora.tpop."PopId")
-  ON to_char(beob.beob_infospezies."NO_NOTE", 'FM999999999999999999') = apflora.beobzuordnung."NO_NOTE")
-  LEFT JOIN
-    apflora.ap_bearbstand_werte
-    ON apflora.ap."ApStatus" = apflora.ap_bearbstand_werte."DomainCode"
-ORDER BY
-  beob.adb_eigenschaften."Artname";
 
 -- this shall be added to export form
 DROP VIEW views.v_beob_infospezies CASCADE;
