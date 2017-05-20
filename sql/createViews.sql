@@ -5330,6 +5330,7 @@ FROM
     ON apflora.ap."ApArtId" = beob.beob."ArtId")
   INNER JOIN
     apflora.beobzuordnung
+    ON beob.beob.id = apflora.beobzuordnung."BeobId"
 WHERE
   apflora.ap."ApArtId" > 150
 GROUP BY
