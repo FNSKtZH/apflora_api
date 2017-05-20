@@ -6,7 +6,7 @@ const Lab = require(`lab`)
 
 // shortcuts
 const lab = Lab.script()
-exports.lab = Lab.script()
+exports.lab = lab
 const describe = lab.describe
 const it = lab.it
 const expect = Code.expect
