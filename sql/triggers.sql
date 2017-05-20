@@ -121,25 +121,6 @@ $tpop_max_one_tpopber_per_year$ LANGUAGE plpgsql;
 CREATE TRIGGER tpop_max_one_tpopber_per_year BEFORE UPDATE OR INSERT ON apflora.tpopber
   FOR EACH ROW EXECUTE PROCEDURE tpop_max_one_tpopber_per_year();
 
--- make sure every dataset in apflora.beobzuordnung has QuelleId set
-DROP TRIGGER IF EXISTS beob_zuordnung_set_quelleid_on_insert ON apflora.beobzuordnung;
-DROP FUNCTION IF EXISTS beob_zuordnung_set_quelleid_on_insert();
-CREATE FUNCTION beob_zuordnung_set_quelleid_on_insert() RETURNS trigger AS $beob_zuordnung_set_quelleid_on_insert$
-  BEGIN
-    IF
-      length(NEW."NO_NOTE") > 10
-    THEN
-      NEW."QuelleId" = '1';
-    ELSE
-      NEW."QuelleId" = '2';
-    END IF;
-    RETURN NEW;
-  END;
-$beob_zuordnung_set_quelleid_on_insert$ LANGUAGE plpgsql;
-
-CREATE TRIGGER beob_zuordnung_set_quelleid_on_insert BEFORE INSERT ON apflora.beobzuordnung
-  FOR EACH ROW EXECUTE PROCEDURE beob_zuordnung_set_quelleid_on_insert();
-
 DROP TRIGGER IF EXISTS apberuebersicht_insert_set_year ON apflora.apberuebersicht;
 DROP FUNCTION IF EXISTS apberuebersicht_insert_set_year();
 CREATE FUNCTION apberuebersicht_insert_set_year() RETURNS trigger AS $apberuebersicht_insert_set_year$

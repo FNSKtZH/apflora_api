@@ -403,9 +403,6 @@ REFERENCES beob.beob_quelle ("id")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
 
-ALTER TABLE apflora.beobzuordnung
-DROP CONSTRAINT IF EXISTS beobzuordnung_fk_beob_bereitgestellt;
-
 -- tpopkontr
 
 delete from apflora.tpopkontr where "TPopId" not in (select "TPopId" from apflora.tpop);
