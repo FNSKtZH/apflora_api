@@ -4219,8 +4219,8 @@ SELECT
   apflora.tpop."TPopId",
   apflora.tpop."TPopGuid",
   apflora.tpop."TPopNr",
-  beob.beob."X" AS "X",
-  beob.beob."Y" AS "Y",
+  beob.beob."X",
+  beob.beob."Y",
   CASE
     WHEN
       beob.beob."X" > 0
@@ -4244,25 +4244,28 @@ SELECT
   apflora.beobzuordnung."BeobMutWann",
   apflora.beobzuordnung."BeobMutWer"
 FROM
-  (((beob.beob
+  ((((beob.beob
   INNER JOIN
     beob.beob AS beob2
     ON beob2.id = beob.id)
+  INNER JOIN
+    apflora.ap
+    ON apflora.ap."ApArtId" = beob.beob."ArtId")
   INNER JOIN
     beob.adb_eigenschaften
     ON beob.beob."ArtId" = beob.adb_eigenschaften."TaxonomieId")
   INNER JOIN
     beob.beob_quelle
     ON beob."QuelleId" = beob_quelle.id)
-  INNER JOIN
-    (apflora.pop
-    RIGHT JOIN
-      (apflora.tpop
-      RIGHT JOIN
-        apflora.beobzuordnung
-        ON apflora.tpop."TPopId" = apflora.beobzuordnung."TPopId")
-      ON apflora.pop."PopId" = apflora.tpop."PopId")
-  ON beob.beob.id = apflora.beobzuordnung."BeobId"
+  LEFT JOIN
+    apflora.beobzuordnung
+    LEFT JOIN
+      apflora.tpop
+      ON apflora.tpop."TPopId" = apflora.beobzuordnung."TPopId"
+      LEFT JOIN
+        apflora.pop
+        ON apflora.pop."PopId" = apflora.tpop."PopId"
+    ON apflora.beobzuordnung."BeobId" = beob.beob.id
 WHERE
   beob.beob."ArtId" > 150
 ORDER BY
@@ -4270,150 +4273,6 @@ ORDER BY
   apflora.pop."PopNr" ASC,
   apflora.tpop."TPopNr" ASC,
   beob.beob."Datum" DESC;
-
-DROP VIEW IF EXISTS views.v_beob_infospezies CASCADE;
-CREATE OR REPLACE VIEW views.v_beob_infospezies AS
-SELECT
-  beob.beob_infospezies."NO_NOTE",
-  beob.beob_infospezies."NO_NOTE" AS "BeobId",
-  beob.beob_infospezies."NO_ISFS",
-  beob.adb_eigenschaften."Artname",
-  apflora.pop."PopId",
-  apflora.pop."PopGuid",
-  apflora.pop."PopNr",
-  pop_status_werte."HerkunftTxt" AS "Pop Status",
-  apflora.tpop."TPopId",
-  apflora.tpop."TPopGuid",
-  apflora.tpop."TPopNr",
-  "domPopHerkunft_1"."HerkunftTxt" AS "TPop Status",
-  beob.beob_infospezies."INTRODUIT",
-  beob.beob_infospezies."PROJET",
-  beob.beob_infospezies."NOM_COMMUNE",
-  beob.beob_infospezies."DESC_LOCALITE",
-  beob.beob_infospezies."FNS_XGIS" AS "X",
-  beob.beob_infospezies."FNS_YGIS" AS "Y",
-  CASE
-    WHEN
-      beob.beob_infospezies."FNS_XGIS" > 0
-      AND apflora.tpop."TPopXKoord" > 0
-      AND beob.beob_infospezies."FNS_YGIS" > 0
-      AND apflora.tpop."TPopYKoord" > 0
-    THEN
-      round(
-        sqrt(
-          power((beob.beob_infospezies."FNS_XGIS" - apflora.tpop."TPopXKoord"), 2) +
-          power((beob.beob_infospezies."FNS_YGIS" - apflora.tpop."TPopYKoord"), 2)
-        )
-      )
-    ELSE
-      NULL
-  END AS "Distanz zur Teilpopulation (m)",
-  beob.beob_bereitgestellt."Datum",
-  beob.beob_bereitgestellt."Autor",
-  apflora.beobzuordnung."BeobNichtZuordnen",
-  apflora.beobzuordnung."BeobBemerkungen",
-  apflora.beobzuordnung."BeobMutWann",
-  apflora.beobzuordnung."BeobMutWer"
-FROM
-  ((((beob.beob_infospezies
-  INNER JOIN
-    beob.beob_bereitgestellt
-    ON beob.beob_infospezies."NO_NOTE" = beob.beob_bereitgestellt."NO_NOTE")
-  INNER JOIN
-    beob.adb_eigenschaften
-    ON beob.beob_infospezies."NO_ISFS" = beob.adb_eigenschaften."TaxonomieId")
-  INNER JOIN
-    (apflora.pop
-    RIGHT JOIN
-      (apflora.tpop
-      RIGHT JOIN
-        apflora.beobzuordnung
-        ON apflora.tpop."TPopId" = apflora.beobzuordnung."TPopId")
-      ON apflora.pop."PopId" = apflora.tpop."PopId")
-  ON to_char(beob.beob_infospezies."NO_NOTE", 'FM999999999999999999') = apflora.beobzuordnung."NO_NOTE")
-  LEFT JOIN
-    apflora.pop_status_werte
-    ON apflora.pop."PopHerkunft" = pop_status_werte."HerkunftId")
-  LEFT JOIN
-    apflora.pop_status_werte AS "domPopHerkunft_1"
-    ON apflora.tpop."TPopHerkunft" = "domPopHerkunft_1"."HerkunftId"
-WHERE
-  beob.beob_infospezies."NO_ISFS" > 150
-ORDER BY
-  "Artname" ASC,
-  "PopNr" ASC,
-  "TPopNr" ASC,
-  "Datum" DESC;
-
--- this shall be added to export form
-DROP VIEW views.v_beob_infospezies CASCADE;
-CREATE OR REPLACE VIEW views.v_beob_infospezies AS
-SELECT
-  beob.adb_eigenschaften."Artname",
-  apflora.ap_bearbstand_werte."DomainTxt" AS "ApStatus",
-  apflora.ap."ApJahr",
-  beob.beob_bereitgestellt."Datum",
-  beob.beob_bereitgestellt."Autor",
-  apflora.beobzuordnung."TPopId",
-  apflora.beobzuordnung."BeobNichtZuordnen",
-  apflora.beobzuordnung."BeobBemerkungen",
-  apflora.beobzuordnung."BeobMutWann",
-  apflora.beobzuordnung."BeobMutWer",
-  beob.beob_infospezies.*
-FROM
-  ((((beob.beob_bereitgestellt
-  INNER JOIN
-    beob.beob_infospezies
-    ON beob.beob_bereitgestellt."NO_NOTE" = beob.beob_infospezies."NO_NOTE")
-  INNER JOIN
-    beob.adb_eigenschaften
-    ON beob.beob_infospezies."NO_ISFS" = beob.adb_eigenschaften."TaxonomieId")
-  INNER JOIN
-    apflora.ap
-    ON beob.adb_eigenschaften."TaxonomieId" = apflora.ap."ApArtId")
-  LEFT JOIN
-    apflora.beobzuordnung
-    ON to_char(beob.beob_infospezies."NO_NOTE", 'FM999999999999999999') = apflora.beobzuordnung."NO_NOTE")
-  LEFT JOIN
-    apflora.ap_bearbstand_werte
-    ON apflora.ap."ApStatus" = apflora.ap_bearbstand_werte."DomainCode"
-ORDER BY
-  beob.adb_eigenschaften."Artname";
-
--- this shall be added to export form
-DROP VIEW IF EXISTS views.v_beob_evab CASCADE;
-CREATE OR REPLACE VIEW views.v_beob_evab AS
-SELECT
-  beob.adb_eigenschaften."Artname",
-  apflora.ap_bearbstand_werte."DomainTxt" AS "ApStatus",
-  apflora.ap."ApJahr",
-  beob.beob_bereitgestellt."Datum",
-  beob.beob_bereitgestellt."Autor",
-  apflora.beobzuordnung."TPopId",
-  apflora.beobzuordnung."BeobNichtZuordnen",
-  apflora.beobzuordnung."BeobBemerkungen",
-  apflora.beobzuordnung."BeobMutWann",
-  apflora.beobzuordnung."BeobMutWer",
-  beob.beob_evab.*
-FROM
-  ((((beob.beob_bereitgestellt
-  INNER JOIN
-    beob.beob_evab
-    ON beob.beob_bereitgestellt."NO_NOTE_PROJET" = beob.beob_evab."NO_NOTE_PROJET")
-  INNER JOIN
-    beob.adb_eigenschaften
-    ON beob.beob_evab."NO_ISFS" = beob.adb_eigenschaften."TaxonomieId")
-  INNER JOIN
-    apflora.ap
-    ON beob.adb_eigenschaften."TaxonomieId" = apflora.ap."ApArtId")
-  LEFT JOIN
-    apflora.beobzuordnung
-    ON beob.beob_evab."NO_NOTE_PROJET" = apflora.beobzuordnung."NO_NOTE")
-  LEFT JOIN
-    apflora.ap_bearbstand_werte
-    ON apflora.ap."ApStatus" = apflora.ap_bearbstand_werte."DomainCode"
-ORDER BY
-  beob.adb_eigenschaften."Artname";
 
 DROP VIEW IF EXISTS views.v_tpopkontr_maxanzahl CASCADE;
 CREATE OR REPLACE VIEW views.v_tpopkontr_maxanzahl AS
