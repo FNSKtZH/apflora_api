@@ -41,7 +41,7 @@ CREATE TABLE apflora.ap (
   "ApUmsetzung" integer DEFAULT NULL,
   "ApBearb" integer DEFAULT NULL,
   "ApArtwert" integer DEFAULT NULL,
-  "ApGuid" UUID DEFAULT gen_random_uuid(),
+  "ApGuid" UUID DEFAULT uuid_generate_v1mc(),
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
@@ -57,15 +57,15 @@ CREATE INDEX ON apflora.ap USING btree ("ApStatus");
 CREATE INDEX ON apflora.ap USING btree ("ApUmsetzung");
 CREATE INDEX ON apflora.ap USING btree ("ApBearb");
 CREATE INDEX ON apflora.ap USING btree ("ProjId");
+CREATE UNIQUE INDEX ON apflora.ap USING btree ("ApGuid");
 
-ALTER TABLE apflora.ap
-  ADD COLUMN "ProjId" integer Default Null;
-CREATE INDEX ON apflora.ap USING btree ("ProjId");
-
-UPDATE apflora.ap
-SET "ProjId" = '1'
-WHERE "ProjId" IS NULL;
-
+-- only once
+-- ALTER TABLE apflora.ap
+--   ADD COLUMN "ProjId" integer Default Null;
+-- CREATE INDEX ON apflora.ap USING btree ("ProjId");
+-- UPDATE apflora.ap
+-- SET "ProjId" = '1'
+-- WHERE "ProjId" IS NULL;
 
 DROP TABLE IF EXISTS apflora.userprojekt;
 CREATE TABLE apflora.userprojekt (
@@ -340,7 +340,7 @@ CREATE TABLE apflora.pop (
   "PopBekanntSeit" smallint DEFAULT NULL,
   "PopXKoord" integer DEFAULT NULL,
   "PopYKoord" integer DEFAULT NULL,
-  "PopGuid" UUID DEFAULT gen_random_uuid(),
+  "PopGuid" UUID DEFAULT uuid_generate_v1mc(),
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
@@ -359,7 +359,7 @@ COMMENT ON COLUMN apflora.pop."PopGuid" IS 'GUID der Population';
 COMMENT ON COLUMN apflora.pop."MutWann" IS 'Wann wurde der Datensatz zuletzt geändert?';
 COMMENT ON COLUMN apflora.pop."MutWer" IS 'Von wem wurde der Datensatz zuletzt geändert?';
 CREATE INDEX ON apflora.pop USING btree ("ApArtId");
-CREATE INDEX ON apflora.pop USING btree ("PopGuid");
+CREATE UNIQUE INDEX ON apflora.pop USING btree ("PopGuid");
 CREATE INDEX ON apflora.pop USING btree ("PopHerkunft");
 CREATE INDEX ON apflora.pop USING btree ("PopXKoord");
 CREATE INDEX ON apflora.pop USING btree ("PopYKoord");
@@ -462,7 +462,7 @@ CREATE TABLE apflora.tpop (
   "TPopBewirtschafterIn" text DEFAULT NULL,
   "TPopBewirtschaftung" text DEFAULT NULL,
   "TPopTxt" text,
-  "TPopGuid" UUID DEFAULT gen_random_uuid(),
+  "TPopGuid" UUID DEFAULT uuid_generate_v1mc(),
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
@@ -496,7 +496,7 @@ COMMENT ON COLUMN apflora.tpop."TPopGuid" IS 'GUID der Tabelle "tpop"';
 COMMENT ON COLUMN apflora.tpop."MutWann" IS 'Wann wurde der Datensatz zuletzt geändert?';
 COMMENT ON COLUMN apflora.tpop."MutWer" IS 'Von wem wurde der Datensatz zuletzt geändert?';
 CREATE INDEX ON apflora.tpop USING btree ("PopId");
-CREATE INDEX ON apflora.tpop USING btree ("TPopGuid");
+CREATE UNIQUE INDEX ON apflora.tpop USING btree ("TPopGuid");
 CREATE INDEX ON apflora.tpop USING btree ("TPopHerkunft");
 CREATE INDEX ON apflora.tpop USING btree ("TPopApBerichtRelevant");
 CREATE INDEX ON apflora.tpop USING btree ("TPopXKoord");
@@ -593,8 +593,8 @@ CREATE TABLE apflora.tpopkontr (
   "TPopKontrVegHoeMit" smallint DEFAULT NULL,
   "TPopKontrGefaehrdung" text DEFAULT NULL,
   "TPopKontrMutDat" date DEFAULT NULL,
-  "TPopKontrGuid" UUID DEFAULT gen_random_uuid(),
-  "ZeitGuid" UUID DEFAULT gen_random_uuid(),
+  "TPopKontrGuid" UUID DEFAULT uuid_generate_v1mc(),
+  "ZeitGuid" UUID DEFAULT uuid_generate_v1mc(),
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
@@ -653,6 +653,8 @@ CREATE INDEX ON apflora.tpopkontr USING btree ("TPopKontrIdealBiotopUebereinst")
 CREATE INDEX ON apflora.tpopkontr USING btree ("TPopKontrJahr");
 CREATE INDEX ON apflora.tpopkontr USING btree ("TPopKontrTyp");
 CREATE INDEX ON apflora.tpopkontr USING btree ("TPopKontrDatum");
+CREATE UNIQUE INDEX ON apflora.tpopkontr USING btree ("ZeitGuid");
+CREATE UNIQUE INDEX ON apflora.tpopkontr USING btree ("TPopKontrGuid");
 
 DROP TABLE IF EXISTS apflora.tpopkontr_idbiotuebereinst_werte;
 CREATE TABLE apflora.tpopkontr_idbiotuebereinst_werte (
@@ -742,7 +744,7 @@ CREATE TABLE apflora.tpopmassn (
   "TPopMassnAnsiedDatSamm" varchar(50) DEFAULT NULL,
   "TPopMassnAnsiedForm" text DEFAULT NULL,
   "TPopMassnAnsiedPflanzanordnung" text DEFAULT NULL,
-  "TPopMassnGuid" UUID UNIQUE DEFAULT gen_random_uuid(),
+  "TPopMassnGuid" UUID UNIQUE DEFAULT uuid_generate_v1mc(),
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
@@ -774,6 +776,7 @@ CREATE INDEX ON apflora.tpopmassn USING btree ("TPopId");
 CREATE INDEX ON apflora.tpopmassn USING btree ("TPopMassnBearb");
 CREATE INDEX ON apflora.tpopmassn USING btree ("TPopMassnTyp");
 CREATE INDEX ON apflora.tpopmassn USING btree ("TPopMassnJahr");
+CREATE UNIQUE INDEX ON apflora.tpopmassn USING btree ("TPopMassnGuid");
 
 DROP TABLE IF EXISTS apflora.tpopmassn_erfbeurt_werte;
 CREATE TABLE apflora.tpopmassn_erfbeurt_werte (
