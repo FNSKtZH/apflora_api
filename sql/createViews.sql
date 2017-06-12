@@ -4425,6 +4425,7 @@ WHERE
   AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
   AND apflora.tpop."TPopHerkunft" <> 201
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
   AND (
     (
       apflora.tpop."TPopBekanntSeit" IS NOT NULL
@@ -4509,6 +4510,7 @@ WHERE
   AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
   AND apflora.tpop."TPopHerkunft" <> 201
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
   AND (
     (
       apflora.tpop."TPopBekanntSeit" IS NOT NULL
@@ -4590,6 +4592,7 @@ WHERE
   AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
   AND apflora.tpop."TPopHerkunft" <> 201
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
   AND (
     (
       apflora.tpop."TPopBekanntSeit" IS NOT NULL
@@ -4668,6 +4671,7 @@ WHERE
   AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
   AND apflora.tpop."TPopHerkunft" <> 201
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
   AND (
     (
       apflora.tpop."TPopBekanntSeit" IS NOT NULL
