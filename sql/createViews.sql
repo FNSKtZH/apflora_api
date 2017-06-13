@@ -4419,19 +4419,23 @@ FROM
       ON apflora.pop."PopId" = apflora.tpop."PopId")
     ON apflora.ap."ApArtId" = apflora.pop."ApArtId"
 WHERE
+  -- keine Testarten
   apflora.ap."ApArtId" > 150
+  -- nur Kontrollen, deren Teilpopulationen Koordinaten besitzen
   AND apflora.tpop."TPopXKoord" IS NOT NULL
   AND apflora.tpop."TPopYKoord" IS NOT NULL
   AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
+  -- keine Ansaatversuche
   AND apflora.tpop."TPopHerkunft" <> 201
+  -- nur wenn Kontrolljahr existiert
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  -- nur wenn erfasst ist, seit wann die TPop bekannt ist
   AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
   AND (
-    (
-      apflora.tpop."TPopBekanntSeit" IS NOT NULL
-      AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
-    )
-    OR apflora.tpop."TPopHerkunft" IN (100, 101)
+    -- die Teilpopulation ist ursprünglich
+    apflora.tpop."TPopHerkunft" IN (100, 101)
+    -- oder bei Ansiedlungen: die Art war mindestens 5 Jahre vorhanden
+    OR (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
   );
 
 DROP VIEW IF EXISTS views.v_exportevab_ort CASCADE;
@@ -4504,19 +4508,23 @@ FROM
       ON apflora.pop."PopId" = apflora.tpop."PopId")
     ON apflora.ap."ApArtId" = apflora.pop."ApArtId"
 WHERE
+  -- keine Testarten
   apflora.ap."ApArtId" > 150
+  -- nur Kontrollen, deren Teilpopulationen Koordinaten besitzen
   AND apflora.tpop."TPopXKoord" IS NOT NULL
   AND apflora.tpop."TPopYKoord" IS NOT NULL
   AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
+  -- keine Ansaatversuche
   AND apflora.tpop."TPopHerkunft" <> 201
+  -- nur wenn Kontrolljahr existiert
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  -- nur wenn erfasst ist, seit wann die TPop bekannt ist
   AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
   AND (
-    (
-      apflora.tpop."TPopBekanntSeit" IS NOT NULL
-      AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
-    )
-    OR apflora.tpop."TPopHerkunft" IN (100, 101)
+    -- die Teilpopulation ist ursprünglich
+    apflora.tpop."TPopHerkunft" IN (100, 101)
+    -- oder bei Ansiedlungen: die Art war mindestens 5 Jahre vorhanden
+    OR (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
   )
 GROUP BY
   apflora.pop."PopGuid",
@@ -4586,19 +4594,23 @@ FROM
       ON apflora.pop."PopId" = apflora.tpop."PopId")
     ON apflora.ap."ApArtId" = apflora.pop."ApArtId"
 WHERE
+  -- keine Testarten
   apflora.ap."ApArtId" > 150
+  -- nur Kontrollen, deren Teilpopulationen Koordinaten besitzen
   AND apflora.tpop."TPopXKoord" IS NOT NULL
   AND apflora.tpop."TPopYKoord" IS NOT NULL
   AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
+  -- keine Ansaatversuche
   AND apflora.tpop."TPopHerkunft" <> 201
+  -- nur wenn Kontrolljahr existiert
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  -- nur wenn erfasst ist, seit wann die TPop bekannt ist
   AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
   AND (
-    (
-      apflora.tpop."TPopBekanntSeit" IS NOT NULL
-      AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
-    )
-    OR apflora.tpop."TPopHerkunft" IN (100, 101)
+    -- die Teilpopulation ist ursprünglich
+    apflora.tpop."TPopHerkunft" IN (100, 101)
+    -- oder bei Ansiedlungen: die Art war mindestens 5 Jahre vorhanden
+    OR (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
   )
 GROUP BY
   apflora.ap."ApGuid",
@@ -4665,19 +4677,23 @@ FROM
       ON apflora.pop."PopId" = apflora.tpop."PopId")
     ON apflora.ap."ApArtId" = apflora.pop."ApArtId"
 WHERE
+  -- keine Testarten
   apflora.ap."ApArtId" > 150
+  -- nur Kontrollen, deren Teilpopulationen Koordinaten besitzen
   AND apflora.tpop."TPopXKoord" IS NOT NULL
   AND apflora.tpop."TPopYKoord" IS NOT NULL
   AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
+  -- keine Ansaatversuche
   AND apflora.tpop."TPopHerkunft" <> 201
+  -- nur wenn Kontrolljahr existiert
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  -- nur wenn erfasst ist, seit wann die TPop bekannt ist
   AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
   AND (
-    (
-      apflora.tpop."TPopBekanntSeit" IS NOT NULL
-      AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
-    )
-    OR apflora.tpop."TPopHerkunft" IN (100, 101)
+    -- die Teilpopulation ist ursprünglich
+    apflora.tpop."TPopHerkunft" IN (100, 101)
+    -- oder bei Ansiedlungen: die Art war mindestens 5 Jahre vorhanden
+    OR (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
   )
 GROUP BY
   beob.adb_eigenschaften."Artname",

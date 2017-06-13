@@ -2397,18 +2397,19 @@ SELECT
   18 AS fkArtgruppe,
   1 AS fkAA1,
   /*
-  Status in EvAB (offizielle Ansiedlung / inoffiziell): Abfrage muss kontrollieren, ob Ansiedlung besteht:
-  - Ansiedlung besteht:
-    6 (R) (Offizielle Wiederansiedlung/Populationsverstärkung (Herkunft bekannt))
-  - Status < 200 (= ursprünglich) und keine Ansiedlung:
+  Status in EvAB (offizielle Ansiedlung / inoffiziell)::
+  - Status ist ursprünglich (< 200):
     4 (N) (Natürliches Vorkommen (indigene Arten) oder eingebürgertes Vorkommen (Neophyten))
-  - Status >= 200(= angesiedelt) und keine Ansiedlung und Status unklar:
+  - Vor der Kontrolle existiert eine Ansiedlung:
+    6 (R) (Offizielle Wiederansiedlung/Populationsverstärkung (Herkunft bekannt))
+  - Status ist angesiedelt (>= 200), es gibt keine Ansiedlung und Status ist unklar:
     3 (I) (Herkunft unklar, Verdacht auf Ansiedlung/Ansalbung,Einsaat/Anpflanzung oder sonstwie anthropogen unterstütztes Auftreten)
     Ideal wäre: Neues Feld Herkunft uklar, Anwesenheit unklar. Hier nur Herkunft berücksichtigen
-  - Status  >= 200 (= angesiedelt) und keine Ansiedlung und Status klar:
+  - Status ist angesiedelt (>= 200), es gibt keine Ansiedlung und Status ist klar:
     5 (O) (Inoffizielle Ansiedlung (offensichtlich gepflanzt/angesalbt oder eingesät, Herkunft unbekannt))
   */
    CASE
+    WHEN apflora.tpop."TPopHerkunft" < 200 THEN 4
     WHEN EXISTS(
       SELECT
         apflora.tpopmassn."TPopId"
@@ -2417,9 +2418,8 @@ SELECT
       WHERE
         apflora.tpopmassn."TPopId" = apflora.tpopkontr."TPopId"
         AND apflora.tpopmassn."TPopMassnTyp" BETWEEN 1 AND 3
-        AND apflora.tpopmassn."TPopMassnJahr" < apflora.tpopkontr."TPopKontrJahr"
+        AND apflora.tpopmassn."TPopMassnJahr" <= apflora.tpopkontr."TPopKontrJahr"
     ) THEN 6
-    WHEN apflora.tpop."TPopHerkunft" < 200 THEN 4
     WHEN apflora.tpop."TPopHerkunftUnklar" = 1 THEN 3
     ELSE 5
   END AS "fkAAINTRODUIT",
@@ -2452,6 +2452,9 @@ SELECT
   apflora.tpopkontr."TPopKontrGefaehrdung" AS "MENACES",
   substring(apflora.tpopkontr."TPopKontrVitalitaet" from 1 for 200) AS "VITALITE_PLANTE",
   substring(apflora.tpop."TPopBeschr" from 1 for 244) AS "STATION",
+  /*
+   * Zählungen auswerten für ABONDANCE
+   */
   substring(
     concat(
       'Anzahlen: ',
@@ -2464,6 +2467,9 @@ SELECT
     from 1 for 160
   ) AS "ABONDANCE",
   'C' AS "EXPERTISE_INTRODUIT",
+  /*
+   * AP-Verantwortliche oder topos als EXPERTISE_INTRODUITE_NOM setzen
+   */
   CASE
     WHEN "tblAdresse_2"."EvabIdPerson" IS NOT NULL
     THEN "tblAdresse_2"."AdrName"
@@ -2499,19 +2505,23 @@ FROM
       ON apflora.pop."PopId" = apflora.tpop."PopId")
     ON apflora.ap."ApArtId" = apflora.pop."ApArtId"
 WHERE
+  -- keine Testarten
   apflora.ap."ApArtId" > 150
+  -- nur Kontrollen, deren Teilpopulationen Koordinaten besitzen
   AND apflora.tpop."TPopXKoord" IS NOT NULL
   AND apflora.tpop."TPopYKoord" IS NOT NULL
   AND apflora.tpopkontr."TPopKontrTyp" IN ('Ausgangszustand', 'Zwischenbeurteilung', 'Freiwilligen-Erfolgskontrolle')
+  -- keine Ansaatversuche
   AND apflora.tpop."TPopHerkunft" <> 201
+  -- nur wenn Kontrolljahr existiert
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  -- nur wenn erfasst ist, seit wann die TPop bekannt ist
   AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
   AND (
-    (
-      apflora.tpop."TPopBekanntSeit" IS NOT NULL
-      AND (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
-    )
-    OR apflora.tpop."TPopHerkunft" IN (100, 101)
+    -- die Teilpopulation ist ursprünglich
+    apflora.tpop."TPopHerkunft" IN (100, 101)
+    -- oder bei Ansiedlungen: die Art war mindestens 5 Jahre vorhanden
+    OR (apflora.tpopkontr."TPopKontrJahr" - apflora.tpop."TPopBekanntSeit") > 5
   )
 GROUP BY
   apflora.tpopkontr."ZeitGuid",
