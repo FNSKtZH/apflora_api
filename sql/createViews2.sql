@@ -2515,6 +2515,8 @@ WHERE
   AND apflora.tpop."TPopHerkunft" <> 201
   -- nur wenn Kontrolljahr existiert
   AND apflora.tpopkontr."TPopKontrJahr" IS NOT NULL
+  -- keine Kontrollen aus dem aktuellen Jahr - die wurden ev. noch nicht verifiziert
+  AND apflora.tpopkontr."TPopKontrJahr" <> date_part('year', CURRENT_DATE)
   -- nur wenn erfasst ist, seit wann die TPop bekannt ist
   AND apflora.tpop."TPopBekanntSeit" IS NOT NULL
   AND (
