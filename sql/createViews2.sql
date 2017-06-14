@@ -2397,7 +2397,7 @@ SELECT
   18 AS fkArtgruppe,
   1 AS fkAA1,
   /*
-  Status in EvAB (offizielle Ansiedlung / inoffiziell)::
+  Status in EvAB (offizielle Ansiedlung / inoffiziell):
   - Status ist ursprünglich (< 200):
     4 (N) (Natürliches Vorkommen (indigene Arten) oder eingebürgertes Vorkommen (Neophyten))
   - Vor der Kontrolle existiert eine Ansiedlung:
