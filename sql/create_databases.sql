@@ -2,7 +2,7 @@ CREATE DATABASE apflora encoding 'UTF8';
 CREATE SCHEMA apflora;
 CREATE SCHEMA views;
 CREATE SCHEMA beob;
-CREATE EXTENSION pgcrypto;
+-- CREATE EXTENSION pgcrypto;
 CREATE EXTENSION "uuid-ossp";
 
 -- create role reader in pgAdmin, then:
