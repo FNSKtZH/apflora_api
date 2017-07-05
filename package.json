@@ -5,12 +5,12 @@
   "main": "server.js",
   "dependencies": {
     "ampersand-app": "2.0.0",
-    "boom": "4.3.1",
+    "boom": "5.1.0",
     "dateformat": "2.0.0",
-    "hapi": "16.1.1",
+    "hapi": "16.4.3",
     "inert": "4.2.0",
-    "joi": "10.5.0",
-    "json2csv": "3.7.3",
+    "joi": "10.6.0",
+    "json2csv": "3.8.0",
     "json2xls": "0.1.2",
     "lodash": "4.17.4",
     "pg-promise": "5.7.1",
@@ -53,13 +53,7 @@
     "type": "git",
     "url": "git://github.com/FNSKtZH/apflora_api.git"
   },
-  "keywords": [
-    "apflora",
-    "aktionsplan",
-    "flora",
-    "species",
-    "conservation"
-  ],
+  "keywords": ["apflora", "aktionsplan", "flora", "species", "conservation"],
   "author": "Alexander Gabriel",
   "license": "ISC",
   "bugs": {
