@@ -23,7 +23,7 @@
     "babel-eslint": "7.2.3",
     "code": "4.1.0",
     "cross-env": "5.0.1",
-    "del": "2.2.2",
+    "del": "3.0.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.6.1",
@@ -32,10 +32,10 @@
     "gulp": "3.9.1",
     "gulp-sftp": "0.1.5",
     "inject-then": "2.0.9",
-    "lab": "13.1.0",
+    "lab": "14.1.0",
     "nodemon": "1.11.0",
-    "require-dir": "0.3.1",
-    "run-sequence": "1.2.2"
+    "require-dir": "0.3.2",
+    "run-sequence": "2.0.0"
   },
   "scripts": {
     "dev": "npm run lint && npm test && cross-env NODE_ENV=development nodemon startServer.js",
