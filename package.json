@@ -5,15 +5,15 @@
   "main": "server.js",
   "dependencies": {
     "ampersand-app": "2.0.0",
-    "boom": "5.1.0",
+    "boom": "5.2.0",
     "dateformat": "2.0.0",
-    "hapi": "16.4.3",
-    "inert": "4.2.0",
+    "hapi": "16.5.2",
+    "inert": "4.2.1",
     "joi": "10.6.0",
-    "json2csv": "3.8.0",
+    "json2csv": "3.11.1",
     "json2xls": "0.1.2",
     "lodash": "4.17.4",
-    "pg-promise": "6.3.1",
+    "pg-promise": "6.5.1",
     "pg-pubsub": "0.3.0",
     "request": "2.81.0",
     "socket.io": "2.0.3",
@@ -22,7 +22,7 @@
   "devDependencies": {
     "babel-eslint": "7.2.3",
     "code": "4.1.0",
-    "cross-env": "5.0.1",
+    "cross-env": "5.0.5",
     "del": "3.0.0",
     "eslint": "^4.3.0",
     "eslint-config-airbnb": "^15.1.0",
@@ -32,10 +32,10 @@
     "gulp": "3.9.1",
     "gulp-sftp": "0.1.5",
     "inject-then": "2.0.9",
-    "lab": "14.1.0",
+    "lab": "14.2.0",
     "nodemon": "1.11.0",
     "require-dir": "0.3.2",
-    "run-sequence": "2.0.0"
+    "run-sequence": "2.1.0"
   },
   "scripts": {
     "dev": "npm run lint && npm test && cross-env NODE_ENV=development nodemon startServer.js",
