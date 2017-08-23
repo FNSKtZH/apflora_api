@@ -7,7 +7,7 @@
 'use strict'
 
 module.exports = (string) => {
-  if (string && typeof string === `string`) {  // eslint-disable-line valid-typeof
+  if (string && typeof string === `string`) { // eslint-disable-line valid-typeof
     return string
       .replace(/&/g, `und`)
       .replace(/>>>/g, ` `)

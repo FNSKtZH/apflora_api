@@ -8,8 +8,8 @@ module.exports = (request, callback) => {
   const apId = escapeStringForSql(request.params.apId)
   const sql = (
     apId ?
-    `SELECT * FROM views.${view} WHERE "ApArtId" = ${apId}` :
-    `SELECT * FROM views.${view}`
+      `SELECT * FROM views.${view} WHERE "ApArtId" = ${apId}` :
+      `SELECT * FROM views.${view}`
   )
 
   app.db.any(sql)

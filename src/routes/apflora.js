@@ -72,7 +72,7 @@ module.exports = [
   },
   {
     method: `PUT`,
-    path: `/update/apflora/tabelle={tabelle}/tabelleIdFeld={tabelleIdFeld}/tabelleId={tabelleId}/feld={feld}/wert={wert?}/user={user}`,  // eslint-disable-line max-len
+    path: `/update/apflora/tabelle={tabelle}/tabelleIdFeld={tabelleIdFeld}/tabelleId={tabelleId}/feld={feld}/wert={wert?}/user={user}`, // eslint-disable-line max-len
     handler: queryTabelleUpdateApflora,
     config: {
       validate: {

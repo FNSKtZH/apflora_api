@@ -94,14 +94,14 @@ module.exports = (request, callback) => {
         if (maxLen) {
           const validDataType2 = Joi.validate(
             value,
-              Joi.alternatives()
-                .try(
-                  Joi.string()
-                    .max(maxLen),
-                  Joi.number()
-                )
-                .allow(``)
-                .allow(null)
+            Joi.alternatives()
+              .try(
+                Joi.string()
+                  .max(maxLen),
+                Joi.number()
+              )
+              .allow(``)
+              .allow(null)
           )
           if (validDataType2.error) {
             return callback(Boom.badRequest(`Der Wert '${value}' ist zu lang für das Feld '${field}'. Erlaubt sind ${maxLen} Zeichen`))

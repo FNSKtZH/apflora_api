@@ -42,7 +42,7 @@ module.exports = (request, callback) => {
     let feldwert = wert
     if (feldwert || feldwert === 0) {
       // in Zeichenfeldern Anführungszeichen eliminieren!
-      if (typeof feldwert === `string`) {  // eslint-disable-line valid-typeof
+      if (typeof feldwert === `string`) { // eslint-disable-line valid-typeof
         feldwert = feldwert.replace(`"`, ``)
       }
       sql += `, "${feldname}" = '${feldwert}'`
