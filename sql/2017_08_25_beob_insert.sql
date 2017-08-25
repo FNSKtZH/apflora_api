@@ -94,3 +94,6 @@ SELECT
     d)
   ) AS data
 FROM beob.beob_floz;
+
+-- remove beob_floz
+DROP TABLE IF EXISTS beob.beob_floz;
