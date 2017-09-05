@@ -17,7 +17,10 @@ module.exports = (request, callback) => {
   const tabelleIdFeld = escapeStringForSql(request.params.tabelleIdFeld) // der Name der ID der Tabelle
   const tabelleId = escapeStringForSql(request.params.tabelleId) // der Wert der ID
   const feld = escapeStringForSql(request.params.feld) // der Name des Felds, dessen Daten gespeichert werden sollen
-  let wert = escapeStringForSql(request.params.wert) // der Wert, der gespeichert werden soll
+  let wert =
+    request.payload && request.payload.wert
+      ? request.payload.wert
+      : request.params.wert // der Wert, der gespeichert werden soll
   const user = escapeStringForSql(request.params.user) // der Benutzername
   const date = new Date().toISOString() // wann gespeichert wird
   const table = _.find(config.tables, { tabelleInDb: tabelle }) // Infos über die Tabelle holen
@@ -43,35 +46,39 @@ module.exports = (request, callback) => {
             .allow(null)
         )
         if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'integer' des Felds '${field}'`))
+          return callback(
+            Boom.badRequest(
+              `Der Wert '${value}' entspricht nicht dem Datentyp 'integer' des Felds '${field}'`
+            )
+          )
         }
         break
       }
       case `smallint`: {
         const validDataType = Joi.validate(
           value,
-          Joi.number()
-            .integer()
-            .min(-32768)
-            .max(+32767)
-            .allow(``)
-            .allow(null)
+          Joi.number().integer().min(-32768).max(+32767).allow(``).allow(null)
         )
         if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'integer' des Felds '${field}'`))
+          return callback(
+            Boom.badRequest(
+              `Der Wert '${value}' entspricht nicht dem Datentyp 'integer' des Felds '${field}'`
+            )
+          )
         }
         break
       }
       case `double precision`: {
         const validDataType = Joi.validate(
           value,
-          Joi.number()
-            .precision(15)
-            .allow(``)
-            .allow(null)
+          Joi.number().precision(15).allow(``).allow(null)
         )
         if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${value}' im Feld '${field}' muss eine Nummer sein`))
+          return callback(
+            Boom.badRequest(
+              `Der Wert '${value}' im Feld '${field}' muss eine Nummer sein`
+            )
+          )
         }
         break
       }
@@ -79,15 +86,16 @@ module.exports = (request, callback) => {
         const validDataType = Joi.validate(
           value,
           Joi.alternatives()
-            .try(
-              Joi.number(),
-              Joi.string()
-            )
+            .try(Joi.number(), Joi.string())
             .allow(``)
             .allow(null)
         )
         if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'character varying' des Felds '${field}'`))
+          return callback(
+            Boom.badRequest(
+              `Der Wert '${value}' entspricht nicht dem Datentyp 'character varying' des Felds '${field}'`
+            )
+          )
         }
         // - if field type is varchar: check if value length complies to character_maximum_length
         const maxLen = dataTypes[0].character_maximum_length
@@ -95,16 +103,16 @@ module.exports = (request, callback) => {
           const validDataType2 = Joi.validate(
             value,
             Joi.alternatives()
-              .try(
-                Joi.string()
-                  .max(maxLen),
-                Joi.number()
-              )
+              .try(Joi.string().max(maxLen), Joi.number())
               .allow(``)
               .allow(null)
           )
           if (validDataType2.error) {
-            return callback(Boom.badRequest(`Der Wert '${value}' ist zu lang für das Feld '${field}'. Erlaubt sind ${maxLen} Zeichen`))
+            return callback(
+              Boom.badRequest(
+                `Der Wert '${value}' ist zu lang für das Feld '${field}'. Erlaubt sind ${maxLen} Zeichen`
+              )
+            )
           }
         }
         break
@@ -112,25 +120,28 @@ module.exports = (request, callback) => {
       case `uuid`: {
         const validDataType = Joi.validate(
           value,
-          Joi.string()
-            .guid()
-            .allow(``)
-            .allow(null)
+          Joi.string().guid().allow(``).allow(null)
         )
         if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'uuid' des Felds '${field}'`))
+          return callback(
+            Boom.badRequest(
+              `Der Wert '${value}' entspricht nicht dem Datentyp 'uuid' des Felds '${field}'`
+            )
+          )
         }
         break
       }
       case `date`: {
         const validDataType = Joi.validate(
           value,
-          Joi.string()
-            .allow(``)
-            .allow(null)
+          Joi.string().allow(``).allow(null)
         )
         if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'date' des Felds '${field}'`))
+          return callback(
+            Boom.badRequest(
+              `Der Wert '${value}' entspricht nicht dem Datentyp 'date' des Felds '${field}'`
+            )
+          )
         }
         break
       }
@@ -138,20 +149,21 @@ module.exports = (request, callback) => {
         const validDataType = Joi.validate(
           value,
           Joi.alternatives()
-            .try(
-              Joi.number(),
-              Joi.string()
-            )
+            .try(Joi.number(), Joi.string())
             .allow(``)
             .allow(null)
         )
         if (validDataType.error) {
-          return callback(Boom.badRequest(`Der Wert '${value}' entspricht nicht dem Datentyp 'text' des Felds '${field}'`))
+          return callback(
+            Boom.badRequest(
+              `Der Wert '${value}' entspricht nicht dem Datentyp 'text' des Felds '${field}'`
+            )
+          )
         }
         break
       }
       default:
-        // do nothing
+      // do nothing
     }
   }
 
@@ -184,25 +196,34 @@ module.exports = (request, callback) => {
     // check felder to:
     // - check if this table exists in table_name
     const felderVonApflora = felder.filter(f => f.table_schema === `apflora`)
-    const felderDerTabelle = felderVonApflora.filter(f => f.table_name === tabelle)
+    const felderDerTabelle = felderVonApflora.filter(
+      f => f.table_name === tabelle
+    )
     if (felderDerTabelle.length === 0) {
       return callback(Boom.notFound(`Die Tabelle '${tabelle}' existiert nicht`))
     }
     // - check if this tabelleIdFeld exists in column_name
-    const datentypenDesIdFelds = felderDerTabelle.filter(f => f.column_name === tabelleIdFeld)
+    const datentypenDesIdFelds = felderDerTabelle.filter(
+      f => f.column_name === tabelleIdFeld
+    )
     if (datentypenDesIdFelds.length === 0) {
-      return callback(Boom.notFound(`Das Feld '${tabelleIdFeld}' existiert nicht`))
+      return callback(
+        Boom.notFound(`Das Feld '${tabelleIdFeld}' existiert nicht`)
+      )
     }
     // - check if the wert complies to data_type
     checkDatatype(datentypenDesIdFelds, tabelleIdFeld, tabelleId)
     // - check if feld exists in column_name
-    const datentypenDesFelds = felderDerTabelle.filter(f => f.column_name === feld)
+    const datentypenDesFelds = felderDerTabelle.filter(
+      f => f.column_name === feld
+    )
     if (datentypenDesFelds.length === 0) {
       return callback(Boom.notFound(`Das Feld '${feld}' existiert nicht`))
     }
     // - check if the wert complies to data_type
     checkDatatype(datentypenDesFelds, feld, wert)
-    app.db.any(sql)
+    app.db
+      .any(sql)
       .then(rows => callback(null, rows))
       .catch(err => callback(err, null))
   })
