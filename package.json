@@ -26,6 +26,7 @@
     "del": "3.0.0",
     "eslint": "^4.3.0",
     "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-prettier": "^2.4.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
@@ -56,7 +57,13 @@
     "type": "git",
     "url": "git://github.com/FNSKtZH/apflora_api.git"
   },
-  "keywords": ["apflora", "aktionsplan", "flora", "species", "conservation"],
+  "keywords": [
+    "apflora",
+    "aktionsplan",
+    "flora",
+    "species",
+    "conservation"
+  ],
   "author": "Alexander Gabriel",
   "license": "ISC",
   "bugs": {
