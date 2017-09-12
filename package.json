@@ -13,7 +13,7 @@
     "json2csv": "3.11.1",
     "json2xls": "0.1.2",
     "lodash": "4.17.4",
-    "pg-promise": "6.5.1",
+    "pg-promise": "6.5.2",
     "pg-pubsub": "0.3.0",
     "request": "2.81.0",
     "socket.io": "2.0.3"
@@ -45,7 +45,13 @@
     "type": "git",
     "url": "git://github.com/FNSKtZH/apflora_api.git"
   },
-  "keywords": ["apflora", "aktionsplan", "flora", "species", "conservation"],
+  "keywords": [
+    "apflora",
+    "aktionsplan",
+    "flora",
+    "species",
+    "conservation"
+  ],
   "author": "Alexander Gabriel",
   "license": "ISC",
   "bugs": {
