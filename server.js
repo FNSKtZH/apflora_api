@@ -18,11 +18,12 @@ const felder = require(`./src/handler/felder.js`)
 const isDev = process.env.NODE_ENV !== `production`
 // wird nur in Entwicklung genutzt
 // in new Hapi.Server() einsetzen
-const serverOptionsDevelopment = { // eslint-disable-line no-unused-vars
+const serverOptionsDevelopment = {
+  // eslint-disable-line no-unused-vars
   debug: {
     log: [`error`],
-    request: [`error`]
-  }
+    request: [`error`],
+  },
 }
 const serverOptionsProduction = {}
 const serverOptions = isDev ? serverOptionsDevelopment : serverOptionsProduction
@@ -36,7 +37,7 @@ server.connection(dbConnection())
 // because when testing directory handler produces an error
 const routes = require(`./src/routes`).concat(require(`./src/nonQueryRoutes`))
 
-server.register([Inert, InjectThen], (err) => {
+server.register([Inert, InjectThen], err => {
   if (err) console.log(`failed loading plugins`) // eslint-disable-line no-console
 
   // add all the routes
@@ -45,7 +46,7 @@ server.register([Inert, InjectThen], (err) => {
   app.extend({
     init() {
       this.db = pgp(config.pgp.connectionString)
-    }
+    },
   })
   app.init()
 })
@@ -55,28 +56,33 @@ const minute = 60 * second
 server.method(`felder`, felder, {
   cache: {
     expiresIn: 60 * 12 * minute,
-    generateTimeout: 100
-  }
+    generateTimeout: 100,
+  },
 })
 
 // make server accessible from handlers
 app.extend({
   init() {
     this.server = server
-  }
+  },
 })
 app.init()
 
+// TODO: get to work
+// turned off 2017.09.15 because did not work
+// and seemed to cause problems
+/*
 const io = socketIo(server.listener)
 const sockets = []
 io.on(`connection`, (socket) => {
   sockets.push(socket)
   socket.emit(`connected`, { connected: true })
 })
+*/
 
 // create pub sub channel
 const pubsubInstance = new PGPubsub(config.pgp.connectionString)
-pubsubInstance.addChannel(`tabelle_update`, (payload) => {
+pubsubInstance.addChannel(`tabelle_update`, payload => {
   // inform all socket connections of this change
   sockets.forEach(s => s.emit(`tabelle_update`, payload))
 })
