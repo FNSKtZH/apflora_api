@@ -81,10 +81,13 @@ io.on(`connection`, (socket) => {
 */
 
 // create pub sub channel
+// turned off because of problems with socket.io
+/*
 const pubsubInstance = new PGPubsub(config.pgp.connectionString)
 pubsubInstance.addChannel(`tabelle_update`, payload => {
   // inform all socket connections of this change
   sockets.forEach(s => s.emit(`tabelle_update`, payload))
 })
+*/
 
 module.exports = server
