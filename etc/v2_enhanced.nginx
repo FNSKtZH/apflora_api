@@ -37,9 +37,10 @@ server {
     text/x-cross-domain-policy;
     # text/html is always compressed by gzip module
 
-    location ~*  \.(jpg|jpeg|png|gif|ico|css|js|pdf)$ {
-        expires 7d;
-    }
+    # this leads to blank pages!!!???
+    # location ~*  \.(jpg|jpeg|png|gif|ico|css|js|pdf)$ {
+    #     expires 7d;
+    # }
 
     return 301 https://$host$request_uri;
 }
@@ -84,9 +85,10 @@ server {
     text/x-cross-domain-policy;
     # text/html is always compressed by gzip module
 
-    location ~*  \.(jpg|jpeg|png|gif|ico|css|js|pdf)$ {
-        expires 7d;
-    }
+    # this leads to blank pages!!!???
+    # location ~*  \.(jpg|jpeg|png|gif|ico|css|js|pdf)$ {
+    #     expires 7d;
+    # }
 
     # Use the Let’s Encrypt certificates
     ssl_certificate /etc/letsencrypt/live/apflora.ch/fullchain.pem;
