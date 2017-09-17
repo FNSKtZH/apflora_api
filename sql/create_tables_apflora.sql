@@ -827,7 +827,7 @@ CREATE INDEX ON apflora.tpopmassnber USING btree ("TPopMassnBerJahr");
 DROP TABLE IF EXISTS apflora.user;
 CREATE TABLE apflora.user (
   "UserId" SERIAL PRIMARY KEY,
-  "UserName" varchar(30) NOT NULL,
+  "UserName" varchar(30) NOT NULL UNIQUE,
   "Passwort" text NOT NULL,
   "NurLesen" smallint DEFAULT '-1'
 );
@@ -837,21 +837,25 @@ COMMENT ON COLUMN apflora."user"."UserName" IS 'Username';
 COMMENT ON COLUMN apflora."user"."Passwort" IS 'Passwort';
 COMMENT ON COLUMN apflora."user"."NurLesen" IS 'Hier -1 setzen, wenn ein User keine Daten ändern darf';
 
-DROP TABLE IF EXISTS message;
+DROP TABLE IF EXISTS apflora.message CASCADE;
 CREATE TABLE apflora.message (
   "id" SERIAL PRIMARY KEY,
-  "message" smallint DEFAULT NULL,
-  "date" date NOT NULL DEFAULT CURRENT_DATE
+  "message" text NOT NULL,
+  "date" date NOT NULL DEFAULT CURRENT_DATE,
+  -- active is used to prevent to many datasets fro being fetched
+  -- old messages can be set inactive, expecially if read by all
+  "active" boolean NOT NULL DEFAULT 'true'
 );
 COMMENT ON COLUMN apflora.message."message" IS 'Nachricht an die Benutzer';
 
+-- list of read messages per user
 DROP TABLE IF EXISTS apflora.usermessage;
 CREATE TABLE apflora.usermessage (
-  "UserId" integer REFERENCES apflora.user ("UserId") ON DELETE CASCADE ON UPDATE CASCADE,
-  "MessageId" integer REFERENCES apflora.message ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-  "read" boolean NOT NULL DEFAULT 'false'
+  "UserName" varchar(30) NOT NULL REFERENCES apflora.user ("UserName") ON DELETE CASCADE ON UPDATE CASCADE,
+  "MessageId" integer NOT NULL REFERENCES apflora.message ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+  UNIQUE ("UserName", "MessageId")
 );
-CREATE INDEX ON apflora.usermessage USING btree ("UserId", "MessageId");
+CREATE INDEX ON apflora.usermessage USING btree ("UserName", "MessageId");
 
 DROP TABLE IF EXISTS apflora.ziel;
 CREATE TABLE apflora.ziel (
