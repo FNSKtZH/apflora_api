@@ -9,7 +9,6 @@ COMMENT ON COLUMN apflora._variable."ApArtId" IS 'Von Access aus eine Art wähle
 CREATE INDEX ON apflora._variable USING btree ("JBerJahr");
 CREATE INDEX ON apflora._variable USING btree ("ApArtId");
 
-
 DROP TABLE IF EXISTS adresse;
 CREATE TABLE apflora.adresse (
   "AdrId" SERIAL PRIMARY KEY,
@@ -837,6 +836,22 @@ COMMENT ON COLUMN apflora."user"."UserId" IS 'Primärschlüssel der Tabelle "use
 COMMENT ON COLUMN apflora."user"."UserName" IS 'Username';
 COMMENT ON COLUMN apflora."user"."Passwort" IS 'Passwort';
 COMMENT ON COLUMN apflora."user"."NurLesen" IS 'Hier -1 setzen, wenn ein User keine Daten ändern darf';
+
+DROP TABLE IF EXISTS message;
+CREATE TABLE apflora.message (
+  "id" SERIAL PRIMARY KEY,
+  "message" smallint DEFAULT NULL,
+  "date" date NOT NULL DEFAULT CURRENT_DATE
+);
+COMMENT ON COLUMN apflora.message."message" IS 'Nachricht an die Benutzer';
+
+DROP TABLE IF EXISTS apflora.usermessage;
+CREATE TABLE apflora.usermessage (
+  "UserId" integer REFERENCES apflora.user ("UserId") ON DELETE CASCADE ON UPDATE CASCADE,
+  "MessageId" integer REFERENCES apflora.message ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+  "read" boolean NOT NULL DEFAULT 'false'
+);
+CREATE INDEX ON apflora.usermessage USING btree ("UserId", "MessageId");
 
 DROP TABLE IF EXISTS apflora.ziel;
 CREATE TABLE apflora.ziel (
