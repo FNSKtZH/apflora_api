@@ -489,3 +489,23 @@ FOREIGN KEY ("Methode")
 REFERENCES apflora.tpopkontrzaehl_methode_werte ("BeurteilCode")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
+
+DELETE FROM apflora.userprojekt
+WHERE "UserId" NOT IN (
+  SELECT "UserId"
+  FROM apflora.user
+);
+
+ALTER TABLE apflora.userprojekt
+ADD CONSTRAINT userprojekt_fk_projekt
+FOREIGN KEY ("ProjId")
+REFERENCES apflora.projekt ("ProjId")
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+ALTER TABLE apflora.userprojekt
+ADD CONSTRAINT userprojekt_fk_user
+FOREIGN KEY ("UserId")
+REFERENCES apflora.user ("UserId")
+ON DELETE CASCADE
+ON UPDATE CASCADE;
