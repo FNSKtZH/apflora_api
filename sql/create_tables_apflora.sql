@@ -841,7 +841,7 @@ DROP TABLE IF EXISTS apflora.message CASCADE;
 CREATE TABLE apflora.message (
   "id" SERIAL PRIMARY KEY,
   "message" text NOT NULL,
-  "date" date NOT NULL DEFAULT CURRENT_DATE,
+  "time" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   -- active is used to prevent to many datasets fro being fetched
   -- old messages can be set inactive, expecially if read by all
   "active" boolean NOT NULL DEFAULT 'true'
