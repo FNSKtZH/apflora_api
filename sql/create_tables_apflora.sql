@@ -393,9 +393,9 @@ COMMENT ON COLUMN apflora.pop_status_werte."MutWer" IS 'Von wem wurde der Datens
 DROP TABLE IF EXISTS apflora.popber;
 CREATE TABLE apflora.popber (
   "PopBerId" SERIAL PRIMARY KEY,
-  "PopId" integer DEFAULT NULL,
+  "PopId" integer DEFAULT NULL REFERENCES apflora.pop ("PopId") ON DELETE CASCADE ON UPDATE CASCADE,
   "PopBerJahr" smallint DEFAULT NULL,
-  "PopBerEntwicklung" integer DEFAULT NULL,
+  "PopBerEntwicklung" integer DEFAULT NULL REFERENCES apflora.pop_entwicklung_werte ("EntwicklungId") ON DELETE SET NULL ON UPDATE CASCADE,
   "PopBerTxt" text,
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
