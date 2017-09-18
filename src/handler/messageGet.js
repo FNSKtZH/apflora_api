@@ -3,7 +3,6 @@
 const app = require(`ampersand-app`)
 
 module.exports = (request, callback) => {
-  const id = encodeURIComponent(request.params.id)
   const sql = `
     SELECT
       *
@@ -13,7 +12,7 @@ module.exports = (request, callback) => {
       apflora.message.active = 'true'`
 
   app.db
-    .many(sql, id)
+    .many(sql)
     .then(rows => callback(null, rows))
     .catch(error => callback(error, null))
 }
