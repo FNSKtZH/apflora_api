@@ -185,8 +185,8 @@ ALTER TABLE apflora.apberuebersicht ADD CONSTRAINT apberuebersicht_proj_jahr_pk 
 DROP TABLE IF EXISTS apflora.assozart;
 CREATE TABLE apflora.assozart (
   "AaId" SERIAL PRIMARY KEY,
-  "AaApArtId" integer DEFAULT NULL,
-  "AaSisfNr" integer DEFAULT NULL,
+  "AaApArtId" integer DEFAULT NULL REFERENCES apflora.ap ("ApArtId") ON DELETE CASCADE ON UPDATE CASCADE,
+  "AaSisfNr" integer DEFAULT NULL REFERENCES beob.adb_eigenschaften ("TaxonomieId") ON DELETE SET NULL ON UPDATE CASCADE,
   "AaBem" text,
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
@@ -258,8 +258,8 @@ SELECT setval(pg_get_serial_sequence('apflora.ber', 'BerId'), coalesce(max("BerI
 DROP TABLE IF EXISTS apflora.erfkrit;
 CREATE TABLE apflora.erfkrit (
   "ErfkritId" SERIAL PRIMARY KEY,
-  "ApArtId" integer NOT NULL DEFAULT '0',
-  "ErfkritErreichungsgrad" integer DEFAULT NULL,
+  "ApArtId" integer NOT NULL DEFAULT '0' REFERENCES apflora.ap ("ApArtId") ON DELETE CASCADE ON UPDATE CASCADE,
+  "ErfkritErreichungsgrad" integer DEFAULT NULL REFERENCES apflora.ap_erfkrit_werte ("BeurteilId") ON DELETE SET NULL ON UPDATE CASCADE,
   "ErfkritTxt" text DEFAULT NULL,
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
@@ -283,7 +283,7 @@ CREATE INDEX ON apflora.gemeinde USING btree ("GmdName");
 
 DROP TABLE IF EXISTS apflora.idealbiotop;
 CREATE TABLE apflora.idealbiotop (
-  "IbApArtId" integer UNIQUE DEFAULT '0',
+  "IbApArtId" integer UNIQUE DEFAULT '0' REFERENCES apflora.ap ("IbApArtId") ON DELETE CASCADE ON UPDATE CASCADE,
   "IbErstelldatum" date DEFAULT NULL,
   "IbHoehenlage" text,
   "IbRegion" text,
@@ -860,8 +860,8 @@ CREATE INDEX ON apflora.usermessage USING btree ("UserName", "MessageId");
 DROP TABLE IF EXISTS apflora.ziel;
 CREATE TABLE apflora.ziel (
   "ZielId" SERIAL PRIMARY KEY,
-  "ApArtId" integer NOT NULL,
-  "ZielTyp" integer DEFAULT NULL,
+  "ApArtId" integer NOT NULL REFERENCES apflora.ap ("ApArtId") ON DELETE CASCADE ON UPDATE CASCADE,
+  "ZielTyp" integer DEFAULT NULL REFERENCES apflora.ziel_typ_werte ("ZieltypId") ON DELETE SET NULL ON UPDATE CASCADE,
   "ZielJahr" smallint DEFAULT NULL,
   "ZielBezeichnung" text,
   "MutWann" date DEFAULT NULL,
