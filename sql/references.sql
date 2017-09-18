@@ -378,31 +378,6 @@ REFERENCES apflora.tpopmassn_erfbeurt_werte ("BeurteilId")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
 
--- beobzuordnung
-
-update apflora.beobzuordnung
-set "TPopId" = NULL where "TPopId" not in (select "TPopId" from apflora.tpop);
-
-ALTER TABLE apflora.beobzuordnung
-DROP CONSTRAINT IF EXISTS beobzuordnung_fk_tpop;
-
-ALTER TABLE apflora.beobzuordnung
-ADD CONSTRAINT beobzuordnung_fk_tpop
-FOREIGN KEY ("TPopId")
-REFERENCES apflora.tpop
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
-ALTER TABLE apflora.beobzuordnung
-DROP CONSTRAINT IF EXISTS beobzuordnung_fk_beob_quelle;
-
-ALTER TABLE apflora.beobzuordnung
-ADD CONSTRAINT beobzuordnung_fk_beob_quelle
-FOREIGN KEY ("QuelleId")
-REFERENCES beob.beob_quelle ("id")
-ON DELETE SET NULL
-ON UPDATE CASCADE;
-
 -- tpopkontr
 
 delete from apflora.tpopkontr where "TPopId" not in (select "TPopId" from apflora.tpop);

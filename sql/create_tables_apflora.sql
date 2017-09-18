@@ -203,8 +203,8 @@ SELECT setval(pg_get_serial_sequence('apflora.assozart', 'AaId'), coalesce(max("
 DROP TABLE IF EXISTS apflora.beobzuordnung;
 CREATE TABLE apflora.beobzuordnung (
   "BeobId" integer PRIMARY KEY,
-  "QuelleId" integer Default Null,
-  "TPopId" integer DEFAULT NULL,
+  "QuelleId" integer Default Null REFERENCES beob.beob_quelle ("id") ON DELETE SET NULL ON UPDATE CASCADE,
+  "TPopId" integer DEFAULT NULL REFERENCES apflora.tpop ("TPopId") ON DELETE CASCADE ON UPDATE CASCADE,
   "BeobNichtZuordnen" smallint DEFAULT NULL,
   "BeobBemerkungen" text,
   "BeobMutWann" date DEFAULT NULL,
