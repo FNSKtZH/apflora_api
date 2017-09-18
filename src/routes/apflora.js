@@ -2,7 +2,6 @@
 
 const Joi = require(`joi`)
 const queryTabelleDeleteApflora = require(`../handler/tabelleDeleteApflora.js`)
-const queryTabelleInsertApflora = require(`../handler/tabelleInsertApflora.js`)
 const queryTabelleInsertApfloraV3 = require(`../handler/tabelleInsertApfloraV3.js`)
 const queryTabelleInsertEmptyApflora = require(`../handler/tabelleInsertEmptyApflora.js`)
 const queryTabelleUpdateApflora = require(`../handler/tabelleUpdateApflora.js`)
@@ -19,30 +18,18 @@ module.exports = [
         params: {
           tabelle: Joi.string().required(),
           tabelleIdFeld: Joi.string().required(),
-          tabelleId: Joi.alternatives().try(
-            Joi.number().min(-2147483648).max(+2147483647),
-            Joi.string().guid()
-          ).required(),
-        }
-      }
-    }
+          tabelleId: Joi.alternatives()
+            .try(
+              Joi.number()
+                .min(-2147483648)
+                .max(+2147483647),
+              Joi.string().guid()
+            )
+            .required(),
+        },
+      },
+    },
   },
-  {
-    method: `POST`,
-    path: `/insert/apflora/tabelle={tabelle}/feld={feld}/wert={wert}/user={user}`,
-    handler: queryTabelleInsertApflora,
-    config: {
-      validate: {
-        params: {
-          tabelle: Joi.string().required(),
-          feld: Joi.string().required(),
-          wert: Joi.required(),
-          user: Joi.string().required(),
-        }
-      }
-    }
-  },
-  // this is for apf
   {
     method: `POST`,
     path: `/apflora/{tabelle}/{feld}/{wert}`,
@@ -53,9 +40,9 @@ module.exports = [
           tabelle: Joi.string().required(),
           feld: Joi.string().required(),
           wert: Joi.required(),
-        }
-      }
-    }
+        },
+      },
+    },
   },
   {
     method: `POST`,
@@ -66,9 +53,9 @@ module.exports = [
         params: {
           tabelle: Joi.string().required(),
           user: Joi.string().required(),
-        }
-      }
-    }
+        },
+      },
+    },
   },
   {
     method: `PUT`,
@@ -79,16 +66,20 @@ module.exports = [
         params: {
           tabelle: Joi.string().required(),
           tabelleIdFeld: Joi.string().required(),
-          tabelleId: Joi.alternatives().try(
-            Joi.number().min(-2147483648).max(+2147483647),
-            Joi.string()
-          ).required(),
+          tabelleId: Joi.alternatives()
+            .try(
+              Joi.number()
+                .min(-2147483648)
+                .max(+2147483647),
+              Joi.string()
+            )
+            .required(),
           feld: Joi.string().required(),
           wert: Joi.any(),
           user: Joi.string().required(),
-        }
-      }
-    }
+        },
+      },
+    },
   },
   {
     method: `GET`,
@@ -100,9 +91,9 @@ module.exports = [
           tabelle: Joi.string().required(),
           feld: Joi.string().required(),
           wert: Joi.required(),
-        }
-      }
-    }
+        },
+      },
+    },
   },
   {
     method: `GET`,
@@ -114,8 +105,8 @@ module.exports = [
           tabelle: Joi.string().required(),
           feld: Joi.string().required(),
           wert: Joi.required(),
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 ]
