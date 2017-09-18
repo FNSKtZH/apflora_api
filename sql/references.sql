@@ -378,41 +378,6 @@ REFERENCES apflora.tpopmassn_erfbeurt_werte ("BeurteilId")
 ON DELETE SET NULL
 ON UPDATE CASCADE;
 
--- tpopkontr
-
--- get rid of 0 values
-update apflora.tpopkontr set "TPopKontrBearb" = NULL where "TPopKontrBearb" = 0;
-
-ALTER TABLE apflora.tpopkontr
-DROP CONSTRAINT IF EXISTS tpopkontr_fk_adresse;
-
-ALTER TABLE apflora.tpopkontr
-ADD CONSTRAINT tpopkontr_fk_adresse
-FOREIGN KEY ("TPopKontrBearb")
-REFERENCES apflora.adresse ("AdrId")
-ON DELETE SET NULL
-ON UPDATE CASCADE;
-
-ALTER TABLE apflora.tpopkontr
-DROP CONSTRAINT IF EXISTS tpopkontr_fk_tpop_entwicklung_werte;
-
-ALTER TABLE apflora.tpopkontr
-ADD CONSTRAINT tpopkontr_fk_tpop_entwicklung_werte
-FOREIGN KEY ("TPopKontrEntwicklung")
-REFERENCES apflora.tpop_entwicklung_werte ("EntwicklungCode")
-ON DELETE SET NULL
-ON UPDATE CASCADE;
-
-ALTER TABLE apflora.tpopkontr
-DROP CONSTRAINT IF EXISTS tpopkontr_fk_tpopkontr_idbiotuebereinst_werte;
-
-ALTER TABLE apflora.tpopkontr
-ADD CONSTRAINT tpopkontr_fk_tpopkontr_idbiotuebereinst_werte
-FOREIGN KEY ("TPopKontrIdealBiotopUebereinst")
-REFERENCES apflora.tpopkontr_idbiotuebereinst_werte ("DomainCode")
-ON DELETE SET NULL
-ON UPDATE CASCADE;
-
 -- tpopkontrzaehl
 
 delete from apflora.tpopkontrzaehl where "TPopKontrId" not in (select "TPopKontrId" from apflora.tpopkontr);
