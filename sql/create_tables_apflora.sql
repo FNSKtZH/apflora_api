@@ -330,10 +330,10 @@ COMMENT ON COLUMN apflora.idealbiotop."MutWer" IS 'Wer hat den Datensatz zuletzt
 DROP TABLE IF EXISTS apflora.pop;
 CREATE TABLE apflora.pop (
   "PopId" SERIAL PRIMARY KEY,
-  "ApArtId" integer DEFAULT NULL,
+  "ApArtId" integer DEFAULT NULL REFERENCES apflora.ap ("ApArtId") ON DELETE CASCADE ON UPDATE CASCADE,
   "PopNr" integer DEFAULT NULL,
   "PopName" varchar(150) DEFAULT NULL,
-  "PopHerkunft" integer DEFAULT NULL,
+  "PopHerkunft" integer DEFAULT NULL REFERENCES apflora.pop_status_werte ("HerkunftId") ON DELETE SET NULL ON UPDATE CASCADE,
   "PopHerkunftUnklar" smallint DEFAULT NULL,
   "PopHerkunftUnklarBegruendung" text DEFAULT NULL,
   "PopBekanntSeit" smallint DEFAULT NULL,
@@ -893,7 +893,7 @@ COMMENT ON COLUMN apflora.ziel_typ_werte."MutWer" IS 'Von wem wurde der Datensat
 DROP TABLE IF EXISTS apflora.zielber;
 CREATE TABLE apflora.zielber (
   "ZielBerId" SERIAL PRIMARY KEY,
-  "ZielId" integer DEFAULT NULL,
+  "ZielId" integer DEFAULT NULL REFERENCES apflora.ziel ("ZielId") ON DELETE CASCADE ON UPDATE CASCADE,
   "ZielBerJahr" smallint DEFAULT NULL,
   "ZielBerErreichung" text DEFAULT NULL,
   "ZielBerTxt" text DEFAULT NULL,
