@@ -34,11 +34,11 @@ SELECT setval(pg_get_serial_sequence('apflora.adresse', 'AdrId'), coalesce(max("
 DROP TABLE IF EXISTS apflora.ap;
 CREATE TABLE apflora.ap (
   "ApArtId" integer PRIMARY KEY DEFAULT '0',
-  "ProjId" integer DEFAULT NULL,
-  "ApStatus" integer DEFAULT NULL,
+  "ProjId" integer DEFAULT NULL REFERENCES apflora.projekt ("ProjId") ON DELETE CASCADE ON UPDATE CASCADE,
+  "ApStatus" integer DEFAULT NULL REFERENCES apflora.ap_bearbstand_werte ("DomainCode") ON DELETE SET NULL ON UPDATE CASCADE,
   "ApJahr" smallint DEFAULT NULL,
-  "ApUmsetzung" integer DEFAULT NULL,
-  "ApBearb" integer DEFAULT NULL,
+  "ApUmsetzung" integer DEFAULT NULL REFERENCES apflora.ap_umsetzung_werte ("DomainCode") ON DELETE SET NULL ON UPDATE CASCADE,
+  "ApBearb" integer DEFAULT NULL REFERENCES apflora.adresse ("AdrId") ON DELETE SET NULL ON UPDATE CASCADE,
   "ApArtwert" integer DEFAULT NULL,
   "ApGuid" UUID DEFAULT uuid_generate_v1mc(),
   "MutWann" date DEFAULT NULL,
