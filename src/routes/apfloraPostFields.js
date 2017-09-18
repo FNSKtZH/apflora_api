@@ -6,15 +6,14 @@ const queryTabelleInsertFieldsApflora = require(`../handler/tabelleInsertFieldsA
 module.exports = [
   {
     method: `POST`,
-    path: `/insertFields/apflora/tabelle={tabelle}/felder={felder}`,
+    path: `/insertFields/apflora/tabelle={tabelle}`,
     handler: queryTabelleInsertFieldsApflora,
     config: {
       validate: {
         params: {
           tabelle: Joi.string().required(),
-          felder: Joi.any().required(),
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 ]

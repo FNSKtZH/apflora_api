@@ -12,14 +12,16 @@ const escapeStringForSql = require(`../escapeStringForSql`)
 
 module.exports = (request, callback) => {
   const tabelle = escapeStringForSql(request.params.tabelle) // der Name der Tabelle, in der die Daten gespeichert werden sollen
-  // NICHT escapeStringForSql anwenden
-  let felder = request.params.felder // Ein Objekt mit allen feldern und deren Werten des wiederherzustellenden Datensatzes
+  let felder = request.payload // Ein Objekt mit allen feldern und deren Werten des wiederherzustellenden Datensatzes
+  // console.log(`tabelleInsertFieldsApflora: payload:`, request.payload)
 
-  felder = JSON.parse(felder)
+  // felder = JSON.parse(felder)
 
   // Feldnamen und -werte extrahieren
   const feldnamen = Object.keys(felder).join(`","`)
-  const feldwerte = _.values(felder).join(`','`).replace(`''`, null)
+  const feldwerte = _.values(felder)
+    .join(`','`)
+    .replace(`''`, null)
 
   // sql beginnen
   const sql = `
@@ -30,7 +32,8 @@ module.exports = (request, callback) => {
     RETURNING
       *`
 
-  app.db.one(sql)
+  app.db
+    .one(sql)
     .then(row => callback(null, row))
     .catch(error => callback(error, null))
 }
