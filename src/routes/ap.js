@@ -8,19 +8,6 @@ module.exports = [
   {
     method: `GET`,
     path: `/ap={apId}`,
-    handler: queryAp
+    handler: queryAp,
   },
-  {
-    method: `POST`,
-    path: `/apInsert/apId={apId}/user={user}`,
-    handler: queryApInsert,
-    config: {
-      validate: {
-        params: {
-          apId: Joi.number().required(),
-          user: Joi.string().required(),
-        }
-      }
-    }
-  }
 ]

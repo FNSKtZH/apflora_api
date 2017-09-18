@@ -20,6 +20,7 @@ const server = require(`../server.js`)
 // test
 
 describe(`/insertFields/apflora`, () => {
+  /*
   it(`should insert in table pop 1 row with {PopNr:1,PopName:"test",MutWer:"test"}`, done => {
     const felder = {
       PopNr: 1,
@@ -42,5 +43,5 @@ describe(`/insertFields/apflora`, () => {
         return server.injectThen({ method, url })
       })
       .then(() => done())
-  })
+  })*/
 })
