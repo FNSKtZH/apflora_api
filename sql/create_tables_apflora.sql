@@ -724,12 +724,12 @@ COMMENT ON COLUMN apflora.tpopkontrzaehl_methode_werte."MutWer" IS 'Von wem wurd
 DROP TABLE IF EXISTS apflora.tpopmassn;
 CREATE TABLE apflora.tpopmassn (
   "TPopMassnId" SERIAL PRIMARY KEY,
-  "TPopId" integer DEFAULT NULL,
-  "TPopMassnTyp" integer DEFAULT NULL,
+  "TPopId" integer DEFAULT NULL REFERENCES apflora.tpop ("TPopId") ON DELETE CASCADE ON UPDATE CASCADE,
+  "TPopMassnTyp" integer DEFAULT NULL REFERENCES apflora.tpopmassn_typ_werte ("MassnTypCode") ON DELETE SET NULL ON UPDATE CASCADE,
   "TPopMassnTxt" text DEFAULT NULL,
   "TPopMassnJahr" smallint DEFAULT NULL,
   "TPopMassnDatum" date DEFAULT NULL,
-  "TPopMassnBearb" integer DEFAULT NULL,
+  "TPopMassnBearb" integer DEFAULT NULL REFERENCES apflora.adresse ("AdrId") ON DELETE SET NULL ON UPDATE CASCADE,
   "TPopMassnBemTxt" text,
   "TPopMassnPlan" smallint DEFAULT NULL,
   "TPopMassnPlanBez" text DEFAULT NULL,
@@ -805,9 +805,9 @@ COMMENT ON COLUMN apflora.tpopmassn_typ_werte."MutWer" IS 'Von wem wurde der Dat
 DROP TABLE IF EXISTS apflora.tpopmassnber;
 CREATE TABLE apflora.tpopmassnber (
   "TPopMassnBerId" SERIAL PRIMARY KEY,
-  "TPopId" integer DEFAULT NULL,
+  "TPopId" integer DEFAULT NULL REFERENCES apflora.tpop ("TPopId") ON DELETE CASCADE ON UPDATE CASCADE,
   "TPopMassnBerJahr" smallint DEFAULT NULL,
-  "TPopMassnBerErfolgsbeurteilung" integer DEFAULT NULL,
+  "TPopMassnBerErfolgsbeurteilung" integer DEFAULT NULL REFERENCES apflora.tpopmassn_erfbeurt_werte ("BeurteilId") ON DELETE SET NULL ON UPDATE CASCADE,
   "TPopMassnBerTxt" text,
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
