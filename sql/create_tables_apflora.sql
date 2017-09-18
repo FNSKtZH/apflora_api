@@ -528,9 +528,9 @@ COMMENT ON COLUMN apflora.tpop_entwicklung_werte."MutWer" IS 'Von wem wurde der 
 DROP TABLE IF EXISTS apflora.tpopber;
 CREATE TABLE apflora.tpopber (
   "TPopBerId" SERIAL PRIMARY KEY,
-  "TPopId" integer DEFAULT NULL,
+  "TPopId" integer DEFAULT NULL REFERENCES apflora.tpop ("TPopId") ON DELETE CASCADE ON UPDATE CASCADE,
   "TPopBerJahr" smallint DEFAULT NULL,
-  "TPopBerEntwicklung" integer DEFAULT NULL,
+  "TPopBerEntwicklung" integer DEFAULT NULL REFERENCES apflora.tpop_entwicklung_werte ("EntwicklungCode") ON DELETE SET NULL ON UPDATE CASCADE,
   "TPopBerTxt" text,
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
