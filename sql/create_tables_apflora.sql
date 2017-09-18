@@ -126,11 +126,11 @@ COMMENT ON COLUMN apflora.ap_umsetzung_werte."MutWer" IS 'Von wem wurde der Date
 DROP TABLE IF EXISTS apflora.apber;
 CREATE TABLE apflora.apber (
   "JBerId" SERIAL PRIMARY KEY,
-  "ApArtId" integer NOT NULL,
+  "ApArtId" integer NOT NULL REFERENCES apflora.ap ("ApArtId") ON DELETE CASCADE ON UPDATE CASCADE,
   "JBerJahr" smallint DEFAULT NULL,
   "JBerSituation" text,
   "JBerVergleichVorjahrGesamtziel" text,
-  "JBerBeurteilung" integer DEFAULT NULL,
+  "JBerBeurteilung" integer DEFAULT NULL REFERENCES apflora.ap_erfkrit_werte ("BeurteilId") ON DELETE SET NULL ON UPDATE CASCADE,
   "JBerVeraenGegenVorjahr" varchar(2) DEFAULT NULL,
   "JBerAnalyse" text DEFAULT NULL,
   "JBerUmsetzung" text,
@@ -140,7 +140,7 @@ CREATE TABLE apflora.apber (
   "JBerCTxt" text,
   "JBerDTxt" text,
   "JBerDatum" date DEFAULT NULL,
-  "JBerBearb" integer DEFAULT NULL,
+  "JBerBearb" integer DEFAULT NULL REFERENCES apflora.adresse ("AdrId") ON DELETE SET NULL ON UPDATE CASCADE,
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
@@ -236,7 +236,7 @@ INSERT INTO apflora.projekt VALUES (1, 'AP Flora Kt. ZH');
 DROP TABLE IF EXISTS apflora.ber;
 CREATE TABLE apflora.ber (
   "BerId" SERIAL PRIMARY KEY,
-  "ApArtId" integer DEFAULT NULL,
+  "ApArtId" integer DEFAULT NULL REFERENCES apflora.ap ("ApArtId") ON DELETE CASCADE ON UPDATE CASCADE,
   "BerAutor" varchar(150) DEFAULT NULL,
   "BerJahr" smallint DEFAULT NULL,
   "BerTitel" text DEFAULT NULL,
