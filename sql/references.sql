@@ -380,18 +380,6 @@ ON UPDATE CASCADE;
 
 -- tpopkontr
 
-delete from apflora.tpopkontr where "TPopId" not in (select "TPopId" from apflora.tpop);
-
-ALTER TABLE apflora.tpopkontr
-DROP CONSTRAINT IF EXISTS tpopkontr_fk_tpop;
-
-ALTER TABLE apflora.tpopkontr
-ADD CONSTRAINT tpopkontr_fk_tpop
-FOREIGN KEY ("TPopId")
-REFERENCES apflora.tpop
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
 -- get rid of 0 values
 update apflora.tpopkontr set "TPopKontrBearb" = NULL where "TPopKontrBearb" = 0;
 

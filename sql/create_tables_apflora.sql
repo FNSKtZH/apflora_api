@@ -550,7 +550,7 @@ CREATE INDEX ON apflora.tpopber USING btree ("TPopBerJahr");
 DROP TABLE IF EXISTS apflora.tpopkontr;
 CREATE TABLE apflora.tpopkontr (
   "TPopKontrId" SERIAL PRIMARY KEY,
-  "TPopId" integer DEFAULT NULL,
+  "TPopId" integer DEFAULT NULL REFERENCES apflora.tpop ("TPopId") ON DELETE CASCADE ON UPDATE CASCADE,
   "TPopKontrTyp" varchar(50) DEFAULT NULL,
   "TPopKontrDatum" date DEFAULT NULL,
   "TPopKontrJahr" smallint DEFAULT NULL,
