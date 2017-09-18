@@ -68,8 +68,8 @@ CREATE UNIQUE INDEX ON apflora.ap USING btree ("ApGuid");
 
 DROP TABLE IF EXISTS apflora.userprojekt;
 CREATE TABLE apflora.userprojekt (
-  "UserId" integer,
-  "ProjId" integer
+  "UserId" integer REFERENCES apflora.user ("UserId") ON DELETE CASCADE ON UPDATE CASCADE,
+  "ProjId" integer REFERENCES apflora.projekt ("ProjId") ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE INDEX ON apflora.userprojekt USING btree ("UserId", "ProjId");
 
@@ -681,10 +681,10 @@ CREATE INDEX ON apflora.tpopkontr_typ_werte USING btree ("DomainTxt");
 DROP TABLE IF EXISTS apflora.tpopkontrzaehl;
 CREATE TABLE apflora.tpopkontrzaehl (
   "TPopKontrZaehlId" SERIAL PRIMARY KEY,
-  "TPopKontrId" integer DEFAULT NULL,
+  "TPopKontrId" integer DEFAULT NULL REFERENCES apflora.tpopkontr ("TPopKontrId") ON DELETE CASCADE ON UPDATE CASCADE,
   "Anzahl" integer DEFAULT NULL,
-  "Zaehleinheit" integer DEFAULT NULL,
-  "Methode" integer DEFAULT NULL,
+  "Zaehleinheit" integer DEFAULT NULL REFERENCES apflora.tpopkontrzaehl_einheit_werte ("ZaehleinheitCode") ON DELETE SET NULL ON UPDATE CASCADE,
+  "Methode" integer DEFAULT NULL REFERENCES apflora.tpopkontrzaehl_methode_werte ("BeurteilCode") ON DELETE SET NULL ON UPDATE CASCADE,
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
 );
