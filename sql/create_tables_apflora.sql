@@ -415,9 +415,9 @@ CREATE INDEX ON apflora.popber USING btree ("PopBerJahr");
 DROP TABLE IF EXISTS apflora.popmassnber;
 CREATE TABLE apflora.popmassnber (
   "PopMassnBerId" SERIAL PRIMARY KEY,
-  "PopId" integer DEFAULT NULL,
+  "PopId" integer DEFAULT NULL REFERENCES apflora.pop ("PopId") ON DELETE CASCADE ON UPDATE CASCADE,
   "PopMassnBerJahr" smallint DEFAULT NULL,
-  "PopMassnBerErfolgsbeurteilung" integer DEFAULT NULL,
+  "PopMassnBerErfolgsbeurteilung" integer DEFAULT NULL REFERENCES apflora.tpopmassn_erfbeurt_werte ("BeurteilId") ON DELETE SET NULL ON UPDATE CASCADE,
   "PopMassnBerTxt" text,
   "MutWann" date DEFAULT NULL,
   "MutWer" varchar(20) DEFAULT NULL
@@ -437,7 +437,7 @@ CREATE INDEX ON apflora.popmassnber USING btree ("PopMassnBerJahr");
 DROP TABLE IF EXISTS apflora.tpop;
 CREATE TABLE apflora.tpop (
   "TPopId" SERIAL PRIMARY KEY,
-  "PopId" integer DEFAULT NULL,
+  "PopId" integer DEFAULT NULL REFERENCES apflora.pop ("PopId") ON DELETE CASCADE ON UPDATE CASCADE,
   "TPopNr" integer DEFAULT NULL,
   "TPopGemeinde" text DEFAULT NULL,
   "TPopFlurname" text DEFAULT NULL,
@@ -450,10 +450,10 @@ CREATE TABLE apflora.tpop (
   "TPopNeigung" varchar(50) DEFAULT NULL,
   "TPopBeschr" text DEFAULT NULL,
   "TPopKatNr" text DEFAULT NULL,
-  "TPopHerkunft" integer DEFAULT NULL,
+  "TPopHerkunft" integer DEFAULT NULL REFERENCES apflora.pop_status_werte ("HerkunftId") ON DELETE SET NULL ON UPDATE CASCADE,
   "TPopHerkunftUnklar" smallint DEFAULT NULL,
   "TPopHerkunftUnklarBegruendung" text DEFAULT NULL,
-  "TPopApBerichtRelevant" integer DEFAULT NULL,
+  "TPopApBerichtRelevant" integer DEFAULT NULL REFERENCES apflora.tpop_apberrelevant_werte ("DomainCode") ON DELETE SET NULL ON UPDATE CASCADE,
   "TPopBekanntSeit" smallint DEFAULT NULL,
   "TPopEigen" text DEFAULT NULL,
   "TPopKontakt" text DEFAULT NULL,
