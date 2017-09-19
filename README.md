@@ -1,4 +1,4 @@
-#apflora.ch backend
+# apflora.ch backend
 
 Das Backend (Datenbank und API-Server) der Web-Applikation zur Verwaltung des Aktionsplans Flora der Fachstelle Naturschutz des Kantons Zürich. [Mehr Infos in dessen Readme.](https://github.com/barbalex/apf2).
 
