@@ -77,7 +77,6 @@ $RECYCLE.BIN/
 
 
 
-/*.sublime-workspace
 /.ftppass
 node_modules/
 ssl/
@@ -93,3 +92,4 @@ untitled.sublime-project
 
 pgDbPass.json
 coverage.html
+postgrest.conf
