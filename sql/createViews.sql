@@ -1,3 +1,17 @@
+DROP VIEW IF EXISTS apflora.v_tpop_for_ap CASCADE;
+CREATE OR REPLACE VIEW apflora.v_tpop_for_ap AS
+SELECT
+  apflora.tpop.*,
+  apflora.ap."ApArtId" AS "ApArtId"
+FROM
+  apflora.ap
+  INNER JOIN
+    apflora.pop
+    ON apflora.ap."ApArtId" = apflora.pop."ApArtId"
+  INNER JOIN
+    apflora.tpop
+    ON apflora.pop."PopId" = apflora.tpop."PopId";
+
 DROP VIEW IF EXISTS apflora.v_tpopkoord CASCADE;
 CREATE OR REPLACE VIEW apflora.v_tpopkoord AS
 SELECT DISTINCT
