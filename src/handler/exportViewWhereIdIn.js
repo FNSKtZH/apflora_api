@@ -11,7 +11,7 @@ module.exports = (request, callback) => {
     SELECT
       *
     FROM
-      views.${view}
+      apflora.${view}
     WHERE
       "${idName}" IN (${idListe})`
 

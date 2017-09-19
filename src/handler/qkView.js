@@ -15,7 +15,7 @@ module.exports = (request, callback) => {
     sql = `
       SELECT *
       FROM
-        views.${viewName}
+        apflora.${viewName}
       WHERE
         "ApArtId" = ${apId}
         AND "Berichtjahr" = ${berichtjahr}`
@@ -24,7 +24,7 @@ module.exports = (request, callback) => {
       SELECT
         *
       FROM
-        views.${viewName}
+        apflora.${viewName}
       WHERE
         "ApArtId" = ${apId}`
   }
