@@ -1,3 +1,14 @@
+DROP VIEW IF EXISTS apflora.v_beobzuordnung CASCADE;
+CREATE OR REPLACE VIEW apflora.v_beobzuordnung AS
+SELECT
+  apflora.beobzuordnung.*,
+  beob.beob."ArtId" AS "ApArtId"
+FROM
+  apflora.beobzuordnung
+  INNER JOIN
+    beob.beob
+    ON beob.beob.id = apflora.beobzuordnung."BeobId";
+
 DROP VIEW IF EXISTS apflora.v_tpop_for_ap CASCADE;
 CREATE OR REPLACE VIEW apflora.v_tpop_for_ap AS
 SELECT
