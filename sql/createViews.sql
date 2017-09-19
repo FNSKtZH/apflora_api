@@ -1,3 +1,23 @@
+DROP VIEW IF EXISTS apflora.v_tpopkoord CASCADE;
+CREATE OR REPLACE VIEW apflora.v_tpopkoord AS
+SELECT DISTINCT
+  apflora.pop."ApArtId",
+  apflora.pop."PopId",
+  apflora.pop."PopNr",
+  apflora.tpop."TPopId",
+  apflora.tpop."TPopNr",
+  apflora.tpop."TPopXKoord",
+  apflora.tpop."TPopYKoord",
+  apflora.tpop."TPopApBerichtRelevant"
+FROM
+  apflora.pop
+  INNER JOIN
+    apflora.tpop
+    ON apflora.pop."PopId" = apflora.tpop."PopId"
+WHERE
+  apflora.tpop."TPopXKoord" Is Not Null
+  AND apflora.tpop."TPopYKoord" Is Not Null;
+
 DROP VIEW IF EXISTS apflora.v_pop_berundmassnjahre CASCADE;
 CREATE OR REPLACE VIEW apflora.v_pop_berundmassnjahre AS
 SELECT
